@@ -1,0 +1,9 @@
+---
+/** Motion Lab — exists ONLY in development (npm run dev). Never built for production. */
+import MotionLab from '../../../views/MotionLab.astro';
+
+export function getStaticPaths() {
+  return import.meta.env.DEV ? [{ params: { page: 'motion-lab' } }] : [];
+}
+---
+<MotionLab lang="en" />

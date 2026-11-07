@@ -1,0 +1,91 @@
+---
+// Almarai — the only weights it has: 300 · 400 · 700 · 800. We load 400 / 700 / 800.
+import '@fontsource/almarai/400.css';
+import '@fontsource/almarai/700.css';
+import '@fontsource/almarai/800.css';
+import '../styles/tokens.css';
+import '../styles/base.css';
+
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Preloader from '../components/Preloader.astro';
+import FlightRail from '../components/FlightRail.astro';
+import WhatsAppFloat from '../components/WhatsAppFloat.astro';
+import { dirOf, switchLangPath, useTranslations, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  preloader?: boolean;      // only the home page plays the "Take-off" intro
+  headerOverlay?: boolean;  // transparent header over a dark hero (home)
+  noindex?: boolean;
+}
+const { lang, title, description, preloader = false, headerOverlay = false, noindex = false } = Astro.props;
+const t = useTranslations(lang);
+const path = Astro.url.pathname;
+const canonical = new URL(path, Astro.site);
+const arUrl = new URL(switchLangPath(path, 'ar'), Astro.site);
+const enUrl = new URL(switchLangPath(path, 'en'), Astro.site);
+---
+<!doctype html>
+<html lang={lang} dir={dirOf(lang)}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="ar" href={arUrl} />
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="x-default" href={arUrl} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="WaysZ" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={lang === 'ar' ? 'ar_EG' : 'en_US'} />
+    <meta name="theme-color" content="#0B1626" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <!-- Motion boot: see .claude/skills/waysz-motion/SKILL.md -->
+    <script is:inline>
+      (function () {
+        var html = document.documentElement;
+        html.classList.add('js');
+        try {
+          if (sessionStorage.getItem('waysz-intro') ||
+              matchMedia('(prefers-reduced-motion: reduce)').matches) html.classList.add('intro-seen');
+        } catch (e) { html.classList.add('intro-seen'); }
+        setTimeout(function () {
+          if (!html.classList.contains('motion-ready')) html.classList.remove('js');
+        }, 4000);
+      })();
+    </script>
+  </head>
+  <body>
+    {preloader && <Preloader />}
+    <a class="skip-link" href="#main">{t.a11y.skip}</a>
+    <Header lang={lang} overlay={headerOverlay} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+    <FlightRail />
+    <WhatsAppFloat lang={lang} />
+
+    <script>
+      import { initMotion } from '../motion';
+      import { initForms } from '../lib/forms';
+      initForms();
+      initMotion();
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  /* main sits above the sticky footer so the footer is revealed like a curtain (desktop) */
+  main { position: relative; z-index: 1; background: var(--color-bg); }
+</style>

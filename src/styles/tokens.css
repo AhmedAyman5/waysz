@@ -1,0 +1,169 @@
+/* ==========================================================================
+   WaysZ — Design Tokens  (shared by WaysZ + WaysZ Visa)
+   --------------------------------------------------------------------------
+   TEMPORARY PALETTE "Midnight & Horizon" — until the final brand colors land.
+
+   HOW TO SWAP THE REAL BRAND COLORS LATER:
+   1) Only edit LAYER 1 (primitives). Put the new hex values in the same slots.
+   2) Never use primitives (--midnight-800, --horizon-500 …) inside components.
+      Components use LAYER 2 semantic tokens only (--color-brand, --color-ink …).
+   3) Swap done. No component file changes.
+   ========================================================================== */
+
+/* ---------- LAYER 1 · PRIMITIVES (raw palette — swap these only) ---------- */
+:root {
+  /* Midnight — primary / trust / legal (navy) */
+  --midnight-950: #070E1A;
+  --midnight-900: #0B1626;
+  --midnight-800: #0E1D33;
+  --midnight-700: #16294A;
+  --midnight-600: #213A63;
+  --midnight-500: #2F4F82;
+  --midnight-400: #5873A3;
+  --midnight-300: #8EA2C4;
+  --midnight-200: #C3CEE1;
+  --midnight-100: #E4E9F2;
+  --midnight-50:  #F2F5FA;
+
+  /* Horizon — accent / premium / the plane on WaysZ (amber-gold) */
+  --horizon-700: #9A5B08;   /* accent as TEXT on light bg (AA 5.0:1) */
+  --horizon-600: #C27A14;
+  --horizon-500: #E9A23B;   /* main accent — fills, lines, buttons */
+  --horizon-400: #F2BC69;
+  --horizon-300: #F8D59E;
+  --horizon-100: #FDF1DC;
+
+  /* Sky — travel / the accent of WaysZ Visa (blue) */
+  --sky-700: #1D5BA6;       /* text + link on light bg (AA 6.2:1) */
+  --sky-600: #2569BE;       /* buttons with white text */
+  --sky-500: #2F7FD8;       /* fills, lines, plane on Visa site */
+  --sky-400: #5F9FE6;
+  --sky-200: #BFD9F6;
+  --sky-100: #E3EFFC;
+
+  /* Mist — cool neutrals (sky-tinted, pairs with Midnight) */
+  --white:    #FFFFFF;
+  --mist-50:  #F3F5F8;      /* page background */
+  --mist-100: #E8ECF2;
+  --mist-200: #D5DCE6;
+  --slate-700: #374151;
+  --slate-500: #5B6575;     /* muted text on mist (AA 5.4:1) */
+
+  /* Service-area hues — subtle identifiers for the 4 areas (icons, lines) */
+  --hue-legal:    var(--horizon-500);
+  --hue-travel:   var(--sky-500);
+  --hue-events:   #E2674A;
+  --hue-software: #1FA39A;
+
+  /* Feedback */
+  --green-700: #167A53;
+  --red-700:   #B4232F;
+  --amber-700: #9A5B08;
+}
+
+/* ---------- LAYER 2 · SEMANTIC TOKENS (use these in components) ---------- */
+:root {
+  --color-bg:        var(--mist-50);
+  --color-bg-alt:    var(--mist-100);
+  --color-surface:   var(--white);
+  --color-ink:       var(--midnight-900);   /* main text */
+  --color-ink-muted: var(--slate-500);
+  --color-border:    rgb(14 29 51 / 0.12);
+
+  --color-brand:     var(--midnight-800);   /* logo mark, headers, dark blocks */
+  --color-on-brand:  var(--mist-50);
+  --color-accent:    var(--horizon-500);    /* plane, highlights, CTA buttons */
+  --color-on-accent: var(--midnight-900);   /* text on accent buttons (8.4:1) */
+  --color-accent-ink:var(--horizon-700);    /* accent-colored text on light bg */
+  --color-link:      var(--midnight-600);
+  --color-focus:     var(--sky-500);
+
+  --color-success:   var(--green-700);
+  --color-error:     var(--red-700);
+  --color-warning:   var(--amber-700);
+
+  /* Logo parts (classes in waysz-mark.svg: .mark-wing-left .mark-wing-right .mark-plane) */
+  --logo-mark:  var(--color-brand);
+  --logo-plane: var(--color-accent);
+}
+
+/* Dark sections (hero "night sky", CTA bands, footer): add class="theme-dark" */
+.theme-dark {
+  --color-bg:        var(--midnight-900);
+  --color-bg-alt:    var(--midnight-800);
+  --color-surface:   var(--midnight-700);
+  --color-ink:       var(--mist-50);
+  --color-ink-muted: var(--midnight-300);
+  --color-border:    rgb(255 255 255 / 0.12);
+  --color-link:      var(--horizon-400);
+  --logo-mark:       var(--mist-50);
+  background-color: var(--color-bg);
+  color: var(--color-ink);
+}
+
+/* WaysZ Visa: same family, sky accent instead of horizon. Put data-site="visa" on <html>. */
+[data-site="visa"] {
+  --color-accent:     var(--sky-500);
+  --color-on-accent:  var(--white);       /* use with --color-accent-strong bg */
+  --color-accent-strong: var(--sky-600);  /* button bg for white text (AA) */
+  --color-accent-ink: var(--sky-700);
+  --logo-plane:       var(--sky-500);
+}
+:root:not([data-site="visa"]) { --color-accent-strong: var(--horizon-500); }
+
+/* ---------- TYPOGRAPHY ---------- */
+:root {
+  /* Almarai: clean, sturdy Arabic + Latin from ONE family (chosen by the team, option D).
+     Self-hosted via @fontsource/almarai (imported in BaseLayout). Weights available: 400 · 700 · 800. */
+  --font-display: "Almarai", "Segoe UI", Tahoma, system-ui, sans-serif;
+  --font-body:    "Almarai", "Segoe UI", Tahoma, system-ui, sans-serif;
+
+  /* Fluid scale (min @360px → max @1440px) */
+  --text-xs:   clamp(0.78rem, 0.76rem + 0.10vw, 0.84rem);
+  --text-sm:   clamp(0.88rem, 0.85rem + 0.15vw, 0.95rem);
+  --text-base: clamp(1.00rem, 0.96rem + 0.20vw, 1.10rem);
+  --text-lg:   clamp(1.15rem, 1.08rem + 0.35vw, 1.35rem);
+  --text-xl:   clamp(1.40rem, 1.25rem + 0.70vw, 1.85rem);
+  --text-2xl:  clamp(1.80rem, 1.50rem + 1.40vw, 2.75rem);
+  --text-3xl:  clamp(2.30rem, 1.80rem + 2.40vw, 4.00rem);
+  --text-hero: clamp(2.70rem, 1.90rem + 4.00vw, 5.75rem);
+
+  --leading-tight: 1.25;   /* Arabic needs more line-height than Latin */
+  --leading-body:  1.8;
+  /* Almarai has 400 / 700 / 800 only — keep these mappings, don't use 500 or 600 */
+  --weight-regular:  400;
+  --weight-medium:   700;
+  --weight-semibold: 700;
+  --weight-bold:     800;
+}
+
+/* ---------- SPACE · RADIUS · SHADOW · LAYERS ---------- */
+:root {
+  --space-1: 0.25rem;  --space-2: 0.5rem;  --space-3: 0.75rem; --space-4: 1rem;
+  --space-5: 1.5rem;   --space-6: 2rem;    --space-7: 3rem;    --space-8: 4rem;
+  --space-9: 6rem;     --space-10: 8rem;
+  --section-y: clamp(4rem, 3rem + 5vw, 9rem);
+  --container: min(1240px, 100% - 2 * clamp(1rem, 4vw, 2.5rem));
+
+  --radius-sm: 8px;  --radius-md: 14px;  --radius-lg: 24px;  --radius-pill: 999px;
+
+  --shadow-sm: 0 1px 2px rgb(11 22 38 / 0.06), 0 2px 8px rgb(11 22 38 / 0.06);
+  --shadow-md: 0 8px 24px rgb(11 22 38 / 0.10);
+  --shadow-lg: 0 24px 60px rgb(11 22 38 / 0.18);
+
+  --z-base: 1; --z-sticky: 50; --z-header: 100; --z-overlay: 500;
+  --z-transition: 900; --z-preloader: 1000;
+}
+
+/* ---------- MOTION TOKENS (CSS side; JS mirror lives in motion/config) ---------- */
+:root {
+  --dur-fast: 0.2s;
+  --dur-base: 0.45s;
+  --dur-slow: 0.9s;
+  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);   /* = gsap "expo.out"-ish */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-fast: 0.01s; --dur-base: 0.01s; --dur-slow: 0.01s; }
+}

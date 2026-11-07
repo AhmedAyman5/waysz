@@ -1,0 +1,22 @@
+---
+/** First-visit "Take-off" intro (motion/scenes/preloader.ts). Never shown without JS or with reduced motion. */
+import Logo from './Logo.astro';
+---
+<div class="preloader theme-dark" data-scene="preloader" aria-hidden="true">
+  <Logo decorative class="preloader__mark" />
+</div>
+
+<style>
+  .preloader {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-preloader);
+    place-items: center;
+  }
+  .preloader :global(.preloader__mark) { width: min(46vw, 340px); }
+</style>
+
+<style is:global>
+  /* created at runtime by the scene, so it can't be scoped */
+  .preloader__trail { fill: none; stroke: var(--color-accent); stroke-width: 5; stroke-linecap: round; }
+</style>

@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { localizePath, useTranslations, type Lang } from '../i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const en = useTranslations('en');
+---
+<BaseLayout lang={lang} title={t.pages.notFound.title} description={t.pages.notFound.description} noindex>
+  <section class="container section stack" style="padding-top: 180px; min-height: 70vh">
+    <h1>{t.pages.notFound.heading}</h1>
+    <p class="lead">{t.pages.notFound.description}</p>
+    <p><a class="btn btn--accent" href={localizePath('/', lang)}>{t.pages.notFound.back}</a></p>
+    {lang === 'ar' && <p lang="en" dir="ltr"><a href="/en/">{en.pages.notFound.back} (English)</a></p>}
+  </section>
+</BaseLayout>

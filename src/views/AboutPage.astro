@@ -1,0 +1,18 @@
+---
+/** About (brief §4). */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TodoSection from '../components/TodoSection.astro';
+import { useTranslations, type Lang } from '../i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+<BaseLayout lang={lang} title={t.pages.about.title} description={t.pages.about.description}>
+  <div style="height: 76px"></div>
+  <TodoSection ref="4.1" title="نبذة عن WaysZ — scene: text-scrub" />
+  <TodoSection ref="4.2" title="الرؤية والقيم — data-reveal" />
+  <TodoSection ref="4.3" title="مجالات العمل" />
+  <TodoSection ref="4.4" title="العلاقة بين WaysZ و WaysZ Visa — scene: route-steps (2 stops)" />
+  <TodoSection ref="4.5" title="زر التواصل" />
+</BaseLayout>

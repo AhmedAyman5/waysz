@@ -1,0 +1,400 @@
+---
+/**
+ * MOTION LAB — live reference for the motion system (dev only: /dev/motion-lab/ and /en/dev/motion-lab/).
+ * Copy patterns from here into real pages. Copy is from the brief; English is a draft translation.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Logo from '../components/Logo.astro';
+import { site } from '../lib/site';
+import { localizePath, useTranslations, type Lang } from '../i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const copy = {
+  ar: {
+    title: 'الطريق الأقصر إلى الخدمة التي تحتاجها',
+    lead: 'في WaysZ نجمع تحت علامة واحدة خدمات قانونية متخصصة، وخدمات الهجرة والدراسة والتأشيرات، وتنظيم المعارض والمؤتمرات الدولية، وحلول البرمجيات والتقنية؛ لنوفر عليك عناء البحث، ونرشدك إلى الخدمة المناسبة بخطوات واضحة.',
+    areasTitle: 'مجالات خدماتنا',
+    areas: [
+      { key: 'legal', hue: '--hue-legal', text: 'استشارات قانونية ومتابعة القضايا في القانون الجنائي والمدني وقضايا الأسرة وقوانين الشركات، إلى جانب الاستشارات القانونية في الهجرة والجنسية.', link: 'استكشف الخدمات القانونية' },
+      { key: 'travel', hue: '--hue-travel', text: 'كل ما تحتاجه للسفر بثقة: استشارات الهجرة والإقامة، والدراسة بالخارج، والتأشيرات، والترجمة المعتمدة، واستشارات السفارات.', link: 'استكشف خدمات الهجرة والدراسة' },
+      { key: 'events', hue: '--hue-events', text: 'تنظيم مؤتمرات ومعارض دولية متكاملة، من التخطيط وتجهيز الأجنحة واستقبال الوفود، حتى الترجمة الفورية وإدارة يوم الحدث.', link: 'استكشف خدمات الفعاليات' },
+      { key: 'software', hue: '--hue-software', text: 'تصميم وتطوير المواقع، وبناء أنظمة مخصصة تساعد مؤسستك على تنظيم أعمالها والتحول الرقمي بثقة.', link: 'استكشف الحلول التقنية' },
+    ],
+    whyTitle: 'لماذا WaysZ؟',
+    why: [
+      ['خدمات متكاملة تحت سقف واحد', 'القانون والهجرة والفعاليات والتقنية في مكان واحد، وتتكامل معًا حين يحتاج طلبك أكثر من تخصص.'],
+      ['وضوح من البداية', 'نشرح لك الخطوات والمتطلبات والمدة المتوقعة قبل البدء، دون مفاجآت.'],
+      ['فريق متخصص لكل مجال', 'يتولى كل طلب فريق لديه الخبرة في مجاله، لتحصل على رأي دقيق وتنفيذ سليم.'],
+      ['سرية وخصوصية', 'نتعامل مع بياناتك وتفاصيل طلبك بأعلى درجات السرية والمسؤولية.'],
+      ['خبرة في التعامل الدولي', 'نتعامل مع سفارات وجهات ووفود من دول مختلفة، ونعرف متطلبات كل منها.'],
+      ['شراكة لا معاملة', 'نبني توصياتنا على تفاصيل حالتك، ونسعى لعلاقة طويلة قائمة على الثقة.'],
+    ],
+    stepsTitle: 'كيف نعمل معك؟',
+    steps: [
+      ['تواصل معنا', 'عبر النموذج أو الهاتف أو واتساب، وأخبرنا باحتياجك.'],
+      ['نفهم طلبك', 'يراجع الفريق المختص التفاصيل ويحدد المسار المناسب.'],
+      ['خطة واضحة', 'نوضح الخطوات والمتطلبات والمدة المتوقعة قبل البدء.'],
+      ['ننفذ ونتابع', 'نبدأ العمل ونبقيك على اطلاع حتى إتمام الخدمة.'],
+    ],
+    statement: 'ويجمع بينها نهج واحد: فهم احتياج العميل جيدًا، وتقديم حلول واضحة، والتواصل الشفاف في كل مرحلة.',
+    gateTitle: 'تخطط للسفر أو الدراسة أو الهجرة؟',
+    gateText: 'تعرّف على WaysZ Visa، منصتنا المتخصصة في استشارات التأشيرات وتجهيز ملفك.',
+    faq: [
+      ['هل تفاصيل استشارتي سرية؟', 'نعم، كل ما تشاركه يُعامل بسرية تامة ولا يطلع عليه إلا الفريق المختص.'],
+      ['هل يمكن متابعة القضية وأنا خارج البلاد؟', 'في كثير من الحالات نعم، من خلال توكيل رسمي، ونوضح لك الإجراءات.'],
+    ],
+    formTitle: 'أرسل لنا رسالتك',
+    f: { name: 'الاسم بالكامل', namePh: 'اكتب اسمك', phone: 'رقم الهاتف', email: 'البريد الإلكتروني', service: 'الخدمة المطلوبة', choose: 'اختر الخدمة', other: 'أخرى', message: 'رسالتك', messagePh: 'اكتب تفاصيل استفسارك باختصار', send: 'إرسال الرسالة' },
+  },
+  en: {
+    title: 'The shortest way to the service you need',
+    lead: 'WaysZ brings specialized legal services, immigration, study and visas, international exhibitions and conferences, and software solutions together under one name — so you don’t have to search, and we guide you to the right service in clear steps.',
+    areasTitle: 'Our areas',
+    areas: [
+      { key: 'legal', hue: '--hue-legal', text: 'Legal advice and case follow-up in criminal, civil, family and corporate law, plus legal advice on immigration and nationality.', link: 'Explore legal services' },
+      { key: 'travel', hue: '--hue-travel', text: 'Everything you need to travel with confidence: immigration and residency, study abroad, visas, certified translation and embassy guidance.', link: 'Explore immigration & study' },
+      { key: 'events', hue: '--hue-events', text: 'Complete international conferences and exhibitions — from planning, booths and delegations to simultaneous interpretation and event-day management.', link: 'Explore event services' },
+      { key: 'software', hue: '--hue-software', text: 'Websites and custom systems that help your organization run its work and go digital with confidence.', link: 'Explore technology solutions' },
+    ],
+    whyTitle: 'Why WaysZ?',
+    why: [
+      ['Integrated services, one roof', 'Law, immigration, events and technology in one place — working together when your request needs more than one specialty.'],
+      ['Clarity from the start', 'We explain the steps, requirements and expected timeline before we begin. No surprises.'],
+      ['A specialist team per area', 'Every request is handled by a team experienced in its field, for accurate advice and sound execution.'],
+      ['Confidentiality', 'Your data and the details of your request are handled with the highest confidentiality.'],
+      ['International experience', 'We work with embassies, institutions and delegations from many countries and know what each requires.'],
+      ['A partnership, not a transaction', 'Our recommendations are built on your case, aiming for a long relationship based on trust.'],
+    ],
+    stepsTitle: 'How we work with you',
+    steps: [
+      ['Contact us', 'Through the form, phone or WhatsApp — tell us what you need.'],
+      ['We understand', 'The right team reviews the details and sets the best path.'],
+      ['A clear plan', 'We explain the steps, requirements and timeline before starting.'],
+      ['We deliver', 'We get to work and keep you informed until the service is done.'],
+    ],
+    statement: 'One approach connects them all: understanding what the client needs, offering clear solutions, and communicating openly at every stage.',
+    gateTitle: 'Planning to travel, study or immigrate?',
+    gateText: 'Meet WaysZ Visa, our platform dedicated to visa consultations and preparing your file.',
+    faq: [
+      ['Is my consultation confidential?', 'Yes. Everything you share is handled in full confidence and seen only by the team on your case.'],
+      ['Can my case be followed while I’m abroad?', 'In many cases, yes — through an official power of attorney. We’ll explain the steps.'],
+    ],
+    formTitle: 'Send us a message',
+    f: { name: 'Full name', namePh: 'Your name', phone: 'Phone number', email: 'Email', service: 'Service', choose: 'Choose a service', other: 'Other', message: 'Your message', messagePh: 'Briefly describe your request', send: 'Send message' },
+  },
+}[lang];
+
+const icons: Record<string, string> = {
+  legal: '<path d="M12 3v18M7 21h10M4 7h16"/><path d="M6 7l-3 6c0 1.7 1.3 3 3 3s3-1.3 3-3z"/><path d="M18 7l-3 6c0 1.7 1.3 3 3 3s3-1.3 3-3z"/>',
+  travel: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/>',
+  events: '<rect x="5" y="9" width="14" height="12" rx="2"/><path d="M9 9V3l3 3 3-3v6"/><path d="M9 15h6"/>',
+  software: '<path d="M8 7l-5 5 5 5"/><path d="M16 7l5 5-5 5"/><path d="M14 4l-4 16"/>',
+};
+---
+<BaseLayout lang={lang} title="Motion Lab | WaysZ" description="Motion system reference (dev only)." preloader headerOverlay noindex>
+
+  <!-- S2 + S3 · hero-takeoff + dive ............................................................ -->
+  <section class="hero theme-dark" data-scene="hero-takeoff dive">
+    <div class="hero__glow" aria-hidden="true"></div>
+    <div class="hero__inner">
+      <div class="hero__content" data-intro>
+        <h1 class="hero__title">{copy.title}</h1>
+        <p class="hero__lead">{copy.lead}</p>
+        <div class="hero__actions">
+          <a class="btn btn--accent" href={localizePath('/contact/', lang)} data-magnetic>{t.cta.consult}</a>
+          <a class="btn btn--ghost" href={localizePath('/services/', lang)}>{t.cta.explore}</a>
+        </div>
+      </div>
+      <div class="hero__mark" data-intro>
+        <Logo decorative />
+      </div>
+    </div>
+  </section>
+
+  <!-- S4 · destinations ........................................................................ -->
+  <section class="dests theme-dark">
+    <div class="container">
+      <h2 data-split>{copy.areasTitle}</h2>
+    </div>
+    <div class="dests__cards container" data-scene="destinations">
+      {copy.areas.map((a, i) => (
+        <article class="dest-card" style={`--i:${i}; --hue: var(${a.hue})`}>
+          <svg class="dest-card__icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[a.key]} />
+          <div>
+            <h3>{t.areas[a.key as keyof typeof t.areas]}</h3>
+            <p>{a.text}</p>
+            <a href={`${localizePath('/services/', lang)}#${a.key}`}>{a.link}</a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- S5 · globals: data-split · data-draw · data-reveal · data-spotlight .......................... -->
+  <section class="why section">
+    <div class="container">
+      <h2 data-split>{copy.whyTitle}</h2>
+      <svg class="why__route" viewBox="0 0 600 24" aria-hidden="true">
+        <path data-draw d="M2 12 C 120 2, 200 22, 300 12 S 480 2, 598 12" />
+      </svg>
+      <ul class="why__grid" role="list">
+        {copy.why.map(([title, text]) => (
+          <li class="why__item" data-reveal data-spotlight>
+            <h3>{title}</h3>
+            <p>{text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- S6 · route-steps .......................................................................... -->
+  <section class="steps section" data-scene="route-steps">
+    <div class="container">
+      <h2>{copy.stepsTitle}</h2>
+      <div class="route" aria-hidden="true">
+        <svg viewBox="0 0 1000 120">
+          <path class="route__track" d="M20 80 C 200 10, 320 110, 500 60 S 800 10, 980 70" />
+          <path class="route__path" d="M20 80 C 200 10, 320 110, 500 60 S 800 10, 980 70" />
+          <g class="route__plane">
+            <path d="M-14 0 L8 -3 L15 0 L8 3 Z M-1 -1 L-8 -11 L-4 -11 L5 -1 Z M-1 1 L-8 11 L-4 11 L5 1 Z M-12 -1 L-15 -6 L-12 -6 L-8 -1 Z M-12 1 L-15 6 L-12 6 L-8 1 Z" />
+          </g>
+        </svg>
+      </div>
+      <div class="steps__wrap">
+      <span class="route__line-v" aria-hidden="true"></span>
+      <ol class="steps__list" role="list">
+        {copy.steps.map(([title, text], i) => (
+          <li class="step">
+            <span class="step__num">{i + 1}</span>
+            <h3>{title}</h3>
+            <p>{text}</p>
+          </li>
+        ))}
+      </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- S10 · text-scrub ........................................................................... -->
+  <section class="say section theme-dark" data-scene="text-scrub">
+    <div class="container">
+      <p class="statement">{copy.statement}</p>
+    </div>
+  </section>
+
+  <!-- S8 · boarding-gate ......................................................................... -->
+  <section class="gate section" data-scene="boarding-gate">
+    <div class="container">
+      <div class="pass">
+        <div class="pass__main">
+          <h2>{copy.gateTitle}</h2>
+          <p>{copy.gateText}</p>
+          <a class="btn btn--dark" href={site.visaSite} rel="noopener">{t.cta.visitVisa}</a>
+        </div>
+        <svg class="pass__sep" viewBox="0 0 4 200" preserveAspectRatio="none" aria-hidden="true">
+          <path class="pass__perf" d="M2 0 V200" />
+        </svg>
+        <div class="pass__stub">
+          <div class="stamp" aria-hidden="true">
+            <svg viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="54" /><circle cx="60" cy="60" r="44" />
+              <text x="60" y="56" text-anchor="middle">WaysZ</text>
+              <text x="60" y="78" text-anchor="middle">VISA</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S12 · accordion ............................................................................ -->
+  <section class="faq section" data-scene="accordion">
+    <div class="container">
+      <h2>{t.service.faq}</h2>
+      {copy.faq.map(([q, a], i) => (
+        <div class="faq__item">
+          <button type="button" aria-expanded="false" aria-controls={`faq-${i}`}>{q}</button>
+          <div class="faq__panel" id={`faq-${i}`} inert><p>{a}</p></div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- S13 · form-flight + src/lib/forms.ts .......................................................... -->
+  <section class="form-demo section" data-scene="form-flight">
+    <div class="container">
+      <h2>{copy.formTitle}</h2>
+      <form data-form="contact" data-messages={JSON.stringify(t.form)} novalidate>
+        <div class="field">
+          <label for="lab-name">{copy.f.name}</label>
+          <input id="lab-name" name="name" required placeholder={copy.f.namePh} aria-describedby="lab-name-error" />
+          <p id="lab-name-error" class="field__error" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="lab-phone">{copy.f.phone}</label>
+          <input id="lab-phone" name="phone" type="tel" required dir="ltr" pattern="[0-9+\s\-]{8,}" placeholder="01xxxxxxxxx" aria-describedby="lab-phone-error" />
+          <p id="lab-phone-error" class="field__error" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="lab-email">{copy.f.email}</label>
+          <input id="lab-email" name="email" type="email" dir="ltr" placeholder="name@example.com" aria-describedby="lab-email-error" />
+          <p id="lab-email-error" class="field__error" aria-live="polite"></p>
+        </div>
+        <div class="field">
+          <label for="lab-service">{copy.f.service}</label>
+          <select id="lab-service" name="service" required aria-describedby="lab-service-error">
+            <option value="">{copy.f.choose}</option>
+            <option>{t.areas.legal}</option><option>{t.areas.travel}</option>
+            <option>{t.areas.events}</option><option>{t.areas.software}</option>
+            <option>{copy.f.other}</option>
+          </select>
+          <p id="lab-service-error" class="field__error" aria-live="polite"></p>
+        </div>
+        <div class="field field--full">
+          <label for="lab-message">{copy.f.message}</label>
+          <textarea id="lab-message" name="message" rows="4" required placeholder={copy.f.messagePh} aria-describedby="lab-message-error"></textarea>
+          <p id="lab-message-error" class="field__error" aria-live="polite"></p>
+        </div>
+        <div class="field--full form__actions">
+          <button class="btn btn--accent" type="submit">{copy.f.send}</button>
+          <span class="form__plane" aria-hidden="true">
+            <svg class="icon-dir" viewBox="0 0 24 24"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z" /></svg>
+          </span>
+        </div>
+        <p class="form__status field--full" data-form-status role="status"></p>
+        <p class="form__consent field--full">{t.form.consent}</p>
+      </form>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ---------- hero ---------- */
+  .hero { position: relative; min-height: 100svh; display: grid; align-items: center; overflow: clip; }
+  .hero__glow {
+    position: absolute; inset-inline: -20%; bottom: -45%; height: 80%;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--color-accent) 20%, transparent), transparent);
+    pointer-events: none;
+  }
+  .hero__inner {
+    width: var(--container); margin-inline: auto;
+    display: grid; grid-template-columns: 1.15fr 0.85fr; gap: var(--space-7); align-items: center;
+    padding-block: 120px var(--space-8);
+  }
+  .hero__title { max-width: 13ch; }
+  .hero__lead { margin-block: var(--space-5) var(--space-6); color: var(--color-ink-muted); font-size: var(--text-lg); max-width: 54ch; }
+  .hero__actions { display: flex; flex-wrap: wrap; gap: var(--space-4); }
+  .hero__mark { width: min(100%, 500px); justify-self: center; }
+
+  /* ---------- destinations ---------- */
+  .dests { padding-block: var(--space-9) 0; }
+  .dests__cards { display: grid; gap: 14vh; padding-block: var(--space-7) 22vh; }
+  .dest-card {
+    position: sticky; top: calc(14vh + var(--i) * 1.5rem);
+    transform-origin: top center;
+    min-height: 52vh;
+    display: grid; grid-template-columns: auto 1fr; gap: var(--space-6); align-content: center;
+    padding: var(--space-8) var(--space-7);
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-block-start: 3px solid var(--hue);
+    border-radius: var(--radius-lg);
+  }
+  .dest-card__icon { width: 72px; fill: none; stroke: var(--hue); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+  .dest-card h3 { font-size: var(--text-2xl); }
+  .dest-card p { color: var(--color-ink-muted); max-width: 56ch; margin-block: var(--space-4) var(--space-5); }
+  .dest-card a { color: var(--hue); font-weight: var(--weight-semibold); }
+
+  /* ---------- why ---------- */
+  .why__route { width: min(100%, 420px); margin-block: var(--space-4) var(--space-7); fill: none; stroke: var(--color-accent); stroke-width: 2.5; stroke-linecap: round; }
+  .why__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-block-start: 1px solid var(--color-border); }
+  .why__item { padding: var(--space-6) var(--space-5); border-block-end: 1px solid var(--color-border); border-radius: var(--radius-md); }
+  .why__item p { color: var(--color-ink-muted); margin-block-start: var(--space-3); }
+
+  /* ---------- steps ---------- */
+  .route { margin-block: var(--space-6) var(--space-2); }
+  .route svg { width: 100%; height: auto; overflow: visible; }
+  :dir(rtl) .route svg { transform: scaleX(-1); }
+  .route__track { fill: none; stroke: var(--color-border); stroke-width: 2; stroke-dasharray: 6 8; }
+  .route__path { fill: none; stroke: var(--color-accent); stroke-width: 3; stroke-linecap: round; }
+  .route__plane { fill: var(--color-brand); }
+  .steps__wrap { position: relative; }
+  .steps__list { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-5); padding: 0; }
+  .route__line-v { display: none; }
+  .step { opacity: 0.4; transition: opacity var(--dur-base) var(--ease-out); }
+  .step.is-active { opacity: 1; }
+  .step__num {
+    display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%;
+    border: 1.5px solid var(--color-border); font-weight: var(--weight-bold); margin-block-end: var(--space-3);
+    transition: background-color var(--dur-base), color var(--dur-base), border-color var(--dur-base);
+  }
+  .step.is-active .step__num { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-on-accent); }
+  .step p { color: var(--color-ink-muted); margin-block-start: var(--space-2); }
+
+  /* ---------- statement ---------- */
+  .statement { font-family: var(--font-display); font-size: var(--text-3xl); font-weight: var(--weight-semibold); line-height: 1.45; max-width: 24ch; }
+
+  /* ---------- boarding gate ---------- */
+  .pass {
+    display: grid; grid-template-columns: 1fr 4px 220px;
+    background: var(--color-surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-md);
+    overflow: hidden;
+  }
+  .pass__main { padding: var(--space-7); }
+  .pass__main p { color: var(--color-ink-muted); margin-block: var(--space-3) var(--space-5); max-width: 48ch; }
+  .pass__sep { width: 4px; height: 100%; }
+  .pass__perf { fill: none; stroke: var(--color-border); stroke-width: 3; stroke-dasharray: 8 8; }
+  .pass__stub { display: grid; place-items: center; background: var(--color-bg-alt); }
+  .stamp { width: 130px; color: var(--sky-500); }
+  .stamp svg { fill: none; stroke: currentColor; stroke-width: 3; }
+  .stamp text { fill: currentColor; stroke: none; font: var(--weight-bold) 18px var(--font-display); letter-spacing: 1px; }
+
+  /* ---------- faq ---------- */
+  .faq__item { border-block-end: 1px solid var(--color-border); }
+  .faq__item button { width: 100%; text-align: start; padding: var(--space-5) 0; font-weight: var(--weight-semibold); font-size: var(--text-lg); }
+  .faq__panel p { padding-block-end: var(--space-5); color: var(--color-ink-muted); }
+
+  /* ---------- form ---------- */
+  form { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); margin-block-start: var(--space-6); max-width: 820px; }
+  .field { display: grid; gap: var(--space-2); }
+  .field--full { grid-column: 1 / -1; }
+  label { font-size: var(--text-sm); font-weight: var(--weight-medium); }
+  input, select, textarea {
+    padding: var(--space-3) var(--space-4); border-radius: var(--radius-sm);
+    border: 1.5px solid var(--color-border); background: var(--color-surface);
+  }
+  :where(input, select, textarea):focus-visible { outline: 2px solid var(--color-focus); outline-offset: 1px; }
+  [aria-invalid='true'] { border-color: var(--color-error); }
+  .field__error { color: var(--color-error); font-size: var(--text-xs); min-height: 1.2em; }
+  .form__actions { display: flex; align-items: center; gap: var(--space-4); }
+  .form__plane { display: inline-block; width: 28px; color: var(--color-accent-ink); }
+  .form__plane svg { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round; stroke-linecap: round; }
+  .form__status[data-state='success'] { color: var(--color-success); font-weight: var(--weight-semibold); }
+  .form__status[data-state='error'] { color: var(--color-error); font-weight: var(--weight-semibold); }
+  .form__consent { font-size: var(--text-xs); color: var(--color-ink-muted); }
+
+  /* ---------- mobile ---------- */
+  @media (max-width: 1023px) {
+    .hero__inner { grid-template-columns: 1fr; padding-block: 110px var(--space-7); }
+    .hero__mark { order: -1; width: min(62%, 300px); justify-self: start; }
+    .dest-card { grid-template-columns: 1fr; padding: var(--space-6); min-height: 0; }
+    .why__grid { grid-template-columns: 1fr; }
+    .route { display: none; }
+    .steps__list { grid-template-columns: 1fr; padding-inline-start: var(--space-7); }
+    .route__line-v {
+      display: block; position: absolute; inset-block: 0; inset-inline-start: 19px;
+      border-inline-start: 2px solid var(--color-accent);
+    }
+    .step__num { position: absolute; inset-inline-start: 0; }
+    .step { position: relative; padding-inline-start: var(--space-7); }
+    .steps__list { padding-inline-start: 0; }
+    .pass { grid-template-columns: 1fr; }
+    .pass__sep { display: none; }
+    .pass__stub { padding: var(--space-5); }
+    form { grid-template-columns: 1fr; }
+  }
+</style>

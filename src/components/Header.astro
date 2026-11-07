@@ -1,0 +1,131 @@
+---
+/** Site header (brief §1.1). Hide/show + solid state: motion/globals/header.ts */
+import Logo from './Logo.astro';
+import { site } from '../lib/site';
+import { languages, localizePath, otherLang, switchLangPath, useTranslations, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+  overlay?: boolean;   // true = transparent over a dark hero until you scroll (home)
+}
+const { lang, overlay = false } = Astro.props;
+const t = useTranslations(lang);
+const to = otherLang(lang);
+const here = Astro.url.pathname;
+
+const links = [
+  { href: localizePath('/', lang), label: t.nav.home },
+  { href: localizePath('/services/', lang), label: t.nav.services },   // TODO(§1.1): "خدماتنا" dropdown with the 4 areas
+  { href: localizePath('/about/', lang), label: t.nav.about },
+  { href: localizePath('/contact/', lang), label: t.nav.contact },
+];
+const isCurrent = (href: string) =>
+  href === localizePath('/', lang) ? here === href : here.startsWith(href);
+---
+<header class:list={['site-header theme-dark', { 'site-header--solid': !overlay }]} data-open="false">
+  <div class="site-header__inner container">
+    <a class="brand" href={localizePath('/', lang)} aria-label={t.a11y.home}>
+      <Logo decorative class="brand__mark" />
+      <span class="brand__word" aria-hidden="true">WaysZ</span>
+    </a>
+
+    <nav id="site-nav" class="site-nav" aria-label={t.nav.label} data-lenis-prevent>
+      <ul role="list">
+        {links.map((l) => (
+          <li><a href={l.href} aria-current={isCurrent(l.href) ? 'page' : undefined}>{l.label}</a></li>
+        ))}
+        <li><a href={site.visaSite} rel="noopener">{t.nav.visa}</a></li>
+      </ul>
+    </nav>
+
+    <div class="site-header__actions">
+      <a class="lang" href={switchLangPath(here, to)} hreflang={to} lang={to}>{languages[to]}</a>
+      <a class="btn btn--accent cta" href={localizePath('/contact/', lang)} data-magnetic>{t.cta.consult}</a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav"
+              data-label-open={t.nav.menu} data-label-close={t.nav.close}>
+        <span class="visually-hidden">{t.nav.menu}</span>
+        <span class="menu-toggle__bars" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<script>
+  import { lenis } from '../motion/smooth-scroll';
+
+  const header = document.querySelector<HTMLElement>('.site-header')!;
+  const toggle = header.querySelector<HTMLButtonElement>('.menu-toggle')!;
+  const label = toggle.querySelector('.visually-hidden')!;
+
+  const setOpen = (open: boolean) => {
+    header.dataset.open = String(open);
+    toggle.setAttribute('aria-expanded', String(open));
+    label.textContent = open ? toggle.dataset.labelClose! : toggle.dataset.labelOpen!;
+    document.documentElement.classList.toggle('menu-open', open);
+    if (open) lenis?.stop(); else lenis?.start();
+  };
+  toggle.addEventListener('click', () => setOpen(header.dataset.open !== 'true'));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
+</script>
+
+<style>
+  .site-header {
+    position: fixed;
+    inset-inline: 0;
+    top: 0;
+    z-index: var(--z-header);
+    background: transparent;
+    transition: transform var(--dur-base) var(--ease-out), background-color var(--dur-base) var(--ease-out);
+  }
+  .site-header:global(.is-solid) {
+    background: color-mix(in srgb, var(--color-bg) 88%, transparent);
+    backdrop-filter: blur(12px);
+  }
+  .site-header.site-header--solid { background: var(--color-bg); }
+  .site-header:global(.is-hidden) { transform: translateY(-100%); }
+
+  .site-header__inner {
+    display: flex; align-items: center; gap: var(--space-5);
+    min-height: 76px;
+  }
+  .brand { display: inline-flex; align-items: center; gap: var(--space-3); text-decoration: none; }
+  .brand :global(.brand__mark) { width: 46px; }
+  .brand__word { font-family: var(--font-display); font-weight: var(--weight-bold); font-size: var(--text-lg); }
+
+  .site-nav { margin-inline-start: auto; }
+  .site-nav ul { display: flex; gap: var(--space-5); }
+  .site-nav a { text-decoration: none; font-size: var(--text-sm); color: var(--color-ink-muted); }
+  .site-nav a:hover, .site-nav a[aria-current='page'] { color: var(--color-ink); }
+
+  .site-header__actions { display: flex; align-items: center; gap: var(--space-4); }
+  .lang { font-size: var(--text-sm); text-decoration: none; }
+
+  .menu-toggle { display: none; width: 44px; height: 44px; place-items: center; }
+  .menu-toggle__bars, .menu-toggle__bars::before, .menu-toggle__bars::after {
+    display: block; width: 22px; height: 2px; background: currentColor; border-radius: 2px;
+    transition: transform var(--dur-fast) var(--ease-out);
+  }
+  .menu-toggle__bars { position: relative; }
+  .menu-toggle__bars::before, .menu-toggle__bars::after { content: ''; position: absolute; inset-inline-start: 0; }
+  .menu-toggle__bars::before { top: -7px; }
+  .menu-toggle__bars::after { top: 7px; }
+
+  @media (max-width: 1023px) {
+    .menu-toggle { display: grid; }
+    .cta { display: none; }
+    .site-nav {
+      position: fixed; inset: 76px 0 0 0;
+      background: var(--color-bg);
+      padding: var(--space-7) var(--space-6);
+      opacity: 0; visibility: hidden;
+      transition: opacity var(--dur-base) var(--ease-out), visibility var(--dur-base);
+    }
+    .site-nav ul { flex-direction: column; gap: var(--space-5); }
+    .site-nav a { font-size: var(--text-xl); color: var(--color-ink); }
+    .site-header[data-open='true'] .site-nav { opacity: 1; visibility: visible; }
+    .site-header[data-open='true'] { background: var(--color-bg); }
+    .site-header[data-open='true'] .menu-toggle__bars { background: transparent; }
+    .site-header[data-open='true'] .menu-toggle__bars::before { transform: translateY(7px) rotate(45deg); }
+    .site-header[data-open='true'] .menu-toggle__bars::after { transform: translateY(-7px) rotate(-45deg); }
+  }
+</style>

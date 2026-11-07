@@ -1,0 +1,40 @@
+---
+/**
+ * Service Details Template (brief §3) — ONE template for every service.
+ * Works already (data → page). TODO: real design + motion (route-steps, accordion, sticky CTA).
+ */
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { localizePath, useTranslations, type Lang } from '../i18n';
+
+interface Props { lang: Lang; entry: CollectionEntry<'services'> }
+const { lang, entry } = Astro.props;
+const t = useTranslations(lang);
+const s = entry.data[lang];
+---
+<BaseLayout lang={lang} title={`${s.name} | WaysZ`} description={s.description}>
+  <article class="container section stack" style="padding-top: 140px">
+    <p>{t.areas[entry.data.area]}{entry.data.proposed && ` · ${t.service.proposed}`}</p>
+    <h1>{s.name}</h1>
+    <p class="lead">{s.description}</p>
+
+    <h2>{t.service.audience}</h2>
+    <ul>{s.audience.map((x) => <li>{x}</li>)}</ul>
+
+    <h2>{t.service.offer}</h2>
+    <ul>{s.offer.map((x) => <li>{x}</li>)}</ul>
+
+    <h2>{t.service.steps}</h2>
+    <ol>{s.steps.map((x) => <li><strong>{x.title}</strong>: {x.text}</li>)}</ol>
+
+    <h2>{t.service.excludes}</h2>
+    <ul>{s.excludes.map((x) => <li>{x}</li>)}</ul>
+
+    <h2>{t.service.faq}</h2>
+    <dl>{s.faq.map((x) => <><dt><strong>{x.q}</strong></dt><dd>{x.a}</dd></>)}</dl>
+
+    <h2>{s.cta.title}</h2>
+    <p>{s.cta.text}</p>
+    <a class="btn btn--accent" href={localizePath('/contact/', lang)}>{s.cta.button}</a>
+  </article>
+</BaseLayout>

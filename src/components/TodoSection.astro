@@ -1,0 +1,20 @@
+---
+/** Placeholder for a section that isn't built yet. Replace it with the real section. */
+interface Props { ref: string; title: string }
+const { ref, title } = Astro.props;
+---
+<section class="todo container" aria-label={title}>
+  <p><strong>TODO §{ref}</strong> — {title}</p>
+  <slot />
+</section>
+
+<style>
+  .todo {
+    margin-block: var(--space-6);
+    padding: var(--space-7) var(--space-6);
+    border: 2px dashed var(--color-border);
+    border-radius: var(--radius-md);
+    color: var(--color-ink-muted);
+    text-align: center;
+  }
+</style>

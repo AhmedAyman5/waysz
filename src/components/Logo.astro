@@ -1,0 +1,26 @@
+---
+/**
+ * The WaysZ mark, inlined so CSS can color it and GSAP can animate its parts:
+ * .mark-wing-left · .mark-wing-right · .mark-plane · .mark-road (invisible motion guide)
+ * Colors come from --logo-mark / --logo-plane (tokens.css).
+ */
+import raw from '../assets/logo/waysz-mark.svg?raw';
+
+interface Props {
+  decorative?: boolean;   // true when a text label is next to it (hides it from screen readers)
+  label?: string;
+  class?: string;
+}
+const { decorative = false, label = 'WaysZ', class: className } = Astro.props;
+
+const clean = raw.replace(/<!--[\s\S]*?-->/g, '');
+const svg = decorative
+  ? clean.replace('role="img" aria-label="WaysZ"', 'aria-hidden="true" focusable="false"')
+  : clean.replace('aria-label="WaysZ"', `aria-label="${label}"`);
+---
+<span class:list={['logo', className]} set:html={svg} />
+
+<style>
+  .logo { display: inline-block; line-height: 0; }
+  .logo :global(svg) { width: 100%; height: auto; overflow: visible; }
+</style>

@@ -1,0 +1,16 @@
+---
+/** Contact (brief §5). The form uses src/lib/forms.ts (see the working example in /dev/motion-lab/). */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TodoSection from '../components/TodoSection.astro';
+import { useTranslations, type Lang } from '../i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+<BaseLayout lang={lang} title={t.pages.contact.title} description={t.pages.contact.description}>
+  <div style="height: 76px"></div>
+  <TodoSection ref="5.1–5.4" title="بيانات التواصل" />
+  <TodoSection ref="5.5" title="نموذج التواصل — data-form + scene: form-flight" />
+  <TodoSection ref="5.6" title="أزرار الاتصال السريع — data-magnetic" />
+</BaseLayout>

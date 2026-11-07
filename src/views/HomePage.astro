@@ -1,0 +1,20 @@
+---
+/** Home (brief §1). Each TODO becomes a real section. Live motion examples: /dev/motion-lab/ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TodoSection from '../components/TodoSection.astro';
+import { useTranslations, type Lang } from '../i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+<BaseLayout lang={lang} title={t.pages.home.title} description={t.pages.home.description} preloader>
+  <!-- When the dark hero (§1.2) is built: add `headerOverlay` above and remove this spacer. -->
+  <div style="height: 76px"></div>
+  <TodoSection ref="1.2" title="Hero — scenes: hero-takeoff + dive" />
+  <TodoSection ref="1.3" title="مجالات خدماتنا — scene: destinations" />
+  <TodoSection ref="1.4" title="لماذا WaysZ؟ — data-split · data-reveal · data-spotlight" />
+  <TodoSection ref="1.5" title="كيف نعمل معك؟ — scene: route-steps" />
+  <TodoSection ref="1.6" title="CTA — data-split · data-magnetic" />
+  <TodoSection ref="1.7" title="WaysZ Visa — scene: boarding-gate" />
+</BaseLayout>

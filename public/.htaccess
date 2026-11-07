@@ -1,0 +1,37 @@
+# ==========================================================================
+# WaysZ — server rules for Namecheap shared hosting (Apache/LiteSpeed).
+# This file lives in /public, so every `npm run build` copies it into dist/.
+# ==========================================================================
+Options -Indexes
+DirectoryIndex index.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  # Force HTTPS (activate the free SSL in cPanel first; if you ever get a redirect loop, comment these 2 lines)
+  RewriteCond %{HTTPS} off
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+  # www.waysz.org → waysz.org
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+ErrorDocument 404 /404.html
+
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+
+  # HTML: always revalidate so visitors get new deploys immediately
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+  # Astro's build files have a content hash in their name (e.g. index.Dz3h8aQ1.css) → cache forever
+  <FilesMatch "\.[A-Za-z0-9_-]{8,}\.(js|css|woff2|woff|svg|png|jpg|jpeg|webp|avif)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/javascript application/javascript application/json application/xml image/svg+xml
+</IfModule>

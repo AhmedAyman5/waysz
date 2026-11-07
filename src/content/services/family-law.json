@@ -1,0 +1,79 @@
+{
+  "area": "legal",
+  "order": 3,
+  "proposed": false,
+  "ar": {
+    "name": "قضايا الأسرة ومحكمة الأسرة",
+    "summary": "الطلاق والخلع والنفقة والحضانة والرؤية، بأسلوب يحفظ خصوصية الأسرة ويراعي مصلحة الأبناء.",
+    "description": "نقدم الدعم القانوني في قضايا الأحوال الشخصية أمام محكمة الأسرة، من الاستشارة الأولى وحتى تنفيذ الحكم، مع التزام كامل بسرية التفاصيل الأسرية ومراعاة مصلحة الأبناء في كل خطوة.",
+    "audience": [
+      "الأزواج والزوجات الراغبون في معرفة حقوقهم قبل أي قرار.",
+      "الآباء والأمهات في قضايا الحضانة والرؤية والنفقة.",
+      "من يرغب في تسوية ودية تحفظ حقوق الطرفين.",
+      "المقيمون بالخارج ولديهم قضايا أسرة قائمة."
+    ],
+    "offer": [
+      "استشارة لتقييم الموقف وشرح الخيارات المتاحة.",
+      "رفع دعاوى الطلاق والخلع والنفقة والحضانة والرؤية.",
+      "الدفاع في الدعاوى المرفوعة ضدك.",
+      "صياغة اتفاقات التسوية الودية ومتابعة تنفيذ الأحكام."
+    ],
+    "steps": [
+      { "title": "جلسة استشارة", "text": "نستمع إليك ونفهم حالتك بسرية تامة." },
+      { "title": "دراسة المستندات", "text": "نراجع المستندات ونحدد موقفك القانوني." },
+      { "title": "خطة العمل", "text": "نتفق على الخطة والأتعاب قبل البدء." },
+      { "title": "التمثيل والمتابعة", "text": "نمثلك أمام المحكمة ونطلعك على كل مستجد." }
+    ],
+    "excludes": [
+      "ضمان حكم بنتيجة معينة؛ فالحكم للمحكمة وحدها.",
+      "الرسوم القضائية والحكومية، ما لم يُتفق على غير ذلك.",
+      "الإرشاد النفسي أو الأسري غير القانوني."
+    ],
+    "faq": [
+      { "q": "هل تفاصيل استشارتي سرية؟", "a": "نعم، كل ما تشاركه يُعامل بسرية تامة ولا يطلع عليه إلا الفريق المختص." },
+      { "q": "هل يمكن متابعة القضية وأنا خارج البلاد؟", "a": "في كثير من الحالات نعم، من خلال توكيل رسمي، ونوضح لك الإجراءات." }
+    ],
+    "cta": {
+      "title": "تحتاج إلى رأي قانوني في حالتك؟",
+      "text": "احجز استشارتك وتحدث مع الفريق المختص بسرية تامة.",
+      "button": "اطلب استشارة قانونية"
+    }
+  },
+  "en": {
+    "name": "Family Law & Family Court",
+    "summary": "Divorce, khul', alimony, custody and visitation — handled in a way that protects the family's privacy and the children's best interests.",
+    "description": "We provide legal support in personal-status cases before the Family Court, from the first consultation until the judgment is enforced, with full confidentiality for family matters and the children's interests in mind at every step.",
+    "audience": [
+      "Spouses who want to understand their rights before any decision.",
+      "Parents in custody, visitation and alimony cases.",
+      "Anyone seeking an amicable settlement that protects both parties.",
+      "People living abroad with an ongoing family case."
+    ],
+    "offer": [
+      "A consultation to assess your position and explain your options.",
+      "Filing divorce, khul', alimony, custody and visitation cases.",
+      "Defending you in cases filed against you.",
+      "Drafting settlement agreements and following up on enforcement."
+    ],
+    "steps": [
+      { "title": "Consultation", "text": "We listen and understand your case in full confidence." },
+      { "title": "Document review", "text": "We review your documents and define your legal position." },
+      { "title": "Action plan", "text": "We agree on the plan and the fees before we start." },
+      { "title": "Representation", "text": "We represent you in court and keep you updated on every development." }
+    ],
+    "excludes": [
+      "A guaranteed outcome — the judgment belongs to the court alone.",
+      "Court and government fees, unless agreed otherwise.",
+      "Psychological or family counseling outside legal matters."
+    ],
+    "faq": [
+      { "q": "Is my consultation confidential?", "a": "Yes. Everything you share is handled in full confidence and seen only by the team on your case." },
+      { "q": "Can my case be followed while I'm abroad?", "a": "In many cases, yes — through an official power of attorney. We'll explain the steps." }
+    ],
+    "cta": {
+      "title": "Need a legal opinion on your case?",
+      "text": "Book a consultation and talk to the right team in full confidence.",
+      "button": "Request a legal consultation"
+    }
+  }
+}

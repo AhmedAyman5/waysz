@@ -1,0 +1,28 @@
+---
+/** Services (brief §2). Data comes from src/content/services/*.json. TODO: design + services-filter scene. */
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TodoSection from '../components/TodoSection.astro';
+import { localizePath, useTranslations, type Lang } from '../i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+const areas = ['legal', 'travel', 'events', 'software'] as const;
+---
+<BaseLayout lang={lang} title={t.pages.services.title} description={t.pages.services.description}>
+  <div style="height: 76px"></div>
+  <TodoSection ref="2" title="Services page — tabs + cards (scene: services-filter)">
+    {areas.map((area) => (
+      <div id={area}>
+        <h2>{t.areas[area]}</h2>
+        <ul>
+          {services.filter((s) => s.data.area === area).map((s) => (
+            <li><a href={localizePath(`/services/${s.id}/`, lang)}>{s.data[lang].name}</a></li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </TodoSection>
+</BaseLayout>

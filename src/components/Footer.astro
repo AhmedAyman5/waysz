@@ -1,0 +1,81 @@
+---
+/** Site footer (brief §1.8). The plane "lands" here: motion/scenes/footer-landing.ts */
+import Logo from './Logo.astro';
+import { site, telHref, waHref } from '../lib/site';
+import { localizePath, useTranslations, type Lang } from '../i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const year = new Date().getFullYear();
+const areas = (['legal', 'travel', 'events', 'software'] as const).map((key) => ({
+  label: t.areas[key],
+  href: `${localizePath('/services/', lang)}#${key}`,
+}));
+---
+<footer class="site-footer theme-dark" data-scene="footer-landing">
+  <div class="container site-footer__grid">
+    <div class="site-footer__brand">
+      <Logo class="site-footer__mark" />
+      <p>{t.footer.about}</p>
+    </div>
+
+    <nav aria-label={t.footer.quickLinks}>
+      <h2>{t.footer.quickLinks}</h2>
+      <ul role="list">
+        <li><a href={localizePath('/services/', lang)}>{t.nav.services}</a></li>
+        <li><a href={localizePath('/about/', lang)}>{t.nav.about}</a></li>
+        <li><a href={localizePath('/contact/', lang)}>{t.nav.contact}</a></li>
+        <li><a href={site.visaSite} rel="noopener">{t.nav.visa}</a></li>
+      </ul>
+    </nav>
+
+    <nav aria-label={t.footer.areas}>
+      <h2>{t.footer.areas}</h2>
+      <ul role="list">{areas.map((a) => <li><a href={a.href}>{a.label}</a></li>)}</ul>
+    </nav>
+
+    <div>
+      <h2>{t.footer.contact}</h2>
+      <ul role="list">
+        {site.email && <li><a href={`mailto:${site.email}`}><bdi>{site.email}</bdi></a></li>}
+        {site.phone && <li><a href={telHref(site.phone)}><bdi>{site.phone}</bdi></a></li>}
+        {site.whatsapp && <li><a href={waHref(site.whatsapp, t.whatsapp.message)} rel="noopener">{t.cta.whatsapp}</a></li>}
+      </ul>
+    </div>
+  </div>
+
+  <div class="container site-footer__legal">
+    <p>{t.footer.legal}</p>
+    <p>© {year} WaysZ. {t.footer.rights}</p>
+    <!-- TODO(§1.8): privacy policy + terms pages, then link them here -->
+  </div>
+</footer>
+
+<style>
+  .site-footer { padding-block: var(--space-9) var(--space-6); }
+  .site-footer__grid {
+    display: grid; gap: var(--space-7);
+    grid-template-columns: 1.6fr repeat(3, 1fr);
+  }
+  .site-footer__brand p { color: var(--color-ink-muted); max-width: 42ch; margin-block-start: var(--space-5); }
+  .site-footer :global(.site-footer__mark) { width: 120px; }
+  .site-footer h2 { font-size: var(--text-base); margin-block-end: var(--space-4); }
+  .site-footer ul { display: grid; gap: var(--space-2); }
+  .site-footer a { color: var(--color-ink-muted); text-decoration: none; }
+  .site-footer a:hover { color: var(--color-ink); }
+  .site-footer__legal {
+    margin-block-start: var(--space-8); padding-block-start: var(--space-5);
+    border-block-start: 1px solid var(--color-border);
+    display: grid; gap: var(--space-2);
+    color: var(--color-ink-muted); font-size: var(--text-xs);
+  }
+  @media (max-width: 1023px) {
+    .site-footer__grid { grid-template-columns: 1fr 1fr; }
+    .site-footer__brand { grid-column: 1 / -1; }
+  }
+  /* Curtain reveal on desktop (footer shorter than the viewport) */
+  @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+    .site-footer { position: sticky; bottom: 0; z-index: 0; }
+  }
+</style>
