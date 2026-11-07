@@ -1,102 +1,106 @@
-# WaysZ Motion — Scene Catalog & Page Map
+# WaysZ Motion — Scene Contracts & Page Storyboard
 
-Every scene: `src/motion/scenes/<name>.ts`, opted in with `data-scene="<name>"`.
-The Motion Lab (`src/views/MotionLab.astro`) contains a working, styled example of each one —
-copy its markup and CSS as the starting point.
+Scenes: `src/motion/scenes/<name>.ts`, opted in with `data-scene="<name>"`.
+Every technique is first demonstrated in the Motion Lab, then copied into real pages.
+Media files and search terms: skill **waysz-media** (shot list).
 
 ---
 
-## Scene catalog (markup contracts)
+## Scene contracts
 
-### preloader — "Take-off" (home only, first visit per session)
-- Rendered by `BaseLayout` when the page passes `preloader`. Component: `src/components/Preloader.astro`.
-- Wings start closed and part (the road opens) → a gold line draws on the road → the plane flies along
-  `.mark-road` and settles → curtain lifts. Dispatches `waysz:intro-done` (the hero waits for it).
+### preloader — logo "Take-off" (home only, first visit per session) — KEEP AS IS
 
-### hero-takeoff — Home §1.2
+Rendered by `BaseLayout` when the page passes `preloader`. Dispatches `waysz:intro-done`.
+
+### hero-takeoff — Home §1.2 (v2: over video)
+
 ```html
-<section class="hero theme-dark" data-scene="hero-takeoff dive">   <!-- position: relative -->
-  <div class="hero__inner">                                          <!-- NOT positioned -->
-    <div class="hero__content" data-intro>
-      <h1 class="hero__title">…</h1>  <p class="hero__lead">…</p>  <div class="hero__actions">…</div>
-    </div>
-    <div class="hero__mark" data-intro><Logo decorative /></div>
+<section class="hero theme-dark" data-scene="hero-takeoff" data-depth-scene>
+  <BgVideo name="hero-clouds" mobile="hero-clouds-m" class="hero__video" />
+  <img class="hero__cloud" data-depth="0.3" src="…cloud-1.webp" alt="" />
+  <!-- 2–3 cloud layers -->
+  <img class="hero__cloud" data-depth="0.7" src="…cloud-2.webp" alt="" />
+  <div class="hero__content" data-intro>
+    <h1 class="hero__title">…</h1>
+    <p class="hero__lead">…</p>
+    <div class="hero__actions">…</div>
   </div>
 </section>
 ```
-Headline words rise (SplitText words + mask), wings part, the plane takes off along the road.
 
-### dive — Home §1.2 → §1.3 (desktop pinned; mobile = simple fade)
-- Same section as hero-takeoff. The hero pins for `+=130%`; the mark zooms `LOGO.diveScale`× into the road
-  at `LOGO.roadPoint`, so the dark road fills the screen and we are "inside" the next section.
-- REQUIRED: hero background = road color = next section background (`theme-dark` on all three).
-- `.hero__mark`'s offsetParent must be the hero. Optional `.hero__glow` decoration fades out.
+Headline words rise; lead and buttons follow; clouds drift with the mouse. (The logo mark is NOT in the
+v2 hero — the intro already showed it.)
 
-### destinations — Home §1.3 (four service areas)
+### image-sequence — Home "The Journey" (after the hero)
+
+```html
+<ImageSequence name="takeoff" frames="{120}" mobileStep="{2}">
+  <p class="seq__caption" data-at="0.15">…</p>
+  <p class="seq__caption" data-at="0.45">…</p>
+  <p class="seq__caption" data-at="0.75">…</p>
+</ImageSequence>
+```
+
+Pinned; scrolling plays the footage frame by frame; captions appear at their progress points.
+
+### media-reveal — Home §1.4 intro · About §4.1
+
+`<section data-scene="media-reveal">` → `.reveal__media` (photo or BgVideo) expands from an inset rounded
+card to full screen; `.reveal__text` appears at 60%.
+
+### destinations — Home §1.3 (v2: full-bleed media cards)
+
 ```html
 <div data-scene="destinations">
   <article class="dest-card" style="--i:0; --hue: var(--hue-legal)">
-    <svg class="dest-card__icon">…stroke paths…</svg> <h3>…</h3> <p>…</p> <a>…</a>
-  </article> … ×4
+    <div class="dest-card__media"><image … /></div>
+    <!-- or <BgVideo> -->
+    <div class="dest-card__body">
+      <Lottie src="/media/lottie/scales.json" mode="once" />
+      <h3 />
+      <p />
+      <a />
+    </div>
+  </article>
+  … ×4
 </div>
 ```
-CSS makes cards `position: sticky; top: calc(14vh + var(--i) * 1.5rem)`. The scene draws each icon and
-shrinks/dims the previous card as the next arrives.
 
-### route-steps — Home §1.5 · Service template "steps" · About §4.4
-```html
-<section data-scene="route-steps">
-  <div class="route"><svg viewBox="0 0 1000 120">
-    <path class="route__track" d="…"/> <path class="route__path" d="…same…"/> <g class="route__plane">…</g>
-  </svg></div>
-  <div class="steps__wrap"><span class="route__line-v"></span>
-    <ol class="steps__list"><li class="step">…</li> …</ol></div>
-</section>
-```
-Desktop: the route draws, the plane rides it, `.step.is-active` toggles. Mobile: vertical line scales.
-RTL: CSS mirrors ONLY the route svg (`:dir(rtl) .route svg { transform: scaleX(-1) }`).
+Sticky stacking; next card covers the previous one, which scales to 0.9 and dims.
 
-### text-scrub — About §4.1 (any big statement)
-`<section data-scene="text-scrub"><p class="statement">…</p></section>` — words light up with scroll.
+### route-steps — Home §1.5 · Service template steps · About §4.4
 
-### boarding-gate — Home §1.7 (link to WaysZ Visa)
-`.pass` (card) + `path.pass__perf` (perforation) + `.stamp`. Card rises, perforation draws, stamp lands.
+Existing contract (route path + `.route__plane` + `.step.is-active`). v2: optional map/photo background
+behind the route; the plane may be a `<Lottie mode="loop">` inside `.route__plane`.
 
-### footer-landing — every page (already in `Footer.astro`)
-Footer logo assembles; the plane lands. Footer is revealed like a curtain on desktop (sticky under `main`).
+### boarding-gate — Home §1.7
 
-### services-filter — Services §2
-Tabs `<button class="tab" data-area="all|legal|travel|events|software" aria-pressed>` +
-cards `.service-card[data-area]`. Flip animates the re-layout. `/services/#legal` pre-selects a tab.
+`.pass` + `path.pass__perf` + `.stamp`. v2: section background = airport photo with dark overlay.
 
-### accordion — FAQ in the service template
-`.faq__item > button[aria-expanded][aria-controls] + .faq__panel[inert]`. Panels are open without JS
-(`.js .faq__panel { height: 0 }` in base.css).
+### text-scrub · services-filter · accordion · form-flight · footer-landing
 
-### form-flight — Contact §5.5
-`<section data-scene="form-flight">` around a `form[data-form]` (see `src/lib/forms.ts`) and a
-`.form__plane` wrapper with an `.icon-dir` svg. Success → paper plane flies off. Error → short shake.
+Unchanged (see Motion Lab). The footer keeps the logo landing.
 
 ---
 
-## Page-by-page motion map (waysz.org)
+## Page storyboard v2 (waysz.org)
 
-| Brief § | Section | Motion |
-|---|---|---|
-| 1.1 | Header | `.site-header` global (hide/show, solid) · view-transition name |
-| 1.2 | Hero | `preloader` → `hero-takeoff` + `dive` |
-| 1.3 | 4 service areas | `destinations` |
-| 1.4 | Why WaysZ | `data-split` title · `data-draw` route line · `data-reveal` + `data-spotlight` items |
-| 1.5 | How we work | `route-steps` |
-| 1.6 | CTA | `data-split` · `data-magnetic` · optional `data-parallax` decor |
-| 1.7 | WaysZ Visa link | `boarding-gate` |
-| 1.8 | Footer | `footer-landing` (in Footer.astro) |
-| 2 | Services | `data-split` hero · `services-filter` · events-types marquee (CSS, reversed in RTL, static on reduced motion) |
-| 3 | Service template | `data-split` hero · `route-steps` · `accordion` · sticky CTA on mobile (CSS) |
-| 4 | About | `text-scrub` (4.1) · `data-reveal="clip"` vision/mission · `route-steps` with 2 stops (4.4) |
-| 5 | Contact | `form-flight` · `data-magnetic` quick-contact buttons |
-| all | Global | Lenis · flight rail · view transitions |
+| Brief § | Section          | Media                                                                   | Motion                                                                |
+| ------- | ---------------- | ----------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| —       | Intro            | logo                                                                    | `preloader` (unchanged)                                               |
+| 1.1     | Header           | —                                                                       | hide/show, solid · plane cursor everywhere (desktop)                  |
+| 1.2     | Hero             | video: plane above clouds at golden hour + 2–3 cloud PNGs               | `hero-takeoff` + `data-depth`                                         |
+| 1.2b    | The Journey      | image sequence: plane take-off / flying through clouds                  | `image-sequence` (pinned) + 3 captions from the brief intro paragraph |
+| 1.3     | 4 service areas  | photo/video per area (justice, passport/airport, conference hall, code) | `destinations` (sticky full-bleed) + Lottie icons                     |
+| 1.4     | Why WaysZ        | one wide photo (team at work / meeting room, no faces endorsing)        | `media-reveal` → 6 items with Lottie icons, `data-reveal`             |
+| 1.5     | How we work      | world-map image or night-flight photo                                   | `route-steps` (+ Lottie plane)                                        |
+| 1.6     | CTA              | short calm video (city at dusk / office)                                | `data-split` · `data-magnetic` · BgVideo                              |
+| 1.7     | WaysZ Visa link  | airport photo                                                           | `boarding-gate`                                                       |
+| 1.8     | Footer           | logo                                                                    | `footer-landing`                                                      |
+| 2       | Services         | header photo per area tab                                               | `services-filter` (Flip) · cards with photos                          |
+| 3       | Service template | header photo of the service's area                                      | `data-split` · `route-steps` · `accordion`                            |
+| 4       | About            | wide photo                                                              | `media-reveal` · `text-scrub` · `route-steps` (2 stops)               |
+| 5       | Contact          | calm photo                                                              | `form-flight` · `data-magnetic`                                       |
 
-## Later (WaysZ Visa, separate repo)
-Copy `src/motion`, `src/styles`, `src/components/Logo.astro` and this skill. Add `data-site="visa"` on
-`<html>` (sky accent). Legal notices there are static.
+Max 2 pinned scenes per page: Home uses `image-sequence` + `media-reveal` (destinations is sticky CSS,
+not a pin).
