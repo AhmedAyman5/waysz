@@ -15,10 +15,15 @@ const here = Astro.url.pathname;
 
 const links = [
   { href: localizePath('/', lang), label: t.nav.home },
-  { href: localizePath('/services/', lang), label: t.nav.services },   // TODO(§1.1): "خدماتنا" dropdown with the 4 areas
+  { href: localizePath('/services/', lang), label: t.nav.services, sub: true },
   { href: localizePath('/about/', lang), label: t.nav.about },
   { href: localizePath('/contact/', lang), label: t.nav.contact },
 ];
+// §1.1 «قائمة خدماتنا»: the four areas
+const areas = (['legal', 'travel', 'events', 'software'] as const).map((key) => ({
+  label: t.areas[key],
+  href: `${localizePath('/services/', lang)}#${key}`,
+}));
 const isCurrent = (href: string) =>
   href === localizePath('/', lang) ? here === href : here.startsWith(href);
 ---
@@ -32,7 +37,14 @@ const isCurrent = (href: string) =>
     <nav id="site-nav" class="site-nav" aria-label={t.nav.label} data-lenis-prevent>
       <ul role="list">
         {links.map((l) => (
-          <li><a href={l.href} aria-current={isCurrent(l.href) ? 'page' : undefined}>{l.label}</a></li>
+          <li class:list={{ 'has-sub': l.sub }}>
+            <a href={l.href} aria-current={isCurrent(l.href) ? 'page' : undefined}>{l.label}</a>
+            {l.sub && (
+              <ul class="sub" role="list" aria-label={t.nav.services}>
+                {areas.map((a) => <li><a href={a.href}>{a.label}</a></li>)}
+              </ul>
+            )}
+          </li>
         ))}
         <li><a href={site.visaSite} rel="noopener">{t.nav.visa}</a></li>
       </ul>
@@ -77,6 +89,14 @@ const isCurrent = (href: string) =>
     background: transparent;
     transition: transform var(--dur-base) var(--ease-out), background-color var(--dur-base) var(--ease-out);
   }
+  /* over the hero: a soft navy fade keeps the nav readable on bright sky */
+  .site-header::before {
+    content: ''; position: absolute; inset: 0 0 -40px 0; z-index: -1; pointer-events: none;
+    background: linear-gradient(to bottom, color-mix(in srgb, var(--color-bg) 60%, transparent), transparent);
+    transition: opacity var(--dur-base) var(--ease-out);
+  }
+  .site-header:global(.is-solid)::before, .site-header:global(.is-hidden)::before,
+  .site-header.site-header--solid::before { opacity: 0; }
   .site-header:global(.is-solid) {
     background: color-mix(in srgb, var(--color-bg) 88%, transparent);
     backdrop-filter: blur(12px);
@@ -96,6 +116,26 @@ const isCurrent = (href: string) =>
   .site-nav ul { display: flex; gap: var(--space-5); }
   .site-nav a { text-decoration: none; font-size: var(--text-sm); color: var(--color-ink-muted); }
   .site-nav a:hover, .site-nav a[aria-current='page'] { color: var(--color-ink); }
+  .site-header:not(.site-header--solid):not(:global(.is-solid)) .site-nav > ul > li > a { color: var(--color-ink); }
+
+  /* «خدماتنا» submenu: opens on hover and on keyboard focus */
+  .has-sub { position: relative; }
+  .sub { display: grid; gap: var(--space-1); }
+  @media (min-width: 1024px) {
+    .site-nav .sub {
+      position: absolute; inset-inline-start: calc(-1 * var(--space-4)); top: 100%;
+      min-width: 16rem; padding: var(--space-3);
+      margin-block-start: var(--space-3);
+      background: var(--color-bg-alt); border: 1px solid var(--color-border); border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      opacity: 0; visibility: hidden; translate: 0 -6px;
+      transition: opacity var(--dur-fast) var(--ease-out), translate var(--dur-fast) var(--ease-out), visibility var(--dur-fast);
+    }
+    .site-nav .sub::before { content: ''; position: absolute; inset: calc(-1 * var(--space-3)) 0 100% 0; }  /* hover bridge */
+    .has-sub:hover .sub, .has-sub:focus-within .sub { opacity: 1; visibility: visible; translate: 0 0; }
+    .site-nav .sub a { display: block; padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); }
+    .site-nav .sub a:hover { background: var(--color-surface); }
+  }
 
   .site-header__actions { display: flex; align-items: center; gap: var(--space-4); }
   .lang { font-size: var(--text-sm); text-decoration: none; }
@@ -122,6 +162,9 @@ const isCurrent = (href: string) =>
     }
     .site-nav ul { flex-direction: column; gap: var(--space-5); }
     .site-nav a { font-size: var(--text-xl); color: var(--color-ink); }
+    .site-nav .sub { margin-block-start: var(--space-3); padding-inline-start: var(--space-4); border-inline-start: 1px solid var(--color-border); }
+    .site-nav .sub a { font-size: var(--text-base); color: var(--color-ink-muted); }
+    .site-nav { overflow-y: auto; }
     .site-header[data-open='true'] .site-nav { opacity: 1; visibility: visible; }
     .site-header[data-open='true'] { background: var(--color-bg); }
     .site-header[data-open='true'] .menu-toggle__bars { background: transparent; }

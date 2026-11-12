@@ -5,7 +5,9 @@
   },
   "a11y": {
     "skip": "تخطَّ إلى المحتوى",
-    "home": "WaysZ — الصفحة الرئيسية"
+    "home": "WaysZ — الصفحة الرئيسية",
+    "scroll": "انتقل إلى التعريف بـ WaysZ",
+    "journey": "تعريف مختصر بـ WaysZ"
   },
   "nav": {
     "label": "القائمة الرئيسية",
@@ -21,7 +23,8 @@
     "consult": "اطلب استشارة",
     "explore": "استعرض خدماتنا",
     "whatsapp": "تواصل عبر واتساب",
-    "visitVisa": "زيارة WaysZ Visa"
+    "visitVisa": "زيارة WaysZ Visa",
+    "aboutMore": "تعرّف علينا أكثر"
   },
   "areas": {
     "legal": "الخدمات القانونية",

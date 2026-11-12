@@ -5,7 +5,9 @@
   },
   "a11y": {
     "skip": "Skip to content",
-    "home": "WaysZ — Home"
+    "home": "WaysZ — Home",
+    "scroll": "Go to the introduction to WaysZ",
+    "journey": "WaysZ in brief"
   },
   "nav": {
     "label": "Main navigation",
@@ -21,7 +23,8 @@
     "consult": "Request a consultation",
     "explore": "Explore our services",
     "whatsapp": "Chat on WhatsApp",
-    "visitVisa": "Visit WaysZ Visa"
+    "visitVisa": "Visit WaysZ Visa",
+    "aboutMore": "Learn more about us"
   },
   "areas": {
     "legal": "Legal Services",

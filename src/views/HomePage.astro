@@ -1,20 +1,200 @@
 ---
-/** Home (brief §1). Each TODO becomes a real section. Live motion examples: /dev/motion-lab/ */
+/**
+ * Home (brief §1) — "The Journey". Concept and storyboard: docs/home-creative-treatment.md
+ * §1.2 Hero + §1.2b The Journey share one WebGL stage (src/motion/stage); every tier and the
+ * no-JS / reduced-motion versions are plain HTML underneath it.
+ */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import TodoSection from '../components/TodoSection.astro';
-import { useTranslations, type Lang } from '../i18n';
+import BgVideo from '../components/BgVideo.astro';
+import ImageSequence from '../components/ImageSequence.astro';
+import { localizePath, useTranslations, type Lang } from '../i18n';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
+
+// Copy: brief §1.2 (Arabic is the source; English is a faithful translation).
+const copy = {
+  ar: {
+    title: ['طرق متعددة..', 'ووجهة واحدة لكل ما تحتاجه'],
+    lead: 'في WaysZ نجمع تحت علامة واحدة خدمات قانونية متخصصة، وخدمات الهجرة والدراسة والتأشيرات، وتنظيم المعارض والمؤتمرات الدولية، وحلول البرمجيات والتقنية؛ لنوفر عليك عناء البحث، ونرشدك إلى الخدمة المناسبة بخطوات واضحة.',
+    // §1.2 «فقرة تعريفية», cut at its own punctuation
+    journey: [
+      'WaysZ مؤسسة متعددة الخدمات، تقدم حلولًا عملية ومتكاملة للأفراد والشركات والجهات.',
+      'نؤمن بأن الخدمة الجيدة تبدأ من الفهم الصحيح لاحتياجك؛ لذلك نستمع إليك أولًا،',
+      'ثم نرشدك إلى المسار الأنسب، ونرافقك حتى إتمام طلبك.',
+    ],
+  },
+  en: {
+    title: ['Many ways.', 'One destination for everything you need.'],
+    lead: 'At WaysZ we bring together, under one name, specialized legal services, immigration, study and visa services, international exhibitions and conferences, and software and technology solutions — to spare you the search and guide you to the right service in clear steps.',
+    journey: [
+      'WaysZ is a multi-service firm offering practical, integrated solutions for individuals, companies and institutions.',
+      'We believe good service starts with truly understanding your need — so we listen to you first,',
+      'then guide you to the most suitable path, and stay with you until your request is complete.',
+    ],
+  },
+}[lang];
+const at = [0.14, 0.4, 0.64];
 ---
-<BaseLayout lang={lang} title={t.pages.home.title} description={t.pages.home.description} preloader>
-  <!-- When the dark hero (§1.2) is built: add `headerOverlay` above and remove this spacer. -->
-  <div style="height: 76px"></div>
-  <TodoSection ref="1.2" title="Hero — scenes: hero-takeoff + dive" />
-  <TodoSection ref="1.3" title="مجالات خدماتنا — scene: destinations" />
-  <TodoSection ref="1.4" title="لماذا WaysZ؟ — data-split · data-reveal · data-spotlight" />
-  <TodoSection ref="1.5" title="كيف نعمل معك؟ — scene: route-steps" />
-  <TodoSection ref="1.6" title="CTA — data-split · data-magnetic" />
-  <TodoSection ref="1.7" title="WaysZ Visa — scene: boarding-gate" />
+<BaseLayout lang={lang} title={t.pages.home.title} description={t.pages.home.description} preloader headerOverlay>
+  <div class="flight theme-dark" data-flight>
+    <!-- the WebGL canvas is mounted here (motion/stage); empty on the css tier -->
+    <div class="flight__stage" aria-hidden="true"></div>
+
+    <!-- §1.2 Hero — "In the sky" -->
+    <section class="hero" data-scene="hero-takeoff" data-depth-scene data-waypoint aria-labelledby="hero-title">
+      <div class="hero__sticky">
+        <div class="hero__media" aria-hidden="true">
+          <div class="hero__plate">
+            <BgVideo name="hero-clouds" mobile="hero-clouds-m" eager focus="46% 50%" />
+          </div>
+          <img class="hero__cloud hero__cloud--far" data-depth="0.3" data-src="/media/img/cloud-2.webp" alt="" width="1100" height="693" decoding="async" />
+          <img class="hero__cloud hero__cloud--near" data-depth="0.8" data-src="/media/img/cloud-1.webp" alt="" width="1100" height="731" decoding="async" />
+          <div class="hero__veil"></div>
+        </div>
+        <div class="hero__scrim" aria-hidden="true"></div>
+
+        <div class="hero__content container" data-intro>
+          <div class="hero__text">
+            <h1 class="hero__title" id="hero-title">
+              {copy.title.map((line) => <span class="hero__line">{line}{' '}</span>)}
+            </h1>
+            <p class="hero__lead">{copy.lead}</p>
+            <div class="hero__actions">
+              <a class="btn btn--accent" href={localizePath('/contact/', lang)} data-magnetic>{t.cta.consult}</a>
+              <a class="btn btn--ghost" href={localizePath('/services/', lang)}>{t.cta.explore}</a>
+              <a class="hero__cue" href="#journey" aria-label={t.a11y.scroll}><span aria-hidden="true"></span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- §1.2b The Journey — scroll-scrubbed take-off + the intro paragraph -->
+    <ImageSequence id="journey" name="takeoff" frames={140} mobileStep={2} label={t.a11y.journey} veil>
+      {copy.journey.map((line, i) => (
+        <p class="seq__caption" data-at={at[i]}>
+          {line}
+          {i === copy.journey.length - 1 && (
+            <>
+              <br />
+              <a class="seq__more" href={localizePath('/about/', lang)}>
+                {t.cta.aboutMore}
+                <svg class="icon-dir" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </a>
+            </>
+          )}
+        </p>
+      ))}
+    </ImageSequence>
+  </div>
+
+  <!-- Part 2 — storyboard v2 (docs/home-creative-treatment.md §2) -->
+  <TodoSection ref="1.3" title="مجالات خدماتنا — Four destinations · scene: destinations (sticky full-bleed photos + Lottie)" />
+  <TodoSection ref="1.4" title="لماذا WaysZ؟ — scene: media-reveal (pin 2) → six reasons" />
+  <TodoSection ref="1.5" title="كيف نعمل معك؟ — night-Earth globe + scene: route-steps (pin 3)" />
+  <TodoSection ref="1.6" title="CTA — Final approach · data-split · data-magnetic" />
+  <TodoSection ref="1.7" title="WaysZ Visa — scene: boarding-gate + Lottie visa stamp" />
 </BaseLayout>
+
+<style>
+  .flight { position: relative; }
+
+  /* WebGL host: sticks to the viewport for the whole flight, behind both sections */
+  .flight__stage {
+    position: sticky; top: 0; z-index: 0;
+    height: 100vh; height: 100lvh;
+    margin-block-end: -100vh; margin-block-end: -100lvh;
+    pointer-events: none; overflow: hidden;
+  }
+  .flight__stage :global(.stage-canvas) {
+    display: block; width: 100%; height: 100%;
+    opacity: 0; transition: opacity 0.9s var(--ease-out);
+  }
+  .flight__stage :global(.stage-canvas.is-on) { opacity: 1; }
+
+  /* ---------- §1.2 Hero ---------- */
+  .hero { position: relative; z-index: 1; }
+  .hero__sticky {
+    position: sticky; top: 0;
+    height: 100vh; height: 100svh; min-height: 34rem;
+    display: grid; align-items: end;
+    overflow: hidden;
+  }
+  /* scroll room for the camera push — only when the scene can run */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .hero { height: 190vh; height: 190lvh; }
+    /* the journey overlaps the hero's last screen: it pins at the exact moment the hero's push ends in
+       white-out, so there is no seam and no empty scroll between the two scenes */
+    :global(.js) .flight :global(.seq) { margin-block-start: -100vh; margin-block-start: -100lvh; z-index: 2; pointer-events: none; }
+    :global(.js) .flight :global(.seq__view) { pointer-events: auto; }
+    :global(.js) .hero__sticky { height: 100vh; height: 100lvh; }
+    :global(.js) .hero__content { padding-block-end: calc(100lvh - 100svh + var(--space-8)); }
+  }
+
+  .hero__media, .hero__plate, .hero__scrim, .hero__veil { position: absolute; inset: 0; }
+  .hero__cloud { position: absolute; max-width: none; height: auto; opacity: 0.9; }
+  .hero__cloud:not([src]) { display: none; }
+  .hero__cloud--far  { width: 95vw; min-width: 520px; inset-block-end: -16%; inset-inline-start: -22%; opacity: 0.5; }
+  .hero__cloud--near { width: 120vw; min-width: 680px; inset-block-end: -44%; inset-inline-end: -34%; }
+  .hero__veil { background: var(--color-ink); opacity: 0; visibility: hidden; }
+
+  /* text always sits on this gradient (AA on the brightest video frame) */
+  .hero__scrim {
+    background:
+      linear-gradient(to top, color-mix(in srgb, var(--color-bg) 92%, transparent) 0%,
+                              color-mix(in srgb, var(--color-bg) 62%, transparent) 38%, transparent 72%),
+      linear-gradient(to bottom, color-mix(in srgb, var(--color-bg) 45%, transparent), transparent 24%);
+  }
+
+  .hero__content { position: relative; padding-block: calc(76px + var(--space-6)) var(--space-8); }
+  .hero__title {
+    font-size: clamp(2.5rem, 1.2rem + 5.6vw, 6.25rem);
+    line-height: 1.22; letter-spacing: -0.01em;
+    max-width: 16ch;
+    text-wrap: balance;
+  }
+  :global([dir='rtl']) .hero__title { letter-spacing: 0; line-height: 1.32; }
+  .hero__line { display: block; }
+  /* SplitText word masks: room for Arabic marks and descenders so nothing is clipped */
+  .hero__title :global(.hero__word-mask) { padding-block: 0.16em; margin-block: -0.16em; }
+
+  .hero__lead {
+    margin-block-start: var(--space-5);
+    max-width: 58ch;
+    font-size: var(--text-lg); line-height: 1.75;
+    color: color-mix(in srgb, var(--color-ink) 86%, transparent);
+  }
+  .hero__actions {
+    display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4);
+    margin-block-start: var(--space-6);
+  }
+  .hero__actions .btn { min-height: 54px; padding-inline: var(--space-7); font-size: var(--text-base); }
+
+  /* scroll cue: a short line that keeps falling */
+  .hero__cue {
+    margin-inline-start: auto;
+    display: grid; place-items: center; width: 44px; height: 54px;
+  }
+  .hero__cue span {
+    position: relative; width: 1.5px; height: 44px; overflow: hidden;
+    background: color-mix(in srgb, var(--color-ink) 28%, transparent);
+  }
+  .hero__cue span::after {
+    content: ''; position: absolute; inset: 0;
+    background: var(--color-accent);
+    animation: cue 2.2s var(--ease-in-out) infinite;
+  }
+  @keyframes cue { from { translate: 0 -100%; } to { translate: 0 100%; } }
+
+  @media (max-width: 639px) {
+    .hero__lead { font-size: var(--text-base); }
+    .hero__actions .btn { flex: 1 1 100%; }
+    .hero__cue { display: none; }
+  }
+
+  /* ---------- WebGL live: the canvas draws footage + clouds; keep only text and scrims ---------- */
+  .flight:global(.is-live) .hero__media { visibility: hidden; }
+</style>
