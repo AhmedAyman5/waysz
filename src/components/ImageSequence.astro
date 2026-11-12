@@ -9,19 +9,22 @@
 interface Props {
   name: string;
   frames: number;
-  mobileStep?: number;    // small screens load every Nth frame
+  mobile?: string;        // lighter set for small screens (portrait crop, fewer frames): /media/seq/<mobile>/
+  mobileFrames?: number;  // number of frames in the mobile set
+  mobileStep?: number;    // without a mobile set: small screens load every Nth frame
   width?: number;
   height?: number;
   focus?: string;         // object-position of the still / focal point of the canvas
   id?: string;
   label: string;          // accessible name of the section
-  veil?: boolean;         // cloud white-out at the start and the end (Home "The Journey")
+  veil?: boolean;         // Home "The Journey": cloud white-out at both ends + drawn by the WebGL stage
 }
-const { name, frames, mobileStep = 2, width = 1600, height = 900, focus = '62% 50%', id, label, veil = false } = Astro.props;
+const { name, frames, mobile, mobileFrames, mobileStep = 2, width = 1280, height = 720, focus = '62% 50%', id, label, veil = false } = Astro.props;
 const first = `/media/seq/${name}/frame_0001.webp`;
 ---
 <section class="seq theme-dark" id={id} aria-label={label} data-scene="image-sequence" data-waypoint
-         data-name={name} data-frames={frames} data-mobile-step={mobileStep} data-veil={veil ? '' : undefined}
+         data-name={name} data-frames={frames} data-mobile-step={mobileStep}
+         data-mobile={mobile} data-mobile-frames={mobileFrames} data-veil={veil ? '' : undefined}
          style={`--focus: ${focus}`}>
   <div class="seq__view">
     <div class="seq__media" aria-hidden="true">

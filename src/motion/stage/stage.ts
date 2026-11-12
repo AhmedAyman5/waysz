@@ -36,6 +36,7 @@ export class Stage {
   private shown = false;
   private frames = 0;
   private slowSum = 0;
+  private slowWindows = 0;
   private io: IntersectionObserver;
   private ro: ResizeObserver;
 
@@ -111,12 +112,15 @@ export class Stage {
     this.renderer.render(act.scene, act.camera);
     if (!this.shown) { this.shown = true; this.canvas.classList.add('is-on'); }
 
-    // frame-time watchdog (skips the first frames: shader compile, texture uploads)
+    // Frame-time watchdog. Skips the first frames (shader compile, texture uploads) and needs TWO slow
+    // windows in a row, so a short burst of work (frames streaming in) never costs the visitor the 3D layer.
     if (++this.frames > 30) {
       this.slowSum += Math.min(deltaMs, 100);
       if (this.frames === 30 + SAMPLE_FRAMES) {
-        if (this.slowSum / SAMPLE_FRAMES > SLOW_FRAME_MS) this.downgrade();
-        this.frames = 0;
+        const slow = this.slowSum / SAMPLE_FRAMES > SLOW_FRAME_MS;
+        this.slowWindows = slow ? this.slowWindows + 1 : 0;
+        if (this.slowWindows >= 2) { this.slowWindows = 0; this.downgrade(); }
+        this.frames = 30;
         this.slowSum = 0;
       }
     }

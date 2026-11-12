@@ -29,6 +29,7 @@ uniform float uVeil;      // cloud white-out 0…1
 uniform float uVeilTex;   // 1 = textured cloud interior · 0 = flat colour (hand-over to the page)
 uniform float uSpeed;     // streaks 0…1
 uniform float uFocus;     // horizontal focal point of the hero plate when it is cropped
+uniform float uFrameFocus;// same for the journey plate
 uniform vec3 uAmber;
 uniform vec3 uNavy;
 uniform vec3 uCloudLit;
@@ -64,7 +65,8 @@ vec3 plate(vec2 uv) {
   vec2 h = (uv - 0.5) / (1.06 + uPush * 0.22) + 0.5 - uMouse * 0.012;
   vec2 j = (uv - 0.5) / 1.03 + 0.5 - uMouse * 0.006;
   vec3 hero = texture2D(uVideo, coverUv(h, uVideoSize, uFocus)).rgb;
-  vec3 seq = texture2D(uFrame, coverUv(j, uFrameSize, 0.62)).rgb;
+  vec2 fj = coverUv(j, uFrameSize, uFrameFocus);
+  vec3 seq = texture2D(uFrame, vec2(fj.x, 1.0 - fj.y)).rgb;   // bitmap rows are top-down
   return mix(hero, seq, uMix);
 }
 

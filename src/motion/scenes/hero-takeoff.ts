@@ -18,22 +18,21 @@ const smooth = (a: number, b: number, x: number) => {
 
 const scene: Scene = async (root, env) => {
   const q = gsap.utils.selector(root);
-  const content = q('[data-intro]');
-  if (env.reduce) { gsap.set(content, { autoAlpha: 1 }); return; }
-
-  // CSS tier only: the cloud photo layers (the WebGL tiers draw clouds in the shader)
-  if (env.tier === 'css') {
-    root.querySelectorAll<HTMLImageElement>('img[data-src]').forEach((img) => { img.src = img.dataset.src!; });
-  }
+  const title = root.querySelector<HTMLElement>('.hero__title')!;
+  if (env.reduce) { gsap.set(title, { autoAlpha: 1 }); return; }
 
   // ---------- entrance ----------
-  const split = SplitText.create(root.querySelector<HTMLElement>('.hero__title')!, {
+  // Lead + buttons are never hidden (they are the LCP). On a first visit they wait a few px lower under
+  // the intro curtain and settle as it lifts; the headline words rise from a mask.
+  const firstVisit = !!document.querySelector('[data-scene~="preloader"]')
+    && !document.documentElement.classList.contains('intro-seen');
+  const split = SplitText.create(title, {
     type: 'words', mask: 'words', wordsClass: 'hero__word', aria: 'auto',     // words only — never chars (Arabic)
   });
-  const followers = q('.hero__lead, .hero__actions > *, .hero__cue');
+  const followers = q('.hero__lead, .hero__actions > *');
   gsap.set(split.words, { yPercent: 118 });
-  gsap.set(followers, { autoAlpha: 0, y: 28 });
-  gsap.set(content, { autoAlpha: 1 });
+  if (firstVisit) gsap.set(followers, { y: 28 });
+  gsap.set(title, { autoAlpha: 1 });
 
   // ---------- scroll: camera push ----------
   gsap.timeline({
@@ -56,9 +55,14 @@ const scene: Scene = async (root, env) => {
     .set({}, {}, 1);
 
   await introDone();
-  gsap.timeline({ delay: 0.15 })
-    .to(split.words, { yPercent: 0, duration: 1.3, stagger: 0.07 })
-    .to(followers, { autoAlpha: 1, y: 0, duration: 0.9, stagger: 0.1 }, '-=0.9')
-    .add(() => { void startFlightStage(env); }, 0.8);       // after the LCP: text is on screen
+  const tl = gsap.timeline({ delay: 0.15 }).to(split.words, { yPercent: 0, duration: 1.3, stagger: 0.07 });
+  if (firstVisit) tl.to(followers, { y: 0, duration: 0.9, stagger: 0.1 }, 0.3);
+  // After the LCP (text is on screen): start the WebGL stage — or, on the css tier, fetch the cloud
+  // photo layers (the WebGL tiers draw their clouds in the shader and never download them).
+  tl.add(() => {
+    if (env.tier === 'css') {
+      root.querySelectorAll<HTMLImageElement>('img[data-src]').forEach((img) => { img.src = img.dataset.src!; });
+    } else void startFlightStage(env);
+  }, 0.8);
 };
 export default scene;

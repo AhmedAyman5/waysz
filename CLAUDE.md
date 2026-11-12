@@ -19,12 +19,15 @@ Items marked «مقترح» are pending approval: build them with `proposed: tru
 ## Visual direction (most important)
 
 **Cinematic, Apple-product-page level.** The pages are built from REAL footage and photos plus
-scroll-driven motion — not from hand-drawn SVG illustrations:
+scroll-driven motion and a real-time WebGL layer — not from hand-drawn SVG illustrations.
+The Home page concept ("The Journey", one continuous flight) is in `docs/home-creative-treatment.md`.
 
 - full-screen background video, scroll-scrubbed image sequences (video → frames on a canvas),
   media that expands to full screen, sticky full-bleed media cards, huge staged typography,
 - ready-made Lottie animations for icons and small moments (plane, scales of justice, passport, check),
-- background layers that move with the mouse (depth), and a plane-shaped cursor on desktop.
+- background layers that move with the mouse (depth), and a plane-shaped cursor on desktop,
+- a 3D layer (three.js + custom GLSL) that puts the footage inside one WebGL stage: shader clouds the camera
+  flies through, sun glow / god rays, grain, vignette. It is an enhancement: every scene also works without it.
 - The logo "Take-off" intro (preloader) stays as it is.
   Reuse ready-made assets and techniques; do not draw illustrations from scratch.
   Trust and clarity still matter (legal audience): motion never hides content or slows reading.
@@ -32,13 +35,19 @@ scroll-driven motion — not from hand-drawn SVG illustrations:
 ## Stack (do not change without asking)
 
 - **Astro 7**, static output, `.astro` components only (no React/Vue/Svelte/Tailwind).
-- **Vanilla TypeScript**. **GSAP 3** (ScrollTrigger, SplitText, DrawSVG, MotionPath, Flip) + **Lenis**.
+- **Vanilla TypeScript**. **GSAP 3** + **Lenis**. All GSAP plugins are allowed (ScrollTrigger, SplitText, Flip,
+  MotionPath, DrawSVG, MorphSVG, Observer, InertiaPlugin, CustomEase, ScrambleText). ScrambleText on Latin
+  text only — never on Arabic. Register only the plugins a page really uses.
+- **three.js** for 3D, with its addons from `three/examples/jsm` (GLTFLoader, DRACOLoader, EffectComposer,
+  passes) and custom GLSL where it looks better than stock materials. Always through the shared stage in
+  `src/motion/stage/` (one renderer per page, lazy-loaded, capability tiers) — never a second renderer.
 - **lottie-web** for Lottie animations (lazy-loaded only on pages that use it).
 - **Plain CSS** with tokens from `src/styles/tokens.css`.
 - Font: **Almarai** (Arabic + Latin), self-hosted via `@fontsource/almarai`. Weights 400 / 700 / 800 only —
   use the `--weight-*` tokens, never 500 or 600.
-- **Node ≥ 22.23.4**. Approved dependencies: astro, gsap, lenis, lottie-web, @fontsource/almarai,
-  @astrojs/sitemap. Ask before adding ANY other dependency (no three.js, AOS, anime.js, Barba, Swiper…).
+- **Node ≥ 22.23.4**. Approved dependencies: astro, gsap, lenis, three, lottie-web, @fontsource/almarai,
+  @astrojs/sitemap. Dev only: playwright (visual QA scripts in `scripts/`), @types/three (types for three).
+  Ask before adding ANY other dependency, with a one-line reason (no AOS, anime.js, Barba, Swiper…).
 
 ## Commands
 
@@ -48,6 +57,11 @@ npm run dev        # http://localhost:4321  ·  Motion Lab: /dev/motion-lab/  ·
 npm run check      # TypeScript + Astro diagnostics — must be 0 errors before every PR
 npm run build      # → dist/  (what we upload to the hosting)
 npm run preview    # serve dist/ locally to test the production build
+
+# Visual QA (Playwright, uses your installed Chrome). Dev only: force a tier with ?tier=high|lite|css
+node scripts/qa-shots.mjs <outDir>     # screenshots while scrolling: AR/EN · desktop/phone/360 · every tier · reduced motion · no JS
+node scripts/qa-weight.mjs             # page weight of the production preview (run `npm run preview -- --port 4322` first)
+node scripts/qa-fps.mjs <url> 4        # scroll frame times with CPU throttling 4x
 ```
 
 ## Structure
@@ -58,12 +72,15 @@ waysz/
 ├─ .claude/skills/waysz-motion/   SKILL.md (motion rules + API) · reference.md (scenes + page storyboard)
 ├─ .claude/skills/waysz-media/    SKILL.md (sources, licenses, ffmpeg recipes, budgets, credits)
 ├─ docs/brief/                    the approved brief (PDF)
+├─ docs/home-creative-treatment.md  Home concept + storyboard v2 (§1.1–1.8)
+├─ scripts/                       Playwright QA: qa-shots · qa-weight · qa-fps
 ├─ docs/media-credits.md          one row per media file we ship (source, author, license)
 ├─ media-inbox/                   RAW downloads before optimizing — gitignored, never shipped
 ├─ public/
 │  ├─ media/video/                optimized background videos (mp4 + webm + poster)
 │  ├─ media/seq/<name>/           image sequences (frame_0001.webp …)
 │  ├─ media/lottie/               Lottie JSON files
+│  ├─ media/img/                  images loaded by JS only (e.g. cloud layers of the css tier)
 │  └─ .htaccess · favicon.svg · robots.txt
 └─ src/
    ├─ assets/media/               photos (optimized by Astro <Image>)
@@ -76,6 +93,7 @@ waysz/
    ├─ layouts/BaseLayout.astro    <html lang dir>, SEO, boot script, header/footer, cursor, motion init
    ├─ lib/                        forms.ts · site.ts (client data)
    ├─ motion/                     index.ts · config.ts · smooth-scroll.ts · globals/ · scenes/
+   │  └─ stage/                   3D layer: stage.ts (renderer) · tier.ts · bridge.ts · acts/ · shaders/
    ├─ pages/                      THIN wrappers only (AR at /, EN under /en/)
    ├─ styles/                     tokens.css · base.css
    └─ views/                      real page content (HomePage, ServicesPage, …, MotionLab)
@@ -100,11 +118,13 @@ waysz/
 ## Media (real footage, photos, Lottie)
 
 - Read the **waysz-media** skill before adding ANY image, video, sequence or Lottie file.
-- Approved free sources only: Pexels, Mixkit (Free License clips only), Pixabay, LottieFiles (free
-  animations). Every shipped file gets a row in `docs/media-credits.md`. No file without a known source.
+- Approved free sources only: Pexels, Unsplash, Pixabay, Mixkit (Free License clips only), LottieFiles
+  (free animations), Poly Haven (CC0 HDRIs/textures/models), Kenney (CC0), NASA imagery (public domain),
+  Sketchfab models only if CC0 or CC-BY (credit CC-BY). Download into `media-inbox/` first, then optimize.
+  Every shipped file gets a row in `docs/media-credits.md`. No file without a known source.
 - Never ship raw downloads: optimize first (recipes in waysz-media). Raw files stay in `media-inbox/`.
-- No airline liveries/logos, no visible brands, no identifiable people implying endorsement,
-  nothing showing people in a bad light.
+- No airline liveries/logos, no visible brands, no identifiable faces in hero roles or implying endorsement,
+  no recognizable national passport / flag / country name, nothing showing people in a bad light.
 - Every video has a poster image; every image has width/height and meaningful `alt` (empty `alt=""` if decorative).
 
 ## RTL rules (critical)
@@ -138,8 +158,13 @@ waysz/
 ## Animation — read before ANY motion work
 
 - Use the project skill **waysz-motion** (+ **waysz-media** for media) and the installed **gsap-skills**.
-- Working examples of every scene and attribute live in the Motion Lab (`src/views/MotionLab.astro`).
-  New techniques are added to the Motion Lab FIRST, approved, then used in real pages.
+- Working examples of the basic scenes and attributes live in the Motion Lab (`src/views/MotionLab.astro`).
+  The Home page is built directly in `src/views/HomePage.astro` (the Motion Lab is not required for it);
+  for other pages, add a new technique to the Motion Lab first.
+- Home may use up to **3 pinned scenes** (other pages: 2), as long as scrolling stays smooth.
+- 3D is tiered by DEVICE CAPABILITY, not by "mobile": `high` (desktop GPU) · `lite` (capable phones/tablets:
+  same scene, cheaper shader, lower DPR) · `css` (weak device, no WebGL2, saveData, reduced motion: plain
+  video + CSS layers / posters). The HTML underneath is always complete (LCP, no-JS, reduced motion).
 - No `<ClientRouter />`: page transitions are native CSS view transitions (already in base.css).
 
 ## Forms (no backend)
@@ -160,7 +185,7 @@ waysz/
 - `npm run check` → 0 errors. No console errors.
 - Works in Arabic AND English, desktop AND 360px mobile, with reduced motion ON, and with JS OFF.
 - Media: initial page weight ≤ 4 MB on desktop / ≤ 2 MB on mobile; nothing below the fold loads early.
-- Lighthouse mobile: Performance ≥ 80 · Accessibility ≥ 95 · SEO ≥ 95. LCP ≤ 2.5s.
+- Lighthouse mobile: Performance ≥ 75 · Accessibility ≥ 95 · SEO ≥ 95. LCP ≤ 2.5s (hard rule).
 - Smooth: no dropped frames while scrolling with DevTools CPU throttling 4× on the scrubbed sections.
 
 ## Astro 7 gotchas

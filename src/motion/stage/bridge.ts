@@ -9,7 +9,8 @@ export const flight = {
   veil: 0,                                   // 0…1 cloud white-out
   veilPage: 0,                               // 0 = warm cloud white · 1 = page background (end of the journey)
   speed: 0,                                  // 0…1 light streaks on the journey
-  frame: null as HTMLImageElement | null,    // current journey frame
+  frame: null as ImageBitmap | null,         // current journey frame (decoded)
+  frameFocus: 0.5,                           // horizontal focal point of that frame (0…1)
   frameId: -1,                               // changes whenever `frame` changes
 };
 

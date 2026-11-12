@@ -56,9 +56,10 @@ const at = [0.14, 0.4, 0.64];
         </div>
         <div class="hero__scrim" aria-hidden="true"></div>
 
-        <div class="hero__content container" data-intro>
+        <!-- Lead and buttons are painted at once (LCP, readable without JS); only the headline is staged. -->
+        <div class="hero__content container">
           <div class="hero__text">
-            <h1 class="hero__title" id="hero-title">
+            <h1 class="hero__title" id="hero-title" data-intro>
               {copy.title.map((line) => <span class="hero__line">{line}{' '}</span>)}
             </h1>
             <p class="hero__lead">{copy.lead}</p>
@@ -73,7 +74,7 @@ const at = [0.14, 0.4, 0.64];
     </section>
 
     <!-- §1.2b The Journey — scroll-scrubbed take-off + the intro paragraph -->
-    <ImageSequence id="journey" name="takeoff" frames={140} mobileStep={2} label={t.a11y.journey} veil>
+    <ImageSequence id="journey" name="takeoff" frames={140} mobile="takeoff-m" mobileFrames={70} label={t.a11y.journey} veil>
       {copy.journey.map((line, i) => (
         <p class="seq__caption" data-at={at[i]}>
           {line}

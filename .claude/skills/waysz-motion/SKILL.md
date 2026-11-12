@@ -6,7 +6,9 @@ description: WaysZ animation system — GSAP + ScrollTrigger + Lenis, the data-a
 # WaysZ Motion System
 
 Code = source of truth: `src/motion/**` + `src/components/{BgVideo,ImageSequence,Lottie,CursorPlane}.astro`.
-Live examples: `src/views/MotionLab.astro` → http://localhost:4321/dev/motion-lab/ (LTR: `/en/dev/motion-lab/`).
+Live examples: `src/views/HomePage.astro` (hero, journey, WebGL stage) and `src/views/MotionLab.astro`
+→ http://localhost:4321/dev/motion-lab/ (LTR: `/en/dev/motion-lab/`).
+Home concept and storyboard: `docs/home-creative-treatment.md`.
 `reference.md` = scene contracts + the page storyboard. Media sourcing/optimizing = skill **waysz-media**.
 
 ## Direction: "The Journey", filmed
@@ -22,8 +24,9 @@ UI feedback 0.2–0.3s. One orchestrated moment per section — never a fade-up 
 1. `BaseLayout` `<head>` boot script: adds `.js`, adds `.intro-seen` (intro already played / reduced
    motion), removes `.js` after 4s if motion never starts (failsafe).
 2. `base.css` hides ONLY what JS reveals: `.js [data-reveal] / [data-split] / [data-intro]`.
-3. `initForms(); initMotion();` → `env = { reduce, rtl, dir, desktop }`, Lenis on `gsap.ticker`,
+3. `initForms(); initMotion();` → `env = { reduce, rtl, dir, desktop, tier }`, Lenis on `gsap.ticker`,
    globals, then every `[data-scene]` lazy-loaded in DOM order, then `ScrollTrigger.refresh()`.
+   `env.tier` = `high | lite | css` (also on `<html data-tier>`); it can drop at runtime.
 
 ## Global data-* API (globals ignore anything inside a [data-scene])
 
@@ -34,16 +37,41 @@ UI feedback 0.2–0.3s. One orchestrated moment per section — never a fade-up 
 | `data-intro`                                     | hidden until its scene reveals it on load              | hero content         |
 | `data-draw` · `data-draw="scrub"`                | SVG stroke draws once / with scroll                    |                      |
 | `data-parallax="0.15"`                           | drifts on scroll                                       | desktop              |
-| `data-depth="0.4"` (inside `[data-depth-scene]`) | layer moves opposite to the mouse × depth              | desktop; NEW         |
+| `data-depth="0.4"` (inside `[data-depth-scene]`) | layer moves opposite to the mouse × depth              | desktop              |
 | `data-magnetic`                                  | leans toward the pointer                               | desktop              |
 | `data-spotlight`                                 | soft light follows the pointer                         | desktop              |
-| `data-cursor="label"`                            | plane cursor grows and shows the label on hover        | desktop; NEW         |
-| `<video data-bgvideo>` (via `<BgVideo>`)         | plays only while ≥25% visible, pauses otherwise        | NEW                  |
-| `[data-lottie]` (via `<Lottie>`)                 | loads near viewport; modes loop · once · hover · scrub | NEW                  |
+| `data-cursor="label"`                            | plane cursor grows and shows the label on hover        | desktop              |
+| `<video data-bgvideo>` (via `<BgVideo>`)         | plays only while ≥25% visible, pauses otherwise        |                      |
+| `[data-lottie]` (via `<Lottie>`)                 | loads near viewport; modes loop · once · hover · scrub |                      |
+| `data-waypoint`                                  | adds a tick for this section on the flight rail        | desktop              |
 | `.site-header`                                   | hide on scroll down / show on up / solid after 80px    |                      |
-| `.flight-rail`                                   | plane on a rail = scroll position                      | desktop              |
+| `.flight-rail` · `.flight-bar`                   | flight progress: plane on a rail / thin top line       | desktop / touch      |
 
-## Media toolkit (NEW — specs to implement / keep)
+## 3D layer — `src/motion/stage/` (three.js + GLSL)
+
+- **One renderer + one canvas per page** (`stage.ts`). Scenes never create their own. Each section that
+  draws registers an **act** (`acts/*.ts`: `host`, `scene`, `camera`, `ready`, `update`, `resize`,
+  `setQuality`, `dispose`); the canvas moves into the host of the act that is on screen.
+- **Lazy**: `startFlightStage(env)` is called by the hero scene AFTER the hero text is on screen; it waits
+  for `requestIdleCallback`, then dynamic-imports three.js. three is never in the first bundle.
+- **One loop**: rendering runs on `gsap.ticker`. It stops when the act's host is off screen
+  (IntersectionObserver) or the tab is hidden. DPR cap: 1.5 high · 1.25 lite.
+- **Tiers by device capability** (`tier.ts`), never by "is it a phone":
+  `high` desktop GPU · `lite` capable phones/tablets (WebGL2, ≥ 4 cores, ≥ 4 GB when reported, not a weak GPU)
+  · `css` everything else, plus saveData and reduced motion. Dev: force with `?tier=high|lite|css`.
+- **Watchdog**: two slow sample windows in a row (avg frame > 27ms) → `high → lite → css`. `css` = dispose
+  and show the DOM version again. `webglcontextlost` does the same.
+- **Dispose** on `pagehide`: geometries, materials, textures, `renderer.dispose()`, `forceContextLoss()`.
+- **Scenes and the stage talk through `bridge.ts`** (plain object `flight`): scenes own scroll and write
+  `push`, `veil`, `mix`, `speed`, `frame`; the act reads them every frame. Scenes never import three.
+- **The DOM version always exists underneath** (poster/video, 2D canvas, CSS cloud layers, veil element).
+  `.is-live` on `[data-flight]` hides those media while the canvas draws; text and scrims stay DOM.
+- Shaders live in `shaders/*.glsl.ts`. Quality is set with `#define`s (`OCT`, `LAYERS`, `RAYS`), not branches.
+  Work in display (sRGB) space for footage plates; read colors from the semantic tokens (see `token()` in
+  `acts/flight.ts`) — no hex in shaders.
+- New 3D section (Part 2: globe, approach lights) = a new act + its host element. Reuse the stage.
+
+## Media toolkit
 
 ### Plane cursor — `CursorPlane.astro` + `globals/cursor.ts`
 
@@ -63,21 +91,26 @@ UI feedback 0.2–0.3s. One orchestrated moment per section — never a fade-up 
 ### Background video — `BgVideo.astro` + `globals/video.ts`
 
 - Props: `name` (→ `/media/video/<name>.webm|.mp4|-poster.webp`), `mobile` (lighter variant name),
-  `class`. Renders `<video muted loop playsinline preload="none" poster>` + sources, `aria-hidden="true"`.
-- JS picks the mobile variant below 1024px, sets `preload` when near viewport, plays when ≥25% visible,
-  pauses otherwise. Reduced motion OR `navigator.connection.saveData` → never plays (poster only).
+  `eager` (first screen only), `focus` (object-position), `class`.
+- Renders the poster as a real `<img>` (LCP, no-JS, reduced motion; `<picture>` picks the mobile poster)
+  and an empty `<video muted loop playsinline preload="none">` on top that fades in once it plays.
+- JS picks the mobile variant below 1024px and webm/mp4, sets `src` when near the viewport, plays when
+  ≥25% visible, pauses otherwise. Reduced motion OR `navigator.connection.saveData` → poster only.
 - Text on top: dark gradient overlay (`::after`), never raw text on footage.
 
 ### Scroll-scrubbed image sequence — `ImageSequence.astro` + `scenes/image-sequence.ts`
 
-- Props: `name` (→ `/media/seq/<name>/frame_0001.webp`…), `frames`, `mobileStep` (default 2 = every
-  2nd frame on mobile), captions slot with `[data-at="0.25"]` (progress where each caption shows).
-- Canvas covers the viewport (cover-fit math, DPR capped at 2, redraw on resize).
-- Frame 1 loads immediately (it is also the no-JS/reduced-motion image); the rest load in the
-  background when the section is within one viewport, in order, never blocking.
+- Props: `name` (→ `/media/seq/<name>/frame_0001.webp`…), `frames`, `mobile` + `mobileFrames` (lighter
+  set `/media/seq/<mobile>/` for < 1024px: portrait crop, half the frames) or `mobileStep`, `focus`,
+  `label`, `id`, `veil` (Home: cloud white-out at both ends + frames drawn by the WebGL stage).
+  Captions in the slot: `<p class="seq__caption" data-at="0.25">` (progress where each one shows).
+- Frames are fetched as Blobs, in order, 3 at a time, only once the section is near (Home: after the first
+  scroll). A sliding window (±12 desktop, ±8 mobile) is decoded off the main thread with
+  `createImageBitmap(blob)`; drawing never blocks on a decode and memory stays flat.
+- Draws on a 2D canvas (cover-fit, DPR ≤ 1.5) or hands the bitmap to the WebGL stage (`bridge.flight.frame`).
 - Section pins: desktop `end: '+=300%'`, mobile `+=180%`, `scrub: 0.5`; frame = round(progress × (n−1)).
-- Captions: fade/rise in around their `data-at` and out before the next one.
-- Reduced motion: no pin, static last-but-one frame, captions all visible.
+- Captions take turns around their `data-at`; small ticks show which one is on.
+- Without JS / reduced motion: no pin, frame 1 as a still, every caption visible.
 
 ### Expanding media — `scenes/media-reveal.ts`
 
@@ -99,8 +132,9 @@ UI feedback 0.2–0.3s. One orchestrated moment per section — never a fade-up 
 
 ## Scenes (`src/motion/scenes/<name>.ts`)
 
-preloader · hero-takeoff · image-sequence · media-reveal · destinations · route-steps · boarding-gate ·
-footer-landing · text-scrub · services-filter · accordion · form-flight · (dive — kept, not used on Home v2).
+preloader · hero-takeoff (Home) · image-sequence · destinations · route-steps · boarding-gate ·
+footer-landing · text-scrub · services-filter · accordion · form-flight · media-reveal (Part 2) ·
+Motion Lab only: hero-logo · dive.
 
 ### Writing a new scene
 
@@ -152,15 +186,23 @@ export default scene;
 6. Reduced motion: final state instantly; no Lenis, pins, parallax, depth, cursor, video autoplay.
 7. Mobile (< 1024px or touch): pins ≤ `+=180%` (sequences) / `+=100%` (others); no depth, cursor,
    magnetic, spotlight; lighter media.
-8. Max **2 pinned scenes per page**. Never animate the pinned element itself — animate its children.
-9. One RAF loop (`gsap.ticker`). No custom `requestAnimationFrame` loops, no `scroll` listeners.
-   (Canvas drawing for sequences happens inside the ScrollTrigger `onUpdate`.)
+8. Max **2 pinned scenes per page — 3 on Home** (Journey, Why, How), only while scrolling stays smooth.
+   Never animate the pinned element itself — animate its children. Prefer CSS `position: sticky` + a
+   scrubbed ScrollTrigger when a scene only needs to hold the screen (the Home hero does this).
+9. One RAF loop (`gsap.ticker`) — WebGL rendering included. No custom `requestAnimationFrame` loops, no
+   `scroll` listeners. (Canvas drawing for sequences happens inside the ScrollTrigger `onUpdate`.)
 10. Selectors scoped to the scene root. No global selectors in scenes.
 11. `markers: true` only while developing.
 12. Text and buttons readable in their final state within ~1.2s. Legal notices never animated.
+    The LCP text (hero lead + buttons) is NEVER hidden by JS/CSS: stage only the headline (`data-intro`
+    on the `<h1>`), move the rest with transforms only. Never `autoAlpha: 0` on the largest text block.
 13. Images: animate a wrapper, not the `<img>`. Always width/height. Below-the-fold media lazy.
 14. After layout changes call `ScrollTrigger.refresh()`.
-15. Test with DevTools CPU 4× and "Fast 4G". If a section stutters, reduce frames/resolution first.
+15. Test with DevTools CPU 4× and "Fast 4G" (`node scripts/qa-fps.mjs <url> 4`). If a section stutters,
+    reduce frames/resolution first.
+16. ScrambleText only on Latin text. All other GSAP plugins are allowed; register only what a page uses.
+17. 3D never carries content: no text in the canvas, canvas `aria-hidden`, and the page must be complete
+    with the canvas removed (tier `css`).
 
 ## Test checklist (before every PR that touches motion or media)
 
@@ -169,5 +211,6 @@ export default scene;
 - [ ] Reduced motion ON → everything visible, nothing moves, posters instead of video.
 - [ ] JS disabled → content + first frames/posters visible, no preloader.
 - [ ] Resize desktop ↔ mobile → no broken pins; mobile media variants load.
-- [ ] Network tab: nothing below the fold loads before you scroll near it.
+- [ ] Network tab: nothing below the fold loads before you scroll near it (`node scripts/qa-weight.mjs`).
+- [ ] Every tier: `?tier=high`, `?tier=lite`, `?tier=css` (`node scripts/qa-shots.mjs out/` shoots them all).
 - [ ] No console errors; no long tasks > 50ms while scrolling.

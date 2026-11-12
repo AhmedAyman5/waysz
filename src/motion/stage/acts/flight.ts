@@ -40,6 +40,7 @@ export function createFlightAct(host: HTMLElement, video: HTMLVideoElement, desk
   const videoTex = new VideoTexture(video);
   const frameTex = new Texture();
   for (const t of [videoTex, frameTex]) { t.minFilter = t.magFilter = LinearFilter; t.generateMipmaps = false; }
+  frameTex.flipY = false;                              // ImageBitmaps are uploaded as they are; the shader flips v
 
   const uniforms = {
     uVideo: { value: videoTex },
@@ -56,6 +57,7 @@ export function createFlightAct(host: HTMLElement, video: HTMLVideoElement, desk
     uVeilTex: { value: 1 },
     uSpeed: { value: 0 },
     uFocus: { value: 0.46 },
+    uFrameFocus: { value: 0.62 },
     uAmber: { value: token('--color-accent', dark) },
     uNavy: { value: token('--color-bg', dark) },
     uCloudLit: { value: token('--color-accent', light, ['--color-surface', 14]) },   // warm white
@@ -105,7 +107,8 @@ export function createFlightAct(host: HTMLElement, video: HTMLVideoElement, desk
         frameId = flight.frameId;
         frameTex.image = flight.frame;
         frameTex.needsUpdate = true;
-        uniforms.uFrameSize.value.set(flight.frame.naturalWidth, flight.frame.naturalHeight);
+        uniforms.uFrameSize.value.set(flight.frame.width, flight.frame.height);
+        uniforms.uFrameFocus.value = flight.frameFocus;
       }
     },
     resize(width, height) {
