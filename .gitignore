@@ -5,6 +5,9 @@ dist/
 # dependencies
 node_modules/
 
+# raw media downloads — optimized copies live in public/media and src/assets/media
+media-inbox/
+
 # logs
 npm-debug.log*
 
