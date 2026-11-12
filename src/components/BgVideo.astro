@@ -1,0 +1,37 @@
+---
+/**
+ * Background video (motion/globals/video.ts). Files: /media/video/<name>.webm|.mp4 + <name>-poster.webp,
+ * optional lighter set <mobile>.* for small screens.
+ * The poster is a real <img> (it is the LCP image, the no-JS and the reduced-motion version);
+ * the <video> fades in on top once it is playing. Always decorative: put real text next to it.
+ * Never mirrored in RTL. Put a dark gradient between it and any text.
+ */
+interface Props {
+  name: string;
+  mobile?: string;
+  eager?: boolean;        // true only for the first screen (LCP)
+  focus?: string;         // object-position, e.g. "46% 50%"
+  class?: string;
+}
+const { name, mobile, eager = false, focus = '50% 50%', class: className } = Astro.props;
+const base = '/media/video/';
+---
+<div class:list={['bgvideo', className]} style={`--focus: ${focus}`} aria-hidden="true">
+  <picture>
+    {mobile && <source media="(max-width: 1023px)" srcset={`${base}${mobile}-poster.webp`} />}
+    <img class="bgvideo__poster" src={`${base}${name}-poster.webp`} alt="" width="1600" height="900"
+         loading={eager ? 'eager' : 'lazy'} fetchpriority={eager ? 'high' : undefined} decoding="async" />
+  </picture>
+  <video class="bgvideo__video" data-bgvideo={name} data-mobile={mobile} muted loop playsinline
+         preload="none" disablepictureinpicture tabindex="-1"></video>
+</div>
+
+<style>
+  .bgvideo { position: absolute; inset: 0; overflow: hidden; }
+  .bgvideo__poster, .bgvideo__video {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: var(--focus);
+  }
+  .bgvideo__video { opacity: 0; transition: opacity 0.8s var(--ease-out); }
+  .bgvideo__video:global(.is-playing) { opacity: 1; }
+</style>

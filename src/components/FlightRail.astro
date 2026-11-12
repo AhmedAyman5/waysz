@@ -1,5 +1,9 @@
 ---
-/** Desktop-only scroll indicator that replaces the hidden scrollbar (motion/globals/flight-rail.ts). */
+/**
+ * Flight progress (motion/globals/flight-rail.ts).
+ * Desktop: plane on a rail with one tick per [data-waypoint] (replaces the hidden scrollbar).
+ * Touch / small screens: a thin line at the top edge.
+ */
 ---
 <div class="flight-rail" aria-hidden="true">
   <span class="flight-rail__line"></span>
@@ -7,6 +11,7 @@
     <svg viewBox="790 215 205 140"><path d="M893.7 338.9C893.9 333.9 894.2 325.1 894.5 319.5C895.4 300.5 895.5 294 895 294C894.5 294 883 299.9 868.8 307.5C866.8 308.5 862.9 310.6 860 312.1C857.1 313.6 853.9 315.4 852.8 316C848.8 318.2 847.2 319 844.9 319.9C843.5 320.5 842 321.7 840.9 323C837.4 327.4 835.2 329.6 833.5 330.5C830.7 331.9 823.5 334.6 823.2 334.3C822.8 334 824.3 325.1 825.2 321.4C826 318.5 826 318.5 824.5 315.6C822.6 311.7 822 311.3 805.1 299.1C798 294 796.6 292.7 797.3 292C797.5 291.8 800.2 290.3 803.2 288.7C809.6 285.3 810 285.3 820.2 287C823.8 287.6 828.3 288.3 830.2 288.5C832.2 288.8 834.9 289.3 836.2 289.5C837.6 289.7 840 290.1 841.5 290.2L844.2 290.5L852.2 285.6C856.6 282.8 863 278.9 866.2 276.9C869.5 274.8 873.9 272.2 875.9 271C877.9 269.8 879.5 268.7 879.5 268.4C879.5 268.2 878.7 267.5 877.6 266.9C876.6 266.3 873.1 264 869.9 261.9C866.6 259.7 863.9 258 863.8 258C863.7 258 861.2 256.4 858.2 254.4C855.2 252.4 850.2 249.1 847 247.1C843.8 245 838.3 241.4 834.6 239.1C830.6 236.4 828.1 234.5 828.1 234C828.2 233.6 831.1 231.9 834.5 230.2C839.3 227.8 841.7 226.9 845.2 226.3C851 225.2 851.9 225.4 879 232.3C883.8 233.5 888.9 234.7 890.2 235C891.6 235.3 894.5 235.9 896.8 236.5C899 237.1 901.6 237.8 902.8 238C903.9 238.2 909.3 239.6 914.8 240.9C926 243.7 925.4 243.7 931.5 240.9C937.3 238.2 942.7 235.8 949.8 232.9C964.4 226.8 967.7 225.8 975.5 225.8C980.7 225.8 981.5 225.9 983.8 227C986.6 228.4 987.7 230.2 987.6 233.2C987.4 239 977.6 248.1 961.5 257.4C958.9 258.9 954.6 261.4 952 263C949.4 264.5 945.1 267.1 942.5 268.6C939.8 270.2 937.3 271.9 936.9 272.4C936.5 272.8 935.6 274.7 935 276.5C934.4 278.3 933.7 280 933.5 280.2C933.3 280.5 932.6 282.5 931.8 284.6C930.7 287.8 929.7 290.7 927.5 296.2C927.3 296.8 926.4 298.9 925.6 301C924.8 303.1 923.6 306.2 923 308C921.9 311.4 921.8 311.6 920.1 315.8C918.7 319.2 916.3 325.5 914.8 330C913 335.1 912 336.4 908 339.8C904.9 342.5 895.5 348 894 348C893.6 348 893.5 345.9 893.7 338.9Z"/></svg>
   </span>
 </div>
+<div class="flight-bar" aria-hidden="true"></div>
 
 <style>
   .flight-rail {
@@ -28,6 +33,24 @@
     border-inline-start: 1.5px dashed color-mix(in srgb, var(--color-ink-muted) 45%, transparent);
   }
   .flight-rail__plane { position: absolute; top: 0; inset-inline-start: 0; width: 18px; height: 18px; }
+  .flight-rail :global(.flight-rail__tick) {
+    position: absolute; inset-inline-start: calc(50% - 4px);
+    width: 9px; height: 1.5px;
+    background: color-mix(in srgb, var(--color-ink-muted) 70%, transparent);
+  }
+  .flight-rail :global(.flight-rail__tick:not([style*="top"])) { display: none; }
+
+  .flight-bar {
+    position: fixed; inset-inline: 0; top: 0; height: 2px;
+    z-index: calc(var(--z-header) + 1);
+    background: var(--color-accent);
+    transform-origin: 0 50%;
+    display: none; pointer-events: none;
+  }
+  :global([dir='rtl']) .flight-bar { transform-origin: 100% 50%; }
+  @media (pointer: coarse), (max-width: 1023px) {
+    :global(.js) .flight-bar { display: block; }
+  }
   .flight-rail__plane svg {
     width: 100%; height: 100%;
     fill: var(--color-accent);

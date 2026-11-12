@@ -5,6 +5,7 @@
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Logo from '../components/Logo.astro';
+import Lottie from '../components/Lottie.astro';
 import { site } from '../lib/site';
 import { localizePath, useTranslations, type Lang } from '../i18n';
 
@@ -97,7 +98,7 @@ const icons: Record<string, string> = {
 <BaseLayout lang={lang} title="Motion Lab | WaysZ" description="Motion system reference (dev only)." preloader headerOverlay noindex>
 
   <!-- S2 + S3 · hero-takeoff + dive ............................................................ -->
-  <section class="hero theme-dark" data-scene="hero-takeoff dive">
+  <section class="hero theme-dark" data-scene="hero-logo dive">
     <div class="hero__glow" aria-hidden="true"></div>
     <div class="hero__inner">
       <div class="hero__content" data-intro>
@@ -115,6 +116,12 @@ const icons: Record<string, string> = {
   </section>
 
   <!-- S4 · destinations ........................................................................ -->
+  <!-- Media toolkit: Lottie (modes: loop · once · hover · scrub). BgVideo + ImageSequence + the WebGL stage: see HomePage.astro -->
+  <section class="lab-lottie section container" aria-label="Lottie">
+    <div class="lab-lottie__item"><Lottie src="/media/lottie/plane.json" mode="loop" /></div>
+    <div class="lab-lottie__item"><Lottie src="/media/lottie/plane.json" mode="scrub" /></div>
+  </section>
+
   <section class="dests theme-dark">
     <div class="container">
       <h2 data-split>{copy.areasTitle}</h2>
@@ -273,6 +280,9 @@ const icons: Record<string, string> = {
 </BaseLayout>
 
 <style>
+  .lab-lottie { display: flex; gap: var(--space-7); justify-content: center; }
+  .lab-lottie__item { width: 160px; }
+
   /* ---------- hero ---------- */
   .hero { position: relative; min-height: 100svh; display: grid; align-items: center; overflow: clip; }
   .hero__glow {
