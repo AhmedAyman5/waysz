@@ -15,13 +15,13 @@ import { route } from '../bridge';
 import { arcFragment, arcVertex, globeFragment, globeVertex, haloFragment } from '../shaders/globe.glsl';
 import { token } from './util';
 
-const rad = (d: number) => (d * Math.PI) / 180;
+export const rad = (d: number) => (d * Math.PI) / 180;
 /** lat/lon → point on the unit sphere, matching three's SphereGeometry UVs for an equirectangular map */
-const onSphere = (lat: number, lon: number, r = 1) => {
+export const onSphere = (lat: number, lon: number, r = 1) => {
   const phi = rad(lon + 180), theta = rad(90 - lat);
   return new Vector3(-r * Math.sin(theta) * Math.cos(phi), r * Math.cos(theta), r * Math.sin(theta) * Math.sin(phi));
 };
-const slerp = (a: Vector3, b: Vector3, t: number) => {
+export const slerp = (a: Vector3, b: Vector3, t: number) => {
   const w = a.angleTo(b), s = Math.sin(w);
   return a.clone().multiplyScalar(Math.sin((1 - t) * w) / s).addScaledVector(b, Math.sin(t * w) / s);
 };

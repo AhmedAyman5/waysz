@@ -1,0 +1,204 @@
+---
+/**
+ * Immigration page — "Explore the world": the signature section. Scene: motion/scenes/explore-globe.ts.
+ * A 3D Earth with country borders in the shared WebGL stage (acts/explore.ts). Drag to turn it, hover a
+ * country to see its name, click / tap to select: an amber plane flies from Egypt and the welcome message
+ * appears HERE, in the DOM. The combobox does the same for keyboard and screen-reader users.
+ * css tier / reduced motion / no WebGL: a still of the same globe + the same list and message (no flight).
+ * No JS: the still and the section intro only.
+ * Borders: Natural Earth, Egypt point of view (scripts/build-borders.mjs). Names: Intl.DisplayNames at build
+ * time + the small override map below. No page per country (brief: «لن نعمل حاليًا»).
+ */
+import { useTranslations, type Lang } from '../../i18n';
+import list from '../../data/countries.json';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+// Names that read awkwardly from Intl.DisplayNames (CLDR). Keep this list short and report every entry.
+const OVERRIDES: Record<string, { ar?: string; en?: string }> = {
+  CD: { ar: 'الكونغو الديمقراطية', en: 'DR Congo' },
+  CG: { ar: 'جمهورية الكونغو', en: 'Republic of the Congo' },
+  HK: { ar: 'هونغ كونغ', en: 'Hong Kong' },
+  MO: { ar: 'ماكاو', en: 'Macao' },
+  MM: { ar: 'ميانمار', en: 'Myanmar' },
+  PS: { ar: 'فلسطين', en: 'Palestine' },
+  HU: { ar: 'المجر' },
+  DK: { ar: 'الدنمارك' },
+  TL: { ar: 'تيمور الشرقية' },
+};
+// Territories without residents or visitors: drawn on the globe, not offered as destinations.
+const NOT_DESTINATIONS = new Set(['HM', 'GS', 'TF', 'UM', 'IO']);
+
+const names = { ar: new Intl.DisplayNames(['ar'], { type: 'region' }), en: new Intl.DisplayNames(['en'], { type: 'region' }) };
+const nameOf = (id: string, l: Lang) => OVERRIDES[id]?.[l] ?? names[l].of(id) ?? id;
+const other: Lang = lang === 'ar' ? 'en' : 'ar';
+const countries = (list as [string, number, number][])
+  .filter(([id]) => !NOT_DESTINATIONS.has(id))
+  .map(([id]) => ({ id, name: nameOf(id, lang), alt: nameOf(id, other) }))
+  .sort((a, b) => a.name.localeCompare(b.name, lang));
+---
+<section class="explore theme-dark" id="explore" data-scene="explore-globe" data-waypoint aria-labelledby="explore-title"
+         data-ask={t.explore.ask}>
+  <div class="explore__head container">
+    <h2 class="explore__title" id="explore-title">{t.explore.title}</h2>
+    <p class="explore__lead">{t.explore.lead}</p>
+
+    <div class="combo">
+      <label class="visually-hidden" for="explore-input">{t.explore.label}</label>
+      <svg class="combo__icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+      <input class="combo__input" id="explore-input" type="text" role="combobox" autocomplete="off" spellcheck="false"
+             aria-expanded="false" aria-controls="explore-list" aria-autocomplete="list" placeholder={t.explore.placeholder} />
+      <ul class="combo__list" id="explore-list" role="listbox" aria-label={t.explore.label} hidden data-lenis-prevent>
+        {countries.map((c) => (
+          <li class="combo__option" role="option" id={`country-${c.id}`} data-id={c.id} data-alt={c.alt} aria-selected="false">{c.name}</li>
+        ))}
+        <li class="combo__empty" role="presentation" hidden>{t.explore.empty}</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="explore__globe">
+    <img class="explore__poster" src="/media/img/earth-borders-poster.webp" alt="" width="1000" height="1000" loading="lazy" decoding="async" />
+    <div class="explore__stage stage-host" aria-hidden="true"></div>
+    <div class="explore__scrim" aria-hidden="true"></div>
+    <div class="explore__pad" aria-hidden="true"></div>
+    <p class="explore__tip" aria-hidden="true"></p>
+    <div class="explore__zoom">
+      <button type="button" data-zoom="1.35" aria-label={t.explore.zoomIn}><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+      <button type="button" data-zoom="0.74" aria-label={t.explore.zoomOut}><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+    </div>
+    <p class="explore__hint" aria-hidden="true">{t.explore.hint}</p>
+  </div>
+
+  <div class="explore__foot container">
+    <div class="explore__msg" aria-live="polite"><div class="explore__card" hidden>
+      <p class="explore__welcome">
+        <span class="explore__hello">{t.explore.welcome}</span>{' '}
+        <strong class="explore__country"></strong>
+      </p>
+      <div class="explore__actions">
+        <a class="btn btn--accent explore__ask" href="#consult" data-magnetic></a>
+        <p class="explore__note">{t.explore.note}</p>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<style>
+  /* ---------- base (small screens): intro · globe box · message, stacked ---------- */
+  .explore { position: relative; overflow: clip; padding-block: var(--section-y) var(--space-8); }
+  .explore__head { position: relative; z-index: 3; }
+  .explore__title { font-size: clamp(2.6rem, 1.4rem + 5.4vw, 6.25rem); line-height: 1.16; max-width: 11ch; }
+  :global([dir='rtl']) .explore__title { line-height: 1.32; }
+  .explore__lead { margin-block-start: var(--space-4); max-width: 34ch; font-size: var(--text-lg); color: color-mix(in srgb, var(--color-ink) 84%, transparent); }
+
+  /* combobox */
+  .combo { position: relative; margin-block-start: var(--space-6); max-width: 26rem; }
+  .combo__icon {
+    position: absolute; inset-inline-start: var(--space-5); top: 50%; translate: 0 -50%; pointer-events: none;
+    fill: none; stroke: var(--color-accent); stroke-width: 1.8; stroke-linecap: round;
+  }
+  .combo__input {
+    width: 100%; min-height: 58px; padding-inline: calc(var(--space-5) + 22px + var(--space-3)) var(--space-5);
+    border-radius: var(--radius-pill); border: 1.5px solid color-mix(in srgb, var(--color-ink) 28%, transparent);
+    background: color-mix(in srgb, var(--color-bg) 72%, transparent); backdrop-filter: blur(10px);
+    font-size: var(--text-base); color: var(--color-ink);
+    transition: border-color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out);
+  }
+  .combo__input::placeholder { color: var(--color-ink-muted); opacity: 1; }
+  .combo__input:hover { border-color: color-mix(in srgb, var(--color-ink) 50%, transparent); }
+  .combo__input:focus-visible { outline: none; border-color: var(--color-accent); background: var(--color-bg); }
+  .combo__list {
+    position: absolute; inset-inline: 0; top: calc(100% + var(--space-2)); z-index: 6;
+    max-height: min(19rem, 42vh); overflow-y: auto; overscroll-behavior: contain;
+    margin: 0; padding: var(--space-2); list-style: none;
+    background: var(--color-bg-alt); border: 1px solid var(--color-border); border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+  }
+  .combo__option { padding: var(--space-3) var(--space-4); border-radius: var(--radius-sm); cursor: pointer; line-height: 1.5; }
+  .combo__option:hover { background: color-mix(in srgb, var(--color-ink) 8%, transparent); }
+  .combo__option:global(.is-active) { background: var(--color-accent); color: var(--color-on-accent); }
+  .combo__empty { padding: var(--space-3) var(--space-4); color: var(--color-ink-muted); }
+  :global(html:not(.js)) .combo, :global(html:not(.js)) .explore__zoom, :global(html:not(.js)) .explore__hint { display: none; }
+
+  /* the globe: a still by default, the WebGL stage when it is live */
+  .explore__globe { position: relative; z-index: 1; aspect-ratio: 1; margin-block-start: var(--space-5); overflow: hidden; }
+  .explore__poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+  .explore__stage:global(.is-drawing) { background: var(--color-bg); }
+  /* the stage's stars stop at the box: soften its edges into the section */
+  .explore__scrim {
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+      linear-gradient(to bottom, var(--color-bg), transparent 9%, transparent 91%, var(--color-bg));
+  }
+  .explore__pad { position: absolute; inset: 0; touch-action: pan-y; cursor: grab; -webkit-user-select: none; user-select: none; }
+  .explore__pad:global(.is-dragging) { cursor: grabbing; }
+  .explore:not(:global(.is-live)) .explore__pad, .explore:not(:global(.is-live)) .explore__zoom, .explore:not(:global(.is-live)) .explore__hint { display: none; }
+  .explore__tip {
+    position: absolute; top: 0; left: 0; z-index: 2; pointer-events: none; white-space: nowrap;
+    padding: var(--space-1) var(--space-4); border-radius: var(--radius-pill);
+    background: var(--color-ink); color: var(--color-bg);
+    font-family: var(--font-display); font-weight: var(--weight-semibold); font-size: var(--text-sm);
+    opacity: 0; transition: opacity var(--dur-fast) var(--ease-out);
+  }
+  .explore__tip:global(.is-on) { opacity: 1; }
+  .explore__zoom { position: absolute; inset-inline-end: var(--space-4); inset-block-end: var(--space-6); z-index: 2; display: grid; gap: var(--space-2); }
+  .explore__zoom button {
+    display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
+    border: 1.5px solid color-mix(in srgb, var(--color-ink) 30%, transparent);
+    background: color-mix(in srgb, var(--color-bg) 70%, transparent); backdrop-filter: blur(8px);
+    transition: border-color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out);
+  }
+  .explore__zoom button:hover { border-color: var(--color-accent); background: var(--color-bg); }
+  .explore__zoom svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+  .explore__hint {
+    position: absolute; inset-inline: 0; inset-block-end: var(--space-6); margin-inline: auto; width: fit-content; max-width: 70%;
+    text-align: center; font-size: var(--text-sm); color: var(--color-ink-muted); pointer-events: none;
+    transition: opacity var(--dur-base) var(--ease-out);
+  }
+  .explore:global(.has-touched) .explore__hint { opacity: 0; }
+
+  /* the message */
+  .explore__foot { position: relative; z-index: 3; min-height: 15rem; }
+  .explore__welcome { font-family: var(--font-display); }
+  .explore__hello { display: block; font-size: var(--text-xl); font-weight: var(--weight-regular); color: color-mix(in srgb, var(--color-ink) 82%, transparent); }
+  .explore__country {
+    display: block; font-weight: var(--weight-bold);
+    font-size: clamp(2.8rem, 1.2rem + 8vw, 8.5rem); line-height: 1.12; letter-spacing: -0.01em; text-wrap: balance;
+  }
+  .explore__country:global(.is-long) { font-size: clamp(2.1rem, 1.1rem + 4.6vw, 5.25rem); }
+  :global([dir='rtl']) .explore__country { line-height: 1.3; letter-spacing: 0; }
+  .explore__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4) var(--space-5); margin-block-start: var(--space-5); }
+  .explore__ask { min-height: 56px; padding-inline: var(--space-7); font-size: var(--text-base); white-space: normal; text-align: center; }
+  .explore__note { font-size: var(--text-sm); color: var(--color-ink-muted); max-width: 30ch; }
+
+  /* ---------- wide screens: the globe fills the section, text on the reading side ---------- */
+  @media (min-width: 1024px) {
+    .explore {
+      min-height: max(100vh, 46rem); min-height: max(100svh, 46rem);
+      display: grid; grid-template-rows: auto 1fr; padding-block: calc(76px + var(--space-7)) var(--space-8);
+    }
+    .explore__head, .explore__foot { pointer-events: none; }
+    .explore__head :global(:is(input, ul, label)), .explore__foot :global(:is(a, button)) { pointer-events: auto; }
+    .explore__globe { position: absolute; inset: 0; aspect-ratio: auto; margin: 0; }
+    /* same place as the live globe (acts/explore.ts: centre 13.5% off the middle, 80.6% of the height) */
+    .explore__poster { inset: auto; top: 50%; left: 63.5%; width: 88.7vh; height: 88.7vh; translate: -50% -50%; }
+    :global([dir='rtl']) .explore__poster { left: 36.5%; }
+    .explore__scrim {
+      background:
+        linear-gradient(to bottom, var(--color-bg), transparent 14%, transparent 86%, var(--color-bg)),
+        linear-gradient(to right, color-mix(in srgb, var(--color-bg) 78%, transparent), transparent 46%);
+    }
+    :global([dir='rtl']) .explore__scrim {
+      background:
+        linear-gradient(to bottom, var(--color-bg), transparent 14%, transparent 86%, var(--color-bg)),
+        linear-gradient(to left, color-mix(in srgb, var(--color-bg) 78%, transparent), transparent 46%);
+    }
+    .explore__zoom { inset-inline-end: var(--space-7); inset-block-end: var(--space-8); }
+    .explore__hint { inset-inline: auto var(--space-7); inset-block-end: calc(var(--space-8) + 112px); margin: 0; max-width: 14rem; text-align: end; }
+    .explore__foot { align-self: end; min-height: 0; }
+    .explore__welcome { max-width: min(46rem, 58vw); }
+  }
+</style>

@@ -8,9 +8,10 @@ interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const year = new Date().getFullYear();
+const groupPage: Partial<Record<string, string>> = { travel: '/services/immigration-study-visa/' };   // areas that have their own page (brief §2.2)
 const areas = (['legal', 'travel', 'events', 'software'] as const).map((key) => ({
   label: t.areas[key],
-  href: `${localizePath('/services/', lang)}#${key}`,
+  href: groupPage[key] ? localizePath(groupPage[key]!, lang) : `${localizePath('/services/', lang)}#${key}`,
 }));
 ---
 <footer class="site-footer theme-dark" data-scene="footer-landing">

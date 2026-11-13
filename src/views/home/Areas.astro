@@ -44,6 +44,9 @@ const areas = [
   { key: 'events', img: events, hue: '--hue-events', side: 'right', focus: 34 },
   { key: 'software', img: software, hue: '--hue-software', side: 'left', focus: 72 },
 ] as const;
+// areas that already have their own page (brief §2.2); the others open their tab on the Services page
+const groupPage: Partial<Record<string, string>> = { travel: '/services/immigration-study-visa/' };
+const hrefOf = (key: string) => (groupPage[key] ? localizePath(groupPage[key]!, lang) : `${localizePath('/services/', lang)}#${key}`);
 const justify = (side: 'left' | 'right') => ((side === 'left') === !rtl ? 'start' : 'end');
 
 // line icons, drawn by the scene (stroke only); [data-tilt] parts settle into place
@@ -76,7 +79,7 @@ const icons: Record<string, string> = {
             <svg class="area__icon" viewBox="0 0 48 48" width="64" height="64" aria-hidden="true" set:html={icons[a.key]} />
             <h3 class="area__name">{t.areas[a.key]}</h3>
             <p class="area__copy">{copy[a.key][0]}</p>
-            <a class="area__link link-arrow" href={`${localizePath('/services/', lang)}#${a.key}`} data-cursor={t.cursor.explore}>
+            <a class="area__link link-arrow" href={hrefOf(a.key)} data-cursor={t.cursor.explore}>
               {copy[a.key][1]}
               <svg class="icon-dir" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>

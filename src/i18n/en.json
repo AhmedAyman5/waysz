@@ -7,7 +7,8 @@
     "skip": "Skip to content",
     "home": "WaysZ — Home",
     "scroll": "Go to the introduction to WaysZ",
-    "journey": "WaysZ in brief"
+    "journey": "WaysZ in brief",
+    "services": "Go to the services"
   },
   "nav": {
     "label": "Main navigation",
@@ -24,7 +25,8 @@
     "explore": "Explore our services",
     "whatsapp": "Chat on WhatsApp",
     "visitVisa": "Visit WaysZ Visa",
-    "aboutMore": "Learn more about us"
+    "aboutMore": "Learn more about us",
+    "details": "Details"
   },
   "cursor": {
     "explore": "Explore",
@@ -88,6 +90,24 @@
       "description": "We couldn't find that page.",
       "heading": "This road doesn't exist",
       "back": "Back to home"
+    },
+    "immigration": {
+      "title": "Immigration, Study & Visas | WaysZ",
+      "description": "Immigration and residency consultations, study abroad, visas, certified translation and embassy consultations: we stay with you from the first question until your file is complete."
     }
+  },
+  "explore": {
+    "title": "Explore the world",
+    "lead": "Turn the globe and choose your destination, or search for it by name.",
+    "label": "Search for a country",
+    "placeholder": "Type a country name",
+    "empty": "No country with that name",
+    "hint": "Drag to rotate, click a country to select it",
+    "welcome": "Welcome to",
+    "ask": "Ask about travelling to {country}",
+    "note": "The decision to grant a visa belongs to the embassy alone.",
+    "zoomIn": "Zoom in on the globe",
+    "zoomOut": "Zoom out of the globe",
+    "destination": "Your destination: {country}"
   }
 }

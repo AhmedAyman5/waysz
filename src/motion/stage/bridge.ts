@@ -42,3 +42,19 @@ export function setStageLive(live: boolean) {
   flight.live = live;
   listeners.forEach((fn) => fn(live));
 }
+
+/**
+ * Immigration page — "Explore the world". Handed to scenes/explore-globe.ts by acts/explore.ts once the globe
+ * is ready. The scene owns the DOM (pointer, combobox, message); the act owns the 3D (rotation, picking, flight).
+ * Positions are CSS pixels inside the stage host.
+ */
+export interface ExploreControls {
+  pick(x: number, y: number): string | null;   // country id (ISO alpha-2) under a point, or null
+  hover(id: string | null): void;              // highlight a country
+  drag(dx: number, dy: number): void;          // rotate by a pointer movement
+  release(vx: number, vy: number): void;       // let go with a velocity (px/s) → inertia
+  zoom(factor: number): void;                  // multiply the zoom (clamped)
+  flyTo(id: string, onLand: () => void): void; // turn to the country, fly the plane from Egypt, then call back
+  setAuto(on: boolean): void;                  // gentle rotation while idle
+  setLayout(side: 1 | -1, compact: boolean): void;
+}

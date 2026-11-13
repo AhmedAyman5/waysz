@@ -1,0 +1,149 @@
+---
+/**
+ * Immigration page — the eight services of brief §2.2. Scene: motion/scenes/dossier.ts.
+ * Each service is a sheet of the visitor's file: wide screens hold the screen (CSS sticky, not a pin) and
+ * scrolling slides the sheets past, each one settling upright as it reaches the middle while its icon draws
+ * itself. Small screens / no JS / reduced motion: a plain list of the same sheets.
+ * A sheet links to /services/<slug>/ ONLY when that service file exists (src/content/services); the visa
+ * sheet goes to WaysZ Visa; every other button goes to the consultation call at the end of the page.
+ */
+import { getCollection } from 'astro:content';
+import { site } from '../../lib/site';
+import { localizePath, useTranslations, type Lang } from '../../i18n';
+
+export interface ServiceItem {
+  slug: string;                 // = file name in src/content/services when the service has a detail page
+  icon: string;
+  proposed?: boolean;           // «مقترح» in the brief: pending the client's approval
+  external?: boolean;           // the visa sheet → site.visaSite
+  name: string;
+  text: string;
+}
+interface Props { lang: Lang; title: string; items: ServiceItem[] }
+const { lang, title, items } = Astro.props;
+const t = useTranslations(lang);
+const existing = new Set((await getCollection('services')).map((entry) => entry.id));
+const num = (i: number) => new Intl.NumberFormat(lang === 'ar' ? 'ar-EG' : 'en', { minimumIntegerDigits: 2 }).format(i);
+
+// our own line icons (48 × 48), drawn by the scene
+const icons: Record<string, string> = {
+  immigration: '<circle cx="24" cy="24" r="17"/><path d="M7 24h34M24 7c-7 5-7 29 0 34M24 7c7 5 7 29 0 34"/><path d="M24 30c-4-5-6-8-6-11a6 6 0 0 1 12 0c0 3-2 6-6 11Z"/><circle cx="24" cy="19" r="2"/>',
+  study: '<path d="M4 19 24 10l20 9-20 9-20-9Z"/><path d="M12 23v9c3 3.4 7 5 12 5s9-1.600 12-5v-9"/><path d="M44 19v11"/><circle cx="44" cy="32" r="1.600"/>',
+  visa: '<rect x="10" y="5" width="28" height="38" rx="3"/><circle cx="24" cy="20" r="8"/><path d="M16 20h16M24 12c-3 3-3 13 0 16M24 12c3 3 3 13 0 16"/><path d="M17 34h14M20 38h8"/>',
+  translation: '<path d="M10 6h17l7 7v12"/><path d="M27 6v7h7"/><path d="M10 6v36h12"/><path d="M15 20h12M15 26h8"/><circle cx="33" cy="35" r="8"/><path d="m29 35 3 3 5.500-6"/>',
+  embassy: '<path d="M6 20 24 8l18 12"/><path d="M8 20h32"/><path d="M12 24v14M20 24v14M28 24v14M36 24v14"/><path d="M6 42h36M9 38h30"/>',
+  tickets: '<path d="M5 15h38v6a3.500 3.500 0 0 0 0 7v6H5v-6a3.500 3.500 0 0 0 0-7v-6Z"/><path d="M31 16v3M31 23v3M31 30v3"/><path d="M12 28l12-4.500-3.500-5.500M24 23.500l-5 6"/>',
+  legalization: '<path d="M11 5h18l8 8v17"/><path d="M29 5v8h8"/><path d="M11 5v38h13"/><path d="M16 21h14M16 27h9"/><circle cx="33" cy="34" r="6"/><path d="M30 39.200V45l3-2 3 2v-5.800"/>',
+  citizenship: '<rect x="5" y="10" width="38" height="28" rx="3"/><circle cx="17" cy="21" r="4"/><path d="M10 32c1.200-3.600 3.700-5 7-5s5.800 1.400 7 5"/><path d="M29 19h9M29 25h9M29 31h5"/>',
+};
+const button = (s: ServiceItem) =>
+  s.external ? { href: site.visaSite, label: t.cta.visitVisa, rel: 'noopener' }
+  : existing.has(s.slug) ? { href: localizePath(`/services/${s.slug}/`, lang), label: t.cta.details }
+  : { href: '#consult', label: t.cta.consult };
+---
+<section class="dossier theme-dark" id="services" data-scene="dossier" data-waypoint aria-labelledby="dossier-title">
+  <div class="dossier__view">
+    <header class="dossier__head container">
+      <h2 class="dossier__title" id="dossier-title">{title}</h2>
+      <p class="dossier__count" aria-hidden="true"><span class="dossier__now">{num(1)}</span><span class="dossier__bar"><i></i></span><span>{num(items.length)}</span></p>
+    </header>
+
+    <ul class="dossier__track" role="list">
+      {items.map((s, i) => {
+        const b = button(s);
+        return (
+          <li class="sheet theme-light" data-site={s.external ? 'visa' : undefined}>
+            <div class="sheet__in">
+              <div class="sheet__top">
+                <svg class="sheet__icon" viewBox="0 0 48 48" width="56" height="56" aria-hidden="true" set:html={icons[s.icon]} />
+                <span class="sheet__num" aria-hidden="true">{num(i + 1)}</span>
+              </div>
+              <h3 class="sheet__name">{s.name}</h3>
+              {s.proposed && <p class="sheet__flag">{t.service.proposed}</p>}
+              <p class="sheet__text">{s.text}</p>
+              <a class="sheet__link link-arrow" href={b.href} rel={b.rel} aria-label={`${b.label}: ${s.name}`}
+                 data-cursor={s.external ? t.cursor.visit : undefined}>
+                {b.label}
+                <svg class="icon-dir" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </a>
+            </div>
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+</section>
+
+<style>
+  /* ---------- base: no JS / reduced motion / small screens — a list of sheets ---------- */
+  .dossier { position: relative; background: var(--color-bg-alt); padding-block: var(--section-y); }
+  .dossier__head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--space-5); }
+  .dossier__title { font-size: clamp(2.4rem, 1.4rem + 4.6vw, 5.5rem); line-height: 1.16; max-width: 14ch; }
+  :global([dir='rtl']) .dossier__title { line-height: 1.34; }
+  .dossier__count { display: none; }
+
+  .dossier__track {
+    display: grid; gap: var(--space-5); grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
+    width: var(--container); margin: var(--space-7) auto 0;
+  }
+  .sheet { position: relative; }
+  .sheet__in {
+    position: relative; height: 100%; display: flex; flex-direction: column;
+    padding: var(--space-6); border-radius: var(--radius-md);
+    background: var(--color-surface);
+    /* a folded corner, like a sheet of paper */
+    --fold: 30px;
+    clip-path: polygon(0 0, calc(100% - var(--fold)) 0, 100% var(--fold), 100% 100%, 0 100%);
+  }
+  :global([dir='rtl']) .sheet__in { clip-path: polygon(var(--fold) 0, 100% 0, 100% 100%, 0 100%, 0 var(--fold)); }
+  .sheet__in::before {
+    content: ''; position: absolute; top: 0; inset-inline-end: 0; width: var(--fold); height: var(--fold);
+    background: linear-gradient(to bottom left, transparent 50%, var(--color-bg-alt) 50%);
+    border-end-start-radius: 6px;
+  }
+  :global([dir='rtl']) .sheet__in::before { background: linear-gradient(to bottom right, transparent 50%, var(--color-bg-alt) 50%); }
+  .sheet__top { display: flex; align-items: start; justify-content: space-between; }
+  .sheet__icon { overflow: visible; fill: none; stroke: var(--color-accent-ink); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .sheet__num { margin-inline-end: var(--space-5); font-family: var(--font-display); font-weight: var(--weight-bold); font-size: var(--text-sm); color: var(--color-ink-muted); }
+  .sheet__name { margin-block-start: var(--space-5); font-size: var(--text-xl); font-weight: var(--weight-bold); line-height: 1.35; }
+  .sheet__flag {
+    align-self: start; margin-block-start: var(--space-3); padding: 2px var(--space-3); border-radius: var(--radius-pill);
+    border: 1px dashed var(--color-accent-ink); color: var(--color-accent-ink); font-size: var(--text-xs); line-height: 1.7;
+  }
+  .sheet__text { margin-block: var(--space-3) var(--space-5); color: var(--color-ink-muted); line-height: 1.75; }
+  .sheet__link {
+    margin-block-start: auto; align-self: start; padding-block: var(--space-2);
+    color: var(--color-ink); border-block-end: 1.5px solid var(--color-accent-strong);
+  }
+  .sheet__link:hover { color: var(--color-accent-ink); }
+
+  /* ---------- wide + scene running: one sticky screen, the sheets slide past ---------- */
+  @media (min-width: 1024px) {
+    .dossier:global(.is-scrub) { padding-block: 0; }
+    .dossier:global(.is-scrub) .dossier__view {
+      position: sticky; top: 0; height: 100vh; height: 100lvh; overflow: hidden;
+      display: grid; grid-template: auto 1fr / minmax(0, 1fr); padding-block: calc(76px + var(--space-6)) calc(100lvh - 100svh + var(--space-7));
+    }
+    .dossier:global(.is-scrub) .dossier__count {
+      display: flex; align-items: center; gap: var(--space-4);
+      font-family: var(--font-display); font-weight: var(--weight-bold); font-size: var(--text-sm); color: var(--color-ink-muted);
+    }
+    .dossier__now { color: var(--color-ink); }
+    .dossier__bar { position: relative; width: 9rem; height: 2px; background: color-mix(in srgb, var(--color-ink) 18%, transparent); }
+    .dossier__bar i { position: absolute; inset: 0; background: var(--color-accent); transform-origin: 0 50%; transform: scaleX(0); }
+    :global([dir='rtl']) .dossier__bar i { transform-origin: 100% 50%; }
+    .dossier:global(.is-scrub) .dossier__track {
+      display: flex; align-items: center; gap: clamp(1.5rem, 3vw, 3rem);
+      width: max-content; margin: 0; padding-inline: max(calc((100vw - 1240px) / 2), clamp(1rem, 4vw, 2.5rem)) 28vw;
+      will-change: transform;
+    }
+    .dossier:global(.is-scrub) .sheet { flex: none; width: clamp(22rem, 30vw, 29rem); height: min(32rem, 60vh); will-change: transform; }
+    .dossier:global(.is-scrub) .sheet__in { padding: clamp(1.75rem, 2.6vw, 2.75rem); }
+    .dossier:global(.is-scrub) .sheet__icon { width: 72px; height: 72px; }
+    .dossier:global(.is-scrub) .sheet__name { font-size: var(--text-2xl); line-height: 1.25; }
+    :global([dir='rtl']) .dossier:global(.is-scrub) .sheet__name { line-height: 1.4; }
+    .dossier:global(.is-scrub) .sheet__text { font-size: var(--text-base); }
+    .dossier:global(.is-scrub) .sheet__link { font-size: var(--text-base); }
+    .dossier:global(.is-scrub) .sheet__in { box-shadow: var(--shadow-lg); }
+  }
+</style>

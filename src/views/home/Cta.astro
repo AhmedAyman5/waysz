@@ -9,8 +9,8 @@ import { site, waHref } from '../../lib/site';
 import { localizePath, useTranslations, type Lang } from '../../i18n';
 import runway from '../../assets/media/cta-approach.jpg';
 
-interface Props { lang: Lang }
-const { lang } = Astro.props;
+interface Props { lang: Lang; id?: string }   // id: anchor target on pages that link to the call (#consult)
+const { lang, id } = Astro.props;
 const t = useTranslations(lang);
 
 // Copy: brief §1.6 (Arabic is the source; English is a faithful translation).
@@ -20,7 +20,7 @@ const copy = {
 }[lang];
 const LIGHTS = 11;
 ---
-<section class="cta theme-dark" data-scene="approach" data-depth-scene data-waypoint aria-labelledby="cta-title">
+<section class="cta theme-dark" id={id} data-scene="approach" data-depth-scene data-waypoint aria-labelledby="cta-title">
   <div class="cta__media" aria-hidden="true">
     <div class="cta__photo" data-depth="0.3">
       <Image src={runway} alt="" widths={[640, 960, 1440, 2060]} sizes="100vw" format="webp" quality={70} loading="lazy" decoding="async" />
@@ -34,8 +34,9 @@ const LIGHTS = 11;
   <div class="cta__content container">
     <h2 class="cta__title" id="cta-title">{copy.title}</h2>
     <p class="cta__text">{copy.text}</p>
+    <slot />
     <div class="cta__actions">
-      <a class="btn btn--accent" href={localizePath('/contact/', lang)} data-magnetic>{t.cta.consult}</a>
+      <a class="btn btn--accent" href={localizePath('/contact/', lang)} data-magnetic data-consult>{t.cta.consult}</a>
       {site.whatsapp && (
         <a class="btn btn--ghost" href={waHref(site.whatsapp, t.whatsapp.message)} target="_blank" rel="noopener" data-magnetic>{t.cta.whatsapp}</a>
       )}
