@@ -57,7 +57,8 @@ for external files: a clear free license (approved list in **waysz-media**) + a 
 - **One renderer + one canvas per page** (`stage.ts`). Scenes never create their own. Each section that
   draws registers an **act** (`acts/*.ts`: `host`, `scene`, `camera`, `ready`, `update`, `resize`,
   `setQuality`, `dispose`). Acts so far: `flight` (Home hero + journey), `wipe` (Home §1.3 photo transitions),
-  `globe` (Home §1.5 night Earth + route).
+  `globe` (Home §1.5 night Earth + route), `explore` (Immigration page: the same Earth with country borders,
+  free rotation, picking and a flight from Egypt — the scene drives it through `ExploreControls` in `bridge.ts`).
 - **Hand-off between acts**: the canvas moves into the host of the act that is MOST visible. While it paints
   there the host has `.is-drawing` — hide the section's DOM media with CSS on that class
   (`.host.is-drawing ~ .card .media { visibility: hidden }`); when the canvas leaves, the DOM version is back.
@@ -157,7 +158,8 @@ for external files: a clear free license (approved list in **waysz-media**) + a 
 ## Scenes (`src/motion/scenes/<name>.ts`)
 
 Home: preloader · hero-takeoff · image-sequence · areas · media-reveal · globe-route · approach ·
-boarding-pass · footer-landing (every page). Other pages / Motion Lab: destinations · route-steps ·
+boarding-pass · footer-landing (every page). Immigration page: page-hero · journey-route · dossier ·
+explore-globe (+ boarding-pass, approach). Other pages / Motion Lab: destinations · route-steps ·
 boarding-gate · text-scrub · services-filter · accordion · form-flight · hero-logo · dive.
 Contracts and what to reuse on Services / About / Contact: `reference.md`.
 

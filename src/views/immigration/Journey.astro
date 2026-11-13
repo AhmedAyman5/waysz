@@ -1,0 +1,122 @@
+---
+/**
+ * Immigration page — the journey. Scene: motion/scenes/journey-route.ts.
+ * Built ONLY from the group intro of brief §2.2: its promise («من أول سؤال حتى تجهيز ملفك كاملًا») and the four
+ * steps it lists after the colon. A flight path climbs across the section; scrolling draws it, the plane
+ * rides it and each stop lights up with its own icon. Small screens: the same route, vertical.
+ * No JS / reduced motion: the full route and every stop are visible.
+ */
+import type { Lang } from '../../i18n';
+
+interface Props { lang: Lang; title: string; steps: string[] }
+const { lang, title, steps } = Astro.props;
+const num = (i: number) => new Intl.NumberFormat(lang === 'ar' ? 'ar-EG' : 'en').format(i);
+
+// The path is drawn in a 1200 × 480 box stretched over the route area; the four stops sit ON it
+// (x = the middle of each column, y below). Keep the two in sync.
+const STOPS = [{ x: 12.5, y: 400 }, { x: 37.5, y: 318 }, { x: 62.5, y: 214 }, { x: 87.5, y: 96 }];
+const PATH = 'M-40 432 C 40 428 90 414 150 400 C 260 374 340 350 450 318 C 560 286 640 252 750 214 C 860 176 950 132 1050 96 C 1120 70 1180 52 1260 40';
+
+// line icons drawn by the scene: choosing the path · documents · certified translation · embassy requirements
+const icons = [
+  '<path d="M24 44V12"/><path d="M24 14h14l5 5-5 5H24"/><path d="M24 26H11l-5 5 5 5h13"/><circle cx="24" cy="8" r="2.5"/>',
+  '<path d="M14 6h15l8 8v24H14z"/><path d="M29 6v8h8"/><path d="M19 22h13M19 28h13M19 34h8"/><path d="M10 12v30h20"/>',
+  '<path d="M10 6h17l7 7v12"/><path d="M27 6v7h7"/><path d="M10 6v36h12"/><path d="M15 20h12M15 26h8"/><circle cx="33" cy="35" r="8"/><path d="m29 35 3 3 5.5-6"/>',
+  '<path d="M6 20 24 8l18 12"/><path d="M8 20h32"/><path d="M12 24v14M20 24v14M28 24v14M36 24v14"/><path d="M6 42h36M9 38h30"/>',
+];
+---
+<section class="journey theme-dark" data-scene="journey-route" data-waypoint aria-labelledby="journey-title">
+  <div class="container">
+    <h2 class="journey__title" id="journey-title">{title}</h2>
+
+    <div class="journey__route">
+      <svg class="journey__sky" viewBox="0 0 1200 480" preserveAspectRatio="none" aria-hidden="true">
+        <path class="journey__ghost" d={PATH} />
+        <path class="journey__trail" d={PATH} />
+      </svg>
+      <span class="journey__plane" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30"><path d="M22 12 3 20l3.5-8L3 4l19 8Z"/></svg></span>
+      <div class="journey__line" aria-hidden="true"><span class="journey__line-fill"></span></div>
+
+      <ol class="journey__stops" role="list">
+        {steps.map((step, i) => (
+          <li class="stop" style={`--x: ${STOPS[i].x}%; --y: ${(STOPS[i].y / 480) * 100}%`}>
+            <span class="stop__node" aria-hidden="true"></span>
+            <div class="stop__body">
+              <svg class="stop__icon" viewBox="0 0 48 48" width="56" height="56" aria-hidden="true" set:html={icons[i]} />
+              <span class="stop__num" aria-hidden="true">{num(i + 1)}</span>
+              <h3 class="stop__name">{step}</h3>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .journey { position: relative; overflow: clip; padding-block: var(--section-y); }
+  /* rises over the last moment of the hero (the window is sinking into the same night): no empty screen between */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .journey { margin-block-start: -34vh; margin-block-start: -34lvh; background: linear-gradient(to bottom, transparent, var(--color-bg) 30vh); }
+  }
+  .journey__title { font-size: clamp(2.2rem, 1.2rem + 4.4vw, 5.5rem); line-height: 1.16; max-width: 17ch; }
+  :global([dir='rtl']) .journey__title { line-height: 1.34; }
+
+  /* ---------- small screens: a vertical route ---------- */
+  .journey__route { position: relative; margin-block-start: var(--space-8); }
+  .journey__sky, .journey__plane { display: none; }
+  .journey__line {
+    position: absolute; inset-block: 8px; inset-inline-start: 7px; width: 2px;
+    background: color-mix(in srgb, var(--color-ink) 18%, transparent);
+  }
+  .journey__line-fill { position: absolute; inset: 0; background: var(--color-accent); transform-origin: 50% 0; }
+  .journey__stops { display: grid; gap: var(--space-8); }
+  .stop { position: relative; padding-inline-start: calc(16px + var(--space-6)); }
+  .stop__node {
+    position: absolute; inset-inline-start: 0; top: 4px; width: 16px; height: 16px; border-radius: 50%;
+    background: var(--color-bg); border: 2px solid color-mix(in srgb, var(--color-ink) 40%, transparent);
+    transition: background-color var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+  }
+  .stop__body { display: grid; grid-template-columns: auto 1fr; align-items: center; column-gap: var(--space-4); }
+  .stop__icon {
+    grid-row: span 2; width: clamp(44px, 4.4vw, 60px); height: auto; overflow: visible;
+    fill: none; stroke: var(--color-accent); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+  }
+  .stop__num { font-family: var(--font-display); font-weight: var(--weight-bold); font-size: var(--text-sm); color: var(--color-ink-muted); line-height: 1.2; }
+  .stop__name { font-size: var(--text-xl); font-weight: var(--weight-bold); line-height: 1.35; }
+  .stop :is(.stop__name, .stop__num, .stop__icon) { transition: opacity var(--dur-base) var(--ease-out); }
+
+  /* scene running: stops wait dim (0.62 keeps them AA) until the plane reaches them */
+  .journey:global(.is-scrub) .stop:not(:global(.is-active)) :is(.stop__name, .stop__num, .stop__icon) { opacity: 0.62; }
+  .journey:global(.is-scrub) .stop:global(.is-active) .stop__node,
+  .journey:not(:global(.is-scrub)) .stop__node {
+    background: var(--color-accent); border-color: var(--color-accent);
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--color-accent) 22%, transparent);
+  }
+  .journey:not(:global(.is-scrub)) .journey__line-fill { transform: none; }
+
+  /* ---------- wide screens: the flight path climbs across the section, stops sit on it ---------- */
+  @media (min-width: 1024px) {
+    .journey__route { height: clamp(26rem, 58vh, 34rem); margin-block: var(--space-7) 8rem; }
+    .journey__line { display: none; }
+    .journey__sky { display: block; position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; fill: none; }
+    :global([dir='rtl']) .journey__sky { transform: scaleX(-1); }      /* the route follows the reading direction */
+    .journey__sky path { vector-effect: non-scaling-stroke; stroke-linecap: round; }
+    .journey__ghost { stroke: color-mix(in srgb, var(--color-ink) 22%, transparent); stroke-width: 1.5; stroke-dasharray: 2 9; }
+    .journey__trail { stroke: var(--color-accent); stroke-width: 2.5; }
+    .journey:global(.is-scrub) .journey__plane { display: block; position: absolute; top: 0; left: 0; width: 30px; height: 30px; margin: -15px; }
+    .journey__plane svg { fill: var(--color-ink); filter: drop-shadow(0 0 10px var(--color-accent)); }
+
+    .journey__stops { display: block; position: absolute; inset: 0; }
+    .stop { position: absolute; inset-inline-start: var(--x); top: var(--y); padding: 0; }
+    .stop__node { inset-inline-start: -8px; top: -8px; }
+    .stop__body {
+      position: absolute; top: var(--space-6); inset-inline-start: 0; translate: -50% 0;
+      width: max-content; max-width: 15rem;
+      grid-template-columns: 1fr; justify-items: center; text-align: center; row-gap: var(--space-2);
+    }
+    :global([dir='rtl']) .stop__body { translate: 50% 0; }
+    .stop__icon { grid-row: auto; }
+    .stop__name { font-size: var(--text-xl); }
+  }
+</style>

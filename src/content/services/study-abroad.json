@@ -1,0 +1,81 @@
+{
+  "area": "travel",
+  "order": 2,
+  "proposed": false,
+  "ar": {
+    "name": "الدراسة بالخارج",
+    "summary": "إرشادك في اختيار الدولة والجامعة والتخصص، وتجهيز ملف القبول الجامعي، ثم الاستعداد لتأشيرة الدراسة.",
+    "description": "نرافقك في خطوتك نحو الدراسة بالخارج: من اختيار الدولة والجامعة والتخصص المناسب لأهدافك وميزانيتك، إلى تجهيز ملف القبول وترجمة مستنداتك ترجمة معتمدة، وحتى الاستعداد لتأشيرة الدراسة عبر WaysZ Visa.",
+    "audience": [
+      "طلاب الثانوية الراغبون في الدراسة الجامعية بالخارج.",
+      "الخريجون المتقدمون للماجستير والدكتوراه.",
+      "الراغبون في برامج اللغة والدورات القصيرة.",
+      "أولياء الأمور الباحثون عن خيارات واضحة لأبنائهم."
+    ],
+    "offer": [
+      "جلسة لتحديد الأهداف والدول والتخصصات المناسبة.",
+      "ترشيح جامعات وبرامج وفق مؤهلاتك وميزانيتك.",
+      "الإرشاد في ملف القبول وخطاب الغرض من الدراسة.",
+      "الترجمة المعتمدة للشهادات وكشوف الدرجات.",
+      "التجهيز لتأشيرة الدراسة ومقابلتها."
+    ],
+    "steps": [
+      { "title": "جلسة تعريفية", "text": "نتعرف على مؤهلاتك وأهدافك وميزانيتك." },
+      { "title": "الاختيار", "text": "نرشح لك الدول والجامعات والبرامج الأنسب." },
+      { "title": "ملف القبول", "text": "نرشدك في المستندات والتقديم حتى صدور القبول." },
+      { "title": "التأشيرة والسفر", "text": "نجهزك للتأشيرة ونساعدك في حجز تذكرتك." }
+    ],
+    "excludes": [
+      "ضمان القبول الجامعي أو المنح؛ فالقرار للجامعة.",
+      "ضمان الموافقة على التأشيرة؛ فالقرار للسفارة.",
+      "الرسوم الدراسية ورسوم التقديم والسفارات."
+    ],
+    "faq": [
+      { "q": "متى أبدأ التحضير للدراسة بالخارج؟", "a": "يُفضَّل قبل موعد الدراسة بوقتٍ كافٍ، لأن مواعيد التقديم تختلف من جامعة ودولة لأخرى." },
+      { "q": "هل تساعدونني في اختيار التخصص؟", "a": "نعم، نناقش معك اهتماماتك وفرص العمل المرتبطة بكل تخصص قبل الاختيار." }
+    ],
+    "cta": {
+      "title": "جامعتك القادمة بالخارج تبدأ من هنا",
+      "text": "احجز جلستك التعريفية، ودعنا نرسم معك طريقك للدراسة.",
+      "button": "احجز استشارة دراسية"
+    }
+  },
+  "en": {
+    "name": "Study Abroad",
+    "summary": "Guidance in choosing the country, university and major, preparing your university admission file, then getting ready for the student visa.",
+    "description": "We stay with you on your step toward studying abroad: from choosing the country, university and major that fit your goals and budget, to preparing your admission file and the certified translation of your documents, through to getting ready for the student visa via WaysZ Visa.",
+    "audience": [
+      "Secondary-school students who want to attend university abroad.",
+      "Graduates applying for master's and doctoral degrees.",
+      "People interested in language programs and short courses.",
+      "Parents looking for clear options for their children."
+    ],
+    "offer": [
+      "A session to define your goals and the countries and majors that suit you.",
+      "Suggested universities and programs based on your qualifications and budget.",
+      "Guidance on the admission file and the statement of purpose.",
+      "Certified translation of certificates and transcripts.",
+      "Preparation for the student visa and its interview."
+    ],
+    "steps": [
+      { "title": "Introductory session", "text": "We get to know your qualifications, goals and budget." },
+      { "title": "Selection", "text": "We suggest the countries, universities and programs that suit you best." },
+      { "title": "Admission file", "text": "We guide you through the documents and the application until the admission decision is issued." },
+      { "title": "Visa and travel", "text": "We prepare you for the visa and help you book your ticket." }
+    ],
+    "excludes": [
+      "A guarantee of university admission or scholarships — the decision belongs to the university.",
+      "A guarantee of visa approval — the decision belongs to the embassy.",
+      "Tuition fees, application fees and embassy fees."
+    ],
+    "faq": [
+      { "q": "When should I start preparing to study abroad?", "a": "Preferably well ahead of the start of your studies, because application deadlines differ from one university and country to another." },
+      { "q": "Do you help me choose a major?", "a": "Yes. We discuss your interests and the career opportunities linked to each major before you choose." }
+    ],
+    "cta": {
+      "title": "Your next university abroad starts here",
+      "text": "Book your introductory session and let us map out your path to studying abroad with you.",
+      "button": "Book a study consultation"
+    }
+  }
+}

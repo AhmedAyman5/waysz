@@ -1,0 +1,86 @@
+---
+/**
+ * "Immigration, Study & Visas" — the service-group page (brief §2.2). The second showcase after Home, in the
+ * same language: dusk, deep navy, amber light.
+ *   hero (dusk from the window seat) → the journey (the intro sentence's own four steps) → the eight services
+ *   as sheets of a file → the WaysZ Visa boarding pass → "Explore the world" (interactive 3D globe) → the call.
+ * One file per section in views/immigration/; the pass and the call are Home's own sections (views/home/).
+ * Copy: brief §2.2, Arabic is the source; English is a faithful translation. Nothing is promised: visa and
+ * admission decisions belong to embassies and universities.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from './immigration/Hero.astro';
+import Journey from './immigration/Journey.astro';
+import Services, { type ServiceItem } from './immigration/Services.astro';
+import Explore from './immigration/Explore.astro';
+import Visa from './home/Visa.astro';
+import Cta from './home/Cta.astro';
+import { useTranslations, type Lang } from '../i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+// §2.2 group intro: «سواء كنت … حتى تجهيز ملفك كاملًا: اختيار المسار، والمستندات، والترجمة المعتمدة، والتعامل مع متطلبات السفارات.»
+// The hero carries the sentence up to its colon; the journey section is the list after it.
+const copy = {
+  ar: {
+    lead: 'سواء كنت تخطط للهجرة، أو للدراسة في جامعة بالخارج، أو تحتاج إلى تأشيرة لأي غرض؛ نرافقك في رحلتك من أول سؤال حتى تجهيز ملفك كاملًا.',
+    journey: 'من أول سؤال حتى تجهيز ملفك كاملًا',
+    steps: ['اختيار المسار', 'المستندات', 'الترجمة المعتمدة', 'التعامل مع متطلبات السفارات'],
+  },
+  en: {
+    lead: 'Whether you are planning to immigrate, to study at a university abroad, or need a visa for any purpose — we stay with you on your journey from the first question until your file is complete.',
+    journey: 'From the first question until your file is complete',
+    steps: ['Choosing the path', 'The documents', 'Certified translation', 'Dealing with embassy requirements'],
+  },
+}[lang];
+
+// §2.2 — the eight services, in the brief's order. `proposed` = «مقترح» (pending the client's approval).
+const services: (Omit<ServiceItem, 'name' | 'text'> & { ar: [string, string]; en: [string, string] })[] = [
+  { slug: 'immigration-residency', icon: 'immigration',
+    ar: ['استشارات الهجرة والإقامة', 'تقييم وضعك، ومساعدتك على اختيار الدولة والبرنامج الأنسب للهجرة أو الإقامة أو العمل بالخارج، ثم تجهيز ملفك خطوة بخطوة.'],
+    en: ['Immigration & Residency Consultations', 'Assessing your situation and helping you choose the country and program best suited to immigrating, residing or working abroad, then preparing your file step by step.'] },
+  { slug: 'study-abroad', icon: 'study',
+    ar: ['الدراسة بالخارج', 'إرشادك في اختيار الدولة والجامعة والتخصص، وتجهيز ملف القبول الجامعي، ثم الاستعداد لتأشيرة الدراسة.'],
+    en: ['Study Abroad', 'Guidance in choosing the country, university and major, preparing your university admission file, then getting ready for the student visa.'] },
+  { slug: 'visa-services', icon: 'visa', external: true,
+    ar: ['خدمات التأشيرات', 'استشارات متخصصة لتأشيرات الدراسة والأعمال والمؤتمرات والإقامة والزيارات العائلية، عبر منصتنا WaysZ Visa.'],
+    en: ['Visa Services', 'Specialized consultations for study, business, conference, residency and family-visit visas, through our platform WaysZ Visa.'] },
+  { slug: 'certified-translation', icon: 'translation',
+    ar: ['الترجمة المعتمدة', 'ترجمة الوثائق الرسمية والشخصية والقانونية إلى جميع اللغات، عبر مكاتب ترجمة معتمدة لدى الجهات الرسمية والسفارات.'],
+    en: ['Certified Translation', 'Translation of official, personal and legal documents into all languages, through translation offices accredited by official bodies and embassies.'] },
+  { slug: 'embassy-consultations', icon: 'embassy',
+    ar: ['استشارات السفارات', 'إرشادك إلى متطلبات السفارات وإجراءاتها، ومراجعة ملفك قبل التقديم لتفادي الأخطاء الشائعة.'],
+    en: ['Embassy Consultations', 'Guiding you through embassy requirements and procedures, and reviewing your file before you apply to avoid common mistakes.'] },
+  { slug: 'flight-booking', icon: 'tickets',
+    ar: ['حجز تذاكر الطيران', 'البحث عن أنسب الرحلات من حيث المواعيد والأسعار للطلاب والمهاجرين والمسافرين للعمل، ومساعدتك في إتمام الحجز.'],
+    en: ['Flight Booking', 'Finding the most suitable flights in terms of schedules and prices for students, immigrants and those travelling for work, and helping you complete the booking.'] },
+  { slug: 'document-legalization', icon: 'legalization', proposed: true,
+    ar: ['توثيق المستندات وتصديقها', 'إرشادك في إجراءات تصديق الشهادات والمستندات لدى الجهات المختصة قبل تقديمها للسفارات أو الجامعات.'],
+    en: ['Document Authentication & Legalization', 'Guiding you through the procedures for legalizing certificates and documents with the competent authorities before submitting them to embassies or universities.'] },
+  { slug: 'egyptian-citizenship-by-investment', icon: 'citizenship', proposed: true,
+    ar: ['الجنسية المصرية بالاستثمار', 'إرشاد الأجانب في مسارات اكتساب الجنسية عبر الاستثمار العقاري أو التجاري أو المساهمة المالية، وتجهيز المستندات ومتابعة الإجراءات.'],
+    en: ['Egyptian Citizenship by Investment', 'Guiding foreign nationals through the routes to acquiring citizenship via real-estate or business investment or a financial contribution, preparing the documents and following up on the procedures.'] },
+];
+const items: ServiceItem[] = services.map(({ ar, en, ...rest }) => ({ ...rest, name: (lang === 'ar' ? ar : en)[0], text: (lang === 'ar' ? ar : en)[1] }));
+---
+<BaseLayout lang={lang} title={t.pages.immigration.title} description={t.pages.immigration.description} headerOverlay>
+  <Hero lang={lang} lead={copy.lead} />
+  <Journey lang={lang} title={copy.journey} steps={copy.steps} />
+  <Services lang={lang} title={t.nav.services} items={items} />
+  <Visa lang={lang} />
+  <Explore lang={lang} />
+  <Cta lang={lang} id="consult">
+    <p class="consult-chip" data-destination-chip={t.explore.destination} hidden></p>
+  </Cta>
+</BaseLayout>
+
+<style>
+  /* the destination chosen on the globe, repeated above the call's buttons */
+  .consult-chip {
+    width: fit-content; margin: var(--space-6) auto 0; padding: var(--space-2) var(--space-5);
+    border: 1.5px solid var(--color-accent); border-radius: var(--radius-pill);
+    font-family: var(--font-display); font-weight: var(--weight-semibold);
+  }
+</style>
