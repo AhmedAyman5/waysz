@@ -5,6 +5,11 @@ description: How WaysZ finds, licenses, optimizes and ships photos, videos, imag
 
 # WaysZ Media Pipeline
 
+**Creative freedom:** source your own photos, videos, 3D models, textures and animations whenever they make the
+site more impressive (goal: a jaw-dropping, Awwwards-level experience on every page) — no need to ask first, and
+the shot list in §4 is a starting point, not a limit. Only rule: the file comes from a source below (clear free
+license) and gets a row in `docs/media-credits.md`.
+
 ## 1 · Approved sources (free, commercial use OK)
 
 | Source                                                                                                     | Use for                               | Rules                                                                                                      |

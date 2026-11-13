@@ -19,6 +19,11 @@ scroll-scrubbed footage, media that expands to full screen, sticky full-bleed me
 Personality: calm, confident, smooth. Entrances `expo.out` 0.8–1.4s · scrubbed scenes `none` ·
 UI feedback 0.2–0.3s. One orchestrated moment per section — never a fade-up on every element.
 
+**Creative freedom:** the goal on every page is a jaw-dropping, Awwwards-level experience. You are free to create
+your own animations, scenes, shaders and 3D acts, and to source your own footage, models, textures and
+animations, whenever it makes the site more impressive. The scenes below are a toolkit, not a limit. Only rule
+for external files: a clear free license (approved list in **waysz-media**) + a row in `docs/media-credits.md`.
+
 ## Wiring (already in place)
 
 1. `BaseLayout` `<head>` boot script: adds `.js`, adds `.intro-seen` (intro already played / reduced
