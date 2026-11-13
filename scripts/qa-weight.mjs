@@ -3,13 +3,10 @@
  *   npm run build && npm run preview -- --port 4322    then    node scripts/qa-weight.mjs [url]
  * Also reports console errors and which quality tier the device got.
  */
-import { chromium } from 'playwright';
+import { launch } from './qa-browser.mjs';
 
 const url = process.argv[2] ?? 'http://localhost:4322/';
-const browser = await chromium.launch({
-  channel: 'chrome',
-  args: ['--use-angle=d3d11', '--enable-gpu', '--ignore-gpu-blocklist', '--autoplay-policy=no-user-gesture-required'],
-});
+const browser = await launch();
 
 for (const device of [
   { name: 'desktop 1440x900', viewport: { width: 1440, height: 900 } },

@@ -1,13 +1,18 @@
 ---
 /**
  * Home (brief §1) — "The Journey". Concept and storyboard: docs/home-creative-treatment.md
- * §1.2 Hero + §1.2b The Journey share one WebGL stage (src/motion/stage); every tier and the
- * no-JS / reduced-motion versions are plain HTML underneath it.
+ * §1.2 Hero + §1.2b The Journey live here; §1.3–1.7 are one file each in views/home/.
+ * Hero, Journey, the four areas and the globe share ONE WebGL stage (src/motion/stage); every tier and
+ * the no-JS / reduced-motion versions are plain HTML underneath it.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
-import TodoSection from '../components/TodoSection.astro';
 import BgVideo from '../components/BgVideo.astro';
 import ImageSequence from '../components/ImageSequence.astro';
+import Areas from './home/Areas.astro';
+import Why from './home/Why.astro';
+import How from './home/How.astro';
+import Cta from './home/Cta.astro';
+import Visa from './home/Visa.astro';
 import { localizePath, useTranslations, type Lang } from '../i18n';
 
 interface Props { lang: Lang }
@@ -92,12 +97,12 @@ const at = [0.14, 0.4, 0.64];
     </ImageSequence>
   </div>
 
-  <!-- Part 2 — storyboard v2 (docs/home-creative-treatment.md §2) -->
-  <TodoSection ref="1.3" title="مجالات خدماتنا — Four destinations · scene: destinations (sticky full-bleed photos + Lottie)" />
-  <TodoSection ref="1.4" title="لماذا WaysZ؟ — scene: media-reveal (pin 2) → six reasons" />
-  <TodoSection ref="1.5" title="كيف نعمل معك؟ — night-Earth globe + scene: route-steps (pin 3)" />
-  <TodoSection ref="1.6" title="CTA — Final approach · data-split · data-magnetic" />
-  <TodoSection ref="1.7" title="WaysZ Visa — scene: boarding-gate + Lottie visa stamp" />
+  <!-- §1.3–1.7: one file per section in views/home/ (markup + copy + styles); scenes in motion/scenes/ -->
+  <Areas lang={lang} />
+  <Why lang={lang} />
+  <How lang={lang} />
+  <Cta lang={lang} />
+  <Visa lang={lang} />
 </BaseLayout>
 
 <style>
@@ -110,11 +115,6 @@ const at = [0.14, 0.4, 0.64];
     margin-block-end: -100vh; margin-block-end: -100lvh;
     pointer-events: none; overflow: hidden;
   }
-  .flight__stage :global(.stage-canvas) {
-    display: block; width: 100%; height: 100%;
-    opacity: 0; transition: opacity 0.9s var(--ease-out);
-  }
-  .flight__stage :global(.stage-canvas.is-on) { opacity: 1; }
 
   /* ---------- §1.2 Hero ---------- */
   .hero { position: relative; z-index: 1; }

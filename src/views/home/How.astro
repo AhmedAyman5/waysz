@@ -1,0 +1,145 @@
+---
+/**
+ * Home §1.5 «كيف نعمل معك؟». Scene: motion/scenes/globe-route.ts.
+ * The night side of the Earth (NASA Black Marble) in the shared WebGL stage (acts/globe.ts): a route leaves
+ * Egypt and the plane flies it while the four steps light up one by one. CSS sticky holds the screen.
+ * css tier / no JS / reduced motion: a still of the same globe; the steps and their route line are HTML.
+ */
+import type { Lang } from '../../i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+
+// Copy: brief §1.5 (Arabic is the source; English is a faithful translation).
+const copy = {
+  ar: {
+    title: 'كيف نعمل معك؟',
+    steps: [
+      ['تواصل معنا', 'عبر النموذج أو الهاتف أو واتساب، وأخبرنا باحتياجك.'],
+      ['نفهم طلبك', 'يراجع الفريق المختص التفاصيل ويحدد المسار المناسب.'],
+      ['خطة واضحة', 'نوضح الخطوات والمتطلبات والمدة المتوقعة قبل البدء.'],
+      ['ننفذ ونتابع', 'نبدأ العمل ونبقيك على اطلاع حتى إتمام الخدمة.'],
+    ],
+  },
+  en: {
+    title: 'How we work with you',
+    steps: [
+      ['Contact us', 'Through the form, by phone or on WhatsApp, and tell us what you need.'],
+      ['We understand your request', 'The specialized team reviews the details and sets the right path.'],
+      ['A clear plan', 'We explain the steps, the requirements and the expected timeline before we begin.'],
+      ['We deliver and follow up', 'We start the work and keep you informed until the service is complete.'],
+    ],
+  },
+}[lang];
+const num = (i: number) => new Intl.NumberFormat(lang === 'ar' ? 'ar-EG' : 'en').format(i);
+---
+<section class="how theme-dark" data-scene="globe-route" data-waypoint aria-labelledby="how-title">
+  <div class="how__track">
+    <div class="how__view" aria-hidden="true">
+      <img class="how__poster" src="/media/img/earth-poster.webp" alt="" width="1100" height="1100" loading="lazy" decoding="async" />
+      <div class="how__stage stage-host"></div>
+      <div class="how__scrim"></div>
+    </div>
+
+    <div class="how__content container">
+      <h2 class="how__title" id="how-title">{copy.title}</h2>
+      <div class="how__route">
+        <div class="how__line" aria-hidden="true">
+          <span class="how__line-fill"></span>
+          <span class="how__plane"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M22 12 3 20l3.5-8L3 4l19 8Z"/></svg></span>
+        </div>
+        <ol class="how__steps" role="list">
+          {copy.steps.map(([title, text], i) => (
+            <li class="step">
+              <span class="step__num" aria-hidden="true">{num(i + 1)}</span>
+              <h3>{title}</h3>
+              <p>{text}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .how { position: relative; overflow: clip; }
+  .how__track { position: relative; }
+
+  /* ---------- the globe: a still by default, the WebGL stage when it is live ---------- */
+  .how__view { position: absolute; inset: 0; overflow: hidden; }
+  .how__poster {
+    position: absolute; max-width: none;
+    /* same place as the live globe (acts/globe.ts): 122vw wide, centred in the upper half */
+    width: 158vw; height: 158vw; inset-inline-start: 50%; top: 33vh; top: 33lvh;
+    translate: -50% -50%;
+  }
+  :global([dir='rtl']) .how__poster { translate: 50% -50%; }
+  .how__stage:global(.is-drawing) { background: var(--color-bg); }   /* covers the still while the canvas fades in */
+  .how__scrim {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(to top, var(--color-bg) 0%, color-mix(in srgb, var(--color-bg) 82%, transparent) 24%, transparent 46%),
+      linear-gradient(to bottom, var(--color-bg) 0%, color-mix(in srgb, var(--color-bg) 60%, transparent) 14%, transparent 34%);
+  }
+
+  .how__content { position: relative; padding-block: var(--section-y); }
+  .how__title { font-size: clamp(2.4rem, 1.4rem + 4.8vw, 5.75rem); line-height: 1.2; max-width: 12ch; }
+  :global([dir='rtl']) .how__title { line-height: 1.34; }
+
+  /* ---------- steps + route line (vertical by default) ---------- */
+  .how__route { position: relative; margin-block-start: 46vh; }
+  .how__line {
+    position: absolute; inset-block: 22px 22px; inset-inline-start: 21px; width: 2px;
+    background: color-mix(in srgb, var(--color-ink) 18%, transparent);
+  }
+  .how__line-fill { position: absolute; inset: 0; background: var(--color-accent); transform-origin: 50% 0; }
+  .how__plane { position: absolute; top: 0; inset-inline-start: 50%; width: 22px; height: 22px; margin: -11px; display: none; }
+  .how__plane svg { fill: var(--color-ink); rotate: 90deg; }
+  .how__steps { display: grid; gap: var(--space-7); }
+  .step { position: relative; padding-inline-start: calc(44px + var(--space-5)); }
+  .step__num {
+    position: absolute; inset-inline-start: 0; top: 0;
+    display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
+    border: 1.5px solid color-mix(in srgb, var(--color-ink) 35%, transparent);
+    background: var(--color-bg);
+    font-family: var(--font-display); font-weight: var(--weight-bold); line-height: 1;
+    transition: background-color var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out);
+  }
+  .step h3 { font-size: var(--text-xl); line-height: 1.4; padding-block-start: 0.3em; }
+  .step p { margin-block-start: var(--space-2); color: color-mix(in srgb, var(--color-ink) 80%, transparent); max-width: 36ch; }
+  .step :is(h3, p) { transition: opacity var(--dur-base) var(--ease-out); }
+
+  /* scene running: steps wait dim until the plane reaches them */
+  .how:global(.is-scrub) .how__plane { display: block; }
+  .how:global(.is-scrub) .step:not(:global(.is-active)) :is(h3, p) { opacity: 0.38; }
+  .how:global(.is-scrub) .step:global(.is-active) .step__num,
+  .how:not(:global(.is-scrub)) .step__num { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-on-accent); }
+  .how:not(:global(.is-scrub)) .how__line-fill { transform: none; }
+
+  /* the globe holds the screen while the steps scroll over it */
+  .how:global(.is-scrub) .how__view { position: sticky; top: 0; height: 100vh; height: 100lvh; }
+  .how:global(.is-scrub) .how__content { margin-block-start: -100vh; margin-block-start: -100lvh; }
+
+  /* ---------- wide screens: one sticky screen, steps in a row along a horizontal route ---------- */
+  @media (min-width: 1024px) {
+    .how__poster {
+      width: 141vh; height: 141vh; top: 65vh; inset-inline-start: 71%;
+    }
+    .how__route { margin-block-start: 0; }
+    .how__content { min-height: 100vh; display: grid; align-content: space-between; padding-block: calc(76px + var(--space-7)) var(--space-8); }
+    .how__steps { grid-template-columns: repeat(4, 1fr); gap: var(--space-6); }
+    .how__line { inset-block: 21px auto; inset-inline: 22px calc(25% - 22px + var(--space-6) * 0.75); width: auto; height: 2px; }
+    .how__line-fill { transform-origin: 0 50%; }
+    :global([dir='rtl']) .how__line-fill { transform-origin: 100% 50%; }
+    .how__plane { top: 50%; inset-inline-start: 0; }
+    .how__plane svg { rotate: none; }
+    :global([dir='rtl']) .how__plane svg { rotate: 180deg; }
+    .step { padding-inline-start: 0; padding-block-start: calc(44px + var(--space-5)); }
+    .step h3 { padding-block-start: 0; font-size: var(--text-lg); }
+    .step p { font-size: var(--text-sm); }
+
+    .how:global(.is-scrub) .how__track { height: calc(100vh + 260vh); height: calc(100lvh + 260vh); }
+    .how:global(.is-scrub) .how__content { position: sticky; top: 0; height: 100vh; height: 100lvh; min-height: 0; }
+  }
+</style>

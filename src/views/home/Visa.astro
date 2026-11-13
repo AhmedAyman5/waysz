@@ -1,0 +1,135 @@
+---
+/**
+ * Home §1.7 — the link to WaysZ Visa as a boarding pass. Scene: motion/scenes/boarding-pass.ts.
+ * The pass tilts in 3D with the scroll and the pointer and gets stamped; behind it, a terminal at dusk.
+ * The pass carries the Visa site's accent (data-site="visa"). The link goes to site.visaSite.
+ */
+import { Image } from 'astro:assets';
+import { site } from '../../lib/site';
+import { useTranslations, type Lang } from '../../i18n';
+import gate from '../../assets/media/visa-gate.jpg';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+// Copy: brief §1.7 (Arabic is the source; English is a faithful translation).
+const copy = {
+  ar: { title: 'تخطط للسفر أو الدراسة أو الهجرة؟', text: 'تعرّف على WaysZ Visa، منصتنا المتخصصة في استشارات التأشيرات وتجهيز ملفك.', from: 'من', to: 'إلى' },
+  en: { title: 'Planning to travel, study or immigrate?', text: 'Meet WaysZ Visa, our platform dedicated to visa consultations and preparing your file.', from: 'From', to: 'To' },
+}[lang];
+---
+<section class="gate theme-dark" data-scene="boarding-pass" data-depth-scene data-waypoint aria-labelledby="visa-title">
+  <div class="gate__media" aria-hidden="true">
+    <div class="gate__photo" data-depth="0.3">
+      <Image src={gate} alt="" widths={[640, 960, 1440, 1900]} sizes="100vw" format="webp" quality={68} loading="lazy" decoding="async" />
+    </div>
+  </div>
+  <div class="gate__scrim" aria-hidden="true"></div>
+
+  <div class="gate__content container">
+    <div class="pass__scroll">
+      <article class="pass theme-light" data-site="visa">
+        <div class="pass__main">
+          <p class="pass__route">
+            <span><small>{copy.from}</small><bdi>WaysZ</bdi></span>
+            <svg class="pass__path icon-dir" viewBox="0 0 120 24" aria-hidden="true">
+              <path d="M2 12h74" stroke-dasharray="2 6"/><path class="pass__plane" d="M112 12 88 21l4.5-9L88 3l24 9Z"/>
+            </svg>
+            <span><small>{copy.to}</small><bdi>WaysZ Visa</bdi></span>
+          </p>
+          <h2 class="pass__title" id="visa-title">{copy.title}</h2>
+          <p class="pass__text">{copy.text}</p>
+          <a class="btn btn--accent pass__btn" href={site.visaSite} rel="noopener" data-magnetic data-cursor={t.cursor.visit}>
+            {t.cta.visitVisa}
+            <svg class="icon-dir" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+        <div class="pass__stub" aria-hidden="true">
+          <div class="pass__code"></div>
+          <svg class="stamp" viewBox="0 0 120 120">
+            <defs><path id="stamp-arc" d="M60 60m-41 0a41 41 0 1 1 82 0a41 41 0 1 1-82 0"/></defs>
+            <circle cx="60" cy="60" r="55"/><circle cx="60" cy="60" r="50" stroke-dasharray="2 4"/><circle cx="60" cy="60" r="29"/>
+            <text><textPath href="#stamp-arc" startOffset="2%" textLength="250">WAYSZ VISA · WAYSZ VISA ·</textPath></text>
+            <path class="stamp__plane" d="M78 60 46 72l6-12-6-12 32 12Z"/>
+          </svg>
+        </div>
+        <div class="pass__shine" aria-hidden="true"></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .gate { position: relative; overflow: hidden; min-height: 100vh; min-height: 100svh; display: grid; align-items: center; }
+  .gate__media, .gate__scrim { position: absolute; inset: 0; }
+  .gate__photo { position: absolute; inset: -5%; }
+  .gate__photo :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 42% 50%; }
+  .gate__scrim {
+    background:
+      linear-gradient(to bottom, var(--color-bg) 0%, color-mix(in srgb, var(--color-bg) 55%, transparent) 24%, color-mix(in srgb, var(--color-bg) 40%, transparent) 70%, var(--color-bg) 100%);
+  }
+  .gate__content { position: relative; padding-block: var(--section-y); perspective: 1400px; }
+  .pass__scroll {
+    max-width: 60rem; margin-inline: auto;
+    filter: drop-shadow(0 28px 44px color-mix(in srgb, var(--color-bg) 70%, transparent));
+  }
+
+  .pass {
+    position: relative; overflow: hidden;
+    display: grid; grid-template-columns: 1fr 13.5rem;
+    background: var(--color-surface); border-radius: var(--radius-lg);
+    /* the two notches of the tear line are cut out of the pass, so the photo shows through them */
+    --notch: calc(100% - 13.5rem);
+    -webkit-mask: radial-gradient(circle 13px at var(--notch) 0, transparent 97%, black),
+                  radial-gradient(circle 13px at var(--notch) 100%, transparent 97%, black);
+    -webkit-mask-composite: source-in;
+    mask: radial-gradient(circle 13px at var(--notch) 0, transparent 97%, black),
+          radial-gradient(circle 13px at var(--notch) 100%, transparent 97%, black);
+    mask-composite: intersect;
+  }
+  :global([dir='rtl']) .pass { --notch: 13.5rem; }
+  .pass__main { padding: clamp(1.5rem, 1rem + 3vw, 3.5rem); }
+  .pass__route { display: flex; align-items: end; gap: var(--space-4); font-family: var(--font-display); font-weight: var(--weight-bold); font-size: var(--text-lg); }
+  .pass__route span { display: grid; line-height: 1.3; }
+  .pass__route small { font-size: var(--text-xs); font-weight: var(--weight-regular); color: var(--color-ink-muted); }
+  .pass__path { flex: 0 1 120px; min-width: 56px; height: 24px; margin-block-end: 0.15em; fill: none; stroke: var(--color-accent-ink); stroke-width: 2; stroke-linecap: round; }
+  .pass__plane { fill: var(--color-accent-ink); stroke: none; }
+  .pass__title { margin-block: var(--space-6) var(--space-3); font-size: var(--text-2xl); line-height: 1.3; max-width: 18ch; }
+  :global([dir='rtl']) .pass__title { line-height: 1.45; }
+  .pass__text { color: var(--color-ink-muted); max-width: 44ch; }
+  .pass__btn { margin-block-start: var(--space-6); min-height: 54px; background: var(--color-accent-strong); color: var(--color-on-accent); }
+  .pass__btn:hover { background: var(--color-accent-ink); }
+
+  /* the stub: tear line, barcode, stamp */
+  .pass__stub {
+    position: relative; display: grid; align-content: space-between; justify-items: center; gap: var(--space-5);
+    padding: var(--space-6) var(--space-5);
+    background: var(--color-bg-alt);
+    border-inline-start: 2px dashed color-mix(in srgb, var(--color-ink) 22%, transparent);
+  }
+  .pass__code {
+    width: 100%; height: 3.25rem;
+    background: repeating-linear-gradient(to right, var(--color-ink) 0 2px, transparent 2px 5px, var(--color-ink) 5px 9px, transparent 9px 11px, var(--color-ink) 11px 12px, transparent 12px 16px);
+    opacity: 0.85;
+  }
+  .stamp { width: 8.25rem; height: 8.25rem; overflow: visible; fill: none; stroke: var(--color-accent-ink); stroke-width: 2.4; rotate: -9deg; }
+  .stamp text { fill: var(--color-accent-ink); stroke: none; font: var(--weight-bold) 12.5px var(--font-display); letter-spacing: 1.5px; }
+  .stamp__plane { fill: var(--color-accent-ink); stroke: none; }
+
+  .pass__shine {
+    position: absolute; inset: -40% -60%; pointer-events: none; opacity: 0;
+    background: linear-gradient(105deg, transparent 42%, color-mix(in srgb, var(--color-surface) 75%, transparent) 50%, transparent 58%);
+    mix-blend-mode: soft-light;
+  }
+
+  @media (max-width: 767px) {
+    .pass { grid-template-columns: 1fr; -webkit-mask: none; mask: none; }
+    .pass__stub {
+      grid-auto-flow: column; align-content: center; align-items: center; justify-content: space-between;
+      border-inline-start: 0; border-block-start: 2px dashed color-mix(in srgb, var(--color-ink) 22%, transparent);
+    }
+    .pass__code { width: 9rem; }
+    .stamp { width: 6.5rem; height: 6.5rem; }
+  }
+</style>

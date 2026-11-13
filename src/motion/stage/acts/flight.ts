@@ -10,26 +10,12 @@ import {
 import type { Act, Quality } from '../stage';
 import { flight } from '../bridge';
 import { fragment, vertex } from '../shaders/flight.glsl';
+import { token } from './util';
 
 const DEFINES: Record<Quality, Record<string, number>> = {
   high: { OCT: 5, LAYERS: 3, RAYS: 10 },
   lite: { OCT: 3, LAYERS: 2, RAYS: 0 },
 };
-
-/** Reads a semantic color token as a three.js Color (display space, no conversion). */
-function token(name: string, scope: Element, mixWith?: [string, number]) {
-  const probe = document.createElement('i');
-  probe.style.color = mixWith
-    ? `color-mix(in srgb, var(${name}) ${mixWith[1]}%, var(${mixWith[0]}))`
-    : `var(${name})`;
-  scope.append(probe);
-  const ctx = document.createElement('canvas').getContext('2d')!;
-  ctx.fillStyle = getComputedStyle(probe).color;
-  ctx.fillRect(0, 0, 1, 1);
-  probe.remove();
-  const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
-  return new Color().setRGB(r / 255, g / 255, b / 255);
-}
 
 export function createFlightAct(host: HTMLElement, video: HTMLVideoElement, desktop: boolean): Act {
   const scene = new Scene();

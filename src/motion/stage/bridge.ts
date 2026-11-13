@@ -14,6 +14,21 @@ export const flight = {
   frameId: -1,                               // changes whenever `frame` changes
 };
 
+/** Home §1.3 — written by scenes/areas.ts, read by acts/wipe.ts */
+export const areas = {
+  progress: 0,                               // 0 = intro (page colour) · 1…4 = the four photos; fractions = mid-transition
+  hold: 0,                                   // 0…1 across the whole section (slow push-in)
+};
+
+/** Home §1.5 — written by scenes/globe-route.ts, read by acts/globe.ts */
+export const route = {
+  head: 0,                                   // 0…3: position of the plane along the three hops
+  enter: 0,                                  // 0…1: the globe rising into view
+  side: 1 as 1 | -1,                         // which side of the screen the globe sits on (1 = right)
+  compact: false,                            // small screens: globe in the upper half
+  poster: false,                             // dev only (?globe=poster): whole globe centred, to re-render the still
+};
+
 type Listener = (live: boolean) => void;
 const listeners = new Set<Listener>();
 

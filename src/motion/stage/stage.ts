@@ -4,7 +4,8 @@
  * - driven by gsap.ticker (no second RAF loop)
  * - draws only while the active act's host is on screen and the tab is visible
  * - DPR capped per tier, downgrades itself when frames are slow, disposes on page leave
- * The canvas is moved into the host of the act that is on screen (Part 2 adds more acts).
+ * The canvas is moved into the host of the act that is MOST visible; that host gets `.is-drawing` while the
+ * canvas paints there (its DOM version hides itself with CSS) and loses it when the canvas leaves.
  */
 import { gsap } from 'gsap';
 import { WebGLRenderer, type Camera, type Scene } from 'three';
@@ -38,6 +39,9 @@ export class Stage {
   private frames = 0;
   private slowSum = 0;
   private slowWindows = 0;
+  private visible = new Map<Act, number>();   // act → visible height of its host (px)
+  private drawing: HTMLElement | null = null; // host that currently shows the canvas (.is-drawing)
+  private failed = false;
   private io: IntersectionObserver;
   private ro: ResizeObserver;
 
@@ -56,14 +60,16 @@ export class Stage {
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, DPR[quality]));
     this.renderer.debug.checkShaderErrors = import.meta.env.DEV;   // the status check blocks the main thread
 
+    // Several hosts can be on screen at once (section hand-offs): the most visible one gets the canvas.
     this.io = new IntersectionObserver((entries) => {
       for (const e of entries) {
         const act = this.acts.get(e.target as HTMLElement);
-        if (!act) continue;
-        if (e.isIntersecting) this.activate(act);
-        else if (this.active === act) this.activate(null);
+        if (act) this.visible.set(act, e.isIntersecting ? e.intersectionRect.height : 0);
       }
-    });
+      let best: Act | null = null, most = 0;
+      this.visible.forEach((h, act) => { if (h > most) { most = h; best = act; } });
+      if (best !== this.active) this.activate(best);
+    }, { threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1] });
     this.ro = new ResizeObserver(() => this.resize());
 
     this.canvas.addEventListener('webglcontextlost', this.fail);
@@ -82,6 +88,9 @@ export class Stage {
   private activate(act: Act | null) {
     if (this.active) this.ro.unobserve(this.active.host);
     this.active = act;
+    this.frames = 0;                                   // a new act uploads textures: do not count those frames
+    this.slowSum = 0;
+    if (this.drawing !== (act?.host ?? null)) this.setDrawing(null);   // the canvas is leaving that host
     if (act) {
       if (this.canvas.parentElement !== act.host) act.host.append(this.canvas);
       this.ro.observe(act.host);
@@ -95,6 +104,14 @@ export class Stage {
     if (!host || !host.clientWidth) return;
     this.renderer.setSize(host.clientWidth, host.clientHeight, false);
     this.active!.resize(this.canvas.width, this.canvas.height);
+  }
+
+  /** `.is-drawing` on a host = the canvas is painting there right now, so its DOM version may hide */
+  private setDrawing(host: HTMLElement | null) {
+    if (this.drawing === host) return;
+    this.drawing?.classList.remove('is-drawing');
+    this.drawing = host;
+    host?.classList.add('is-drawing');
   }
 
   /** start/stop the ticker callback so nothing runs off-screen or in a hidden tab */
@@ -112,8 +129,9 @@ export class Stage {
     const act = this.active;
     if (!act) return;
     act.update(time, deltaMs);
-    if (!act.ready() || !this.compiled.has(act)) return;
+    if (!act.ready() || !this.compiled.has(act) || this.canvas.parentElement !== act.host) return;
     this.renderer.render(act.scene, act.camera);
+    this.setDrawing(act.host);
     if (!this.shown) { this.shown = true; this.canvas.classList.add('is-on'); }
 
     // Frame-time watchdog. Skips the first frames (shader compile, texture uploads) and needs TWO slow
@@ -138,7 +156,12 @@ export class Stage {
     this.resize();
   }
 
-  private fail = () => { this.dispose(); this.onFail(); };
+  private fail = () => {
+    if (this.failed) return;
+    this.failed = true;
+    this.dispose();
+    this.onFail();
+  };
 
   dispose = () => {
     gsap.ticker.remove(this.tick);
@@ -148,8 +171,10 @@ export class Stage {
     document.removeEventListener('visibilitychange', this.sync);
     window.removeEventListener('pagehide', this.dispose);
     this.canvas.removeEventListener('webglcontextlost', this.fail);
+    this.setDrawing(null);
     this.acts.forEach((a) => a.dispose());
     this.acts.clear();
+    this.visible.clear();
     this.active = null;
     this.renderer.dispose();
     this.renderer.forceContextLoss();

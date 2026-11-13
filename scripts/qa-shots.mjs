@@ -4,7 +4,7 @@
  * Needs the dev server (npm run dev) — the ?tier= override only exists in dev.
  * Uses the installed Google Chrome (channel "chrome") with the real GPU so WebGL tiers render.
  */
-import { chromium } from 'playwright';
+import { launch } from './qa-browser.mjs';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { basename, join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -39,10 +39,7 @@ const runs = [
   { name: 'ar-desktop-intro', path: '/?tier=high', viewport: desktop, intro: true, stops: [0] },
 ].filter((r) => !only || r.name.includes(only));
 
-const browser = await chromium.launch({
-  channel: 'chrome',
-  args: ['--use-angle=d3d11', '--enable-gpu', '--ignore-gpu-blocklist', '--autoplay-policy=no-user-gesture-required'],
-});
+const browser = await launch();
 const problems = [];
 
 for (const run of runs) {

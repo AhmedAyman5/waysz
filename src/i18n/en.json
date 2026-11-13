@@ -26,6 +26,10 @@
     "visitVisa": "Visit WaysZ Visa",
     "aboutMore": "Learn more about us"
   },
+  "cursor": {
+    "explore": "Explore",
+    "visit": "Visit"
+  },
   "areas": {
     "legal": "Legal Services",
     "travel": "Immigration, Study & Visas",
@@ -63,10 +67,27 @@
     "consent": "By sending this form you agree that we may contact you about your request. Please don't send documents or sensitive personal data through this form."
   },
   "pages": {
-    "home":     { "title": "WaysZ | Legal, Immigration, Events & Technology", "description": "Specialized legal services, immigration, study and visas, international exhibitions and conferences, and software solutions — under one name." },
-    "services": { "title": "Services | WaysZ", "description": "Legal services, immigration, study and visas, international exhibitions and conferences, and technology solutions." },
-    "about":    { "title": "About us | WaysZ", "description": "Many ways, one goal: serving you. Meet WaysZ, its vision and values." },
-    "contact":  { "title": "Contact | WaysZ", "description": "Tell us what you need and the right team will get back to you as soon as possible." },
-    "notFound": { "title": "Page not found | WaysZ", "description": "We couldn't find that page.", "heading": "This road doesn't exist", "back": "Back to home" }
+    "home": {
+      "title": "WaysZ | Legal, Immigration, Events & Technology",
+      "description": "Specialized legal services, immigration, study and visas, international exhibitions and conferences, and software solutions — under one name."
+    },
+    "services": {
+      "title": "Services | WaysZ",
+      "description": "Legal services, immigration, study and visas, international exhibitions and conferences, and technology solutions."
+    },
+    "about": {
+      "title": "About us | WaysZ",
+      "description": "Many ways, one goal: serving you. Meet WaysZ, its vision and values."
+    },
+    "contact": {
+      "title": "Contact | WaysZ",
+      "description": "Tell us what you need and the right team will get back to you as soon as possible."
+    },
+    "notFound": {
+      "title": "Page not found | WaysZ",
+      "description": "We couldn't find that page.",
+      "heading": "This road doesn't exist",
+      "back": "Back to home"
+    }
   }
 }

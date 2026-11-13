@@ -3,14 +3,11 @@
  *   node scripts/qa-fps.mjs [url] [cpuRate=4]
  * Run against the production preview. Real GPU, CPU slowed down with DevTools throttling.
  */
-import { chromium } from 'playwright';
+import { launch } from './qa-browser.mjs';
 
 const url = process.argv[2] ?? 'http://localhost:4322/';
 const rate = Number(process.argv[3] ?? 4);
-const browser = await chromium.launch({
-  channel: 'chrome',
-  args: ['--use-angle=d3d11', '--enable-gpu', '--ignore-gpu-blocklist', '--autoplay-policy=no-user-gesture-required'],
-});
+const browser = await launch();
 
 for (const device of [
   { name: 'desktop 1440x900', viewport: { width: 1440, height: 900 } },
