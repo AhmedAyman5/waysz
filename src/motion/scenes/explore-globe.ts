@@ -233,8 +233,14 @@ const scene: Scene = (root, env) => {
     onEnter: () => {
       if (env.tier === 'css') return;
       void addAct(env, async () => {
-        const [{ createExploreAct }, { loadBorders }] = await Promise.all([import('../stage/acts/explore'), import('../../lib/borders')]);
-        const act = createExploreAct(host, env.tier === 'high' ? 'high' : 'lite', await loadBorders(), (id) => byId.has(id));
+        // one step per frame (parse three, decode the borders, build the globe): no long frame while scrolling
+        const breathe = () => new Promise<void>((done) => { window.setTimeout(done, 0); });
+        const { loadBorders } = await import('../../lib/borders');
+        const borders = await loadBorders();
+        await breathe();
+        const { createExploreAct } = await import('../stage/acts/explore');
+        await breathe();
+        const act = createExploreAct(host, env.tier === 'high' ? 'high' : 'lite', borders, (id) => byId.has(id));
         controls = act.controls;
         layout();
         root.classList.add('is-live');

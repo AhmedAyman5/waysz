@@ -115,6 +115,37 @@ shadow is its own layer.
 Runway centre line decelerates with the last stretch of scroll (scrubbed), threshold lights come on, the logo
 wings rise and the plane comes down onto its spot. The legal notice is never animated.
 
+### page-hero — Immigration hero (`views/immigration/Hero.astro`) · reuse for any group / inner page
+
+`.phero > .phero__sticky (.phero__window > .phero__plate[data-depth] > BgVideo + .phero__scrim) + .phero__content (crumb, h1[data-intro], lead, actions)`.
+165lvh section with a sticky screen (no pin): headline by words on load; scrolling closes the footage into a
+cabin-window shape that sinks into the night. The next section overlaps the last 34lvh.
+
+### journey-route — Immigration "the journey" (`views/immigration/Journey.astro`)
+
+`.journey__route > svg.journey__sky (path.journey__ghost + path.journey__trail) + .journey__plane + ol.journey__stops > li.stop[style="--x; --y"]`.
+No pin, no sticky. The SVG is stretched over the route box (`preserveAspectRatio="none"`), so the plane is an
+HTML element placed from the path's own points; stops sit ON the path (keep `STOPS` and `PATH` in sync) and
+light up (`.is-active`) when the plane passes; icons draw once. RTL mirrors the SVG. Small screens: vertical line.
+
+### dossier — Immigration services (`views/immigration/Services.astro`)
+
+`.dossier > .dossier__view (.dossier__head + ul.dossier__track > li.sheet.theme-light)`. Wide: CSS sticky screen +
+one scrubbed trigger slides the track (× `env.dir`); the section's height is set from the track's width on
+every refresh. Sheets tilt and sit low at the edges, settle upright in the middle; a focused link scrolls its
+sheet to the middle. Small screens / no JS: a plain grid of sheets.
+
+### explore-globe — Immigration "Explore the world" (`views/immigration/Explore.astro`)
+
+`.explore > .explore__head (h2, lead, .combo: input[role=combobox] + ul[role=listbox]) + .explore__globe (.explore__poster, .explore__stage.stage-host, .explore__pad, .explore__tip, .explore__zoom) + .explore__foot > .explore__msg[aria-live] > .explore__card`.
+The scene owns the combobox, the pointer on `.explore__pad` (`touch-action: pan-y`: horizontal drag rotates,
+vertical drag scrolls the page; tap / click selects; ctrl + wheel or the buttons zoom) and the welcome message
+(DOM, words only). The act `explore` draws the globe and is driven through `ExploreControls`
+(`pick · hover · drag · release · zoom · flyTo · setAuto · setLayout`). Borders + act load at `top 250%`.
+css tier / reduced motion: `earth-borders-poster.webp` + the same list and message, no flight. `.is-live` on the
+section = the globe is interactive. Selecting a country also fills `[data-destination-chip]` and adds
+`?destination=<ISO>` to `a[data-consult]` anywhere on the page.
+
 ### destinations (Motion Lab) — sticky cards that stack
 
 Kept for the Motion Lab; Home uses `areas`.
@@ -149,6 +180,7 @@ Unchanged (see Motion Lab).
 | 1.7     | WaysZ Visa link  | terminal at sunset (photo)                                              | `boarding-pass` (3D tilt + SVG stamp) — BUILT                         |
 | 1.8     | Footer           | logo                                                                    | `footer-landing` (runway + touchdown) — BUILT                         |
 | 2       | Services         | header photo per area tab                                               | `services-filter` (Flip) · cards with photos                          |
+| 2.2     | Immigration group page | dusk window-seat video · borders globe (act `explore`)            | `page-hero` · `journey-route` · `dossier` · `boarding-pass` · `explore-globe` · `approach` — BUILT |
 | 3       | Service template | header photo of the service's area                                      | `data-split` · `route-steps` · `accordion`                            |
 | 4       | About            | wide photo                                                              | `media-reveal` · `text-scrub` · `route-steps` (2 stops)               |
 | 5       | Contact          | calm photo                                                              | `form-flight` · `data-magnetic`                                       |

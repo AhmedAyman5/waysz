@@ -25,6 +25,10 @@ requests) — open the link once and replace the note with the contributor's nam
 | src/assets/media/cta-approach.jpg                           | https://unsplash.com/photos/a0l62-FIWZg                                              | Eric Wang             | Unsplash License       | 2026-11-13 | cropped (window frame on the right removed), 2060×1300 (§1.6)                                       |
 | src/assets/media/visa-gate.jpg                              | https://unsplash.com/photos/ltCNpYiJPRg                                              | Alex Alvarez          | Unsplash License       | 2026-11-13 | **left 21% cropped off (a readable shop sign)**, darker, 1900×1500 (§1.7)                           |
 | public/media/img/earth-night.webp · earth-night-m.webp      | https://science.nasa.gov/earth/earth-observatory/earth-at-night/maps/ — Black Marble 2016, 0.1° map | NASA Earth Observatory | Public domain          | 2026-11-13 | resized to 2048×1024 and 1024×512, WebP: globe texture of §1.5. No NASA logo, no endorsement implied |
+| public/media/video/travel-dusk.mp4 · .webm · -poster.webp   | https://mixkit.co/free-stock-video/panorama-from-the-window-of-an-airplane-at-dusk-40102/ | Mixkit (contributor not named on the page) | Mixkit Stock Video Free License | 2026-11-13 | first 13.5s, 24fps, seamless 12s loop (1.5s cross-fade), 1600×900, no grade. Checked frame by frame: plain winglet silhouette, no livery (Immigration hero) |
+| public/media/video/travel-dusk-m.mp4 · .webm · -poster.webp | same                                                                                 | same                  | Mixkit Stock Video Free License | 2026-11-13 | same, square crop 720×720 around the winglet for small screens                                      |
+| public/media/geo/world-egy.topo.json · src/data/countries.json | https://www.naturalearthdata.com/downloads/10m-cultural-vectors/ — Admin 0 Countries, point of view: Egypt (`ne_10m_admin_0_countries_egy`, v5.1.1) | Natural Earth | Public domain | 2026-11-13 | merged by ISO code, Bir Tawil merged into Sudan, areas without an ISO code dropped, simplified to 10%, islands under 900 km² dropped (each country keeps its two largest parts), TopoJSON — `scripts/build-borders.mjs` |
+| public/media/img/earth-borders-poster.webp                  | our own render of the Black Marble map + the borders above (`scripts/render-globe-still.mjs`) | WaysZ           | —                      | 2026-11-13 | still globe for the css tier, reduced motion and no JS (Immigration page, "Explore the world")       |
 | public/media/img/earth-poster.webp                          | our own render of the map above (the WebGL globe, dev URL `?globe=poster`)           | WaysZ                 | —                      | 2026-11-13 | still image for the css tier, no JS and reduced motion (§1.5)                                       |
 
 Astro generates the responsive WebP files of `src/assets/media/*` at build time (`dist/_astro/`).
@@ -48,6 +52,12 @@ own inline SVG animated with GSAP. No Lottie file is shipped for them: see the L
 | 10-candidates (21 small previews)                    | unsplash.com search results                                                                         | Vetting only (900px). Not shipped.                                                                                 |
 | 08-lottie: Airplane Around the World · Passport, Travel · Visa stamp passport | lottiefiles.com (links in the Part 1 brief)                                | **Not shipped** (rendered and reviewed): flat cartoon style that does not match the cinematic look; the stamp reads "VENICE · ITALY" (a country name). Replaced by our own SVG + GSAP. |
 | 08-lottie/Justice_Scales_Animation_v1.json           | unknown                                                                                             | **Not shipped** (decision D): no source. The scales icon of §1.3 is our own SVG drawn with GSAP.                   |
+
+Immigration hero — Mixkit clips vetted and not used: 36351, 28000, 34618, 27989, 28005 (all **Restricted License** — not
+allowed); 40101 (winglet with a livery stripe); 4095 (bank brand on the jet bridge, airline tails); 4368, 3099, 3298, 3361
+(registration on the wing, daylight); 4008, 4642, 4389 (wayfinding signs, airline tails, people); 4204, 4203, 50153 (clean,
+kept as alternates in the scratch folder only). Pexels, Pixabay and Unsplash search pages refuse scripted requests from
+this machine, so only Mixkit could be searched this time.
 
 Candidates downloaded for the take-off and rejected: Pexels 5008861 (true sunset, but 720p handheld),
 855130 (airline livery), 854550 (registration on the wing), 2297218 (no take-off), 4686173 / 856486 / 4512518
