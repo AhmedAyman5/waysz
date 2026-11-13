@@ -97,7 +97,7 @@ const countries = (list as [string, number, number][])
   /* combobox */
   .combo { position: relative; margin-block-start: var(--space-6); max-width: 26rem; }
   .combo__icon {
-    position: absolute; inset-inline-start: var(--space-5); top: 50%; translate: 0 -50%; pointer-events: none;
+    position: absolute; z-index: 1; inset-inline-start: var(--space-5); top: 50%; translate: 0 -50%; pointer-events: none;
     fill: none; stroke: var(--color-accent); stroke-width: 1.8; stroke-linecap: round;
   }
   .combo__input {

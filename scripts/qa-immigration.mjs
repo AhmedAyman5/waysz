@@ -74,8 +74,19 @@ for (const run of runs) {
       const tap = async (fx, fy, label) => {
         await pad.scrollIntoViewIfNeeded();
         const b = await pad.boundingBox();
-        const x = b.x + b.width * fx, y = b.y + b.height * fy;
-        if (run.mobile) await page.touchscreen.tap(x, y); else { await page.mouse.move(x, y); await page.waitForTimeout(350); await shot(`${label}-hover`); await page.mouse.click(x, y); }
+        let x = b.x + b.width * fx, y = b.y + b.height * fy;
+        if (run.mobile) await page.touchscreen.tap(x, y);
+        else {
+          // the globe turns while idle: walk the pointer until it is over a country (the name tip shows)
+          for (let i = 0; i < 12; i++) {
+            await page.mouse.move(x, y); await page.mouse.move(x + 1, y + 1);
+            await page.waitForTimeout(220);
+            if (await page.evaluate(() => document.querySelector('.explore__tip').classList.contains('is-on'))) break;
+            x -= b.height * 0.035; y -= b.height * 0.02;
+          }
+          await shot(`${label}-hover`);
+          await page.mouse.click(x + 1, y + 1);
+        }
         await page.waitForTimeout(1500);
         await shot(`${label}-flying`);
         await page.waitForTimeout(3600);
