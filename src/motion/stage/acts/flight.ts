@@ -83,6 +83,8 @@ export function createFlightAct(host: HTMLElement, video: HTMLVideoElement, desk
   if (desktop) window.addEventListener('pointermove', onMove, { passive: true });
 
   let frameId = -1;
+  let skipped = false;
+  let refresh = 34;
   let hasVideoFrame = false;
 
   return {
@@ -90,7 +92,7 @@ export function createFlightAct(host: HTMLElement, video: HTMLVideoElement, desk
     scene,
     camera,
     ready: () => hasVideoFrame || flight.mix === 1,
-    update(time) {
+    update(time, deltaMs) {
       uniforms.uTime.value = time;
       uniforms.uMix.value = flight.mix;
       uniforms.uPush.value = flight.push;
@@ -103,7 +105,12 @@ export function createFlightAct(host: HTMLElement, video: HTMLVideoElement, desk
         hasVideoFrame = true;
         uniforms.uVideoSize.value.set(video.videoWidth, video.videoHeight);
       }
-      if (flight.frame && flight.frameId !== frameId) {
+      // Uploading a frame is the one expensive step. When the last frame ran long (slow CPU), upload only
+      // every other tick: the footage drops to ~30fps while scroll, captions and clouds stay fluid.
+      refresh = Math.min(refresh * 1.002, Math.max(deltaMs, 4));     // running estimate of the display's frame time
+      const busy = deltaMs > refresh * 1.35 && !skipped;
+      skipped = busy && !!flight.frame && flight.frameId !== frameId;
+      if (flight.frame && flight.frameId !== frameId && !busy) {
         frameId = flight.frameId;
         frameTex.image = flight.frame;
         frameTex.needsUpdate = true;

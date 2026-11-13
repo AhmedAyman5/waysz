@@ -102,6 +102,8 @@ const isCurrent = (href: string) =>
     backdrop-filter: blur(12px);
   }
   .site-header.site-header--solid { background: var(--color-bg); }
+  /* without JS nothing can turn the overlay header solid: let it scroll away with the hero instead */
+  :global(html:not(.js)) .site-header:not(.site-header--solid) { position: absolute; }
   .site-header:global(.is-hidden) { transform: translateY(-100%); }
 
   .site-header__inner {

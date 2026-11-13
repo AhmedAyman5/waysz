@@ -30,6 +30,9 @@ const runs = [
   { name: 'ar-phone-css', path: '/?tier=css', viewport: phone, mobile: true },
   { name: 'ar-desktop-css', path: '/?tier=css', viewport: desktop },
   { name: 'ar-small-css', path: '/?tier=css', viewport: small, mobile: true },
+  { name: 'en-small-css', path: '/en/?tier=css', viewport: small, mobile: true },
+  { name: 'en-desktop-reduced', path: '/en/', viewport: desktop, reduce: true, stops: [0, 1, 2] },
+  { name: 'en-desktop-nojs', path: '/en/', viewport: desktop, nojs: true, stops: [0, 1, 2] },
   { name: 'ar-desktop-reduced', path: '/', viewport: desktop, reduce: true, stops: [0, 1, 2] },
   { name: 'ar-phone-reduced', path: '/', viewport: phone, mobile: true, reduce: true, stops: [0, 1, 2] },
   { name: 'ar-desktop-nojs', path: '/', viewport: desktop, nojs: true, stops: [0, 1, 2] },
@@ -66,7 +69,12 @@ for (const run of runs) {
       await page.screenshot({ path: shots.at(-1), type: 'jpeg', quality: 80 });
     }
   } else {
-    await page.waitForTimeout(run.nojs ? 500 : 3800);
+    if (!run.nojs) {
+      await page.waitForTimeout(1800);
+      await page.mouse.move(200, 300); await page.mouse.move(260, 340);
+      await page.evaluate(() => window.dispatchEvent(new Event('touchstart')));
+    }
+    await page.waitForTimeout(run.nojs ? 500 : 3200);
     const list = run.stops ?? (run.mobile ? mobileStops : stops);
     for (const [i, vh] of list.entries()) {
       if (!run.nojs) {

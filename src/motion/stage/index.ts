@@ -1,15 +1,21 @@
 /**
- * Entry of the 3D layer. Call startFlightStage() AFTER the hero is visible; it waits for an idle moment,
- * then loads three.js + the act in a separate chunk. Returns quietly on the css tier or if WebGL fails —
+ * Entry of the 3D layer. Call startFlightStage() AFTER the hero is visible. It then waits for the visitor's
+ * FIRST INTERACTION (pointer move, touch, wheel, key, scroll) before loading three.js + the act in a
+ * separate chunk: parsing three and compiling shaders is the heaviest work on the page, and this keeps it
+ * out of the loading phase (LCP, blocking time) — until then the hero is the plain video, which looks the
+ * same at rest. On desktop that is the first mouse move; on a phone, the first touch.
+ * Returns quietly on the css tier or if WebGL fails —
  * the DOM version (video, 2D canvas, CSS clouds) is always there underneath.
  */
 import type { MotionEnv } from '../index';
 import { setStageLive } from './bridge';
 
-const idle = () =>
+const EVENTS = ['pointermove', 'pointerdown', 'touchstart', 'wheel', 'keydown', 'scroll'] as const;
+const firstInteraction = () =>
   new Promise<void>((resolve) => {
-    if ('requestIdleCallback' in window) requestIdleCallback(() => resolve(), { timeout: 1500 });
-    else setTimeout(resolve, 300);
+    if (window.scrollY > 0) { resolve(); return; }
+    const done = () => { EVENTS.forEach((e) => window.removeEventListener(e, done)); resolve(); };
+    EVENTS.forEach((e) => window.addEventListener(e, done, { passive: true }));
   });
 
 export async function startFlightStage(env: MotionEnv) {
@@ -19,7 +25,7 @@ export async function startFlightStage(env: MotionEnv) {
   const video = root?.querySelector<HTMLVideoElement>('video[data-bgvideo]');
   if (!root || !host || !video) return;
 
-  await idle();
+  await firstInteraction();
   try {
     const [{ Stage }, { createFlightAct }] = await Promise.all([import('./stage'), import('./acts/flight')]);
     const stage = new Stage(env.tier, () => {

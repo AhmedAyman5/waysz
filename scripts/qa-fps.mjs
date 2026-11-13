@@ -21,7 +21,10 @@ for (const device of [
   await context.addInitScript(() => { try { sessionStorage.setItem('waysz-intro', '1'); } catch {} });
   const page = await context.newPage();
   await page.goto(url, { waitUntil: 'load' });
-  await page.waitForTimeout(5000);
+  await page.waitForTimeout(2500);
+  await page.mouse.move(200, 300); await page.mouse.move(260, 340);
+  await page.evaluate(() => window.dispatchEvent(new Event('touchstart')));
+  await page.waitForTimeout(3500);
   // warm pass: let the sequence frames stream in, then go back to the top (steady state is what we measure)
   await page.evaluate(() => window.scrollTo(0, innerHeight * 0.3));
   await page.waitForTimeout(9000);

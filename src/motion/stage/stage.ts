@@ -1,6 +1,6 @@
 /**
  * The 3D layer: ONE WebGL renderer + canvas per page, shared by every "act" (a scene that draws).
- * - loaded lazily (dynamic import) after the LCP, never part of the first bundle
+ * - loaded lazily (dynamic import) on the first interaction, never part of the first bundle or the load phase
  * - driven by gsap.ticker (no second RAF loop)
  * - draws only while the active act's host is on screen and the tab is visible
  * - DPR capped per tier, downgrades itself when frames are slow, disposes on page leave
@@ -17,7 +17,7 @@ export interface Act {
   scene: Scene;
   camera: Camera;
   ready(): boolean;                 // false until the act has something to show (e.g. first video frame)
-  update(time: number): void;       // called before every render
+  update(time: number, deltaMs: number): void;   // called before every render
   resize(width: number, height: number): void;
   setQuality(quality: Quality): void;
   dispose(): void;
@@ -32,6 +32,7 @@ export class Stage {
   private renderer: WebGLRenderer;
   private acts = new Map<HTMLElement, Act>();
   private active: Act | null = null;
+  private compiled = new WeakSet<Act>();
   private running = false;
   private shown = false;
   private frames = 0;
@@ -53,6 +54,7 @@ export class Stage {
       powerPreference: 'high-performance',
     });
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, DPR[quality]));
+    this.renderer.debug.checkShaderErrors = import.meta.env.DEV;   // the status check blocks the main thread
 
     this.io = new IntersectionObserver((entries) => {
       for (const e of entries) {
@@ -72,6 +74,8 @@ export class Stage {
   add(act: Act) {
     this.acts.set(act.host, act);
     act.setQuality(this.quality);
+    // compile the shaders without blocking (KHR_parallel_shader_compile); render only when they are ready
+    this.renderer.compileAsync(act.scene, act.camera).then(() => this.compiled.add(act), () => this.fail());
     this.io.observe(act.host);
   }
 
@@ -107,8 +111,8 @@ export class Stage {
   private tick = (time: number, deltaMs: number) => {
     const act = this.active;
     if (!act) return;
-    act.update(time);
-    if (!act.ready()) return;
+    act.update(time, deltaMs);
+    if (!act.ready() || !this.compiled.has(act)) return;
     this.renderer.render(act.scene, act.camera);
     if (!this.shown) { this.shown = true; this.canvas.classList.add('is-on'); }
 

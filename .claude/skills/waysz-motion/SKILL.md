@@ -52,8 +52,10 @@ UI feedback 0.2–0.3s. One orchestrated moment per section — never a fade-up 
 - **One renderer + one canvas per page** (`stage.ts`). Scenes never create their own. Each section that
   draws registers an **act** (`acts/*.ts`: `host`, `scene`, `camera`, `ready`, `update`, `resize`,
   `setQuality`, `dispose`); the canvas moves into the host of the act that is on screen.
-- **Lazy**: `startFlightStage(env)` is called by the hero scene AFTER the hero text is on screen; it waits
-  for `requestIdleCallback`, then dynamic-imports three.js. three is never in the first bundle.
+- **Lazy**: `startFlightStage(env)` is called by the hero scene AFTER the hero text is on screen; it then
+  waits for the visitor's FIRST INTERACTION (pointer move, touch, wheel, key, scroll) and only then
+  dynamic-imports three.js. Shaders compile with `renderer.compileAsync` (non-blocking). This keeps the
+  heaviest work out of page load (blocking time); until then the DOM version is on screen.
 - **One loop**: rendering runs on `gsap.ticker`. It stops when the act's host is off screen
   (IntersectionObserver) or the tab is hidden. DPR cap: 1.5 high · 1.25 lite.
 - **Tiers by device capability** (`tier.ts`), never by "is it a phone":
@@ -108,6 +110,8 @@ UI feedback 0.2–0.3s. One orchestrated moment per section — never a fade-up 
   scroll). A sliding window (±12 desktop, ±8 mobile) is decoded off the main thread with
   `createImageBitmap(blob)`; drawing never blocks on a decode and memory stays flat.
 - Draws on a 2D canvas (cover-fit, DPR ≤ 1.5) or hands the bitmap to the WebGL stage (`bridge.flight.frame`).
+  Uploading a frame to the GPU is the expensive step: the act skips every other upload when a frame ran
+  long, and freed bitmaps are closed in idle time. Keep frames ≤ 1280px wide.
 - Section pins: desktop `end: '+=300%'`, mobile `+=180%`, `scrub: 0.5`; frame = round(progress × (n−1)).
 - Captions take turns around their `data-at`; small ticks show which one is on.
 - Without JS / reduced motion: no pin, frame 1 as a still, every caption visible.

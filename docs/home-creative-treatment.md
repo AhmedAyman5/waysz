@@ -1,14 +1,14 @@
 # WaysZ Home — Creative Treatment ("The Journey")
 
-Status: **proposal — waiting for approval.** Covers the whole Home page (brief §1.1–1.8).
-Part 1 builds §1.1, §1.2, §1.2b and the shared foundation. Part 2 builds §1.3–1.8.
+Status: **approved 2026-11-12.** Covers the whole Home page (brief §1.1–1.8).
+Part 1 (§1.1, §1.2, §1.2b + the shared foundation) is **built**. Part 2 builds §1.3–1.8.
 
 ## 1 · The idea in one paragraph
 
 The Home page is one continuous flight filmed at golden hour. The logo intro takes off; the curtain
 lifts and we are already in the air, looking out over the wing at a warm horizon. We scroll: the
 camera pushes into the clouds, comes out over a runway at dusk, and we watch a real take-off while
-three short lines say how WaysZ works with you. We climb through the cloud layer, cruise past four
+three short lines say how WaysZ works with you (seen from the window seat, the same seat as the hero). We climb through the cloud layer, cruise past four
 "destinations" (the service areas), see the route drawn across the night side of the Earth, and
 descend toward the runway lights — the call to contact us. The footer is the landing: the logo
 re-assembles and the plane parks.
@@ -26,7 +26,7 @@ bounces, nothing is a toy: movements are slow, heavy and eased like a camera on 
 | —    | Intro                 | Logo "Take-off" preloader — **unchanged**. Its curtain lifts onto the hero that is already rendered.                                                                                                                                                                                                                                                         | existing `preloader`                                                                                                                                                      | —   |
 | 1.1  | Header                | Transparent over the sky; turns into dark glass after 80px; hides on scroll down. "خدماتنا" opens the four areas. Mobile: full-screen menu, links rise by line.                                                                                                                                                                                              | `headerOverlay`, existing `header.ts`                                                                                                                                     | —   |
 | 1.2  | Hero — "In the sky"   | Window-seat view: wing, soft clouds below, the sun on the horizon. The headline is huge and rises word by word from a mask; lead + two buttons follow. Moving the mouse shifts the view in depth (wing / far clouds / near wisps) and drags a warm light across the scene. Scrolling pushes the camera forward: near clouds rush past and fill the screen.     | 01 hero video as a WebGL texture + shader cloud layers + god rays + grain/vignette · SplitText (words) · magnetic buttons                                                 | no (sticky CSS, scrubbed) |
-| 1.2b | The Journey           | Out of the white: a runway at dusk. Scroll plays the take-off frame by frame. Three captions from the brief's intro paragraph appear one at a time (listen → guide → accompany). Light streaks grow with speed. At the end we climb into the cloud deck: cloud layers fly past the camera and the screen clears into the light page below. Link: "تعرّف علينا أكثر". | image sequence (WebP frames) drawn as a texture in the same WebGL stage · cloud fly-through built from the 03 photos (luminance-keyed layers) · Lottie plane on the progress HUD | **1** |
+| 1.2b | The Journey           | Out of the white: the runway at dusk, seen from the window seat over the wing. Scroll plays the take-off frame by frame: the ground rushes by, the plane rotates, the airport falls away. Three captions from the brief's intro paragraph appear one at a time (listen → guide → accompany). Light streaks grow with speed. At the end we climb into the cloud deck and the screen clears into the light page below. Link: "تعرّف علينا أكثر". | image sequence (WebP frames) drawn as a texture in the same WebGL stage · shader cloud fly-through · css tier: 2D canvas + the 03 cloud photos as layers | **1** |
 | 1.3  | Four destinations     | Cruising. Four full-bleed sticky cards, one per area; each new photo arrives through a soft cloud-wipe (shader displacement) instead of a hard cut. Area name huge, 2 lines of copy, one link, a small Lottie that plays once. The area hue is only a thin line and the icon.                                                                               | 04–07 photos (graded to the navy/amber look) · `destinations` (sticky CSS) · Lottie: scales, passport, (events, code — to source)                                        | no  |
 | 1.4  | Why WaysZ             | The view expands: a rounded "window" photo grows to full screen, then the six reasons settle in two calm rows. No icons-in-circles grid; hierarchy by type size.                                                                                                                                                                                              | `media-reveal` · one wide photo (to source: cabin window / meeting room at dusk)                                                                                          | **2** |
 | 1.5  | How we work           | Night side of the Earth, slowly turning. A warm route arc draws across it through four stops while the four steps light up one by one; the plane rides the arc.                                                                                                                                                                                              | three.js globe with NASA Black Marble (public domain) + arc shader · `route-steps` for text · fallback: static night-Earth image + SVG route                              | **3** |
@@ -62,32 +62,37 @@ Three pins total (Journey, Why, How). Hero and destinations use CSS `position: s
 
 ## 4 · 3D layer — architecture and tiers
 
-`src/motion/stage/` — `stage.ts` (renderer, tiering, ticker, visibility, dispose), `acts/*.ts`
-(one module per scene), `shaders/*.glsl.ts`.
+`src/motion/stage/` — `stage.ts` (renderer, ticker, visibility, watchdog, dispose), `tier.ts`,
+`bridge.ts` (scroll state shared with the DOM scenes), `acts/*.ts` (one module per scene), `shaders/*.glsl.ts`.
 
-- Created lazily: after `waysz:intro-done` **and** the hero text is visible, inside `requestIdleCallback`;
+- Created lazily: after `waysz:intro-done`, once the hero text is on screen, on the first interaction;
   `three` is a dynamic import, so it is never in the initial bundle.
 - Driven by `gsap.ticker` (no second RAF). Rendering stops when the active act is off-screen
-  (IntersectionObserver) or `document.hidden`. DPR cap 1.5 desktop / 1 mobile. Resize is debounced.
-- Disposal on `pagehide`: geometries, materials, textures, render targets, `renderer.dispose()`,
-  `forceContextLoss()`; ticker callbacks removed.
-- `webglcontextlost` → drop to tier "none" (poster stays; nothing breaks).
+  (IntersectionObserver) or `document.hidden`.
+- Disposal on `pagehide`: geometries, materials, textures, `renderer.dispose()`, `forceContextLoss()`;
+  ticker callbacks removed. `webglcontextlost` → the DOM version takes over; nothing breaks.
 
-| Tier     | When                                                                            | Hero                                                        | Journey                                     |
-| -------- | ------------------------------------------------------------------------------- | ----------------------------------------------------------- | ------------------------------------------- |
-| **high** | desktop, WebGL2, non-software GPU, ≥ 4 cores                                    | video texture + 3 shader cloud layers + god rays + grain     | frames as texture + streaks + cloud fly-through |
-| **low**  | mobile / touch / weak GPU / frame time > 24ms for 2s (auto-downgrade)           | plain `<video>` (mobile variant) + 2 CSS cloud layers + CSS grain | 2D-canvas sequence (every 2nd frame) + CSS cloud layers |
-| **none** | reduced motion, no WebGL, `saveData`, JS off                                    | poster image, text in final state                           | first frame, all captions visible, no pin   |
+**Tiers are chosen by what the device can do — never by "mobile".** Most of our audience is on phones,
+so a capable phone gets real WebGL:
 
-The HTML always contains the poster / first frame and the full text, so LCP, no-JS and reduced
-motion never depend on WebGL.
+| Tier     | Who gets it                                                                                                      | Hero                                                                                  | Journey                                                    |
+| -------- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| **high** | desktop-class device (≥ 1024px + fine pointer) with WebGL2, a hardware GPU, ≥ 4 cores                            | video texture + 3 shader cloud layers (5 noise octaves) + god rays + grain · DPR ≤ 1.5 | frames as texture + streaks + cloud fly-through            |
+| **lite** | capable phones / tablets / touch laptops: WebGL2, hardware GPU not on the weak list, ≥ 4 cores, ≥ 4 GB if reported | same scene, cheaper: 2 cloud layers (3 octaves), sun glow instead of rays · DPR ≤ 1.25 | same, with the lighter portrait frame set (70 frames)      |
+| **css**  | weak GPU (old Adreno/Mali/PowerVR, software rendering), no WebGL2, < 4 cores, < 4 GB, `saveData`                 | plain `<video>` + 2 cloud photo layers + CSS veil                                     | 2D-canvas sequence + CSS veil                              |
+| static   | reduced motion, or JS off                                                                                        | poster image, text in final state                                                     | first frame, all captions visible, no pin                  |
+
+- A watchdog measures real frame times: two slow windows in a row → `high → lite → css` for the rest of
+  the visit. So a device that was judged too optimistically still ends up smooth.
+- The HTML always contains the poster / first frame and the full text, so LCP, no-JS and reduced
+  motion never depend on WebGL. The hero lead and buttons are painted at once and never hidden.
 
 ## 5 · Media audit of `media-inbox/` (checked frame by frame)
 
 | File                         | Finding                                                                                                                                              | Plan                                                                                                             |
 | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
 | 01 hero clouds (7.8s, 24fps) | Clean. Winglet is plain navy/white, no logo or text. Cool blue grade.                                                                                 | Slow to ~15s (motion-interpolated), cross-fade loop, warm grade toward amber. Desktop + mobile + poster.          |
-| 02 takeoff (8.1s, 60fps)     | **Problem ×3:** readable "vistara" on the fuselage + tail logo; flat grey haze (not golden hour); the plane is only ~18% of the frame width.           | See decision A below. A dusk-silhouette grade removes the livery (tested), but the shot stays weak.                |
+| 02 takeoff (8.1s, 60fps)     | **Problem ×3:** readable "vistara" on the fuselage + tail logo; flat grey haze (not golden hour); the plane is only ~18% of the frame width.           | **Dropped (decision A).** Replaced by Pexels 3723453: a 4K window-seat take-off with no branding anywhere, stabilized and graded to dusk. |
 | 03 clouds ×3                 | Clean, large (5–7k px). Daylight white/blue.                                                                                                          | Luminance-key to alpha, tint warm, export 3 WebP layers ≤ 2000px for the fly-through and low-tier hero.           |
 | 04 legal ×2                  | Clean (statue, gavel, book). Bright studio backgrounds.                                                                                               | Part 2. Grade darker/navy. **Only 1170–2054px wide** (Unsplash preview size).                                     |
 | 05 passport                  | Cover shows "PASSPORT" + the US national seal (dim). Not a brand, but it reads as a US passport.                                                      | Part 2. Decision C.                                                                                               |
@@ -119,7 +124,7 @@ No HDRI is needed: the sky is footage + shader. Every shipped file gets a row in
 - **Initial load (before any scroll):** HTML + CSS + 3 font files + core JS + hero poster (≤ 90 KB WebP,
   `fetchpriority="high"`, the LCP element on repeat visits). Target ≤ 0.6 MB before the video starts.
 - Hero video `preload="none"`, starts after the intro; desktop ≤ 3 MB, mobile ≤ 1.2 MB.
-- `three` (own chunk, ~170 KB gzip with only the classes we import) + shaders load on idle after LCP.
+- `three` (own chunk, ~170 KB gzip with only the classes we import) + shaders load on the first interaction, never during page load.
 - Journey frames: frame 1 in HTML; the rest only when the section is within one viewport, in order;
   ≤ 150 frames, ≤ 60 KB each, mobile loads every 2nd frame. `lottie-web` loads only near a `[data-lottie]`.
 - Budget check: desktop initial ≤ 4 MB, mobile ≤ 2 MB. Lighthouse mobile ≥ 75 / A11y ≥ 95 / SEO ≥ 95, LCP ≤ 2.5s.
@@ -142,14 +147,41 @@ playwright (dev); extended asset sources incl. Unsplash, Poly Haven, Kenney, NAS
 3 pinned scenes on Home; Motion Lab optional for Home; Lighthouse mobile Performance ≥ 75; storyboard v2
 without the old "dive" scene.
 
-## 10 · Decisions needed
+## 10 · Decisions (team lead, 2026-11-12)
 
-- **A — Take-off footage.** 02 shows a Vistara livery, is grey and hazy, and the plane is small.
-  *Recommended:* I find and vet a golden-hour take-off clip on Pexels/Mixkit and use it; 02 is dropped.
-  *Alternative:* keep 02 as a dusk silhouette (livery gone, but a flatter, less impressive shot).
-- **B — 3D aircraft.** I will add one only if I find an unbranded CC0/CC-BY model that looks premium
-  as a back-lit silhouette. Sketchfab downloads need a login, so I may ask you to download one file.
-  Without it the page is still complete (footage + shader sky).
-- **C — Passport photo** reads as a US passport. Keep (cropped/dimmed so the seal is not legible) or replace?
-- **D — `Justice_Scales_Animation_v1.json`** has no source URL. Send the link or I replace it in Part 2.
-- **E — Events photos** both show brands/faces → I source replacements in Part 2.
+- **A — Take-off footage:** 02 dropped. I vetted 9 Pexels clips (Mixkit's take-off clips are under its
+  Restricted License, so not allowed). No clean golden-hour take-off exists there in usable quality: the only
+  true sunset one is 720p handheld. Chosen: Pexels 3723453 — one continuous 4K shot from the window seat, no
+  livery, logo or registration in frame — stabilized, cropped and graded from overcast to dusk. It also
+  matches the hero (same seat, same wing-view language).
+- **B — 3D aircraft:** optional, not added in Part 1. Nothing unbranded and premium was available without
+  a Sketchfab login; the page is complete without it. Revisit in Part 2 only with a specific CC0/CC-BY model.
+- **C — Passport photo:** replace with a generic travel shot (Part 2).
+- **D — Justice-scales Lottie:** replace with a credited free LottieFiles animation (Part 2).
+- **E — Events photos:** replace both (Part 2).
+- **Unsplash:** re-download the kept photos at 2400px (Part 2).
+- **Tiers:** by device capability, not by "mobile" (§4).
+
+## 11 · Part 1 as built — measured
+
+Production build, local preview, 2026-11-13 (scripts in `scripts/`):
+
+| Metric                                        | Desktop 1440×900 (high)       | Phone 390×844 (lite)       |
+| --------------------------------------------- | ----------------------------- | -------------------------- |
+| Loaded by itself (no interaction)             | 670 KB                        | 436 KB                     |
+| After the first interaction (WebGL chunk)     | 803 KB                        | 569 KB                     |
+| After scrolling the whole page                | 5.0 MB (140 frames stream in) | 1.9 MB (70 frames)         |
+| Scroll frames, no throttling                  | none over 33ms                | none over 33ms             |
+| Scroll frames, CPU 4× throttling              | median ≈ 45ms · p95 ≈ 120ms   | median ≈ 25ms · p95 ≈ 75–100ms |
+
+Lighthouse mobile, four runs: Arabic 80 and 85 · English 81 and 82 · Accessibility 100 · Best practices 100 ·
+SEO 100 · LCP 0.9s · CLS ≤ 0.001 · TBT 480–700ms.
+
+How the load stays light: three.js and the shaders load on the visitor's first interaction (mouse move,
+touch, scroll), not during page load; shaders compile without blocking; the take-off frames start
+downloading with the first scroll, are kept as compressed Blobs and only a small window around the current
+frame is decoded (off the main thread).
+
+Known gap: with CPU 4× throttling the pinned journey does not hold a full frame rate (desktop `high`
+≈ 20–25fps, phone `lite` ≈ 40fps with some longer frames). The cost is uploading each footage frame to the
+GPU. The stage already halves footage updates when a frame runs long and downgrades tiers when it stays slow.

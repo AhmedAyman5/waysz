@@ -70,7 +70,8 @@ const scene: Scene = (root, env) => {
     const blob = blobs[i];
     if (!blob || bitmaps.has(i) || pending.has(i)) return;
     pending.add(i);
-    createImageBitmap(blob)                                // from a Blob = decoded off the main thread
+    // from a Blob = decoded off the main thread; no conversions = the fast texture-upload path
+    createImageBitmap(blob, { premultiplyAlpha: 'none', colorSpaceConversion: 'none' })
       .then((bmp) => {
         if (Math.abs(i - current) > WINDOW + 2) { bmp.close(); return; }   // scrolled away meanwhile
         bitmaps.set(i, bmp);
@@ -84,9 +85,18 @@ const scene: Scene = (root, env) => {
   const refill = () => {
     for (let d = 0; d <= WINDOW; d++) { decode(current + d); if (d) decode(current - d); }
     bitmaps.forEach((bmp, i) => {
-      if (Math.abs(i - current) > WINDOW + 2 && bmp !== shown) { bmp.close(); bitmaps.delete(i); }
+      if (Math.abs(i - current) > WINDOW + 2 && bmp !== shown) { bitmaps.delete(i); trash.push(bmp); }
     });
+    if (trash.length && !sweeping) {
+      sweeping = true;
+      idle(() => { sweeping = false; trash.splice(0).forEach((b) => { if (b !== shown) b.close(); }); });
+    }
   };
+  // freeing a bitmap is not free: do it between frames, never inside a scroll update
+  const trash: ImageBitmap[] = [];
+  let sweeping = false;
+  const idle = (fn: () => void) =>
+    'requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 400 }) : setTimeout(fn, 60);
 
   const loadOne = () => {
     if (next >= count) return;

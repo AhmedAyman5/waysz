@@ -37,8 +37,12 @@ for (const device of [
   };
 
   await page.goto(url, { waitUntil: 'load' });
-  await page.waitForTimeout(8000);                       // intro + hero video + WebGL chunk
-  report('initial (no scroll)');
+  await page.waitForTimeout(8000);                       // intro + hero video — NO interaction: what loads by itself
+  report('initial (no interaction)');
+  await page.mouse.move(200, 300); await page.mouse.move(260, 340);
+  await page.evaluate(() => window.dispatchEvent(new Event('touchstart')));
+  await page.waitForTimeout(5000);                       // first interaction → WebGL chunk
+  report('after first interaction (no scroll)');
   const height = await page.evaluate(() => document.documentElement.scrollHeight);
   for (let y = 0; y < height; y += 300) {
     await page.evaluate((top) => window.scrollTo({ top, behavior: 'instant' }), y);
