@@ -50,6 +50,7 @@ const LIGHTS = 11;
     display: grid; align-items: center;
   }
   .cta__media, .cta__scrim { position: absolute; inset: 0; }
+  .cta__media { will-change: transform; }
   .cta__photo { position: absolute; inset: -5%; }
   /* the runway's vanishing point is at 46% × 50% of the photo: it stays near the middle at every crop */
   .cta__photo :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 46% 50%; }

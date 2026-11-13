@@ -61,7 +61,15 @@ const scene: Scene = async (root, env) => {
   // photo layers (the WebGL tiers draw their clouds in the shader and never download them).
   tl.add(() => {
     if (env.tier === 'css') {
-      root.querySelectorAll<HTMLImageElement>('img[data-src]').forEach((img) => { img.src = img.dataset.src!; });
+      // The cloud layers only matter once the camera pushes in, so they wait for the first interaction —
+      // loaded during page load they would be measured as the (late) largest paint on weak devices.
+      const events = ['pointermove', 'pointerdown', 'touchstart', 'wheel', 'keydown', 'scroll'] as const;
+      const load = () => {
+        events.forEach((e) => window.removeEventListener(e, load));
+        root.querySelectorAll<HTMLImageElement>('img[data-src]').forEach((img) => { img.src = img.dataset.src!; });
+      };
+      if (window.scrollY > 0) load();
+      else events.forEach((e) => window.addEventListener(e, load, { passive: true }));
     } else void startFlightStage(env);
   }, 0.8);
 };

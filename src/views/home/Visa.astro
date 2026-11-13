@@ -29,6 +29,7 @@ const copy = {
 
   <div class="gate__content container">
     <div class="pass__scroll">
+      <div class="pass__shadow" aria-hidden="true"></div>
       <article class="pass theme-light" data-site="visa">
         <div class="pass__main">
           <p class="pass__route">
@@ -63,6 +64,7 @@ const copy = {
 <style>
   .gate { position: relative; overflow: hidden; min-height: 100vh; min-height: 100svh; display: grid; align-items: center; }
   .gate__media, .gate__scrim { position: absolute; inset: 0; }
+  .gate__media { will-change: transform; }
   .gate__photo { position: absolute; inset: -5%; }
   .gate__photo :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 42% 50%; }
   .gate__scrim {
@@ -70,9 +72,11 @@ const copy = {
       linear-gradient(to bottom, var(--color-bg) 0%, color-mix(in srgb, var(--color-bg) 55%, transparent) 24%, color-mix(in srgb, var(--color-bg) 40%, transparent) 70%, var(--color-bg) 100%);
   }
   .gate__content { position: relative; padding-block: var(--section-y); perspective: 1400px; }
-  .pass__scroll {
-    max-width: 60rem; margin-inline: auto;
-    filter: drop-shadow(0 28px 44px color-mix(in srgb, var(--color-bg) 70%, transparent));
+  .pass__scroll { position: relative; max-width: 60rem; margin-inline: auto; will-change: transform; }
+  /* the pass is masked (notches), so its shadow is a separate layer underneath */
+  .pass__shadow {
+    position: absolute; inset: 8% 4% 0; border-radius: var(--radius-lg);
+    box-shadow: 0 30px 60px color-mix(in srgb, var(--color-bg) 85%, transparent);
   }
 
   .pass {

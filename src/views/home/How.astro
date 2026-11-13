@@ -112,7 +112,8 @@ const num = (i: number) => new Intl.NumberFormat(lang === 'ar' ? 'ar-EG' : 'en')
 
   /* scene running: steps wait dim until the plane reaches them */
   .how:global(.is-scrub) .how__plane { display: block; }
-  .how:global(.is-scrub) .step:not(:global(.is-active)) :is(h3, p) { opacity: 0.38; }
+  /* 0.62 keeps the waiting steps readable (AA on the section background) */
+  .how:global(.is-scrub) .step:not(:global(.is-active)) :is(h3, p) { opacity: 0.62; }
   .how:global(.is-scrub) .step:global(.is-active) .step__num,
   .how:not(:global(.is-scrub)) .step__num { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-on-accent); }
   .how:not(:global(.is-scrub)) .how__line-fill { transform: none; }

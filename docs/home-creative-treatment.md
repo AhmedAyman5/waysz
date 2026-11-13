@@ -1,7 +1,8 @@
 # WaysZ Home — Creative Treatment ("The Journey")
 
 Status: **approved 2026-11-12.** Covers the whole Home page (brief §1.1–1.8).
-Part 1 (§1.1, §1.2, §1.2b + the shared foundation) is **built**. Part 2 builds §1.3–1.8.
+Part 1 (§1.1, §1.2, §1.2b + the shared foundation) and Part 2 (§1.3–1.8) are **built** — the whole Home
+page. The storyboard below is as built; §12 lists what changed from the plan and the measurements.
 
 ## 1 · The idea in one paragraph
 
@@ -27,14 +28,15 @@ bounces, nothing is a toy: movements are slow, heavy and eased like a camera on 
 | 1.1  | Header                | Transparent over the sky; turns into dark glass after 80px; hides on scroll down. "خدماتنا" opens the four areas. Mobile: full-screen menu, links rise by line.                                                                                                                                                                                              | `headerOverlay`, existing `header.ts`                                                                                                                                     | —   |
 | 1.2  | Hero — "In the sky"   | Window-seat view: wing, soft clouds below, the sun on the horizon. The headline is huge and rises word by word from a mask; lead + two buttons follow. Moving the mouse shifts the view in depth (wing / far clouds / near wisps) and drags a warm light across the scene. Scrolling pushes the camera forward: near clouds rush past and fill the screen.     | 01 hero video as a WebGL texture + shader cloud layers + god rays + grain/vignette · SplitText (words) · magnetic buttons                                                 | no (sticky CSS, scrubbed) |
 | 1.2b | The Journey           | Out of the white: the runway at dusk, seen from the window seat over the wing. Scroll plays the take-off frame by frame: the ground rushes by, the plane rotates, the airport falls away. Three captions from the brief's intro paragraph appear one at a time (listen → guide → accompany). Light streaks grow with speed. At the end we climb into the cloud deck and the screen clears into the light page below. Link: "تعرّف علينا أكثر". | image sequence (WebP frames) drawn as a texture in the same WebGL stage · shader cloud fly-through · css tier: 2D canvas + the 03 cloud photos as layers | **1** |
-| 1.3  | Four destinations     | Cruising. Four full-bleed sticky cards, one per area; each new photo arrives through a soft cloud-wipe (shader displacement) instead of a hard cut. Area name huge, 2 lines of copy, one link, a small Lottie that plays once. The area hue is only a thin line and the icon.                                                                               | 04–07 photos (graded to the navy/amber look) · `destinations` (sticky CSS) · Lottie: scales, passport, (events, code — to source)                                        | no  |
-| 1.4  | Why WaysZ             | The view expands: a rounded "window" photo grows to full screen, then the six reasons settle in two calm rows. No icons-in-circles grid; hierarchy by type size.                                                                                                                                                                                              | `media-reveal` · one wide photo (to source: cabin window / meeting room at dusk)                                                                                          | **2** |
-| 1.5  | How we work           | Night side of the Earth, slowly turning. A warm route arc draws across it through four stops while the four steps light up one by one; the plane rides the arc.                                                                                                                                                                                              | three.js globe with NASA Black Marble (public domain) + arc shader · `route-steps` for text · fallback: static night-Earth image + SVG route                              | **3** |
-| 1.6  | CTA — "Final approach" | Descent: runway approach lights converge toward the two buttons. Headline by lines; magnetic buttons; WhatsApp button only if `site.whatsapp` exists.                                                                                                                                                                                                         | short dusk video or photo (to source) · light points in the WebGL stage · `data-magnetic`                                                                                 | no  |
-| 1.7  | WaysZ Visa            | A boarding pass slides in; the visa stamp lands on it (Lottie, once). One button to `site.visaSite`.                                                                                                                                                                                                                                                         | `boarding-gate` · Lottie "visa stamp passport" · 05 airport photo behind a dark overlay                                                                                   | no  |
-| 1.8  | Footer — "Landed"     | Logo wings assemble, the plane lands in its place. Legal notice is static — never animated.                                                                                                                                                                                                                                                                  | existing `footer-landing`                                                                                                                                                 | —   |
+| 1.3  | Four destinations     | Still inside the cloud we climbed into: the section title on the page colour. The cloud parts and the first area appears; each next area arrives through a different transition (liquid front, band of warm light, iris), resting in between. Area name huge, the brief's copy, one link, a line icon that draws itself in the area hue. Pointer moves the photo in depth. | 4 photos as textures in the WebGL stage (act `wipe`, 4 shader transitions) · css tier: clip-path wipes · `areas` scene · own SVG icons | no (sticky) |
+| 1.4  | Why WaysZ             | A cabin-window-shaped view of the dusk sky above city lights opens to the full screen; the heading travels from the middle of the window to its place. The six reasons settle in two calm rows, each icon with its own small movement (roof drops, check lands, lock closes, globe turns, rings join). Phone: the photo stays and the reasons scroll over it. | `media-reveal` · one photo · own SVG icons (DrawSVG + transforms) | no (sticky) |
+| 1.5  | How we work           | Night side of the Earth with warm city lights. A route leaves Egypt; scrolling flies the plane through four stops, the globe turns to follow it, and the four steps light up one by one along a line that mirrors the route. Faint arcs leave Egypt in other directions. | three.js globe (act `globe`) with NASA Black Marble · `globe-route` · css tier: a still of the same globe + the HTML route line | no (sticky) |
+| 1.6  | CTA — "Final approach" | Descent: a real runway at dusk comes up to meet us; the sequenced approach lights run toward the horizon where the buttons sit. Headline by words; magnetic buttons; WhatsApp only if `site.whatsapp` exists. | one photo · CSS approach lights · `approach` · `data-magnetic` · `data-depth` | no  |
+| 1.7  | WaysZ Visa            | In the terminal at sunset a boarding pass "WaysZ → WaysZ Visa" rises from flat to face us, leans toward the pointer, and gets stamped (in the Visa site's blue). One button to `site.visaSite`. | `boarding-pass` · one photo · own SVG stamp | no  |
+| 1.8  | Footer — "Landed"     | Touchdown: the runway centre line streaks past and brakes to a stop with the last scroll, the threshold lights come on, the logo wings rise and the plane comes down onto its spot. Legal notice is static — never animated. | `footer-landing` | —   |
 
-Three pins total (Journey, Why, How). Hero and destinations use CSS `position: sticky`, not pins.
+One real pin (the Journey). The hero, the four areas, "why" and "how" hold the screen with CSS `position: sticky`
++ a scrubbed ScrollTrigger, which is lighter and cannot break on resize. Budget on Home stays 3.
 
 ### Copy used in Part 1 (from the brief, nothing invented)
 
@@ -185,3 +187,39 @@ frame is decoded (off the main thread).
 Known gap: with CPU 4× throttling the pinned journey does not hold a full frame rate (desktop `high`
 ≈ 20–25fps, phone `lite` ≈ 40fps with some longer frames). The cost is uploading each footage frame to the
 GPU. The stage already halves footage updates when a frame runs long and downgrades tiers when it stays slow.
+
+## 12 · Part 2 as built (2026-11-13)
+
+**The film in one line:** sky (hero) → take-off (journey) → cloud (white) → four destinations at dusk →
+above the clouds at last light (why) → night, the route across the Earth (how) → final approach (CTA) →
+the terminal (Visa) → touchdown (footer). After the one bright moment in the cloud, the page only gets darker.
+
+What changed from the plan:
+
+- **Lottie → own SVG + GSAP.** The four inbox Lotties were rendered and reviewed: flat cartoon style, and the visa
+  stamp reads "VENICE · ITALY". None is shipped. Every icon and the stamp is inline SVG drawn by GSAP, coloured by
+  tokens (decision D is closed this way: the scales icon is ours).
+- **Media (decisions C, E):** passport photo → silhouettes in a terminal at sunset; events photos → an empty
+  auditorium; legal photo regraded from a teal studio to navy; a new dusk photo for "why", a runway at dusk for the
+  CTA, a terminal at sunset for the Visa gate. Sources and edits: `docs/media-credits.md`.
+- **CTA lights are CSS, not WebGL.** The runway is real footage; eleven sequenced lights in CSS perspective cost
+  nothing and work on every tier.
+- **The stage serves three acts** (flight · wipe · globe) with one renderer; the canvas moves to the most
+  visible host and each section's DOM version returns when it leaves.
+- **Fixed from Part 1:** on the css tier the hero's cloud photos loaded during page load and became the largest
+  paint (LCP 6.3s in Lighthouse without a GPU). They now load on the first interaction.
+
+Measured on the production build (local preview, Intel HD P630 integrated GPU, Chromium):
+
+| Metric                                    | Desktop 1440×900 (high)        | Phone 390×844 (lite)        |
+| ----------------------------------------- | ------------------------------ | --------------------------- |
+| Loaded by itself (no interaction)         | 704 KB                         | 471 KB                      |
+| After the first interaction (WebGL chunk) | 844 KB                         | 610 KB                      |
+| After scrolling the whole page            | 5.4 MB (4.2 MB = journey frames) | 2.3 MB (1.3 MB = frames)  |
+| Scroll frames with CPU 4×, §1.3–1.7       | median 16.7ms · 0–1 frames over 33ms per section | median 16.7ms · none over 33ms |
+| Scroll frames with CPU 4×, hero + journey | median 16.7ms · p95 33ms       | median 16.7ms · none over 33ms |
+
+Lighthouse mobile (headless, no GPU = css tier): Arabic 95 · English 98 · Accessibility 100 · Best practices 100 ·
+SEO 100 · LCP 1.1s · CLS 0 · TBT 50–180ms.
+
+Not verified here: Safari (macOS / iOS), Firefox and a real mid-range Android — this machine only has Chromium.

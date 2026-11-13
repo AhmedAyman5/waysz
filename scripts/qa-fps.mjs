@@ -36,7 +36,7 @@ for (const device of [
     const loop = (now) => { window.__dt.push(now - last); last = now; requestAnimationFrame(loop); };
     requestAnimationFrame(loop);
   });
-  const end = await page.evaluate(() => innerHeight * 4.2);
+  const end = await page.evaluate(() => document.documentElement.scrollHeight - innerHeight);   // the whole page
   for (let y = 0; y < end; y += 60) {
     if (device.isMobile) await page.evaluate((top) => window.scrollTo(0, top), y);
     else await page.mouse.wheel(0, 60);
@@ -45,6 +45,7 @@ for (const device of [
   await page.waitForTimeout(800);
   const stats = await page.evaluate(() => {
     const d = window.__dt.slice(5).sort((a, b) => a - b);
+    window.__marks = undefined;
     const at = (p) => d[Math.floor(d.length * p)];
     return {
       frames: d.length, median: at(0.5), p95: at(0.95), worst: d.at(-1),

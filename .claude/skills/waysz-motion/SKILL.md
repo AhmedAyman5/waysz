@@ -51,7 +51,22 @@ UI feedback 0.2–0.3s. One orchestrated moment per section — never a fade-up 
 
 - **One renderer + one canvas per page** (`stage.ts`). Scenes never create their own. Each section that
   draws registers an **act** (`acts/*.ts`: `host`, `scene`, `camera`, `ready`, `update`, `resize`,
-  `setQuality`, `dispose`); the canvas moves into the host of the act that is on screen.
+  `setQuality`, `dispose`). Acts so far: `flight` (Home hero + journey), `wipe` (Home §1.3 photo transitions),
+  `globe` (Home §1.5 night Earth + route).
+- **Hand-off between acts**: the canvas moves into the host of the act that is MOST visible. While it paints
+  there the host has `.is-drawing` — hide the section's DOM media with CSS on that class
+  (`.host.is-drawing ~ .card .media { visibility: hidden }`); when the canvas leaves, the DOM version is back.
+  Make two neighbouring acts meet on the same flat colour so the swap cannot be seen.
+- **Adding an act** from a scene: `addAct(env, async () => (await import('../stage/acts/x')).createX(host, …))`
+  inside a `ScrollTrigger` `once` at `top 250%` (the act's chunk and textures load only when the section is
+  near). Host element: `<div class="stage-host" aria-hidden="true">` (styles in base.css). `addAct` does nothing
+  on the css tier / reduced motion, and a failing act never breaks the page.
+- Photo textures: `createImageBitmap(img, { imageOrientation: 'flipY' })` + `texture.flipY = false` — an `<img>`
+  reports its layout size and breaks the upload on small screens. Reuse the section's own `<img>` (no second download).
+- Colours: our own shaders work in display space (token colour in → same colour out). three's built-in
+  materials and `scene.background` are colour-managed: give them `color.convertSRGBToLinear()`.
+- No depth buffer on the shared renderer: fix draw order with `renderOrder` + `depthTest: false`; anything that
+  floats over a sphere fades itself out on the far side (see `arcFragment`).
 - **Lazy**: `startFlightStage(env)` is called by the hero scene AFTER the hero text is on screen; it then
   waits for the visitor's FIRST INTERACTION (pointer move, touch, wheel, key, scroll) and only then
   dynamic-imports three.js. Shaders compile with `renderer.compileAsync` (non-blocking). This keeps the
@@ -71,7 +86,7 @@ UI feedback 0.2–0.3s. One orchestrated moment per section — never a fade-up 
 - Shaders live in `shaders/*.glsl.ts`. Quality is set with `#define`s (`OCT`, `LAYERS`, `RAYS`), not branches.
   Work in display (sRGB) space for footage plates; read colors from the semantic tokens (see `token()` in
   `acts/flight.ts`) — no hex in shaders.
-- New 3D section (Part 2: globe, approach lights) = a new act + its host element. Reuse the stage.
+- New 3D section = a new act + its host element + a few fields in `bridge.ts`. Reuse the stage.
 
 ## Media toolkit
 
@@ -136,9 +151,21 @@ UI feedback 0.2–0.3s. One orchestrated moment per section — never a fade-up 
 
 ## Scenes (`src/motion/scenes/<name>.ts`)
 
-preloader · hero-takeoff (Home) · image-sequence · destinations · route-steps · boarding-gate ·
-footer-landing · text-scrub · services-filter · accordion · form-flight · media-reveal (Part 2) ·
-Motion Lab only: hero-logo · dive.
+Home: preloader · hero-takeoff · image-sequence · areas · media-reveal · globe-route · approach ·
+boarding-pass · footer-landing (every page). Other pages / Motion Lab: destinations · route-steps ·
+boarding-gate · text-scrub · services-filter · accordion · form-flight · hero-logo · dive.
+Contracts and what to reuse on Services / About / Contact: `reference.md`.
+
+### Sticky screens (Home §1.3–1.5) — the pattern to copy
+
+A tall section, a `position: sticky; top: 0; height: 100lvh` view inside it, and ONE scrubbed timeline
+(`trigger: section, start: 'top top', end: 'bottom bottom'`). The scene adds `.is-scrub` to the root; all the
+sticky/absolute layout lives under that class, so without JS or with reduced motion the section is plain flow.
+- Let content REST: map scroll to progress with plateaus (see `span()` in `areas.ts`, `HOPS` in `globe-route.ts`).
+- State that scroll hides is faded with `opacity` (never `autoAlpha`): it stays in the accessibility tree; toggle
+  `pointer-events` with an `.is-active` class and scroll a focused link's card into place.
+- Headings: `SplitText` words with `mask: 'words'`, `wordsClass: 'w'` (base.css gives `.w-mask` room for Arabic marks).
+- A second layout for small/short screens goes in `gsap.matchMedia()` and flips a class (`.is-wide`).
 
 ### Writing a new scene
 
@@ -190,7 +217,7 @@ export default scene;
 6. Reduced motion: final state instantly; no Lenis, pins, parallax, depth, cursor, video autoplay.
 7. Mobile (< 1024px or touch): pins ≤ `+=180%` (sequences) / `+=100%` (others); no depth, cursor,
    magnetic, spotlight; lighter media.
-8. Max **2 pinned scenes per page — 3 on Home** (Journey, Why, How), only while scrolling stays smooth.
+8. Max **2 pinned scenes per page — 3 on Home**, only while scrolling stays smooth (Home uses 1: the Journey).
    Never animate the pinned element itself — animate its children. Prefer CSS `position: sticky` + a
    scrubbed ScrollTrigger when a scene only needs to hold the screen (the Home hero does this).
 9. One RAF loop (`gsap.ticker`) — WebGL rendering included. No custom `requestAnimationFrame` loops, no

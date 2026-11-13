@@ -61,43 +61,76 @@ Pinned (pin 1 of 3); scrolling plays the take-off frame by frame; the three capt
 intro paragraph cut at its own punctuation. With `veil` the first 10% clears the cloud white-out and the
 last 12% climbs back into it, ending in the page background colour.
 
-### media-reveal — Home §1.4 intro · About §4.1
-
-`<section data-scene="media-reveal">` → `.reveal__media` (photo or BgVideo) expands from an inset rounded
-card to full screen; `.reveal__text` appears at 60%.
-
-### destinations — Home §1.3 (v2: full-bleed media cards)
+### areas — Home §1.3 (`views/home/Areas.astro`)
 
 ```html
-<div data-scene="destinations">
-  <article class="dest-card" style="--i:0; --hue: var(--hue-legal)">
-    <div class="dest-card__media"><image … /></div>
-    <!-- or <BgVideo> -->
-    <div class="dest-card__body">
-      <Lottie src="/media/lottie/scales.json" mode="once" />
-      <h3 />
-      <p />
-      <a />
-    </div>
-  </article>
-  … ×4
-</div>
+<section class="areas" data-scene="areas" data-waypoint>
+  <div class="areas__view" data-depth-scene>
+    <div class="areas__stage stage-host"></div>            <!-- WebGL act "wipe" -->
+    <header class="areas__intro"><h2 class="areas__title">…</h2></header>
+    <article class="area theme-dark" data-side="left|right" style="--hue; --justify; --focus">
+      <div class="area__media"><div class="area__photo" data-depth="0.35"><Image data-focus /></div></div>
+      <div class="area__scrim"></div>
+      <div class="area__body"><div class="area__text"><svg class="area__icon"/><h3 class="area__name"/><p class="area__copy"/><a class="area__link"/></div></div>
+    </article> ×4
+    <div class="areas__ticks"><span/>×4</div>
+  </div>
+</section>
 ```
 
-Sticky stacking; next card covers the previous one, which scales to 0.9 and dims.
+One sticky screen, 4.4 "units" of scroll: title on the page colour (we are still in the cloud) → each area in
+turn, resting between transitions. WebGL tiers: cloud wipe · liquid displacement · light sweep · iris
+(`wipe.glsl.ts`); css tier: clip-path wipes of the same `<img>`s. Photos never mirror — `data-side` says where
+the text goes. No JS: stacked full-screen cards.
 
-### route-steps — Home §1.5 · Service template steps · About §4.4
+### media-reveal — Home §1.4 (`views/home/Why.astro`) · About §4.1
+
+`.why__track > .why__view (.reveal__media > .reveal__inner, .why__shade, .reveal__text) + .why__list > .reason[data-icon]`.
+The media opens from a cabin-window shape to full screen; the heading travels from the middle of the window
+to its place; then the `.reason` items arrive, each icon with its own movement (`iconTimeline`). Wide + tall
+screens: all inside one sticky screen, scrubbed. Small screens: reveal scrubbed, items enter while scrolling
+over the held photo.
+
+### globe-route — Home §1.5 (`views/home/How.astro`)
+
+`.how__track > .how__view (.how__poster, .how__stage.stage-host, .how__scrim) + .how__content (.how__title, .how__route > .how__line + ol.how__steps > .step)`.
+The plane flies three hops across the night globe (act "globe") and each `.step` gets `.is-active` when the
+plane reaches its stop; the HTML line + plane under the steps mirrors it (and is the whole route on the css
+tier, over the still `earth-poster.webp`). Wide: sticky screen with rests at each stop. Small: the globe holds
+the top of the screen, the steps scroll over it. Waiting steps are dimmed to 0.62 (still AA).
+
+### approach — Home §1.6 (`views/home/Cta.astro`) · reuse for Contact §5
+
+Photo settles as the section arrives (scale + y, scrubbed), headline rises by words once, CSS-animated
+approach lights (`.cta__lights span`, perspective from `--i`) run only while `.is-live`. Buttons: `data-magnetic`.
+
+### boarding-pass — Home §1.7 (`views/home/Visa.astro`)
+
+`.pass__scroll` (scroll tilt: rotationX 46° → 0) > `.pass__shadow` + `.pass.theme-light[data-site=visa]`
+(pointer tilt + `.pass__shine`) with `.stamp` (lands once, small impact). The notches are a CSS mask, so the
+shadow is its own layer.
+
+### footer-landing — every page
+
+Runway centre line decelerates with the last stretch of scroll (scrubbed), threshold lights come on, the logo
+wings rise and the plane comes down onto its spot. The legal notice is never animated.
+
+### destinations (Motion Lab) — sticky cards that stack
+
+Kept for the Motion Lab; Home uses `areas`.
+
+### route-steps — Service template steps · About §4.4 (Home uses `globe-route`)
 
 Existing contract (route path + `.route__plane` + `.step.is-active`). v2: optional map/photo background
 behind the route; the plane may be a `<Lottie mode="loop">` inside `.route__plane`.
 
-### boarding-gate — Home §1.7
+### boarding-gate (Motion Lab)
 
-`.pass` + `path.pass__perf` + `.stamp`. v2: section background = airport photo with dark overlay.
+`.pass` + `path.pass__perf` + `.stamp`. Home uses `boarding-pass`.
 
-### text-scrub · services-filter · accordion · form-flight · footer-landing
+### text-scrub · services-filter · accordion · form-flight
 
-Unchanged (see Motion Lab). The footer keeps the logo landing.
+Unchanged (see Motion Lab).
 
 ---
 
@@ -109,16 +142,27 @@ Unchanged (see Motion Lab). The footer keeps the logo landing.
 | 1.1     | Header           | —                                                                       | transparent over the hero, dark glass after 80px · «خدماتنا» submenu  |
 | 1.2     | Hero             | wing-view video at dusk inside the WebGL stage + shader clouds          | `hero-takeoff` (sticky, scrubbed) · stage act `flight` — BUILT        |
 | 1.2b    | The Journey      | window-seat take-off sequence, dusk grade                               | `image-sequence` (pin 1) + 3 captions · cloud fly-through — BUILT     |
-| 1.3     | 4 service areas  | photo per area (justice, generic travel, hall, code), graded navy/amber | `destinations` (sticky full-bleed, cloud-wipe) + Lottie icons         |
-| 1.4     | Why WaysZ        | one wide photo (cabin window / meeting room at dusk)                    | `media-reveal` (pin 2) → 6 reasons                                    |
-| 1.5     | How we work      | NASA Black Marble night-Earth globe (new stage act) + route arc         | `route-steps` (pin 3) · fallback: still image + SVG route             |
-| 1.6     | CTA              | approach lights at dusk (video/photo + light points in the stage)       | `data-split` · `data-magnetic`                                        |
-| 1.7     | WaysZ Visa link  | airport photo behind a dark overlay                                     | `boarding-gate` + Lottie visa stamp                                   |
-| 1.8     | Footer           | logo                                                                    | `footer-landing`                                                      |
+| 1.3     | 4 service areas  | photo per area (justice, terminal at sunset, auditorium, code), graded navy/amber | `areas` (sticky) · stage act `wipe` (4 shader transitions) · SVG icons — BUILT |
+| 1.4     | Why WaysZ        | dusk sky above city lights                                              | `media-reveal` (sticky) → 6 reasons with icon micro-animations — BUILT |
+| 1.5     | How we work      | NASA Black Marble globe (stage act `globe`) · still for the css tier     | `globe-route` (sticky) · HTML route line + steps — BUILT              |
+| 1.6     | CTA              | runway at dusk (photo)                                                  | `approach` · CSS approach lights · `data-magnetic` — BUILT            |
+| 1.7     | WaysZ Visa link  | terminal at sunset (photo)                                              | `boarding-pass` (3D tilt + SVG stamp) — BUILT                         |
+| 1.8     | Footer           | logo                                                                    | `footer-landing` (runway + touchdown) — BUILT                         |
 | 2       | Services         | header photo per area tab                                               | `services-filter` (Flip) · cards with photos                          |
 | 3       | Service template | header photo of the service's area                                      | `data-split` · `route-steps` · `accordion`                            |
 | 4       | About            | wide photo                                                              | `media-reveal` · `text-scrub` · `route-steps` (2 stops)               |
 | 5       | Contact          | calm photo                                                              | `form-flight` · `data-magnetic`                                       |
 
-Pins: Home may use 3 — `image-sequence` (1.2b), `media-reveal` (1.4), `route-steps` (1.5). The hero and
-`destinations` are CSS sticky, not pins. Other pages: max 2.
+Pins: Home may use 3 and uses 1 — `image-sequence` (1.2b). The hero, `areas`, `media-reveal` and `globe-route`
+are CSS sticky + scrub, not pins. Other pages: max 2.
+
+## What to reuse on the next pages
+
+| Need                                   | Take                                                                                   |
+| -------------------------------------- | -------------------------------------------------------------------------------------- |
+| Services: header photo per area tab    | the `wipe` act (pass the tab photos; set `bridge.areas.progress` from the tab index)   |
+| Service template: steps                | `globe-route`'s HTML line + `.step.is-active` (without the globe) or `route-steps`     |
+| About: opening                         | `media-reveal` as is (`.reveal__media`, `.reveal__text`, optional `.reason` items)     |
+| About: values / "why" lists            | `iconTimeline` icons from `media-reveal.ts`                                            |
+| Contact: header                        | `approach` (photo + words + magnetic buttons)                                          |
+| Any dark photo section                 | `data-depth-scene` + `data-depth` on the photo wrapper, scrim gradient, `.link-arrow`  |

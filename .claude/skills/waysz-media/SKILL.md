@@ -30,6 +30,9 @@ description: How WaysZ finds, licenses, optimizes and ships photos, videos, imag
 - Check EVERY file frame by frame before optimizing (contact sheet:
   `ffmpeg -i in.mp4 -vf "fps=1,scale=640:-2,tile=3x3" -frames:v 1 sheet.jpg`). Real airports mean real liveries.
   A problem file is cropped, graded, blurred or skipped — and the decision is written in the credits log.
+- **Lottie quality rule:** ship a Lottie only if it matches the premium, cinematic look (thin, restrained, no
+  cartoon fills, no text or place names inside it). Render it first and look at it; recolor to our tokens if that
+  is enough, otherwise build the moment as inline SVG + GSAP (Home §1.3–1.7 do this for every icon and the stamp).
 - Calm, premium, consistent grade: dusk/golden hour, deep blues, warm highlights (matches the palette).
 - Footage must loop cleanly (or be trimmed to a clean loop) for background use.
 
@@ -92,6 +95,23 @@ ffmpeg -i in.mp4 -vf "vidstabtransform=input=tr.trf:smoothing=40:zoom=22:optzoom
 # Cloud photo → transparent WebP layer (alpha from whiteness, feathered edges)
 ffmpeg -i clouds.jpg -vf "scale=1100:-2,format=rgba,geq=r='r(X,Y)':g='g(X,Y)':b='b(X,Y)*0.95':a='255*clip((1-(b(X,Y)-r(X,Y))/55),0,1)*clip((r(X,Y)-120)/90,0,1)*clip(sin(PI*X/W)*2.2,0,1)*clip(sin(PI*Y/H)*2.2,0,1)'" -c:v libwebp -quality 40 public/media/img/cloud-1.webp
 ```
+
+```bash
+# Unsplash photo at 2400px (official download endpoint; the page preview is too small)
+curl -L -o media-inbox/NAME/unsplash-<ID>-2400.jpg "https://unsplash.com/photos/<ID>/download?force=true&w=2400"
+# Photo → src/assets/media: crop out problems, then grade toward the night look (tune per photo, check the result)
+ffmpeg -i in.jpg -vf "crop=W:H:X:Y,curves=all='0/0 0.5/0.44 1/0.92',colorbalance=bs=0.06:rh=0.08:bh=-0.08" -q:v 3 src/assets/media/NAME.jpg
+# Shift a coloured studio background to navy without touching warm subjects (legal-justice.jpg)
+#   huesaturation=hue=28:saturation=0.1:intensity=-0.35:colors=c+b+g , curves=… , vignette=PI/3.4
+# Night-Earth globe texture (NASA Black Marble, public domain) — desktop + lighter phone map
+ffmpeg -i BlackMarble_2016_01deg.jpg -vf "scale=2048:1024:flags=lanczos" -c:v libwebp -quality 72 public/media/img/earth-night.webp
+ffmpeg -i BlackMarble_2016_01deg.jpg -vf "scale=1024:512:flags=lanczos" -c:v libwebp -quality 70 public/media/img/earth-night-m.webp
+```
+
+**Globe still (`public/media/img/earth-poster.webp`)** — the css-tier / no-JS version of Home §1.5 is a render of
+our own WebGL globe. Re-render it whenever the palette or the globe shader changes: run `npm run dev`, open
+`/en/?tier=high&globe=poster` in a 1100×1100 window (dev only: the whole globe is centred), scroll to §1.5, hide
+`.how__content, .how__scrim, .how__poster`, screenshot `.how__stage`, convert to WebP (quality 80).
 
 ## 6 · Budgets (hard limits)
 

@@ -24,7 +24,8 @@ The Home page concept ("The Journey", one continuous flight) is in `docs/home-cr
 
 - full-screen background video, scroll-scrubbed image sequences (video → frames on a canvas),
   media that expands to full screen, sticky full-bleed media cards, huge staged typography,
-- ready-made Lottie animations for icons and small moments (plane, scales of justice, passport, check),
+- small moments (icons, stamps, route planes): our own inline SVG animated with GSAP. A ready-made Lottie is used
+  ONLY when it matches the premium, cinematic look (recolored to our tokens if needed) — most stock ones do not,
 - background layers that move with the mouse (depth), and a plane-shaped cursor on desktop,
 - a 3D layer (three.js + custom GLSL) that puts the footage inside one WebGL stage: shader clouds the camera
   flies through, sun glow / god rays, grain, vignette. It is an enhancement: every scene also works without it.
@@ -61,7 +62,9 @@ npm run preview    # serve dist/ locally to test the production build
 # Visual QA (Playwright, uses your installed Chrome). Dev only: force a tier with ?tier=high|lite|css
 node scripts/qa-shots.mjs <outDir>     # screenshots while scrolling: AR/EN · desktop/phone/360 · every tier · reduced motion · no JS
 node scripts/qa-weight.mjs             # page weight of the production preview (run `npm run preview -- --port 4322` first)
-node scripts/qa-fps.mjs <url> 4        # scroll frame times with CPU throttling 4x
+node scripts/qa-fps.mjs <url> 4        # scroll frame times with CPU throttling 4x (whole page)
+# No Google Chrome on the machine (e.g. Linux)? Point the scripts at any Chromium:
+#   QA_CHROME=~/.cache/ms-playwright/chromium-*/chrome-linux64/chrome node scripts/qa-shots.mjs out/
 ```
 
 ## Structure
@@ -73,7 +76,7 @@ waysz/
 ├─ .claude/skills/waysz-media/    SKILL.md (sources, licenses, ffmpeg recipes, budgets, credits)
 ├─ docs/brief/                    the approved brief (PDF)
 ├─ docs/home-creative-treatment.md  Home concept + storyboard v2 (§1.1–1.8)
-├─ scripts/                       Playwright QA: qa-shots · qa-weight · qa-fps
+├─ scripts/                       Playwright QA: qa-shots · qa-weight · qa-fps (+ qa-browser: shared launch)
 ├─ docs/media-credits.md          one row per media file we ship (source, author, license)
 ├─ media-inbox/                   RAW downloads before optimizing — gitignored, never shipped
 ├─ public/
@@ -93,10 +96,11 @@ waysz/
    ├─ layouts/BaseLayout.astro    <html lang dir>, SEO, boot script, header/footer, cursor, motion init
    ├─ lib/                        forms.ts · site.ts (client data)
    ├─ motion/                     index.ts · config.ts · smooth-scroll.ts · globals/ · scenes/
-   │  └─ stage/                   3D layer: stage.ts (renderer) · tier.ts · bridge.ts · acts/ · shaders/
+   │  └─ stage/                   3D layer: stage.ts (renderer) · tier.ts · bridge.ts · acts/ (flight · wipe · globe) · shaders/
    ├─ pages/                      THIN wrappers only (AR at /, EN under /en/)
    ├─ styles/                     tokens.css · base.css
    └─ views/                      real page content (HomePage, ServicesPage, …, MotionLab)
+      └─ home/                    one file per Home section: Areas · Why · How · Cta · Visa (markup + copy + styles)
 ```
 
 ## Pages & languages
@@ -142,7 +146,8 @@ waysz/
 - Components use **semantic tokens only** (`var(--color-brand)`, `var(--color-accent)`, …). Never raw hex,
   never primitives (`--midnight-800`). The palette is TEMPORARY; the real one replaces LAYER 1 only.
 - Text over video/photos always sits on a dark gradient overlay so it passes contrast (AA).
-- Dark sections: `class="theme-dark"`. One font family (Almarai); hierarchy via size and weight.
+- Dark sections: `class="theme-dark"`; a light island inside one (e.g. the boarding pass): `class="theme-light"`.
+  One font family (Almarai); hierarchy via size and weight.
 - Avoid template tells: accenting one word of a headline in another color, ALL-CAPS eyebrow labels,
   numbered markers on content that is not a sequence, "→" appended to every link, identical cards everywhere.
 - Mobile-first. Breakpoints 640 / 1024 / 1440. Always test at 360px.
@@ -161,7 +166,11 @@ waysz/
 - Working examples of the basic scenes and attributes live in the Motion Lab (`src/views/MotionLab.astro`).
   The Home page is built directly in `src/views/HomePage.astro` (the Motion Lab is not required for it);
   for other pages, add a new technique to the Motion Lab first.
-- Home may use up to **3 pinned scenes** (other pages: 2), as long as scrolling stays smooth.
+- Home may use up to **3 pinned scenes** (other pages: 2), as long as scrolling stays smooth. As built, Home has
+  ONE real pin (the Journey); the areas, "why" and "how" screens are held with CSS `position: sticky` + a scrubbed
+  ScrollTrigger — prefer that whenever a scene only needs to hold the screen.
+- Content that a scroll state hides (stacked cards, waiting steps) is faded with `opacity`, never
+  `visibility`/`autoAlpha`, so screen readers and keyboard focus still reach it; dimmed text stays ≥ AA contrast.
 - 3D is tiered by DEVICE CAPABILITY, not by "mobile": `high` (desktop GPU) · `lite` (capable phones/tablets:
   same scene, cheaper shader, lower DPR) · `css` (weak device, no WebGL2, saveData, reduced motion: plain
   video + CSS layers / posters). The HTML underneath is always complete (LCP, no-JS, reduced motion).

@@ -31,10 +31,10 @@ const runs = [
   { name: 'ar-desktop-css', path: '/?tier=css', viewport: desktop },
   { name: 'ar-small-css', path: '/?tier=css', viewport: small, mobile: true },
   { name: 'en-small-css', path: '/en/?tier=css', viewport: small, mobile: true },
-  { name: 'en-desktop-reduced', path: '/en/', viewport: desktop, reduce: true, stops: [0, 1, 2] },
+  { name: 'en-desktop-reduced', path: '/en/', viewport: desktop, reduce: true, stops: [0, 1, 2, 3.5, 5, 6.5, 8, 9.5, 11] },
   { name: 'en-desktop-nojs', path: '/en/', viewport: desktop, nojs: true, stops: [0, 1, 2] },
   { name: 'ar-desktop-reduced', path: '/', viewport: desktop, reduce: true, stops: [0, 1, 2] },
-  { name: 'ar-phone-reduced', path: '/', viewport: phone, mobile: true, reduce: true, stops: [0, 1, 2] },
+  { name: 'ar-phone-reduced', path: '/', viewport: phone, mobile: true, reduce: true, stops: [0, 1, 2, 4, 6, 8, 10, 12, 14] },
   { name: 'ar-desktop-nojs', path: '/', viewport: desktop, nojs: true, stops: [0, 1, 2] },
   { name: 'ar-desktop-intro', path: '/?tier=high', viewport: desktop, intro: true, stops: [0] },
 ].filter((r) => !only || r.name.includes(only));
@@ -72,7 +72,14 @@ for (const run of runs) {
       await page.evaluate(() => window.dispatchEvent(new Event('touchstart')));
     }
     await page.waitForTimeout(run.nojs ? 500 : 3200);
-    const list = run.stops ?? (run.mobile ? mobileStops : stops);
+    // the hero + journey stops from Part 1, then the rest of the page every 0.7 viewport down to the footer
+    let list = run.stops;
+    if (!list) {
+      const total = await page.evaluate(() => (document.documentElement.scrollHeight - innerHeight) / innerHeight);
+      list = [...(run.mobile ? mobileStops : stops)];
+      for (let vh = list.at(-1) + 0.7; vh < total; vh += 0.7) list.push(+vh.toFixed(2));
+      list.push(+total.toFixed(2));
+    }
     for (const [i, vh] of list.entries()) {
       if (!run.nojs) {
         await page.evaluate((y) => window.scrollTo({ top: y * window.innerHeight, behavior: 'instant' }), vh);
@@ -88,6 +95,7 @@ for (const run of runs) {
       const info = await page.evaluate(() => ({
         tier: document.documentElement.dataset.tier,
         live: !!document.querySelector('[data-flight].is-live'),
+        drawing: document.querySelector('.is-drawing')?.classList[0] ?? null,
         overflowX: document.documentElement.scrollWidth - window.innerWidth,
       }));
       console.log(run.name, JSON.stringify(info));
