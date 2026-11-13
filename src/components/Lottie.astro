@@ -1,0 +1,22 @@
+---
+/**
+ * Lottie animation (motion/globals/lottie.ts). Files live in /public/media/lottie/.
+ * mode: loop (while on screen) · once (when it enters) · hover (on the parent link/button) · scrub (scroll).
+ * Decorative by default; pass `label` when the animation carries meaning.
+ * Give it a size from the parent: the box is square and reserves its space (no layout shift).
+ */
+interface Props {
+  src: string;
+  mode?: 'loop' | 'once' | 'hover' | 'scrub';
+  label?: string;
+  class?: string;
+}
+const { src, mode = 'loop', label, class: className } = Astro.props;
+---
+<span class:list={['lottie', className]} data-lottie={src} data-mode={mode}
+      role={label ? 'img' : undefined} aria-label={label} aria-hidden={label ? undefined : 'true'}></span>
+
+<style>
+  .lottie { display: inline-block; aspect-ratio: 1; width: 100%; line-height: 0; }
+  .lottie :global(svg) { display: block; width: 100%; height: 100%; }
+</style>

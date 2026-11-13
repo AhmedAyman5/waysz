@@ -11,6 +11,7 @@ import { Flip } from 'gsap/Flip';
 import { CustomEase } from 'gsap/CustomEase';
 import { initSmoothScroll } from './smooth-scroll';
 import { initGlobals } from './globals';
+import { detectTier, type Tier } from './stage/tier';
 
 gsap.registerPlugin(ScrollTrigger, SplitText, DrawSVGPlugin, MotionPathPlugin, Flip, CustomEase);
 gsap.defaults({ ease: 'expo.out', duration: 0.9 });
@@ -20,6 +21,7 @@ export type MotionEnv = {
   rtl: boolean;
   dir: 1 | -1;       // multiply every "forward" horizontal value by this
   desktop: boolean;  // ≥1024px AND a precise pointer (mouse/trackpad)
+  tier: Tier;        // high · lite · css — by device capability (see stage/tier.ts); may drop at runtime
 };
 export type Scene = (root: HTMLElement, env: MotionEnv) => void | Promise<void>;
 
@@ -28,12 +30,10 @@ const scenes = import.meta.glob<{ default: Scene }>('./scenes/*.ts');
 export async function initMotion() {
   const html = document.documentElement;
   const rtl = html.dir === 'rtl';
-  const env: MotionEnv = {
-    reduce: matchMedia('(prefers-reduced-motion: reduce)').matches,
-    rtl,
-    dir: rtl ? -1 : 1,
-    desktop: matchMedia('(min-width: 1024px) and (pointer: fine)').matches,
-  };
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const desktop = matchMedia('(min-width: 1024px) and (pointer: fine)').matches;
+  const env: MotionEnv = { reduce, rtl, dir: rtl ? -1 : 1, desktop, tier: detectTier(reduce, desktop) };
+  html.dataset.tier = env.tier;
 
   if (!env.reduce) initSmoothScroll();
   initGlobals(env);

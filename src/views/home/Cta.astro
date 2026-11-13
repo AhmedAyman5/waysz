@@ -1,0 +1,91 @@
+---
+/**
+ * Home §1.6 — the contact call, "Final approach". Scene: motion/scenes/approach.ts.
+ * A real runway at dusk; the sequenced approach lights run toward the horizon, where the buttons sit.
+ * WhatsApp is rendered only when the number exists in src/lib/site.ts.
+ */
+import { Image } from 'astro:assets';
+import { site, waHref } from '../../lib/site';
+import { localizePath, useTranslations, type Lang } from '../../i18n';
+import runway from '../../assets/media/cta-approach.jpg';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+// Copy: brief §1.6 (Arabic is the source; English is a faithful translation).
+const copy = {
+  ar: { title: 'لديك استفسار أو تحتاج إلى استشارة؟', text: 'فريقنا جاهز للاستماع إليك ومساعدتك في تحديد خطوتك التالية.' },
+  en: { title: 'Have a question or need a consultation?', text: 'Our team is ready to listen and help you decide your next step.' },
+}[lang];
+const LIGHTS = 11;
+---
+<section class="cta theme-dark" data-scene="approach" data-depth-scene data-waypoint aria-labelledby="cta-title">
+  <div class="cta__media" aria-hidden="true">
+    <div class="cta__photo" data-depth="0.3">
+      <Image src={runway} alt="" widths={[640, 960, 1440, 2060]} sizes="100vw" format="webp" quality={70} loading="lazy" decoding="async" />
+    </div>
+  </div>
+  <div class="cta__scrim" aria-hidden="true"></div>
+  <div class="cta__lights" aria-hidden="true">
+    {Array.from({ length: LIGHTS }, (_, i) => <span style={`--i: ${i}`}></span>)}
+  </div>
+
+  <div class="cta__content container">
+    <h2 class="cta__title" id="cta-title">{copy.title}</h2>
+    <p class="cta__text">{copy.text}</p>
+    <div class="cta__actions">
+      <a class="btn btn--accent" href={localizePath('/contact/', lang)} data-magnetic>{t.cta.consult}</a>
+      {site.whatsapp && (
+        <a class="btn btn--ghost" href={waHref(site.whatsapp, t.whatsapp.message)} target="_blank" rel="noopener" data-magnetic>{t.cta.whatsapp}</a>
+      )}
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta {
+    position: relative; overflow: hidden;
+    min-height: 100vh; min-height: 100svh;
+    display: grid; align-items: center;
+  }
+  .cta__media, .cta__scrim { position: absolute; inset: 0; }
+  .cta__media { will-change: transform; }
+  .cta__photo { position: absolute; inset: -5%; }
+  /* the runway's vanishing point is at 46% × 50% of the photo: it stays near the middle at every crop */
+  .cta__photo :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 46% 50%; }
+  .cta__scrim {
+    background:
+      linear-gradient(to bottom, var(--color-bg) 0%, color-mix(in srgb, var(--color-bg) 60%, transparent) 22%, transparent 48%),
+      linear-gradient(to top, var(--color-bg) 0%, color-mix(in srgb, var(--color-bg) 45%, transparent) 26%, transparent 50%),
+      radial-gradient(ellipse 78% 50% at 50% 46%, color-mix(in srgb, var(--color-bg) 74%, transparent), transparent);
+  }
+
+  /* sequenced approach lights: from the bottom edge to the horizon, in perspective */
+  .cta__lights { position: absolute; inset-block: 58% 0; inset-inline: 0; pointer-events: none; }
+  .cta__lights span {
+    --f: calc(1 / (1 + 0.5 * var(--i)));               /* perspective: 1 = at our feet · → 0 = horizon */
+    position: absolute; left: 48%; top: calc(100% * var(--f) - 4%);
+    width: 64px; height: 22px; margin-inline-start: -32px; border-radius: 50%;
+    background: radial-gradient(closest-side, var(--color-ink) 12%, var(--color-accent) 38%, transparent);
+    scale: var(--f); opacity: 0.3;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .cta:global(.is-live) .cta__lights span { animation: approach 1.9s linear infinite; animation-delay: calc(var(--i) * 0.11s - 2s); }
+  }
+  @keyframes approach { 0%, 60%, 100% { opacity: 0.22; } 70% { opacity: 1; } 86% { opacity: 0.4; } }
+
+  .cta__content { position: relative; text-align: center; padding-block: calc(76px + var(--space-6)) var(--space-9); }
+  .cta__title {
+    margin-inline: auto; max-width: 15ch;
+    font-size: clamp(2.5rem, 1.3rem + 5.6vw, 6.5rem); line-height: 1.18; letter-spacing: -0.01em;
+  }
+  :global([dir='rtl']) .cta__title { line-height: 1.34; letter-spacing: 0; }
+  .cta__text { margin: var(--space-5) auto 0; max-width: 44ch; font-size: var(--text-lg); color: color-mix(in srgb, var(--color-ink) 86%, transparent); }
+  .cta__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-4); margin-block-start: var(--space-7); }
+  .cta__actions .btn { min-height: 58px; padding-inline: var(--space-8); font-size: var(--text-base); }
+  @media (max-width: 639px) {
+    .cta__text { font-size: var(--text-base); }
+    .cta__actions .btn { flex: 1 1 100%; padding-inline: var(--space-6); }
+  }
+</style>

@@ -11,6 +11,7 @@ import Footer from '../components/Footer.astro';
 import Preloader from '../components/Preloader.astro';
 import FlightRail from '../components/FlightRail.astro';
 import WhatsAppFloat from '../components/WhatsAppFloat.astro';
+import CursorPlane from '../components/CursorPlane.astro';
 import { dirOf, switchLangPath, useTranslations, type Lang } from '../i18n';
 
 interface Props {
@@ -75,6 +76,7 @@ const enUrl = new URL(switchLangPath(path, 'en'), Astro.site);
     <Footer lang={lang} />
     <FlightRail />
     <WhatsAppFloat lang={lang} />
+    <CursorPlane />
 
     <script>
       import { initMotion } from '../motion';

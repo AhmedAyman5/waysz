@@ -1,0 +1,111 @@
+---
+/**
+ * Scroll-scrubbed image sequence (motion/scenes/image-sequence.ts).
+ * Frames: /media/seq/<name>/frame_0001.webp … (see the waysz-media skill).
+ * Captions go in the default slot: <p class="seq__caption" data-at="0.2">…</p> (progress 0…1).
+ * Without JS / with reduced motion: frame 1 as a still image and every caption visible, no pin.
+ * Footage is never mirrored in RTL.
+ */
+interface Props {
+  name: string;
+  frames: number;
+  mobile?: string;        // lighter set for small screens (portrait crop, fewer frames): /media/seq/<mobile>/
+  mobileFrames?: number;  // number of frames in the mobile set
+  mobileStep?: number;    // without a mobile set: small screens load every Nth frame
+  width?: number;
+  height?: number;
+  focus?: string;         // object-position of the still / focal point of the canvas
+  id?: string;
+  label: string;          // accessible name of the section
+  veil?: boolean;         // Home "The Journey": cloud white-out at both ends + drawn by the WebGL stage
+}
+const { name, frames, mobile, mobileFrames, mobileStep = 2, width = 1280, height = 720, focus = '62% 50%', id, label, veil = false } = Astro.props;
+const first = `/media/seq/${name}/frame_0001.webp`;
+---
+<section class="seq theme-dark" id={id} aria-label={label} data-scene="image-sequence" data-waypoint
+         data-name={name} data-frames={frames} data-mobile-step={mobileStep}
+         data-mobile={mobile} data-mobile-frames={mobileFrames} data-veil={veil ? '' : undefined}
+         style={`--focus: ${focus}`}>
+  <div class="seq__view">
+    <div class="seq__media" aria-hidden="true">
+      <img class="seq__still" src={first} alt="" width={width} height={height} loading="lazy" decoding="async" />
+      <canvas class="seq__canvas"></canvas>
+    </div>
+    <div class="seq__scrim" aria-hidden="true"></div>
+    <div class="seq__captions container">
+      <slot />
+      <div class="seq__ticks" aria-hidden="true"></div>
+    </div>
+    {veil && <div class="seq__veil" aria-hidden="true"></div>}
+  </div>
+</section>
+
+<style>
+  .seq { position: relative; background: none; }   /* the view carries the dark background, not the section */
+  .seq__view {
+    position: relative;
+    background: var(--color-bg);
+    min-height: 100vh; min-height: 100lvh;
+    display: grid; align-items: end;
+    overflow: hidden;
+  }
+  .seq__media, .seq__scrim, .seq__veil { position: absolute; inset: 0; }
+  .seq__still, .seq__canvas {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: var(--focus);
+  }
+  .seq__canvas { display: none; }
+  .seq:global(.is-scrub) .seq__canvas { display: block; }
+
+  /* text always sits on this dark gradient (AA on the brightest frame) */
+  .seq__scrim {
+    background:
+      linear-gradient(to top, color-mix(in srgb, var(--color-bg) 94%, transparent) 0%,
+                              color-mix(in srgb, var(--color-bg) 70%, transparent) 34%, transparent 68%),
+      linear-gradient(to bottom, color-mix(in srgb, var(--color-bg) 55%, transparent), transparent 22%);
+  }
+  .seq__veil { background: var(--veil, var(--color-ink)); opacity: 0; pointer-events: none; }
+
+  .seq__captions {
+    position: relative;
+    display: grid; gap: var(--space-6);
+    padding-block: calc(76px + var(--space-7)) var(--space-8);
+  }
+  .seq__captions :global(.seq__caption) {
+    max-width: 24ch;
+    font-family: var(--font-display); font-weight: var(--weight-bold);
+    font-size: var(--text-2xl); line-height: 1.4;
+    text-wrap: balance;
+  }
+  .seq__captions :global(.seq__more) {
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    margin-block-start: var(--space-5);
+    font-size: var(--text-base); font-weight: var(--weight-medium);
+    color: var(--color-link);
+  }
+
+  /* --- scrubbed mode (JS on, motion allowed): captions share one spot and take turns --- */
+  .seq:global(.is-scrub) .seq__view { height: 100vh; height: 100lvh; }
+  .seq:global(.is-scrub) .seq__captions {
+    /* keep clear of the mobile browser bar: the view is as tall as the LARGE viewport */
+    padding-block-end: calc(100lvh - 100svh + var(--space-8));
+  }
+  .seq:global(.is-scrub) .seq__captions :global(.seq__caption) { grid-area: 1 / 1; align-self: end; }
+  .seq:global(.is-scrub) .seq__captions :global(.seq__caption) {
+    font-size: var(--text-3xl); line-height: 1.3; max-width: 20ch;
+  }
+
+  .seq__ticks { display: none; }
+  .seq:global(.is-scrub) .seq__ticks { display: flex; gap: var(--space-2); grid-area: 2 / 1; }
+  .seq__ticks :global(span) {
+    width: 28px; height: 2px; border-radius: 2px;
+    background: color-mix(in srgb, var(--color-ink) 30%, transparent);
+    transition: background-color var(--dur-base) var(--ease-out);
+  }
+  .seq__ticks :global(span.is-on) { background: var(--color-accent); }
+
+  /* the WebGL stage draws the footage: hide our own copy but keep text, scrim and ticks */
+  :global(.is-live) .seq__media { visibility: hidden; }
+  :global(.is-live) .seq__veil { display: none; }
+  :global(.is-live) .seq__view { background: none; }
+</style>

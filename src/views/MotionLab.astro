@@ -5,6 +5,7 @@
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Logo from '../components/Logo.astro';
+import Lottie from '../components/Lottie.astro';
 import { site } from '../lib/site';
 import { localizePath, useTranslations, type Lang } from '../i18n';
 
@@ -56,7 +57,7 @@ const copy = {
     areas: [
       { key: 'legal', hue: '--hue-legal', text: 'Legal advice and case follow-up in criminal, civil, family and corporate law, plus legal advice on immigration and nationality.', link: 'Explore legal services' },
       { key: 'travel', hue: '--hue-travel', text: 'Everything you need to travel with confidence: immigration and residency, study abroad, visas, certified translation and embassy guidance.', link: 'Explore immigration & study' },
-      { key: 'events', hue: '--hue-events', text: 'Complete international conferences and exhibitions — from planning, booths and delegations to simultaneous interpretation and event-day management.', link: 'Explore event services' },
+      { key: 'events', hue: '--hue-events', text: 'Complete international conferences and exhibitions — from planning, stand setup and delegations to simultaneous interpretation and event-day management.', link: 'Explore event services' },
       { key: 'software', hue: '--hue-software', text: 'Websites and custom systems that help your organization run its work and go digital with confidence.', link: 'Explore technology solutions' },
     ],
     whyTitle: 'Why WaysZ?',
@@ -65,7 +66,7 @@ const copy = {
       ['Clarity from the start', 'We explain the steps, requirements and expected timeline before we begin. No surprises.'],
       ['A specialist team per area', 'Every request is handled by a team experienced in its field, for accurate advice and sound execution.'],
       ['Confidentiality', 'Your data and the details of your request are handled with the highest confidentiality.'],
-      ['International experience', 'We work with embassies, institutions and delegations from many countries and know what each requires.'],
+      ['International experience', 'We work with embassies, organizations and delegations from many countries and know what each requires.'],
       ['A partnership, not a transaction', 'Our recommendations are built on your case, aiming for a long relationship based on trust.'],
     ],
     stepsTitle: 'How we work with you',
@@ -77,7 +78,7 @@ const copy = {
     ],
     statement: 'One approach connects them all: understanding what the client needs, offering clear solutions, and communicating openly at every stage.',
     gateTitle: 'Planning to travel, study or immigrate?',
-    gateText: 'Meet WaysZ Visa, our platform dedicated to visa consultations and preparing your file.',
+    gateText: 'Meet WaysZ Visa, our platform dedicated to visa consultations and preparing your application.',
     faq: [
       ['Is my consultation confidential?', 'Yes. Everything you share is handled in full confidence and seen only by the team on your case.'],
       ['Can my case be followed while I’m abroad?', 'In many cases, yes — through an official power of attorney. We’ll explain the steps.'],
@@ -97,7 +98,7 @@ const icons: Record<string, string> = {
 <BaseLayout lang={lang} title="Motion Lab | WaysZ" description="Motion system reference (dev only)." preloader headerOverlay noindex>
 
   <!-- S2 + S3 · hero-takeoff + dive ............................................................ -->
-  <section class="hero theme-dark" data-scene="hero-takeoff dive">
+  <section class="hero theme-dark" data-scene="hero-logo dive">
     <div class="hero__glow" aria-hidden="true"></div>
     <div class="hero__inner">
       <div class="hero__content" data-intro>
@@ -115,6 +116,12 @@ const icons: Record<string, string> = {
   </section>
 
   <!-- S4 · destinations ........................................................................ -->
+  <!-- Media toolkit: Lottie (modes: loop · once · hover · scrub). BgVideo + ImageSequence + the WebGL stage: see HomePage.astro -->
+  <section class="lab-lottie section container" aria-label="Lottie">
+    <div class="lab-lottie__item"><Lottie src="/media/lottie/plane.json" mode="loop" /></div>
+    <div class="lab-lottie__item"><Lottie src="/media/lottie/plane.json" mode="scrub" /></div>
+  </section>
+
   <section class="dests theme-dark">
     <div class="container">
       <h2 data-split>{copy.areasTitle}</h2>
@@ -273,6 +280,9 @@ const icons: Record<string, string> = {
 </BaseLayout>
 
 <style>
+  .lab-lottie { display: flex; gap: var(--space-7); justify-content: center; }
+  .lab-lottie__item { width: 160px; }
+
   /* ---------- hero ---------- */
   .hero { position: relative; min-height: 100svh; display: grid; align-items: center; overflow: clip; }
   .hero__glow {

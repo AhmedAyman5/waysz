@@ -14,6 +14,8 @@ const areas = (['legal', 'travel', 'events', 'software'] as const).map((key) => 
 }));
 ---
 <footer class="site-footer theme-dark" data-scene="footer-landing">
+  <!-- touchdown: runway centre line + threshold lights (decorative) -->
+  <div class="site-footer__runway" aria-hidden="true"><span class="site-footer__dashes"></span><span class="site-footer__lights"></span></div>
   <div class="container site-footer__grid">
     <div class="site-footer__brand">
       <Logo class="site-footer__mark" />
@@ -53,7 +55,18 @@ const areas = (['legal', 'travel', 'events', 'software'] as const).map((key) => 
 </footer>
 
 <style>
-  .site-footer { padding-block: var(--space-9) var(--space-6); }
+  .site-footer { position: relative; padding-block: var(--space-9) var(--space-6); overflow: hidden; }
+  .site-footer__runway { position: absolute; inset-inline: 0; top: var(--space-7); height: 14px; pointer-events: none; }
+  .site-footer__dashes {
+    position: absolute; inset-block: 6px; inset-inline: -40% -40%; height: 2px;
+    background: repeating-linear-gradient(to right, color-mix(in srgb, var(--color-ink) 34%, transparent) 0 56px, transparent 56px 104px);
+  }
+  .site-footer__lights {
+    position: absolute; inset: 0; opacity: 0.9;
+    background: radial-gradient(circle 3px at 50% 50%, var(--color-accent) 96%, transparent) 0 0 / 104px 14px repeat-x;
+    -webkit-mask: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
+    mask: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
+  }
   .site-footer__grid {
     display: grid; gap: var(--space-7);
     grid-template-columns: 1.6fr repeat(3, 1fr);

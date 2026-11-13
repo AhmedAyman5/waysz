@@ -1,0 +1,132 @@
+---
+/**
+ * Home §1.4 «لماذا WaysZ؟». Scene: motion/scenes/media-reveal.ts.
+ * A cabin-window-shaped view of the dusk sky opens to full screen (CSS sticky + scrub), then the six
+ * reasons arrive, each icon with its own small movement. Wide screens: the reasons settle over the photo
+ * inside the same sticky screen. Small screens: the photo stays behind and the reasons scroll over it.
+ * Without JS / reduced motion: photo band, heading, plain list.
+ */
+import { Image } from 'astro:assets';
+import type { Lang } from '../../i18n';
+import dusk from '../../assets/media/why-dusk.jpg';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+
+// Copy: brief §1.4 (Arabic is the source; English is a faithful translation).
+const copy = {
+  ar: {
+    title: 'لماذا WaysZ؟',
+    reasons: [
+      ['roof', 'خدمات متكاملة تحت سقف واحد', 'القانون والهجرة والفعاليات والتقنية في مكان واحد، وتتكامل معًا حين يحتاج طلبك أكثر من تخصص.'],
+      ['clarity', 'وضوح من البداية', 'نشرح لك الخطوات والمتطلبات والمدة المتوقعة قبل البدء، دون مفاجآت.'],
+      ['team', 'فريق متخصص لكل مجال', 'يتولى كل طلب فريق لديه الخبرة في مجاله، لتحصل على رأي دقيق وتنفيذ سليم.'],
+      ['lock', 'سرية وخصوصية', 'نتعامل مع بياناتك وتفاصيل طلبك بأعلى درجات السرية والمسؤولية.'],
+      ['globe', 'خبرة في التعامل الدولي', 'نتعامل مع سفارات وجهات ووفود من دول مختلفة، ونعرف متطلبات كل منها.'],
+      ['rings', 'شراكة لا معاملة', 'نبني توصياتنا على تفاصيل حالتك، ونسعى لعلاقة طويلة قائمة على الثقة.'],
+    ],
+  },
+  en: {
+    title: 'Why WaysZ?',
+    reasons: [
+      ['roof', 'Integrated services under one roof', 'Law, immigration, events and technology in one place, working together when your request needs more than one specialty.'],
+      ['clarity', 'Clarity from the start', 'We explain the steps, the requirements and the expected timeline before we begin — no surprises.'],
+      ['team', 'A specialized team for every field', 'Each request is handled by a team experienced in its field, so you get an accurate opinion and sound execution.'],
+      ['lock', 'Confidentiality and privacy', 'We treat your data and the details of your request with the highest levels of confidentiality and responsibility.'],
+      ['globe', 'International experience', 'We deal with embassies, organizations and delegations from different countries, and we know what each one requires.'],
+      ['rings', 'A partnership, not a transaction', 'We build our recommendations on the details of your case and aim for a long relationship built on trust.'],
+    ],
+  },
+}[lang];
+
+// Line icons. `.s` strokes are drawn; the other classes are the moving parts (see media-reveal.ts).
+const icons: Record<string, string> = {
+  roof: '<path class="s i-roof" d="M6 23 24 9l18 14"/><circle class="i-dot" cx="11" cy="35" r="2.4"/><circle class="i-dot" cx="19.7" cy="35" r="2.4"/><circle class="i-dot" cx="28.3" cy="35" r="2.4"/><circle class="i-dot" cx="37" cy="35" r="2.4"/>',
+  clarity: '<path class="s" d="M8 13h22"/><path class="s" d="M8 24h22"/><path class="s" d="M8 35h13"/><path class="s i-check" d="m28 34 4.5 4.5L42 28"/>',
+  team: '<circle class="s" cx="24" cy="17" r="6"/><path class="s" d="M11 40c0-8 6-12 13-12s13 4 13 12"/><g class="i-spark"><path class="s" d="M39 6v8M35 10h8"/></g>',
+  lock: '<rect class="s" x="11" y="22" width="26" height="19" rx="3.5"/><g class="i-shackle"><path class="s" d="M16 22v-6a8 8 0 0 1 16 0v6"/></g><circle class="i-dot" cx="24" cy="31.5" r="2.4"/>',
+  globe: '<circle class="s" cx="24" cy="24" r="16"/><path class="s" d="M8 24h32"/><ellipse class="s i-meridian" cx="24" cy="24" rx="7" ry="16"/>',
+  rings: '<circle class="s i-ring-a" cx="18" cy="24" r="10.5"/><circle class="s i-ring-b" cx="30" cy="24" r="10.5"/>',
+};
+---
+<section class="why theme-dark" data-scene="media-reveal" data-waypoint aria-labelledby="why-title">
+  <div class="why__track">
+    <div class="why__view">
+      <div class="reveal__media" aria-hidden="true">
+        <div class="reveal__inner">
+          <Image src={dusk} alt="" widths={[640, 960, 1440, 1920, 2200]} sizes="100vw" format="webp" quality={66} loading="lazy" decoding="async" />
+        </div>
+      </div>
+      <div class="why__shade" aria-hidden="true"></div>
+      <div class="why__head container">
+        <h2 class="why__title reveal__text" id="why-title">{copy.title}</h2>
+      </div>
+    </div>
+
+    <ul class="why__list container" role="list">
+      {copy.reasons.map(([icon, title, text]) => (
+        <li class="reason" data-icon={icon}>
+          <svg class="reason__icon" viewBox="0 0 48 48" width="48" height="48" aria-hidden="true" set:html={icons[icon]} />
+          <h3>{title}</h3>
+          <p>{text}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  /* ---------- base: no JS / reduced motion ---------- */
+  .why { position: relative; }
+  .why__view { position: relative; height: 68vh; min-height: 24rem; overflow: hidden; display: grid; align-items: end; }
+  .reveal__media, .reveal__inner, .why__shade { position: absolute; inset: 0; }
+  .reveal__inner :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 40% 40%; }
+  .why__shade {
+    background: linear-gradient(to top, var(--color-bg) 2%, color-mix(in srgb, var(--color-bg) 70%, transparent) 46%, color-mix(in srgb, var(--color-bg) 25%, transparent));
+  }
+  .why__head { position: relative; padding-block: var(--space-7); }
+  .why__title { font-size: clamp(2.6rem, 1.5rem + 5.4vw, 6.5rem); line-height: 1.2; width: fit-content; }
+
+  .why__list {
+    position: relative;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+    gap: var(--space-6) var(--space-7);
+    padding-block: var(--space-6) var(--section-y);
+  }
+  .reason { padding-block-start: var(--space-5); border-block-start: 1px solid var(--color-border); }
+  .reason__icon {
+    width: 44px; height: 44px; overflow: visible;
+    fill: none; stroke: var(--color-accent); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;
+  }
+  .reason__icon :global(.i-dot) { fill: var(--color-accent); stroke: none; }
+  .reason h3 { margin-block: var(--space-4) var(--space-2); font-size: var(--text-xl); line-height: 1.4; }
+  .reason p { color: color-mix(in srgb, var(--color-ink) 78%, transparent); max-width: 40ch; line-height: 1.75; }
+
+  /* ---------- scrubbed (both layouts): the photo holds the screen ---------- */
+  .why:global(.is-scrub) .why__view {
+    position: sticky; top: 0; height: 100vh; height: 100lvh; min-height: 0;
+    align-items: start;
+  }
+  .why:global(.is-scrub) .why__head { padding-block: calc(76px + var(--space-6)) 0; }
+  .why:global(.is-scrub) .why__shade {
+    opacity: 0;
+    background: linear-gradient(to top, color-mix(in srgb, var(--color-bg) 96%, transparent) 8%, color-mix(in srgb, var(--color-bg) 78%, transparent) 55%, color-mix(in srgb, var(--color-bg) 50%, transparent));
+  }
+  .why:global(.is-scrub) .why__list { z-index: 2; }
+
+  /* small screens: the reasons scroll over the held photo */
+  .why:global(.is-scrub:not(.is-wide)) .why__list { padding-block: 62vh var(--section-y); margin-block-start: -8vh; }
+
+  /* wide screens: the reasons settle inside the same sticky screen */
+  .why:global(.is-scrub.is-wide) .why__track { height: calc(100vh + 240vh); height: calc(100lvh + 240vh); }
+  .why:global(.is-scrub.is-wide) .why__list {
+    position: sticky; top: 0; height: 100vh; height: 100lvh;
+    margin-block-start: -100vh; margin-block-start: -100lvh;
+    grid-template-columns: repeat(3, 1fr); align-content: end;
+    padding-block: 0 var(--space-8);
+    pointer-events: none;
+  }
+  .why:global(.is-scrub.is-wide) .reason { opacity: 0; }
+  .why:global(.is-scrub.is-wide) .reason h3 { font-size: var(--text-lg); }
+  .why:global(.is-scrub.is-wide) .reason p { font-size: var(--text-sm); }
+</style>

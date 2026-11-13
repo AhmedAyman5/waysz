@@ -101,6 +101,19 @@
   color: var(--color-ink);
 }
 
+/* A light island inside a dark section (e.g. the boarding pass): add class="theme-light" */
+.theme-light {
+  --color-bg:        var(--mist-50);
+  --color-bg-alt:    var(--mist-100);
+  --color-surface:   var(--white);
+  --color-ink:       var(--midnight-900);
+  --color-ink-muted: var(--slate-500);
+  --color-border:    rgb(14 29 51 / 0.12);
+  --color-link:      var(--midnight-600);
+  --logo-mark:       var(--color-brand);
+  color: var(--color-ink);
+}
+
 /* WaysZ Visa: same family, sky accent instead of horizon. Put data-site="visa" on <html>. */
 [data-site="visa"] {
   --color-accent:     var(--sky-500);
