@@ -141,7 +141,7 @@ const out: Record<ServiceItem['fx'], string> = {
 
 <style is:global>
   /* ---------- base: no JS / reduced motion / small screens — a list, every window in its finished state ---------- */
-  .forge { position: relative; background: var(--color-bg); padding-block: var(--section-y); }
+  .forge { position: relative; background: var(--color-bg); padding-block: var(--section-y); overflow-x: clip; }   /* flying characters never widen the page */
   .forge__head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--space-5); }
   .forge__title { font-size: clamp(2.4rem, 1.4rem + 4.6vw, 5.5rem); line-height: 1.16; }
   [dir='rtl'] .forge__title { line-height: 1.34; }

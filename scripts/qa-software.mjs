@@ -57,7 +57,7 @@ for (const run of runs) {
     await page.waitForTimeout(3800);
     await shot('a2-stage');
     if (!run.mobile) {                                                                          // the pointer field over the code
-      const b = await page.locator('.chero__codebox .code').boundingBox();
+      const b = await (await page.$('.chero__codebox .code'))?.boundingBox();   // other pages (--page=) have no code hero
       if (b) {
         await page.mouse.move(b.x + b.width * 0.3, b.y + b.height * 0.4, { steps: 8 });
         await page.waitForTimeout(700);

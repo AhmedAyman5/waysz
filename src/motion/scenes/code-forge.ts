@@ -87,7 +87,15 @@ const scene: Scene = (root, env) => {
   const words = SplitText.create(title, { type: 'words', mask: 'words', wordsClass: 'w', aria: 'auto' }).words;
   gsap.fromTo(words, { yPercent: 118 }, { yPercent: 0, duration: 1.1, stagger: 0.07, scrollTrigger: { trigger: root, start: 'top 70%', once: true } });
 
-  const timelines = services.map(buildTimeline);
+  // The timelines (hundreds of character tweens) are built only when the section is near, one per frame:
+  // none of that work happens while the page loads.
+  const timelines: (gsap.core.Timeline | undefined)[] = [];
+  const progress = services.map(() => 0);
+  const play = (i: number, p: number) => { progress[i] = p; timelines[i]?.progress(p); };
+  ScrollTrigger.create({
+    trigger: root, start: 'top 160%', once: true,
+    onEnter: () => services.forEach((s, i) => gsap.delayedCall(i * 0.04, () => { timelines[i] = buildTimeline(s); timelines[i]!.progress(progress[i]); })),
+  });
   const drawn = new Set<HTMLElement>();
   services.forEach((s) => gsap.set(s.querySelectorAll('.svc__icon > *'), { drawSVG: '0%' }));
   const draw = (s: HTMLElement) => {
@@ -105,7 +113,7 @@ const scene: Scene = (root, env) => {
         return [
           ScrollTrigger.create({
             trigger: s.querySelector('.win'), start: 'top 92%', end: 'top 18%', scrub: 0.6,
-            onUpdate: (self) => timelines[i].progress(self.progress), onRefresh: (self) => timelines[i].progress(self.progress),
+            onUpdate: (self) => play(i, self.progress), onRefresh: (self) => play(i, self.progress),
           }),
           ScrollTrigger.create({ trigger: text, start: 'top 86%', once: true, onEnter: () => { draw(s); gsap.to(text, { opacity: 1, y: 0, duration: 0.9 }); } }),
         ];
@@ -132,7 +140,7 @@ const scene: Scene = (root, env) => {
         gsap.set(texts[i], { y: (1 - enter) * 60 - exit * 60 });
         gsap.set(wins[i], { y: -exit * 90, rotationX: exit * 14, scale: 1 - exit * 0.06, transformPerspective: 1200 });
         // the first code already assembles while the section arrives
-        timelines[i].progress(i === 0 ? 0.42 * approach + 0.58 * clamp01(local / 0.5) : clamp01((local - 0.04) / 0.58));
+        play(i, i === 0 ? 0.42 * approach + 0.58 * clamp01(local / 0.5) : clamp01((local - 0.04) / 0.58));
         if (local >= -0.02) now = i;
       });
       if (now !== active) {
@@ -166,7 +174,7 @@ const scene: Scene = (root, env) => {
       root.classList.remove('is-scrub');
       services.forEach((s) => s.classList.remove('is-active'));
       gsap.set([...services, ...texts, ...wins], { clearProps: 'all' });
-      timelines.forEach((t) => t.progress(1));
+      services.forEach((_, i) => play(i, 1));
     };
   });
 };

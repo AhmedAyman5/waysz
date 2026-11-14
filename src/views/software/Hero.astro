@@ -60,7 +60,7 @@ const program = [
 <style>
   .chero { position: relative; }
   .chero__sticky {
-    position: relative; overflow: hidden;
+    position: relative; overflow: hidden; overflow: clip;   /* clip: not a scroll container, so flying characters can never scroll it */
     height: 100vh; height: 100svh; min-height: 38rem;
     display: grid; align-items: end;
     /* where the footage sits behind the screen (the act reads the same two numbers): the horizon band stays
