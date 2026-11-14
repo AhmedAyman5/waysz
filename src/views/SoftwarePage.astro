@@ -1,0 +1,60 @@
+---
+/**
+ * "Software & Technology" — the service-group page (brief §2.4). Same film as Home and the Immigration page
+ * (dusk, deep navy, amber light) with its own digital voice: "Code in flight".
+ *   hero (dusk over a city; a short program assembles itself out of flying characters) → the six services, each
+ *   with code that turns into what the service delivers → the four steps of a website project (template sample د)
+ *   → the brief's closing box → the call.
+ * One file per section in views/software/; the call is Home's own section (views/home/Cta.astro).
+ * Copy: brief §2.4 + template sample (د), Arabic is the source; English is a faithful translation. No portfolio,
+ * clients, numbers or claims: the brief has none. All code on the page is ours and decorative (aria-hidden).
+ */
+import { getEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from './software/Hero.astro';
+import Services, { type ServiceItem } from './software/Services.astro';
+import Process from './software/Process.astro';
+import Missing from './software/Missing.astro';
+import Cta from './home/Cta.astro';
+import { useTranslations, type Lang } from '../i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+// §2.4 group intro, whole, as the hero lead
+const copy = {
+  ar: { lead: 'حلول رقمية عملية تساعد مؤسستك على الظهور باحترافية، وتنظيم عملها، وتوفير الوقت والجهد.' },
+  en: { lead: 'Practical digital solutions that help your organization present itself professionally, organize its work, and save time and effort.' },
+}[lang];
+
+// §2.4 — the six services, in the brief's order. `proposed` = «مقترح» (pending the client's approval).
+const services: (Omit<ServiceItem, 'name' | 'text'> & { ar: [string, string]; en: [string, string] })[] = [
+  { slug: 'website-design-development', fx: 'site',
+    ar: ['تصميم وتطوير المواقع', 'مواقع احترافية متجاوبة مع جميع الأجهزة، تعكس هوية علامتك وتسهّل على عملائك الوصول إليك.'],
+    en: ['Website Design & Development', 'Professional websites that respond to every device, reflect your brand identity and make it easy for your customers to reach you.'] },
+  { slug: 'custom-systems', fx: 'table',
+    ar: ['الأنظمة المخصصة', 'أنظمة إدارة مصممة خصيصًا لطبيعة عملك، لتنظيم البيانات والعمليات في مكان واحد.'],
+    en: ['Custom Systems', 'Management systems designed specifically for the nature of your work, to organize data and operations in one place.'] },
+  { slug: 'digital-transformation', fx: 'form',
+    ar: ['التحول الرقمي للإجراءات', 'تحويل الإجراءات الورقية والمتكررة إلى إجراءات رقمية منظمة، أسرع وأقل عرضة للأخطاء.'],
+    en: ['Digital Transformation of Procedures', 'Turning paper-based and repetitive procedures into organized digital ones that are faster and less prone to errors.'] },
+  { slug: 'technology-consulting', fx: 'choose',
+    ar: ['الاستشارات التقنية', 'مساعدتك على اختيار التقنيات والحلول المناسبة لاحتياجك وميزانيتك قبل أن تبدأ الاستثمار.'],
+    en: ['Technology Consulting', 'Helping you choose the technologies and solutions that fit your need and budget before you start investing.'] },
+  { slug: 'event-platforms', fx: 'event', proposed: true,
+    ar: ['منصات ومواقع الفعاليات', 'مواقع للمؤتمرات والمعارض مع التسجيل الإلكتروني وجدول الجلسات وتطبيقات الحضور.'],
+    en: ['Event Platforms & Websites', 'Websites for conferences and exhibitions with online registration, the session schedule and attendee apps.'] },
+  { slug: 'support-maintenance', fx: 'fix', proposed: true,
+    ar: ['الدعم الفني والصيانة', 'متابعة مواقعك وأنظمتك بعد الإطلاق، وتحديثها وحل المشكلات الفنية أولًا بأول.'],
+    en: ['Technical Support & Maintenance', 'Looking after your websites and systems after launch, updating them and solving technical problems as they arise.'] },
+];
+// «خطوات العمل» of template sample (د): read from the service file, so the two can never differ
+const web = (await getEntry('services', 'website-design-development'))!.data[lang];
+const items: ServiceItem[] = services.map(({ ar, en, ...rest }) => ({ ...rest, name: (lang === 'ar' ? ar : en)[0], text: (lang === 'ar' ? ar : en)[1] }));
+---
+<BaseLayout lang={lang} title={t.pages.software.title} description={t.pages.software.description} headerOverlay>
+  <Hero lang={lang} lead={copy.lead} />
+  <Services lang={lang} title={t.nav.services} items={items} />
+  <Process lang={lang} steps={web.steps} service={web.name} href="/services/website-design-development/" />
+  <Missing lang={lang} />
+  <Cta lang={lang} id="consult" />
+</BaseLayout>

@@ -1,0 +1,52 @@
+---
+/**
+ * Software page — the brief's own closing box of §2.4: «لم تجد الخدمة التي تبحث عنها؟» + its text + «تواصل معنا».
+ * Scene: motion/scenes/ask-box.ts. A decorative line of our own code above the question types itself in
+ * (ScrambleText, Latin only); the heading rises by words. Everything is visible without JS.
+ */
+import { localizePath, useTranslations, type Lang } from '../../i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const copy = {
+  ar: { title: 'لم تجد الخدمة التي تبحث عنها؟', text: 'أخبرنا باحتياجك، وسنرشدك إلى الحل المناسب أو الجهة المختصة.' },
+  en: { title: "Didn't find the service you are looking for?", text: 'Tell us what you need and we will guide you to the right solution or the right specialist.' },
+}[lang];
+---
+<section class="ask theme-dark" data-scene="ask-box" data-waypoint aria-labelledby="ask-title">
+  <div class="container">
+    <div class="ask__box" data-spotlight>
+      <code class="ask__code" dir="ltr" aria-hidden="true">services.find(yours) ?? ask(us)</code>
+      <h2 class="ask__title" id="ask-title">{copy.title}</h2>
+      <p class="ask__text">{copy.text}</p>
+      <a class="btn btn--ghost ask__btn" href={localizePath("/contact/", lang)}>{t.nav.contact}</a>
+      <span class="ask__corner ask__corner--a" aria-hidden="true"></span>
+      <span class="ask__corner ask__corner--b" aria-hidden="true"></span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ask { position: relative; padding-block: var(--section-y); }
+  .ask__box {
+    position: relative; display: grid; justify-items: start; gap: var(--space-5);
+    padding: clamp(2rem, 1rem + 6vw, 6rem);
+    border: 1px solid var(--color-border); border-radius: var(--radius-lg);
+    background: linear-gradient(150deg, color-mix(in srgb, var(--color-surface) 46%, transparent), color-mix(in srgb, var(--color-bg-alt) 60%, transparent));
+  }
+  .ask__code {
+    unicode-bidi: isolate; max-width: 100%; overflow-wrap: anywhere;
+    font: 400 var(--text-sm)/1.7 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    color: color-mix(in srgb, var(--hue-software) 70%, var(--color-ink));
+  }
+  .ask__title { font-size: clamp(2rem, 1.2rem + 3.8vw, 4.6rem); line-height: 1.18; max-width: 18ch; }
+  :global([dir='rtl']) .ask__title { line-height: 1.36; }
+  .ask__text { max-width: 44ch; font-size: var(--text-lg); line-height: 1.8; color: color-mix(in srgb, var(--color-ink) 86%, transparent); }
+  .ask__btn { min-height: 54px; padding-inline: var(--space-7); margin-block-start: var(--space-3); }
+  /* editor-style brackets on two corners */
+  .ask__corner { position: absolute; width: 26px; height: 26px; border: 2px solid var(--color-accent); pointer-events: none; }
+  .ask__corner--a { top: -1px; inset-inline-start: -1px; border-inline-end: 0; border-block-end: 0; border-start-start-radius: var(--radius-lg); }
+  .ask__corner--b { bottom: -1px; inset-inline-end: -1px; border-inline-start: 0; border-block-start: 0; border-end-end-radius: var(--radius-lg); }
+  @media (max-width: 639px) { .ask__text { font-size: var(--text-base); } .ask__btn { width: 100%; } }
+</style>

@@ -1,0 +1,41 @@
+---
+/**
+ * Software page — a block of decorative code. Always LTR (never mirrored), always aria-hidden: the real
+ * content of the page is the text next to it. Rendered complete and coloured in the HTML (no JS / reduced
+ * motion show it as it is); the scenes split it into characters and fly them (motion/code-glyphs.ts).
+ * Font: the system monospace stack — no font download.
+ */
+import { tokenize } from './code';
+
+interface Props { lines: string[]; class?: string }
+const { lines, class: className } = Astro.props;
+---
+<pre class:list={['code', className]} dir="ltr" aria-hidden="true">{lines.map((line) => (
+  <span class="ln">{tokenize(line).map((t) => t.swap
+    ? <span class={`t t-${t.kind} sw`} data-col={t.col}><span class="bad">{t.text}</span><span class="good">{t.swap}</span></span>
+    : <span class={`t t-${t.kind}`} data-col={t.col}>{t.text}</span>)}</span>
+))}</pre>
+
+<style is:global>
+  .code {
+    --code-ink: var(--color-ink);
+    --code-key: var(--color-accent);
+    --code-str: var(--hue-software);
+    --code-dim: var(--color-ink-muted);
+    margin: 0; direction: ltr; text-align: left; unicode-bidi: isolate;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: var(--code-size, 0.95rem); line-height: 1.7; font-weight: 400;
+    font-variant-ligatures: none; font-kerning: none; letter-spacing: 0; tab-size: 2;
+    color: var(--code-ink); white-space: pre; overflow: visible;
+  }
+  .code .ln { display: block; min-height: 1.7em; white-space: pre; }
+  .code .t { display: inline-block; white-space: pre; }
+  .code .c { display: inline-block; }
+  .code .t-key, .code .t-num { color: var(--code-key); }
+  .code .t-str { color: color-mix(in srgb, var(--code-str) 78%, var(--code-ink)); }
+  .code .t-com, .code .t-pun { color: var(--code-dim); }
+  .code .t-id { color: color-mix(in srgb, var(--code-ink) 82%, var(--code-dim)); }
+  /* characters that get swapped: the wrong ones are stacked over the right ones and hidden in the final state */
+  .code .sw { position: relative; }
+  .code .sw .bad { position: absolute; inset: 0; opacity: 0; color: color-mix(in srgb, var(--color-error) 55%, var(--color-ink)); }
+</style>

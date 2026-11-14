@@ -1,0 +1,75 @@
+{
+  "area": "software",
+  "order": 1,
+  "proposed": false,
+  "ar": {
+    "name": "تصميم وتطوير المواقع الإلكترونية",
+    "summary": "مواقع احترافية متجاوبة مع جميع الأجهزة، تعكس هوية علامتك وتسهّل على عملائك الوصول إليك.",
+    "description": "نصمم ونطور مواقع إلكترونية احترافية تعكس هوية علامتك، وتعمل بكفاءة على جميع الأجهزة، ومبنية بطريقة تسمح بتطويرها وإضافة خصائص جديدة مع نمو أعمالك.",
+    "audience": [
+      "الشركات التي تحتاج إلى موقع رسمي أو إعادة تصميم موقعها.",
+      "رواد الأعمال والمشروعات الناشئة.",
+      "المهنيون (مكاتب المحاماة، العيادات، الاستشاريون)."
+    ],
+    "offer": [
+      "تحليل احتياجاتك وتحديد هيكل الموقع وصفحاته.",
+      "تصميم واجهات عصرية متجاوبة، بالعربية والإنجليزية.",
+      "تطوير الموقع وتجهيزه للإطلاق وفق أفضل الممارسات.",
+      "بنية قابلة لإضافة لوحة تحكم أو أنظمة لاحقًا."
+    ],
+    "steps": [
+      { "title": "جلسة تعريفية", "text": "نتعرف على نشاطك وأهدافك وجمهورك." },
+      { "title": "الهيكل والمحتوى", "text": "نتفق على الصفحات ونطاق العمل." },
+      { "title": "التصميم والاعتماد", "text": "نعرض التصميم ونعدّله حتى تعتمده." },
+      { "title": "التطوير والإطلاق", "text": "نطور الموقع ونختبره ثم نطلقه." }
+    ],
+    "excludes": [
+      "رسوم الدومين والاستضافة، ما لم تُذكر في العرض.",
+      "الخصائص غير المتفق عليها في نطاق العمل (تُسعّر منفصلة)."
+    ],
+    "faq": [
+      { "q": "كم يستغرق تنفيذ الموقع؟", "a": "حسب عدد الصفحات والخصائص، ونحدد جدولًا زمنيًا واضحًا بعد الاتفاق على نطاق العمل." },
+      { "q": "هل يعمل الموقع على الموبايل؟", "a": "بالتأكيد، كل مواقعنا متجاوبة وتعمل بكفاءة على جميع الشاشات." }
+    ],
+    "cta": {
+      "title": "جاهز لإطلاق موقعك؟",
+      "text": "حدثنا عن فكرتك، وسنقترح عليك الحل الأنسب لاحتياجك وميزانيتك.",
+      "button": "ابدأ مشروعك معنا"
+    }
+  },
+  "en": {
+    "name": "Website Design & Development",
+    "summary": "Professional websites that respond to every device, reflect your brand identity and make it easy for your customers to reach you.",
+    "description": "We design and develop professional websites that reflect your brand identity, work efficiently on every device, and are built in a way that lets them be developed further and gain new features as your business grows.",
+    "audience": [
+      "Companies that need an official website or a redesign of their current one.",
+      "Entrepreneurs and startups.",
+      "Professionals (law offices, clinics, consultants)."
+    ],
+    "offer": [
+      "Analysing your needs and defining the site's structure and pages.",
+      "Modern, responsive interface design, in Arabic and English.",
+      "Developing the site and preparing it for launch according to best practices.",
+      "A structure that can take a dashboard or systems later."
+    ],
+    "steps": [
+      { "title": "Introductory session", "text": "We get to know your business, your goals and your audience." },
+      { "title": "Structure and content", "text": "We agree on the pages and the scope of work." },
+      { "title": "Design and approval", "text": "We present the design and revise it until you approve it." },
+      { "title": "Development and launch", "text": "We develop the site, test it, then launch it." }
+    ],
+    "excludes": [
+      "Domain and hosting fees, unless stated in the offer.",
+      "Features not agreed in the scope of work (priced separately)."
+    ],
+    "faq": [
+      { "q": "How long does it take to build the website?", "a": "It depends on the number of pages and features; we set a clear timeline once the scope of work is agreed." },
+      { "q": "Does the website work on mobile?", "a": "Certainly. All our websites are responsive and work efficiently on every screen." }
+    ],
+    "cta": {
+      "title": "Ready to launch your website?",
+      "text": "Tell us about your idea and we will suggest the solution that best fits your need and budget.",
+      "button": "Start your project with us"
+    }
+  }
+}
