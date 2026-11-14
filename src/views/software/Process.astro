@@ -1,0 +1,107 @@
+---
+/**
+ * Software page — how a website project runs. Scene: motion/scenes/build-steps.ts.
+ * Built ONLY from the four steps of the brief's template sample (د) "تصميم وتطوير المواقع الإلكترونية" (the same
+ * steps as its service file), under the template's own heading; the link goes to that service.
+ * A real photo of code at night holds the background; scrolling draws the line through the four steps and each
+ * one lights up, its own short call (decorative, Latin) typing itself in. No pin, no sticky.
+ * No JS / reduced motion: the full line and every step are visible.
+ */
+import { Image } from 'astro:assets';
+import { localizePath, useTranslations, type Lang } from '../../i18n';
+import photo from '../../assets/media/software-code.jpg';
+
+interface Props { lang: Lang; steps: { title: string; text: string }[]; service: string; href: string }
+const { lang, steps, service, href } = Astro.props;
+const t = useTranslations(lang);
+const num = (i: number) => new Intl.NumberFormat(lang === 'ar' ? 'ar-EG' : 'en', { minimumIntegerDigits: 2 }).format(i);
+// one short call per step, in the words of the step itself (decorative)
+const calls = ['listen(you)', 'agree(pages, scope)', 'design().approve()', 'build().test().launch()'];
+---
+<section class="steps theme-dark" data-scene="build-steps" data-depth-scene data-waypoint aria-labelledby="steps-title">
+  <div class="steps__media" aria-hidden="true">
+    <div class="steps__photo" data-depth="0.3">
+      <Image src={photo} alt="" widths={[640, 960, 1440, 1920]} sizes="100vw" format="webp" quality={62} loading="lazy" decoding="async" />
+    </div>
+  </div>
+  <div class="steps__scrim" aria-hidden="true"></div>
+
+  <div class="steps__content container">
+    <header class="steps__head">
+      <h2 class="steps__title" id="steps-title">{t.service.steps}</h2>
+      <a class="steps__service link-arrow" href={localizePath(href, lang)}>
+        {service}
+        <svg class="icon-dir" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </header>
+
+    <div class="steps__route">
+      <div class="steps__line" aria-hidden="true"><span class="steps__fill"></span></div>
+      <ol class="steps__list" role="list">
+        {steps.map((s, i) => (
+          <li class="bstep">
+            <span class="bstep__node" aria-hidden="true"></span>
+            <span class="bstep__num" aria-hidden="true">{num(i + 1)}</span>
+            <h3 class="bstep__name">{s.title}</h3>
+            <p class="bstep__text">{s.text}</p>
+            <code class="bstep__call" dir="ltr" aria-hidden="true">{calls[i]}</code>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .steps { position: relative; overflow: clip; padding-block: calc(var(--section-y) * 1.25); }
+  .steps__media, .steps__scrim { position: absolute; inset: 0; }
+  .steps__photo { position: absolute; inset: -5%; }
+  .steps__photo :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 72% 50%; }
+  .steps__scrim {
+    background:
+      linear-gradient(to bottom, var(--color-bg) 0%, color-mix(in srgb, var(--color-bg) 72%, transparent) 30%, color-mix(in srgb, var(--color-bg) 72%, transparent) 70%, var(--color-bg) 100%),
+      linear-gradient(color-mix(in srgb, var(--color-bg) 34%, transparent), color-mix(in srgb, var(--color-bg) 34%, transparent));
+  }
+  .steps__content { position: relative; }
+  .steps__head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--space-5); }
+  .steps__title { font-size: clamp(2.4rem, 1.4rem + 4.6vw, 5.5rem); line-height: 1.16; }
+  :global([dir='rtl']) .steps__title { line-height: 1.34; }
+  .steps__service { padding-block: var(--space-2); color: var(--color-ink); border-block-end: 1.5px solid var(--color-accent); }
+  .steps__service:hover { color: var(--color-link); }
+
+  /* small screens: a vertical line at the start edge */
+  .steps__route { position: relative; margin-block-start: var(--space-8); }
+  .steps__line { position: absolute; inset-block: 8px 0; inset-inline-start: 6px; width: 2px; background: color-mix(in srgb, var(--color-ink) 18%, transparent); }
+  .steps__fill { position: absolute; inset: 0; background: var(--color-accent); transform-origin: 50% 0; }
+  .steps__list { display: grid; gap: var(--space-7); }
+  .bstep { position: relative; padding-inline-start: var(--space-7); }
+  .bstep__node {
+    position: absolute; top: 4px; inset-inline-start: 0; width: 14px; height: 14px; border-radius: 50%;
+    background: var(--color-accent); box-shadow: 0 0 0 6px color-mix(in srgb, var(--color-accent) 22%, transparent);
+  }
+  .bstep__num { font-family: var(--font-display); font-weight: var(--weight-bold); font-size: var(--text-sm); color: var(--color-accent); }
+  .bstep__name { margin-block-start: var(--space-2); font-size: var(--text-xl); font-weight: var(--weight-bold); line-height: 1.35; }
+  .bstep__text { margin-block-start: var(--space-2); max-width: 30ch; line-height: 1.75; color: color-mix(in srgb, var(--color-ink) 86%, transparent); }
+  .bstep__call {
+    display: block; width: fit-content; margin-block-start: var(--space-4); unicode-bidi: isolate;
+    font: 400 var(--text-sm)/1.7 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: color-mix(in srgb, var(--hue-software) 70%, var(--color-ink));
+  }
+  /* waiting steps are dimmed (still AA), only while the scene runs */
+  .steps:global(.is-scrub) .bstep { opacity: 0.6; transition: opacity var(--dur-base) var(--ease-out); }
+  .steps:global(.is-scrub) .bstep:global(.is-active) { opacity: 1; }
+  .steps:global(.is-scrub) .bstep__node { background: var(--color-bg); box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--color-ink) 40%, transparent); transition: background-color var(--dur-base), box-shadow var(--dur-base); }
+  .steps:global(.is-scrub) .bstep:global(.is-active) .bstep__node { background: var(--color-accent); box-shadow: 0 0 0 6px color-mix(in srgb, var(--color-accent) 22%, transparent); }
+
+  @media (min-width: 1024px) {
+    .steps { min-height: 100vh; min-height: 100svh; display: grid; align-items: center; }
+    .steps__route { margin-block-start: var(--space-9); }
+    .steps__line { inset-block: 6px auto; inset-inline: 0; width: auto; height: 2px; }
+    .steps__fill { transform-origin: 0 50%; }
+    :global([dir='rtl']) .steps__fill { transform-origin: 100% 50%; }
+    .steps__list { grid-template-columns: repeat(4, 1fr); gap: var(--space-6); }
+    .bstep { padding-inline-start: 0; padding-block-start: var(--space-7); }
+    .bstep__node { top: 0; }
+    .bstep__name { font-size: var(--text-2xl); line-height: 1.25; }
+    :global([dir='rtl']) .bstep__name { line-height: 1.4; }
+  }
+</style>

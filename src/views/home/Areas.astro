@@ -44,8 +44,8 @@ const areas = [
   { key: 'events', img: events, hue: '--hue-events', side: 'right', focus: 34 },
   { key: 'software', img: software, hue: '--hue-software', side: 'left', focus: 72 },
 ] as const;
-// areas that already have their own page (brief §2.2); the others open their tab on the Services page
-const groupPage: Partial<Record<string, string>> = { travel: '/services/immigration-study-visa/' };
+// areas that already have their own page (brief §2.2, §2.4); the others open their tab on the Services page
+const groupPage: Partial<Record<string, string>> = { travel: '/services/immigration-study-visa/', software: '/services/software-technology/' };
 const hrefOf = (key: string) => (groupPage[key] ? localizePath(groupPage[key]!, lang) : `${localizePath('/services/', lang)}#${key}`);
 const justify = (side: 'left' | 'right') => ((side === 'left') === !rtl ? 'start' : 'end');
 

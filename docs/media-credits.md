@@ -27,6 +27,8 @@ requests) — open the link once and replace the note with the contributor's nam
 | public/media/img/earth-night.webp · earth-night-m.webp      | https://science.nasa.gov/earth/earth-observatory/earth-at-night/maps/ — Black Marble 2016, 0.1° map | NASA Earth Observatory | Public domain          | 2026-11-13 | resized to 2048×1024 and 1024×512, WebP: globe texture of §1.5. No NASA logo, no endorsement implied |
 | public/media/video/travel-dusk.mp4 · .webm · -poster.webp   | https://mixkit.co/free-stock-video/panorama-from-the-window-of-an-airplane-at-dusk-40102/ | Mixkit (contributor not named on the page) | Mixkit Stock Video Free License | 2026-11-13 | first 13.5s, 24fps, seamless 12s loop (1.5s cross-fade), 1600×900, no grade. Checked frame by frame: plain winglet silhouette, no livery (Immigration hero) |
 | public/media/video/travel-dusk-m.mp4 · .webm · -poster.webp | same                                                                                 | same                  | Mixkit Stock Video Free License | 2026-11-13 | same, square crop 720×720 around the winglet for small screens                                      |
+| public/media/video/code-dusk.mp4 · .webm · -poster.webp     | https://mixkit.co/free-stock-video/tour-high-above-a-city-at-dusk-41375/             | Mixkit (contributor not named on the page) | Mixkit Stock Video Free License | 2026-11-14 | Software page hero: 1080p download, graded from red/black to amber over navy (hue −16°, blue in the shadows, lifted blacks), 24fps, last 1.5s cross-faded over the start for a seamless 12.8s loop. Checked frame by frame: distant city lights only, no signs, brands or people |
+| public/media/video/code-dusk-m.mp4 · .webm · -poster.webp   | same                                                                                 | same                  | Mixkit Stock Video Free License | 2026-11-14 | same, portrait crop 720×900 from the middle of the frame |
 | public/media/geo/world-egy.topo.json · src/data/countries.json | https://www.naturalearthdata.com/downloads/10m-cultural-vectors/ — Admin 0 Countries, point of view: Egypt (`ne_10m_admin_0_countries_egy`, v5.1.1) | Natural Earth | Public domain | 2026-11-13 | merged by ISO code, Bir Tawil merged into Sudan, areas without an ISO code dropped, simplified to 10%, islands under 900 km² dropped (each country keeps its two largest parts), TopoJSON — `scripts/build-borders.mjs` |
 | public/media/img/earth-borders-poster.webp                  | our own render of the Black Marble map + the borders above (`scripts/render-globe-still.mjs`) | WaysZ           | —                      | 2026-11-13 | still globe for the css tier, reduced motion and no JS (Immigration page, "Explore the world")       |
 | public/media/img/earth-poster.webp                          | our own render of the map above (the WebGL globe, dev URL `?globe=poster`)           | WaysZ                 | —                      | 2026-11-13 | still image for the css tier, no JS and reduced motion (§1.5)                                       |
@@ -58,6 +60,11 @@ allowed); 40101 (winglet with a livery stripe); 4095 (bank brand on the jet brid
 (registration on the wing, daylight); 4008, 4642, 4389 (wayfinding signs, airline tails, people); 4204, 4203, 50153 (clean,
 kept as alternates in the scratch folder only). Pexels, Pixabay and Unsplash search pages refuse scripted requests from
 this machine, so only Mixkit could be searched this time.
+
+Software page hero — Mixkit clips vetted (360p previews) and not used: 42342, 49878, 42343 (aerial city at night: lit
+building signs that could be read at full size), 40654 (skyscrapers at night, blue/cold, lit signs). All four are Free License.
+The process section reuses `src/assets/media/software-code.jpg` (already credited above). Everything else on the page — the
+flying code, the six editor windows and their results, the service icons — is our own DOM / SVG / WebGL: no file shipped.
 
 Candidates downloaded for the take-off and rejected: Pexels 5008861 (true sunset, but 720p handheld),
 855130 (airline livery), 854550 (registration on the wing), 2297218 (no take-off), 4686173 / 856486 / 4512518

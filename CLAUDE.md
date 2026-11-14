@@ -82,7 +82,7 @@ waysz/
 ├─ .claude/skills/waysz-media/    SKILL.md (sources, licenses, ffmpeg recipes, budgets, credits)
 ├─ docs/brief/                    the approved brief (PDF)
 ├─ docs/home-creative-treatment.md  Home concept + storyboard v2 (§1.1–1.8)
-├─ scripts/                       Playwright QA: qa-shots · qa-immigration · qa-weight · qa-fps (+ qa-browser: shared launch)
+├─ scripts/                       Playwright QA: qa-shots · qa-immigration · qa-software · qa-weight · qa-fps (+ qa-browser: shared launch)
 │                                 data/media builds: build-borders (globe borders) · render-globe-still
 ├─ docs/media-credits.md          one row per media file we ship (source, author, license)
 ├─ media-inbox/                   RAW downloads before optimizing — gitignored, never shipped
@@ -105,12 +105,14 @@ waysz/
    ├─ layouts/BaseLayout.astro    <html lang dir>, SEO, boot script, header/footer, cursor, motion init
    ├─ lib/                        forms.ts · site.ts (client data) · borders.ts (decodes the borders, country at a point)
    ├─ motion/                     index.ts · config.ts · smooth-scroll.ts · globals/ · scenes/
-   │  └─ stage/                   3D layer: stage.ts (renderer) · tier.ts · bridge.ts · acts/ (flight · wipe · globe · explore) · shaders/
+   │  ├─ code-glyphs.ts           decorative code blocks: split into characters, measure where each one sits
+   │  └─ stage/                   3D layer: stage.ts (renderer) · tier.ts · bridge.ts · acts/ (flight · wipe · globe · explore · glyphs) · shaders/
    ├─ pages/                      THIN wrappers only (AR at /, EN under /en/)
    ├─ styles/                     tokens.css · base.css
    └─ views/                      real page content (HomePage, ServicesPage, …, MotionLab)
       ├─ home/                    one file per Home section: Areas · Why · How · Cta · Visa (markup + copy + styles)
-      └─ immigration/             sections of the Immigration group page: Hero · Journey · Services · Explore
+      ├─ immigration/             sections of the Immigration group page: Hero · Journey · Services · Explore
+      └─ software/                sections of the Software group page: Hero · Services · Process · Missing (+ Code: a block of decorative code)
 ```
 
 ## Pages & languages
@@ -128,8 +130,9 @@ waysz/
 - `src/content/services/<slug>.json` — the file name is the slug. Shape in `src/content.config.ts`.
 - `src/pages/services/[slug].astro` and `src/pages/en/services/[slug].astro` generate every service page
   through `src/views/ServiceDetailPage.astro`. NEVER hand-write a page per service.
-- A service GROUP may have its own page (brief §2.x): `/services/immigration-study-visa/` is a static route
-  (`src/views/ImmigrationPage.astro`) and wins over `[slug]`; never name a service file like a group page.
+- A service GROUP may have its own page (brief §2.x): `/services/immigration-study-visa/`
+  (`src/views/ImmigrationPage.astro`) and `/services/software-technology/` (`src/views/SoftwarePage.astro`) are
+  static routes and win over `[slug]`; never name a service file like a group page.
   Its cards link to `/services/<slug>/` only when that service file exists.
 
 ## Media (real footage, photos, Lottie)
@@ -152,6 +155,9 @@ waysz/
   (text or signs inside them would mirror).
 - JS: horizontal motion × `env.dir` (see waysz-motion).
 - **Never split Arabic text into characters** (breaks letter joining). Words or lines only.
+- Decorative code (Software page) is always LTR: `dir="ltr"`, never mirrored, horizontal motion NOT × `env.dir`,
+  `aria-hidden`, system monospace stack, and our own text (no copied code, product names, URLs or secrets).
+  Splitting Latin code into characters is fine.
 - Emails, phones, Latin names inside Arabic text: `<bdi>`. Phone/email inputs: `dir="ltr"`.
 
 ## Design rules

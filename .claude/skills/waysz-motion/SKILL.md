@@ -58,7 +58,9 @@ for external files: a clear free license (approved list in **waysz-media**) + a 
   draws registers an **act** (`acts/*.ts`: `host`, `scene`, `camera`, `ready`, `update`, `resize`,
   `setQuality`, `dispose`). Acts so far: `flight` (Home hero + journey), `wipe` (Home §1.3 photo transitions),
   `globe` (Home §1.5 night Earth + route), `explore` (Immigration page: the same Earth with country borders,
-  free rotation, picking and a flight from Egypt — the scene drives it through `ExploreControls` in `bridge.ts`).
+  free rotation, picking and a flight from Egypt — the scene drives it through `ExploreControls` in `bridge.ts`),
+  `glyphs` (Software page hero: instanced glyph quads from a canvas atlas that land on the DOM code + a swarm in
+  depth with a pointer field; all motion in the vertex shader; 1100 swarm glyphs on `high`, 320 on `lite`).
 - **Hand-off between acts**: the canvas moves into the host of the act that is MOST visible. While it paints
   there the host has `.is-drawing` — hide the section's DOM media with CSS on that class
   (`.host.is-drawing ~ .card .media { visibility: hidden }`); when the canvas leaves, the DOM version is back.
@@ -159,7 +161,8 @@ for external files: a clear free license (approved list in **waysz-media**) + a 
 
 Home: preloader · hero-takeoff · image-sequence · areas · media-reveal · globe-route · approach ·
 boarding-pass · footer-landing (every page). Immigration page: page-hero · journey-route · dossier ·
-explore-globe (+ boarding-pass, approach). Other pages / Motion Lab: destinations · route-steps ·
+explore-globe (+ boarding-pass, approach). Software page: code-hero · code-forge · build-steps · ask-box (+ approach).
+Other pages / Motion Lab: destinations · route-steps ·
 boarding-gate · text-scrub · services-filter · accordion · form-flight · hero-logo · dive.
 Contracts and what to reuse on Services / About / Contact: `reference.md`.
 
@@ -219,7 +222,8 @@ export default scene;
    Never width/height/top/left/margin (exception: accordion `height: 'auto'`).
 2. CSS-hidden elements: animate with `fromTo`/`to` ending at `autoAlpha: 1`, never `gsap.from()`.
 3. Never put a CSS `transform` on an element GSAP animates — wrap it.
-4. Arabic: split by words or lines only. Never chars.
+4. Arabic: split by words or lines only. Never chars. Decorative Latin code (Software page) may be split into
+   characters (`motion/code-glyphs.ts`); it is always LTR, so its horizontal motion is NOT multiplied by `env.dir`.
 5. RTL: horizontal values × `env.dir`. Logos, photos and videos never mirror.
 6. Reduced motion: final state instantly; no Lenis, pins, parallax, depth, cursor, video autoplay.
 7. Mobile (< 1024px or touch): pins ≤ `+=180%` (sequences) / `+=100%` (others); no depth, cursor,

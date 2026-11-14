@@ -1,0 +1,305 @@
+---
+/**
+ * Software page — the six services of brief §2.4, "code that becomes something". Scene: motion/scenes/code-forge.ts.
+ * Every service has an editor window: its code assembles out of flying characters, runs, and turns into what
+ * the service delivers — a rendered page (websites), scattered rows sorted into a table (custom systems),
+ * a paper form turned into a structured record (digital transformation), options weighed and one chosen
+ * (consulting), a registration badge and a session schedule (event platforms), wrong characters flying out
+ * while the right ones fly in (support & maintenance).
+ * Wide screens: one sticky screen (CSS sticky, not a pin), the services take turns, everything scrubbed and
+ * reversible. Small screens / no JS / reduced motion: a plain list; each window shows its finished state.
+ * The windows are decorative (aria-hidden, LTR in both languages): all content is the text next to them.
+ * A service links to /services/<slug>/ ONLY when that service file exists; otherwise its button goes to the
+ * consultation call at the end of the page.
+ */
+import { getCollection } from 'astro:content';
+import Code from './Code.astro';
+import { localizePath, useTranslations, type Lang } from '../../i18n';
+
+export interface ServiceItem {
+  slug: string;                 // = file name in src/content/services when the service has a detail page
+  fx: 'site' | 'table' | 'form' | 'choose' | 'event' | 'fix';
+  proposed?: boolean;           // «مقترح» in the brief: pending the client's approval
+  name: string;
+  text: string;
+}
+interface Props { lang: Lang; title: string; items: ServiceItem[] }
+const { lang, title, items } = Astro.props;
+const t = useTranslations(lang);
+const existing = new Set((await getCollection('services')).map((entry) => entry.id));
+const button = (s: ServiceItem) =>
+  existing.has(s.slug) ? { href: localizePath(`/services/${s.slug}/`, lang), label: t.cta.details } : { href: '#consult', label: t.cta.consult };
+
+// our own line icons (48 × 48), drawn by the scene
+const icons: Record<ServiceItem['fx'], string> = {
+  site: '<rect x="5" y="8" width="38" height="30" rx="3"/><path d="M5 16h38"/><path d="M10 12h.01M14 12h.01"/><path d="M11 23h12M11 29h8"/><rect x="28" y="22" width="10" height="10" rx="1.5"/><path d="M18 42h12"/>',
+  table: '<rect x="6" y="7" width="36" height="34" rx="3"/><path d="M6 17h36M6 25h36M6 33h36M18 17v24"/><path d="M11 12h8"/>',
+  form: '<path d="M8 6h13l6 6v14"/><path d="M21 6v6h6"/><path d="M8 6v30h9"/><path d="M12 18h9M12 24h6"/><rect x="24" y="26" width="18" height="16" rx="2.5"/><path d="M28 32h10M28 37h6"/><path d="m19 30 3 3-3 3"/>',
+  choose: '<circle cx="24" cy="24" r="17"/><path d="m30.500 17.500-3.500 9.500-9.500 3.500 3.500-9.500 9.500-3.500Z"/><circle cx="24" cy="24" r="1.200"/><path d="M24 7v3M24 38v3M7 24h3M38 24h3"/>',
+  event: '<rect x="6" y="10" width="36" height="31" rx="3"/><path d="M6 19h36M15 6v8M33 6v8"/><path d="M12 26h10M12 32h7"/><circle cx="33" cy="30" r="5"/><path d="m30.800 30 1.600 1.600 3-3.200"/>',
+  fix: '<path d="M24 5 8 11v11c0 10 6.500 17 16 21 9.500-4 16-11 16-21V11L24 5Z"/><path d="M13 25h6l3-7 4 13 3-6h6"/>',
+};
+
+// ---------- the code of each window (ours, short, themed on what the service does) ----------
+const code: Record<ServiceItem['fx'], { file: string; lines: string[] }> = {
+  site: { file: 'site.build', lines: ['page("home", {', '  header: nav(links),', '  hero: title + action,', '  cards: services.map(card),', '});'] },
+  table: { file: 'records.sort', lines: ['const table = records', '  .filter(active)', '  .sortBy("date");'] },
+  form: { file: 'form.digital', lines: ['const request = digitize(paper);', '// name, date, service', 'save(request);'] },
+  choose: { file: 'stack.choose', lines: ['const fit = options', '  .filter(o => o.cost <= budget)', '  .find(o => o.meets(need));'] },
+  event: { file: 'event.open', lines: ['event.open({', '  registration: true,', '  sessions: schedule,', '});'] },
+  fix: { file: 'site.monitor', lines: ['if (site.sta{{ut|tu}}s !== "ok") {', '  fix(issue);', '  u{{dp|pd}}ate(site);', '}'] },
+};
+
+// ---------- what the code turns into (shapes only: no words, nothing to translate or mirror) ----------
+// data-pop: appears · data-grow: a bar grows · data-from="x,y,rotation": flies in from there · data-dim: steps
+// back · data-hide: goes away · data-stroke: a line draws itself · data-t: its moment (0…1) inside the run
+const tick = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3.500 8.500 3 3 6-7"/></svg>';
+const out: Record<ServiceItem['fx'], string> = {
+  site: `
+    <div class="mock mock--site">
+      <div class="m-nav" data-pop><i></i><span></span><span></span><span></span></div>
+      <div class="m-hero"><div><span class="bar bar--xl" data-grow></span><span class="bar bar--m" data-grow></span><span class="pill" data-pop></span></div><i class="m-img" data-pop></i></div>
+      <div class="m-cards"><i data-pop></i><i data-pop></i><i data-pop></i></div>
+    </div>`,
+  table: `
+    <div class="mock mock--table">
+      <div class="trow trow--head" data-pop data-t="0"><b></b><b></b><b></b></div>
+      ${[[30, 62, -46, 84, 7], [44, 40, 38, -28, -5], [58, 74, -22, 56, 4], [72, 50, 52, -84, -8], [86, 66, -34, -28, 6]]
+        .map(([a, b, x, y, r]) => `<div class="trow" data-from="${x},${y},${r}"><span style="--w:${a}%"></span><span style="--w:${b}%"></span><i></i></div>`).join('')}
+    </div>`,
+  form: `
+    <div class="mock mock--form">
+      <div class="paper-wrap" data-dim data-t="0.75"><div class="paper">
+        ${[70, 52, 84].map((w) => `<div class="field"><b></b><svg viewBox="0 0 100 10" preserveAspectRatio="none" style="--w:${w}%"><path d="M1 6c6-7 9 5 15 0s8-6 14 0 9 4 15-1 9-4 14 1 9 3 14-1 9-3 14 0 8 2 12 0"/></svg></div>`).join('')}
+      </div></div>
+      <svg class="m-arrow" viewBox="0 0 40 16" data-stroke data-t="0.18"><path d="M2 8h34m-7-6 7 6-7 6"/></svg>
+      <div class="record">
+        ${[[64, 0.3], [46, 0.45], [78, 0.6]].map(([w, at]) => `<div class="kv" data-from="-150,0,-7" data-t="${at}"><b></b><span style="--w:${w}%"></span></div>`).join('')}
+        <i class="ok" data-pop data-t="0.85">${tick}</i>
+      </div>
+    </div>`,
+  choose: `
+    <div class="mock mock--choose">
+      ${[[0, 58, 92, true], [1, 88, 54, false], [2, 40, 30, true]].map(([i, fit, cost, dim]) => `
+        <div class="opt-wrap"${dim ? ' data-dim data-t="0.72"' : ''}><div class="opt">
+          <i class="shape shape--${i}"></i>
+          <span class="meter"><b data-grow data-t="${0.08 + Number(i) * 0.14}" style="--w:${fit}%"></b></span>
+          <span class="meter meter--cost"><b data-grow data-t="${0.16 + Number(i) * 0.14}" style="--w:${cost}%"></b></span>
+          ${dim ? '' : `<i class="ring" data-pop data-t="0.72"></i><i class="ok" data-pop data-t="0.85">${tick}</i>`}
+        </div></div>`).join('')}
+    </div>`,
+  event: `
+    <div class="mock mock--event">
+      <div class="badge-wrap" data-from="0,70,10" data-t="0.1"><div class="badge"><i class="hole"></i><i class="face"></i><span class="bar bar--m"></span><span class="bar bar--s"></span><span class="stripes"></span><i class="ok" data-pop data-t="0.85">${tick}</i></div></div>
+      <div class="agenda">
+        ${[[0.28, 78], [0.42, 56], [0.56, 88], [0.7, 64]].map(([at, w]) => `<div class="slot" data-from="90,0,0" data-t="${at}"><b></b><span style="--w:${w}%"></span></div>`).join('')}
+      </div>
+    </div>`,
+  fix: `
+    <div class="mock mock--fix">
+      <div class="status"><span class="lamp"><i class="lamp__bad" data-hide data-t="0.5"></i><i class="lamp__ok" data-pop data-t="0.5"></i></span><span class="bar bar--m"></span></div>
+      <svg class="pulse" viewBox="0 0 300 60" preserveAspectRatio="none"><path class="pulse__flat" d="M0 40h300" /><path data-stroke data-t="0.5" d="M0 40h60l12-26 14 44 12-30 8 12h44l12-26 14 44 12-30 8 12h92"/></svg>
+      <div class="checks">${[0.66, 0.76, 0.86].map((at, i) => `<div class="check" data-pop data-t="${at}"><i class="ok">${tick}</i><span class="bar" style="--w:${[62, 44, 70][i]}%"></span></div>`).join('')}</div>
+    </div>`,
+};
+---
+<section class="forge theme-dark" id="services" data-scene="code-forge" data-waypoint aria-labelledby="forge-title" style={`--n: ${items.length}`}>
+  <div class="forge__view">
+    <header class="forge__head container">
+      <h2 class="forge__title" id="forge-title">{title}</h2>
+      <p class="forge__ticks" aria-hidden="true">{items.map(() => <span></span>)}</p>
+    </header>
+
+    <ul class="forge__list container" role="list">
+      {items.map((s) => {
+        const b = button(s);
+        return (
+          <li class="svc" data-fx={s.fx}>
+            <div class="svc__text">
+              <svg class="svc__icon" viewBox="0 0 48 48" width="60" height="60" aria-hidden="true" set:html={icons[s.fx]} />
+              <h3 class="svc__name">{s.name}</h3>
+              {s.proposed && <p class="svc__flag">{t.service.proposed}</p>}
+              <p class="svc__copy">{s.text}</p>
+              <a class="svc__link link-arrow" href={b.href} aria-label={`${b.label}: ${s.name}`}>
+                {b.label}
+                <svg class="icon-dir" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </a>
+            </div>
+            <div class="svc__fx" aria-hidden="true" dir="ltr">
+              <div class="win">
+                <div class="win__bar"><i></i><i></i><i></i><span class="win__file">{code[s.fx].file}</span></div>
+                <div class="win__code"><span class="win__run"></span><Code lines={code[s.fx].lines} /></div>
+                <div class="win__out" set:html={out[s.fx]} />
+              </div>
+            </div>
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+</section>
+
+<style is:global>
+  /* ---------- base: no JS / reduced motion / small screens — a list, every window in its finished state ---------- */
+  .forge { position: relative; background: var(--color-bg); padding-block: var(--section-y); overflow-x: clip; }   /* flying characters never widen the page */
+  .forge__head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--space-5); }
+  .forge__title { font-size: clamp(2.4rem, 1.4rem + 4.6vw, 5.5rem); line-height: 1.16; }
+  [dir='rtl'] .forge__title { line-height: 1.34; }
+  .forge__ticks { display: none; }
+  .forge__list { display: grid; gap: var(--space-9); margin-block-start: var(--space-8); }
+
+  .svc { display: grid; gap: var(--space-6); align-items: center; }
+  .svc__fx { order: -1; min-width: 0; }
+  .svc__icon { overflow: visible; fill: none; stroke: var(--color-accent); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .svc__name { margin-block-start: var(--space-4); font-size: clamp(1.9rem, 1.3rem + 2.6vw, 3.6rem); line-height: 1.18; max-width: 14ch; }
+  [dir='rtl'] .svc__name { line-height: 1.36; }
+  .svc__flag {
+    width: fit-content; margin-block-start: var(--space-4); padding: 2px var(--space-3); border-radius: var(--radius-pill);
+    border: 1px dashed var(--color-accent); color: var(--color-accent); font-size: var(--text-xs); line-height: 1.7;
+  }
+  .svc__copy { margin-block: var(--space-4) var(--space-5); max-width: 42ch; font-size: var(--text-lg); line-height: 1.8; color: color-mix(in srgb, var(--color-ink) 86%, transparent); }
+  .svc__link { padding-block: var(--space-2); color: var(--color-ink); border-block-end: 1.5px solid var(--color-accent); }
+  .svc__link:hover { color: var(--color-link); }
+  @media (min-width: 1024px) {
+    .svc { grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: clamp(2rem, 5vw, 5rem); }
+    .svc__fx { order: 0; }
+  }
+
+  /* ---------- the editor window ---------- */
+  .win {
+    position: relative; direction: ltr; text-align: left;
+    border: 1px solid var(--color-border); border-radius: var(--radius-lg);
+    background: linear-gradient(160deg, color-mix(in srgb, var(--color-surface) 62%, transparent), color-mix(in srgb, var(--color-bg-alt) 82%, transparent));
+    box-shadow: var(--shadow-lg), inset 0 1px 0 color-mix(in srgb, var(--color-ink) 9%, transparent);
+    --line: color-mix(in srgb, var(--color-ink) 16%, transparent);
+    --soft: color-mix(in srgb, var(--color-ink) 26%, transparent);
+    --code-size: clamp(0.74rem, 0.5rem + 0.9vw, 1.16rem);
+  }
+  .win__bar { display: flex; align-items: center; gap: 7px; padding: 14px 18px; border-block-end: 1px solid var(--color-border); }
+  .win__bar i { width: 9px; height: 9px; border-radius: 50%; background: var(--line); }
+  .win__bar i:first-child { background: var(--color-accent); }
+  .win__file { margin-inline-start: 10px; font: 400 0.78rem/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: var(--color-ink-muted); }
+  .win__code { position: relative; padding: clamp(1rem, 2.4vw, 1.6rem) clamp(1rem, 2.6vw, 1.75rem); perspective: 800px; min-height: calc(5 * 1.7 * var(--code-size) + 2 * clamp(1rem, 2.4vw, 1.6rem)); }
+  /* the line the program is running: only the scene shows it */
+  .win__run { position: absolute; inset-inline: 0; top: clamp(1rem, 2.4vw, 1.6rem); height: calc(1.7 * var(--code-size)); opacity: 0; background: linear-gradient(to right, color-mix(in srgb, var(--color-accent) 20%, transparent), transparent 70%); border-inline-start: 2px solid var(--color-accent); }
+  .win__out { position: relative; border-block-start: 1px dashed var(--color-border); padding: clamp(1rem, 2.4vw, 1.6rem) clamp(1rem, 2.6vw, 1.75rem); perspective: 800px; }
+  /* a typo waiting to be fixed (shown by the scene until the right characters land) */
+  .win .sw { --squig: 0; }
+  .win .sw::after { content: ''; position: absolute; inset-inline: 0; bottom: 0.1em; height: 3px; opacity: var(--squig); background: repeating-linear-gradient(135deg, var(--color-error) 0 2px, transparent 2px 4px); filter: brightness(1.7); }
+
+  /* ---------- shapes shared by the six results ---------- */
+  .mock { height: clamp(9.5rem, 6rem + 10vw, 15.5rem); display: grid; }
+  /* [style*='--w'], not [style]: GSAP writes a style attribute on everything it animates */
+  .mock .bar, .mock span[style*='--w'], .mock b[style*='--w'] { display: block; height: 8px; border-radius: 4px; background: var(--soft); width: var(--w, 100%); }
+  .mock .bar--xl { width: 82%; height: 12px; background: color-mix(in srgb, var(--color-ink) 70%, transparent); }
+  .mock .bar--m { width: 56%; }
+  .mock .bar--s { width: 38%; }
+  .mock [data-grow] { transform-origin: 0 50%; }
+  .mock .pill { display: block; width: 4.6rem; height: 20px; border-radius: 10px; background: var(--color-accent); }
+  .mock .ok { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--hue-software); }
+  .mock .ok svg { width: 13px; height: 13px; fill: none; stroke: var(--color-bg); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  .mock [data-dim] { opacity: 0.32; }
+  .mock [data-hide] { opacity: 0; }
+  .mock svg[data-stroke], .mock svg:has([data-stroke]) { fill: none; stroke: var(--color-accent); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; overflow: visible; }
+
+  /* websites: a small rendered page */
+  .mock--site { grid-template-rows: auto 1fr auto; gap: 12px; padding: 12px; border-radius: var(--radius-md); background: color-mix(in srgb, var(--color-bg) 55%, transparent); border: 1px solid var(--line); }
+  .m-nav { display: flex; align-items: center; gap: 10px; }
+  .m-nav i { width: 16px; height: 16px; border-radius: 5px; background: var(--color-accent); margin-inline-end: auto; }
+  .m-nav span { width: 2rem !important; height: 6px !important; }
+  .m-hero { display: grid; grid-template-columns: 1.3fr 1fr; gap: 14px; align-items: center; }
+  .m-hero > div { display: grid; gap: 9px; }
+  .m-img { height: 100%; min-height: 3.4rem; border-radius: 10px; background: linear-gradient(135deg, color-mix(in srgb, var(--color-accent) 70%, transparent), color-mix(in srgb, var(--hue-software) 55%, transparent)); }
+  .m-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .m-cards i { height: 1.9rem; border-radius: 8px; background: var(--line); border: 1px solid var(--line); }
+
+  /* custom systems: rows sorted into a table */
+  .mock--table { align-content: space-between; }
+  .trow { display: grid; grid-template-columns: 1.2fr 1fr 12px; gap: 16px; align-items: center; padding: 7px 12px; border-radius: 8px; background: color-mix(in srgb, var(--color-ink) 6%, transparent); border: 1px solid var(--line); }
+  .trow--head { background: none; border-color: transparent; padding-block: 0; }
+  .trow--head b { height: 5px; width: 36%; border-radius: 3px; background: var(--color-accent); }
+  .trow span:first-child { background: color-mix(in srgb, var(--color-ink) 60%, transparent); }
+  .trow i { width: 10px; height: 10px; border-radius: 50%; background: var(--hue-software); }
+
+  /* digital transformation: a paper form becomes a record */
+  .mock--form { grid-template-columns: 1fr 40px 1.15fr; gap: 12px; align-items: center; }
+  .paper { rotate: -5deg; padding: 14px 12px; display: grid; gap: 13px; border-radius: 4px; background: color-mix(in srgb, var(--color-ink) 88%, var(--color-accent)); box-shadow: var(--shadow-md); }
+  .field { display: grid; gap: 4px; }
+  .field b { width: 34%; height: 4px; border-radius: 2px; background: color-mix(in srgb, var(--color-bg) 45%, transparent); }
+  .field svg { width: var(--w); height: 10px; fill: none; stroke: var(--color-bg); stroke-width: 1.4; stroke-linecap: round; overflow: visible; }
+  .field { border-block-end: 1px solid color-mix(in srgb, var(--color-bg) 30%, transparent); padding-block-end: 4px; }
+  .m-arrow { width: 40px; }
+  .record { position: relative; display: grid; gap: 9px; padding: 14px; border-radius: var(--radius-md); border: 1px solid color-mix(in srgb, var(--hue-software) 60%, transparent); background: color-mix(in srgb, var(--hue-software) 9%, transparent); }
+  .kv { display: grid; grid-template-columns: 30% 1fr; gap: 10px; align-items: center; }
+  .kv b { height: 8px; border-radius: 4px; background: var(--color-accent); }
+  .record .ok { position: absolute; top: -9px; right: -9px; }
+
+  /* consulting: three options weighed, one chosen */
+  .mock--choose { grid-template-columns: repeat(3, 1fr); gap: 12px; align-items: stretch; }
+  .opt-wrap { display: grid; }
+  .opt { position: relative; display: grid; align-content: center; gap: 12px; padding: 14px 12px; border-radius: var(--radius-md); border: 1px solid var(--line); background: color-mix(in srgb, var(--color-ink) 5%, transparent); }
+  .shape { width: 26px; height: 26px; border: 2px solid var(--color-ink); margin-block-end: 4px; }
+  .shape--0 { border-radius: 50%; }
+  .shape--1 { border-radius: 7px; rotate: 45deg; scale: 0.86; border-color: var(--color-accent); }
+  .shape--2 { border-radius: 4px; }
+  .meter { display: block; height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; }
+  .meter b { height: 100% !important; background: var(--hue-software) !important; }
+  .meter--cost b { background: color-mix(in srgb, var(--color-ink) 62%, transparent) !important; }
+  .ring { position: absolute; inset: -1px; border-radius: inherit; border: 2px solid var(--color-accent); box-shadow: 0 0 34px color-mix(in srgb, var(--color-accent) 30%, transparent); }
+  .opt .ok { position: absolute; top: -9px; right: -9px; }
+
+  /* event platforms: a registration badge and the session schedule */
+  .mock--event { grid-template-columns: 0.8fr 1.2fr; gap: 18px; align-items: center; }
+  .badge { position: relative; rotate: -4deg; display: grid; justify-items: center; gap: 8px; padding: 22px 12px 12px; border-radius: 12px; background: color-mix(in srgb, var(--color-ink) 90%, var(--color-accent)); box-shadow: var(--shadow-md); }
+  .badge .hole { position: absolute; top: 8px; width: 26px; height: 6px; border-radius: 3px; background: var(--color-bg); }
+  .badge .face { width: 34px; height: 34px; border-radius: 50%; background: var(--color-accent); }
+  .badge .bar { background: color-mix(in srgb, var(--color-bg) 62%, transparent); }
+  .badge .bar--s { background: color-mix(in srgb, var(--color-bg) 34%, transparent); }
+  .stripes { display: block; width: 74% !important; height: 16px !important; border-radius: 2px !important; background: repeating-linear-gradient(to right, var(--color-bg) 0 2px, transparent 2px 4px, var(--color-bg) 4px 5px, transparent 5px 9px) !important; }
+  .badge .ok { position: absolute; top: -9px; right: -9px; }
+  .agenda { display: grid; gap: 9px; }
+  .slot { display: grid; grid-template-columns: 34px 1fr; gap: 10px; align-items: center; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line); border-inline-start: 2px solid var(--color-accent); background: color-mix(in srgb, var(--color-ink) 5%, transparent); }
+  .slot b { height: 6px; border-radius: 3px; background: var(--color-accent); }
+
+  /* support & maintenance: the pulse is back */
+  .mock--fix { grid-template-rows: auto 1fr auto; gap: 8px; }
+  .status { display: flex; align-items: center; gap: 12px; }
+  .lamp { position: relative; width: 14px; height: 14px; flex: none; }
+  .lamp i { position: absolute; inset: 0; border-radius: 50%; }
+  .lamp__bad { background: var(--color-error); filter: brightness(1.7); }
+  .lamp__ok { background: var(--hue-software); box-shadow: 0 0 16px var(--hue-software); }
+  .pulse { width: 100%; height: 100%; min-height: 3rem; fill: none; stroke: var(--hue-software); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; overflow: visible; }
+  .pulse path { vector-effect: non-scaling-stroke; }
+  .pulse__flat { stroke: var(--line); stroke-dasharray: 3 5; }
+  .checks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .check { display: flex; align-items: center; gap: 8px; }
+  .check .ok { width: 18px; height: 18px; flex: none; }
+  .check .ok svg { width: 11px; height: 11px; }
+
+  /* ---------- wide + scene running: one sticky screen, the services take turns ---------- */
+  @media (min-width: 1024px) {
+    .forge.is-scrub { padding-block: 0; height: calc((var(--n) * 90 + 100) * 1vh); height: calc((var(--n) * 90 + 100) * 1lvh); }
+    .forge.is-scrub .forge__view {
+      position: sticky; top: 0; height: 100vh; height: 100lvh; overflow: hidden;
+      display: grid; grid-template: auto 1fr / minmax(0, 1fr);
+      padding-block: calc(76px + var(--space-5)) calc(100lvh - 100svh + var(--space-6));
+    }
+    .forge.is-scrub .forge__title { font-size: clamp(1.6rem, 1rem + 1.6vw, 2.6rem); }
+    .forge.is-scrub .forge__ticks { display: flex; gap: 8px; align-items: center; }
+    .forge__ticks span { width: 26px; height: 2px; background: color-mix(in srgb, var(--color-ink) 22%, transparent); transition: background-color var(--dur-base), width var(--dur-base) var(--ease-out); }
+    .forge__ticks span.is-on { width: 52px; background: var(--color-accent); }
+    .forge.is-scrub .forge__list { margin: 0 auto; gap: 0; align-items: center; min-height: 0; }
+    .forge.is-scrub .svc { grid-area: 1 / 1; opacity: 0; pointer-events: none; }
+    .forge.is-scrub .svc.is-active { pointer-events: auto; }
+    .forge.is-scrub .win { width: min(100%, 44rem); margin-inline-start: auto; }
+    [dir='rtl'] .forge.is-scrub .win { margin-inline: 0 auto; }
+  }
+  @media (min-width: 1024px) and (max-height: 860px) {
+    .forge.is-scrub .mock { height: 11rem; }
+  }
+  @media (min-width: 1024px) and (max-height: 720px) {
+    .forge.is-scrub .mock { height: 8.5rem; }
+    .forge.is-scrub .win { --code-size: 0.86rem; }
+    .forge.is-scrub .svc__copy { font-size: var(--text-base); }
+  }
+</style>

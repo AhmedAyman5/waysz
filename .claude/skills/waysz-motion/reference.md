@@ -146,6 +146,38 @@ css tier / reduced motion: `earth-borders-poster.webp` + the same list and messa
 section = the globe is interactive. Selecting a country also fills `[data-destination-chip]` and adds
 `?destination=<ISO>` to `a[data-consult]` anywhere on the page.
 
+### code-hero — Software hero, "Code in flight" (`views/software/Hero.astro`)
+
+`.chero > .chero__sticky (.chero__media > .chero__plate > BgVideo + .chero__scrim, .chero__codebox > pre.code, .chero__stage.stage-host, .chero__content (crumb, h1[data-intro], lead, actions))`.
+180lvh section with a sticky screen (no pin). Entrance on every tier: the characters of the code (DOM spans; whole
+tokens on small screens) fly in from depth and land, the headline rises by words; lead + buttons are never hidden.
+When it has settled (`bridge.code.settled`) the act `glyphs` takes over on the WebGL tiers: the scene measures every
+character (`measureCode`) and the act lands one instanced glyph on each, adds the swarm and the pointer field, and
+flies the code away with `bridge.code.leave` (scroll, reversible). css tier: the lines lift off as DOM elements.
+The backdrop shader repeats the plate box (`--plate-top`, `--plate-h`) and the three layers of `.chero__scrim` —
+change them together. `<Code lines>` renders any decorative code block (LTR, aria-hidden, tokens with `data-col`).
+
+### code-forge — Software services (`views/software/Services.astro`)
+
+`.forge > .forge__view (.forge__head (h2, .forge__ticks) + ul.forge__list > li.svc[data-fx] (.svc__text + .svc__fx > .win (.win__bar, .win__code > .win__run + pre.code, .win__out > .mock)))`.
+One paused timeline per service, driven only by scroll: the code assembles from flying characters, a highlight walks
+down its lines, and the result builds itself from the parts marked `data-pop · data-grow · data-from="x,y,rot" ·
+data-dim · data-hide · data-stroke` (in DOM order, or at `data-t`); `{{bad|good}}` in a code line makes characters
+that fly out and get replaced. Wide: CSS sticky screen (`.is-scrub`, height from `--n`), the services take turns
+(opacity, never visibility); the first code assembles while the section arrives. Small: each window is scrubbed as
+it crosses the screen. The timelines are built only when the section is near (one per frame): nothing at page load.
+No JS / reduced motion: a list, every window finished.
+
+### build-steps — Software "how we work" (`views/software/Process.astro`)
+
+`.steps > .steps__media[data-depth] + .steps__scrim + .steps__content (.steps__head, .steps__route > .steps__line > .steps__fill + ol.steps__list > li.bstep (.bstep__node, num, name, text, code.bstep__call))`.
+No pin. The line fills with scroll (horizontal on wide screens, growing from the reading side; vertical on small
+ones); a step gets `.is-active` when the line reaches it and its decorative call types in once (ScrambleText, Latin).
+
+### ask-box — Software closing box (`views/software/Missing.astro`)
+
+Once in view: the box settles, its line of code types in (ScrambleText, Latin), the heading rises by words.
+
 ### destinations (Motion Lab) — sticky cards that stack
 
 Kept for the Motion Lab; Home uses `areas`.
@@ -181,6 +213,7 @@ Unchanged (see Motion Lab).
 | 1.8     | Footer           | logo                                                                    | `footer-landing` (runway + touchdown) — BUILT                         |
 | 2       | Services         | header photo per area tab                                               | `services-filter` (Flip) · cards with photos                          |
 | 2.2     | Immigration group page | dusk window-seat video · borders globe (act `explore`)            | `page-hero` · `journey-route` · `dossier` · `boarding-pass` · `explore-globe` · `approach` — BUILT |
+| 2.4     | Software group page | dusk city video inside the stage (act `glyphs`) · code photo         | `code-hero` · `code-forge` · `build-steps` · `ask-box` · `approach` — BUILT |
 | 3       | Service template | header photo of the service's area                                      | `data-split` · `route-steps` · `accordion`                            |
 | 4       | About            | wide photo                                                              | `media-reveal` · `text-scrub` · `route-steps` (2 stops)               |
 | 5       | Contact          | calm photo                                                              | `form-flight` · `data-magnetic`                                       |
@@ -197,4 +230,6 @@ are CSS sticky + scrub, not pins. Other pages: max 2.
 | About: opening                         | `media-reveal` as is (`.reveal__media`, `.reveal__text`, optional `.reason` items)     |
 | About: values / "why" lists            | `iconTimeline` icons from `media-reveal.ts`                                            |
 | Contact: header                        | `approach` (photo + words + magnetic buttons)                                          |
+| A block of decorative code             | `views/software/Code.astro` + `splitChars` / `measureCode` in `motion/code-glyphs.ts`  |
+| A result that builds itself on scroll  | the `data-pop / grow / from / dim / hide / stroke` parts of `code-forge` (`buildTimeline`) |
 | Any dark photo section                 | `data-depth-scene` + `data-depth` on the photo wrapper, scrim gradient, `.link-arrow`  |

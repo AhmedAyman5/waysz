@@ -58,3 +58,18 @@ export interface ExploreControls {
   setAuto(on: boolean): void;                  // gentle rotation while idle
   setLayout(side: 1 | -1, compact: boolean): void;
 }
+
+/**
+ * Software page hero — "Code in flight". Written by scenes/code-hero.ts, read by acts/glyphs.ts.
+ * The scene measures where every character of the DOM code sits (CSS pixels inside the stage host); the act
+ * lands one instanced glyph on each of them, so the canvas can take over from the DOM without a jump.
+ */
+export interface CodeGlyph { ch: string; x: number; y: number; tone: number }   // x, y: top-left of the character cell · tone: 0 ink · 1 accent · 2 string · 3 dim
+export interface CodeLayout { glyphs: CodeGlyph[]; cellW: number; lineH: number; fontPx: number; family: string; weight: string }
+export const code = {
+  layout: null as CodeLayout | null,
+  version: 0,                                // changes whenever `layout` is measured again (resize)
+  settled: false,                            // the DOM entrance has finished: the canvas may take over
+  leave: 0,                                  // hero scroll progress 0…1: the code lifts off and flies away
+  plate: [0, 1] as [number, number],         // footage box behind the screen: top offset and height, in screen heights
+};
