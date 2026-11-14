@@ -189,7 +189,8 @@ const out: Record<ServiceItem['fx'], string> = {
 
   /* ---------- shapes shared by the six results ---------- */
   .mock { height: clamp(9.5rem, 6rem + 10vw, 15.5rem); display: grid; }
-  .mock .bar, .mock span[style], .mock b[style] { display: block; height: 8px; border-radius: 4px; background: var(--soft); width: var(--w, 100%); }
+  /* [style*='--w'], not [style]: GSAP writes a style attribute on everything it animates */
+  .mock .bar, .mock span[style*='--w'], .mock b[style*='--w'] { display: block; height: 8px; border-radius: 4px; background: var(--soft); width: var(--w, 100%); }
   .mock .bar--xl { width: 82%; height: 12px; background: color-mix(in srgb, var(--color-ink) 70%, transparent); }
   .mock .bar--m { width: 56%; }
   .mock .bar--s { width: 38%; }
