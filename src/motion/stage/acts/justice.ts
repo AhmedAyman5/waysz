@@ -498,7 +498,11 @@ export function createJusticeAct(host: HTMLElement, quality: Quality): Act {
   };
   const aim = () => {
     const K = justice.compact ? COMPACT : WIDE;
-    if (justice.poster) { blend(N([0, 2.0, 9.4], [0, 1.78, 0]), N([0, 2.0, 9.4], [0, 1.78, 0]), 0); return; }
+    if (justice.poster) {                                 // the stills: a wide one, and a tall one that fills a phone screen
+      const still = aspect < 0.7 ? N([0, 2.1, 14.6], [0, 1.85, 0], 0, 0.17) : N([0, 2.0, 9.4], [0, 1.78, 0]);
+      blend(still, still, 0);
+      return;
+    }
     const shot = clamp(justice.shot, 0, 6.999), i = Math.floor(shot), f = shot - i;
     const arrive = smooth(clamp(f / 0.45));
     if (i === 0) blend(K.hero0, K.hero1, smooth(f));

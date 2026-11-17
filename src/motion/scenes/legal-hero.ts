@@ -1,22 +1,19 @@
 /**
  * Legal page — hero (views/legal/Hero.astro). Sticky + scrubbed, not a pin.
- * Entrance: the headline rises by words; the lead and the buttons are never hidden (LCP). Scroll: the text leaves
+ * Entrance: nothing is hidden (the headline is the LCP on phones) — its two lines only settle into place. Scroll: the text leaves
  * upward while the camera of the scales orbits (scenes/legal-thread.ts moves it); the still of the css tier
  * drifts back a little. Fully reversible.
  */
 import { gsap } from 'gsap';
-import { SplitText } from 'gsap/SplitText';
 import type { Scene } from '../index';
 
 const scene: Scene = (root, env) => {
   const q = gsap.utils.selector(root);
-  const title = root.querySelector<HTMLElement>('.lhero__title')!;
-  if (env.reduce) { gsap.set(title, { autoAlpha: 1 }); return; }
+  if (env.reduce) return;
 
-  const split = SplitText.create(title, { type: 'words', mask: 'words', wordsClass: 'w', aria: 'auto' });   // words only (Arabic)
-  gsap.set(title, { autoAlpha: 1 });
   gsap.timeline({ delay: 0.15 })
-    .fromTo(split.words, { yPercent: 118 }, { yPercent: 0, duration: 1.3, stagger: 0.09 })
+    .fromTo(q('.lhero__line'), { y: 54 }, { y: 0, duration: 1.4, stagger: 0.12 })
+    .fromTo(q('.lhero__lead, .lhero__actions'), { y: 30 }, { y: 0, duration: 1.2, stagger: 0.08 }, 0.15)
     .fromTo(q('.lhero__still img'), { scale: 1.08 }, { scale: 1, duration: 2.4, ease: 'power2.out' }, 0);
 
   gsap.timeline({

@@ -60,7 +60,9 @@ for external files: a clear free license (approved list in **waysz-media**) + a 
   `globe` (Home §1.5 night Earth + route), `explore` (Immigration page: the same Earth with country borders,
   free rotation, picking and a flight from Egypt — the scene drives it through `ExploreControls` in `bridge.ts`),
   `glyphs` (Software page hero: instanced glyph quads from a canvas atlas that land on the DOM code + a swarm in
-  depth with a pointer field; all motion in the vertex shader; 1100 swarm glyphs on `high`, 320 on `lite`).
+  depth with a pointer field; all motion in the vertex shader; 1100 swarm glyphs on `high`, 320 on `lite`),
+  `justice` (Legal page: procedural 3D scales with spring physics, engraved weights, a colonnade and dusk light —
+  ONE host that CSS keeps on screen for the whole page; see "Solid 3D" below).
 - **Hand-off between acts**: the canvas moves into the host of the act that is MOST visible. While it paints
   there the host has `.is-drawing` — hide the section's DOM media with CSS on that class
   (`.host.is-drawing ~ .card .media { visibility: hidden }`); when the canvas leaves, the DOM version is back.
@@ -73,6 +75,10 @@ for external files: a clear free license (approved list in **waysz-media**) + a 
   reports its layout size and breaks the upload on small screens. Reuse the section's own `<img>` (no second download).
 - Colours: our own shaders work in display space (token colour in → same colour out). three's built-in
   materials and `scene.background` are colour-managed: give them `color.convertSRGBToLinear()`.
+- **Solid 3D** (models that need depth): the act draws its world into its OWN `WebGLRenderTarget` (depth, MSAA,
+  half-float) in the optional `prerender(renderer)` hook, loads its environment / compiles that world in
+  `prepare(renderer)`, and its `scene` is one full-screen pass that finishes the picture (rays, tone mapping,
+  grain). Keep the target's alpha as a mask if a pass needs one (`justice`: 0 = sky). Still one renderer.
 - No depth buffer on the shared renderer: fix draw order with `renderOrder` + `depthTest: false`; anything that
   floats over a sphere fades itself out on the far side (see `arcFragment`).
 - **Lazy**: `startFlightStage(env)` is called by the hero scene AFTER the hero text is on screen; it then
@@ -162,6 +168,7 @@ for external files: a clear free license (approved list in **waysz-media**) + a 
 Home: preloader · hero-takeoff · image-sequence · areas · media-reveal · globe-route · approach ·
 boarding-pass · footer-landing (every page). Immigration page: page-hero · journey-route · dossier ·
 explore-globe (+ boarding-pass, approach). Software page: code-hero · code-forge · build-steps · ask-box (+ approach).
+Legal page: legal-thread · legal-hero · legal-weights · legal-colonnade · legal-why · legal-how · legal-faq (+ accordion) · legal-consult.
 Other pages / Motion Lab: destinations · route-steps ·
 boarding-gate · text-scrub · services-filter · accordion · form-flight · hero-logo · dive.
 Contracts and what to reuse on Services / About / Contact: `reference.md`.

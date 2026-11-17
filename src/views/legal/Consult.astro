@@ -16,7 +16,10 @@ const t = useTranslations(lang);
 ---
 <section class="lcta" id="consult" data-scene="legal-consult" data-shot data-waypoint aria-labelledby="lcta-title">
   <div class="lcta__still scales-still" aria-hidden="true">
-    <img src="/media/img/scales-poster.webp" alt="" width="1100" height="1300" loading="lazy" decoding="async" />
+    <picture>
+        <source media="(max-width: 1023px)" srcset="/media/img/scales-poster-m.webp" width="780" height="1688" />
+        <img src="/media/img/scales-poster.webp" alt="" width="1100" height="1300" loading="lazy" decoding="async" />
+      </picture>
   </div>
   <div class="lcta__scrim" aria-hidden="true"></div>
   <div class="lcta__content container">
@@ -33,12 +36,8 @@ const t = useTranslations(lang);
 
 <style>
   .lcta { position: relative; overflow: clip; min-height: 100vh; min-height: 100svh; display: grid; align-items: end; }
-  .lcta__still {
-    position: absolute; inset-block: 76px 40%; inset-inline: 0;
-    pointer-events: none;
-    -webkit-mask: radial-gradient(closest-side, black 62%, transparent); mask: radial-gradient(closest-side, black 62%, transparent);
-  }
-  .lcta__still img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+  .lcta__still { position: absolute; inset: 0; pointer-events: none; }
+  .lcta__still img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0%; }
   .lcta__scrim {
     position: absolute; inset: 0; pointer-events: none;
     background: linear-gradient(to top, color-mix(in srgb, var(--color-bg) 96%, transparent) 0%, color-mix(in srgb, var(--color-bg) 74%, transparent) 36%, transparent 62%);
@@ -55,7 +54,11 @@ const t = useTranslations(lang);
   }
   @media (min-width: 1024px) {
     .lcta { align-items: center; }
-    .lcta__still { inset-block: 6% 4%; inset-inline: 50% 2%; }
+    .lcta__still {
+      inset-block: 6% 4%; inset-inline: 50% 2%;
+      -webkit-mask: radial-gradient(closest-side, black 62%, transparent); mask: radial-gradient(closest-side, black 62%, transparent);
+    }
+    .lcta__still img { object-fit: contain; object-position: 50% 50%; }
     .lcta__scrim { background: linear-gradient(to right, color-mix(in srgb, var(--color-bg) 84%, transparent) 0%, color-mix(in srgb, var(--color-bg) 52%, transparent) 36%, transparent 60%); }
     :global([dir='rtl']) .lcta__scrim { background: linear-gradient(to left, color-mix(in srgb, var(--color-bg) 84%, transparent) 0%, color-mix(in srgb, var(--color-bg) 52%, transparent) 36%, transparent 60%); }
   }
