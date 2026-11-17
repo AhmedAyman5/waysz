@@ -118,6 +118,13 @@ our own WebGL globe. Re-render it whenever the palette or the globe shader chang
 `/en/?tier=high&globe=poster` in a 1100×1100 window (dev only: the whole globe is centred), scroll to §1.5, hide
 `.how__content, .how__scrim, .how__poster`, screenshot `.how__stage`, convert to WebP (quality 80).
 
+**Scales stills (`public/media/img/scales-poster.webp` + `scales-poster-m.webp`)** — the css-tier / no-JS version
+of the Legal page is a render of our own 3D scales in their final, balanced state. Re-render both whenever the
+palette, the model or its lighting change: `npm run dev`, then `node scripts/render-scales-still.mjs`.
+
+**Environment light for 3D** — a Poly Haven HDRI (CC0), 1k download, scaled small (reflections on rough metal need
+no detail): `ffmpeg -i in_1k.hdr -vf "scale=256:128:flags=area" public/media/img/NAME.hdr` (≈ 70 KB, still HDR).
+
 ## 6 · Budgets (hard limits)
 
 | Asset                                                                                       | Limit                                                             |

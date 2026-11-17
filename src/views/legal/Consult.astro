@@ -1,0 +1,65 @@
+---
+/**
+ * Legal page — the consultation call. Scene: motion/scenes/legal-consult.ts.
+ * This is where the thread ends: the last small weight lands and the scales of the stage act `justice` come to
+ * perfect balance (scenes/legal-thread.ts sets bridge.justice.final when this section arrives; scrolling back up
+ * unbalances them again). Copy: the call of template sample (أ), read from the service file.
+ * WhatsApp is rendered only when the number exists in src/lib/site.ts.
+ * css tier / reduced motion / no JS: our own still of the balanced scales.
+ */
+import { site, waHref } from '../../lib/site';
+import { localizePath, useTranslations, type Lang } from '../../i18n';
+
+interface Props { lang: Lang; cta: { title: string; text: string; button: string } }
+const { lang, cta } = Astro.props;
+const t = useTranslations(lang);
+---
+<section class="lcta" id="consult" data-scene="legal-consult" data-shot data-waypoint aria-labelledby="lcta-title">
+  <div class="lcta__still scales-still" aria-hidden="true">
+    <picture>
+        <source media="(max-width: 1023px)" srcset="/media/img/scales-poster-m.webp" width="780" height="1688" />
+        <img src="/media/img/scales-poster.webp" alt="" width="1100" height="1300" loading="lazy" decoding="async" />
+      </picture>
+  </div>
+  <div class="lcta__scrim" aria-hidden="true"></div>
+  <div class="lcta__content container">
+    <h2 class="lcta__title" id="lcta-title">{cta.title}</h2>
+    <p class="lcta__text">{cta.text}</p>
+    <div class="lcta__actions">
+      <a class="btn btn--accent" href={localizePath('/contact/', lang)} data-magnetic data-consult>{cta.button}</a>
+      {site.whatsapp && (
+        <a class="btn btn--ghost" href={waHref(site.whatsapp, t.whatsapp.message)} target="_blank" rel="noopener" data-magnetic>{t.cta.whatsapp}</a>
+      )}
+    </div>
+  </div>
+</section>
+
+<style>
+  .lcta { position: relative; overflow: clip; min-height: 100vh; min-height: 100svh; display: grid; align-items: end; }
+  .lcta__still { position: absolute; inset: 0; pointer-events: none; }
+  .lcta__still img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0%; }
+  .lcta__scrim {
+    position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(to top, color-mix(in srgb, var(--color-bg) 96%, transparent) 0%, color-mix(in srgb, var(--color-bg) 74%, transparent) 36%, transparent 62%);
+  }
+  .lcta__content { position: relative; padding-block: calc(76px + var(--space-6)) var(--space-9); }
+  .lcta__title { max-width: 13ch; font-size: clamp(2.5rem, 1.3rem + 5.6vw, 6.5rem); line-height: 1.14; letter-spacing: -0.01em; }
+  :global([dir='rtl']) .lcta__title { line-height: 1.32; letter-spacing: 0; }
+  .lcta__text { margin-block-start: var(--space-5); max-width: 40ch; font-size: var(--text-lg); color: color-mix(in srgb, var(--color-ink) 90%, transparent); }
+  .lcta__actions { display: flex; flex-wrap: wrap; gap: var(--space-4); margin-block-start: var(--space-7); }
+  .lcta__actions .btn { min-height: 58px; padding-inline: var(--space-8); font-size: var(--text-base); }
+  @media (max-width: 639px) {
+    .lcta__text { font-size: var(--text-base); }
+    .lcta__actions .btn { flex: 1 1 100%; padding-inline: var(--space-6); }
+  }
+  @media (min-width: 1024px) {
+    .lcta { align-items: center; }
+    .lcta__still {
+      inset-block: 6% 4%; inset-inline: 50% 2%;
+      -webkit-mask: radial-gradient(closest-side, black 62%, transparent); mask: radial-gradient(closest-side, black 62%, transparent);
+    }
+    .lcta__still img { object-fit: contain; object-position: 50% 50%; }
+    .lcta__scrim { background: linear-gradient(to right, color-mix(in srgb, var(--color-bg) 84%, transparent) 0%, color-mix(in srgb, var(--color-bg) 52%, transparent) 36%, transparent 60%); }
+    :global([dir='rtl']) .lcta__scrim { background: linear-gradient(to left, color-mix(in srgb, var(--color-bg) 84%, transparent) 0%, color-mix(in srgb, var(--color-bg) 52%, transparent) 36%, transparent 60%); }
+  }
+</style>

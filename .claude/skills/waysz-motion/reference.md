@@ -178,6 +178,33 @@ ones); a step gets `.is-active` when the line reaches it and its decorative call
 
 Once in view: the box settles, its line of code types in (ScrambleText, Latin), the heading rises by words.
 
+### legal-thread — Legal page, the 3D scales behind every section (`views/LegalPage.astro`)
+
+`.legal.theme-dark > .legal__stage.stage-host[data-scene=legal-thread] + .legal__body > section[data-shot] × 7`.
+The host is `position: sticky` for the whole page (the body starts with `margin-block-start: -100lvh`), so ONE act
+(`justice`) draws behind every section. The scene only measures: which `[data-shot]` section the middle of the
+screen is in and how far (`bridge.justice.shot` → camera), the dip of light at the cut into the colonnade (`veil`)
+and whether the consult section has arrived (`final` → the last weight → perfect balance). All of it is a function
+of the scroll position, so it reverses. Section order is fixed: hero · services · colonnade · why · how · faq · consult.
+css tier / reduced motion / no JS: `.scales-still` images (our render: `node scripts/render-scales-still.mjs`);
+they fade out while `.legal__stage.is-drawing`. Text always sits on a DOM scrim, never on the bare canvas.
+
+### legal-hero · legal-weights · legal-colonnade · legal-why · legal-how · legal-faq · legal-consult
+
+- **legal-hero** (`views/legal/Hero.astro`): 170lvh, sticky screen. Nothing is hidden on load (the headline is the
+  LCP on phones): its two lines settle with a transform; scroll lets the text leave while the camera orbits.
+- **legal-weights** (`views/legal/Services.astro`): `.lsvc-sec > .lsvc__view (.lsvc__head (h2 + .lsvc__tray > button.lsvc__tick) + ul.lsvc__list > li.lsvc[data-fx] (.lsvc__fx > svg + .lsvc__text))`.
+  Sticky screen on every screen size; the services take turns and `bridge.justice.count` says how many weights are
+  on the pan; hover / focus on a tray button sets `justice.focus` (that weight drops early), click scrolls to it.
+  Each `data-fx` (beam · gather · warm · sign · status · merge) has one paused timeline built in `moment()`.
+  `path[data-engrave]` is also what the act engraves on that service's weight.
+- **legal-colonnade** (`views/legal/Help.astro`): sticky screen; `bridge.justice.walk` walks the camera between the
+  columns and each `.lhelp__item[data-side]` gets a beat from the side of its column (× `env.dir`).
+- **legal-why**: heading by words, four reasons, the sealed file `.file[data-spotlight]` (covers open only inside the
+  pointer's light through a CSS mask on `--mx / --my`; a slow CSS sweep on touch). **legal-how**: the `build-steps`
+  line without the code calls. **legal-faq**: runs beside `accordion`; makes closed answers `inert` (they hold links).
+  **legal-consult**: heading by words; the balance is the thread's work.
+
 ### destinations (Motion Lab) — sticky cards that stack
 
 Kept for the Motion Lab; Home uses `areas`.
@@ -214,6 +241,7 @@ Unchanged (see Motion Lab).
 | 2       | Services         | header photo per area tab                                               | `services-filter` (Flip) · cards with photos                          |
 | 2.2     | Immigration group page | dusk window-seat video · borders globe (act `explore`)            | `page-hero` · `journey-route` · `dossier` · `boarding-pass` · `explore-globe` · `approach` — BUILT |
 | 2.4     | Software group page | dusk city video inside the stage (act `glyphs`) · code photo         | `code-hero` · `code-forge` · `build-steps` · `ask-box` · `approach` — BUILT |
+| 2.1     | Legal group page | 3D scales, colonnade and dusk light in the stage (act `justice`, dusk HDRI) · still for the css tier | `legal-thread` · `legal-hero` · `legal-weights` · `legal-colonnade` · `legal-why` · `legal-how` · `legal-faq` · `legal-consult` — BUILT |
 | 3       | Service template | header photo of the service's area                                      | `data-split` · `route-steps` · `accordion`                            |
 | 4       | About            | wide photo                                                              | `media-reveal` · `text-scrub` · `route-steps` (2 stops)               |
 | 5       | Contact          | calm photo                                                              | `form-flight` · `data-magnetic`                                       |
@@ -232,4 +260,6 @@ are CSS sticky + scrub, not pins. Other pages: max 2.
 | Contact: header                        | `approach` (photo + words + magnetic buttons)                                          |
 | A block of decorative code             | `views/software/Code.astro` + `splitChars` / `measureCode` in `motion/code-glyphs.ts`  |
 | A result that builds itself on scroll  | the `data-pop / grow / from / dim / hide / stroke` parts of `code-forge` (`buildTimeline`) |
+| A solid 3D model in the stage          | the render-target pattern of `acts/justice.ts` (`prepare` + `prerender`), its spring physics and camera nodes |
+| A drawn moment that plays with scroll  | `moment()` in `legal-weights.ts` (one paused timeline per `data-fx`)                   |
 | Any dark photo section                 | `data-depth-scene` + `data-depth` on the photo wrapper, scrim gradient, `.link-arrow`  |

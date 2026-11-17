@@ -32,6 +32,8 @@ requests) — open the link once and replace the note with the contributor's nam
 | public/media/geo/world-egy.topo.json · src/data/countries.json | https://www.naturalearthdata.com/downloads/10m-cultural-vectors/ — Admin 0 Countries, point of view: Egypt (`ne_10m_admin_0_countries_egy`, v5.1.1) | Natural Earth | Public domain | 2026-11-13 | merged by ISO code, Bir Tawil merged into Sudan, areas without an ISO code dropped, simplified to 10%, islands under 900 km² dropped (each country keeps its two largest parts), TopoJSON — `scripts/build-borders.mjs` |
 | public/media/img/earth-borders-poster.webp                  | our own render of the Black Marble map + the borders above (`scripts/render-globe-still.mjs`) | WaysZ           | —                      | 2026-11-13 | still globe for the css tier, reduced motion and no JS (Immigration page, "Explore the world")       |
 | public/media/img/earth-poster.webp                          | our own render of the map above (the WebGL globe, dev URL `?globe=poster`)           | WaysZ                 | —                      | 2026-11-13 | still image for the css tier, no JS and reduced motion (§1.5)                                       |
+| public/media/img/dusk-env.hdr                               | https://polyhaven.com/a/belfast_sunset_puresky                                       | Dimitrios Savva (photography), Jarod Guest (sky edits), Greg Zaal (processing) | CC0 | 2026-11-17 | Legal page: the light of the 3D scales. 1k HDR download scaled to 256×128 (68 KB); the act turns it so its sun stands where the scene's sun does. Pure sky: no place, building or text in it |
+| public/media/img/scales-poster.webp · scales-poster-m.webp  | our own render of the 3D scales (the WebGL act `justice`, `scripts/render-scales-still.mjs`) | WaysZ          | —                      | 2026-11-17 | still of the balanced scales for the css tier, reduced motion and no JS (Legal page): 1100×1300 beside the text on wide screens, 780×1688 full screen on phones |
 
 Astro generates the responsive WebP files of `src/assets/media/*` at build time (`dist/_astro/`).
 
@@ -69,3 +71,7 @@ flying code, the six editor windows and their results, the service icons — is 
 Candidates downloaded for the take-off and rejected: Pexels 5008861 (true sunset, but 720p handheld),
 855130 (airline livery), 854550 (registration on the wing), 2297218 (no take-off), 4686173 / 856486 / 4512518
 (not a take-off or vertical).
+
+The Legal page ships no model file: the scales, chains, weights, columns and dust are procedural geometry built in
+`src/motion/stage/acts/justice.ts`; the engravings on the weights and the six small "moments" are our own SVG paths.
+No gavel anywhere (Egyptian courts do not use one), no emblem, flag, real courthouse or readable document text.

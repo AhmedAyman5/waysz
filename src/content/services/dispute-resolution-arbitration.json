@@ -1,0 +1,81 @@
+{
+  "area": "legal",
+  "order": 6,
+  "proposed": false,
+  "ar": {
+    "name": "تسوية النزاعات والتحكيم",
+    "summary": "التفاوض والتسوية الودية والتحكيم، لإنهاء النزاعات بأقل وقت وتكلفة مع الحفاظ على مصالحك.",
+    "description": "ليس كل نزاع يحتاج إلى قاعة محكمة. نساعدك على إنهاء النزاع بالتفاوض والتسوية الودية أو بالتحكيم، بأقل وقت وتكلفة، مع الحفاظ على مصالحك وعلى علاقاتك ما أمكن.",
+    "audience": [
+      "الأفراد والشركات الراغبون في حل نزاع دون تقاضٍ طويل.",
+      "أطراف العقود التي تتضمن شرط تحكيم.",
+      "الشركاء الراغبون في تسوية خلافاتهم مع استمرار العمل بينهم.",
+      "من يريد صياغة اتفاق تسوية يحفظ حقوقه."
+    ],
+    "offer": [
+      "تقييم النزاع واختيار المسار الأنسب: تفاوض أو تسوية ودية أو تحكيم.",
+      "التفاوض مع الطرف الآخر وتمثيلك في جلسات التسوية.",
+      "صياغة اتفاقات التسوية وشروط التحكيم.",
+      "تمثيلك في إجراءات التحكيم حتى صدور الحكم."
+    ],
+    "steps": [
+      { "title": "جلسة استشارة", "text": "نستمع إليك ونفهم النزاع وما تريد الوصول إليه." },
+      { "title": "دراسة المستندات", "text": "نراجع العقود والمراسلات ونحدد موقفك القانوني." },
+      { "title": "اختيار المسار", "text": "نتفق على المسار الأنسب والأتعاب قبل البدء." },
+      { "title": "التفاوض أو التحكيم", "text": "نمثلك حتى التسوية أو صدور حكم التحكيم، ونطلعك على كل مستجد." }
+    ],
+    "excludes": [
+      "ضمان الوصول إلى تسوية أو حكم بنتيجة معينة؛ فالتسوية تتوقف على قبول الطرفين، والحكم لهيئة التحكيم وحدها.",
+      "رسوم مراكز التحكيم وأتعاب المحكمين، ما لم يُتفق على غير ذلك.",
+      "إلزام الطرف الآخر بالتفاوض إذا رفضه."
+    ],
+    "faq": [
+      { "q": "ما الفرق بين التسوية الودية والتحكيم؟", "a": "التسوية اتفاق يصل إليه الطرفان بالتفاوض؛ أما التحكيم ففصل في النزاع بحكم ملزم تصدره هيئة تحكيم يتفق عليها الطرفان." },
+      { "q": "هل يمكن اللجوء إلى التحكيم دون شرط في العقد؟", "a": "نعم، إذا اتفق الطرفان على ذلك بعد نشوء النزاع؛ ونوضح لك الإجراءات." },
+      { "q": "هل التحكيم أسرع من التقاضي؟", "a": "في الغالب نعم، لكن المدة تختلف حسب طبيعة النزاع وقواعد التحكيم المتفق عليها." }
+    ],
+    "cta": {
+      "title": "لديك نزاع وتبحث عن حل؟",
+      "text": "احجز استشارتك وتحدث مع الفريق المختص بسرية تامة.",
+      "button": "اطلب استشارة قانونية"
+    }
+  },
+  "en": {
+    "name": "Dispute Resolution & Arbitration",
+    "summary": "Negotiation, amicable settlement and arbitration — ending disputes with the least time and cost while protecting your interests.",
+    "description": "Not every dispute needs a courtroom. We help you end a dispute through negotiation and amicable settlement, or through arbitration, with the least time and cost, while protecting your interests and, wherever possible, your relationships.",
+    "audience": [
+      "Individuals and companies who want to resolve a dispute without lengthy litigation.",
+      "Parties to contracts that include an arbitration clause.",
+      "Partners who want to settle their differences and keep working together.",
+      "Anyone who wants a settlement agreement drafted in a way that protects their rights."
+    ],
+    "offer": [
+      "Assessing the dispute and choosing the most suitable route: negotiation, amicable settlement or arbitration.",
+      "Negotiating with the other party and representing you in settlement sessions.",
+      "Drafting settlement agreements and arbitration clauses.",
+      "Representing you in arbitration proceedings until the award is issued."
+    ],
+    "steps": [
+      { "title": "Consultation", "text": "We listen and understand the dispute and what you want to reach." },
+      { "title": "Document review", "text": "We review the contracts and correspondence and define your legal position." },
+      { "title": "Choosing the route", "text": "We agree on the most suitable route and the fees before we start." },
+      { "title": "Negotiation or arbitration", "text": "We represent you until a settlement or an arbitral award, and keep you updated on every development." }
+    ],
+    "excludes": [
+      "A guaranteed settlement or outcome — a settlement depends on both parties accepting it, and the award belongs to the arbitral tribunal alone.",
+      "Arbitration-centre fees and arbitrators' fees, unless agreed otherwise.",
+      "Obliging the other party to negotiate if it refuses."
+    ],
+    "faq": [
+      { "q": "What is the difference between an amicable settlement and arbitration?", "a": "A settlement is an agreement the two parties reach by negotiation. Arbitration decides the dispute with a binding award issued by a tribunal the parties agree on." },
+      { "q": "Can we go to arbitration without a clause in the contract?", "a": "Yes, if both parties agree to it after the dispute arises. We explain the procedure." },
+      { "q": "Is arbitration faster than litigation?", "a": "Usually, yes — but the time differs with the nature of the dispute and the arbitration rules agreed on." }
+    ],
+    "cta": {
+      "title": "Facing a dispute and looking for a way out?",
+      "text": "Book a consultation and talk to the right team in full confidence.",
+      "button": "Request a legal consultation"
+    }
+  }
+}

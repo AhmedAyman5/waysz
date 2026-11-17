@@ -1,0 +1,81 @@
+{
+  "area": "legal",
+  "order": 4,
+  "proposed": false,
+  "ar": {
+    "name": "قانون الشركات",
+    "summary": "تأسيس الشركات وتعديل كياناتها، وصياغة العقود التجارية ومراجعتها، والاستشارات الدورية للشركات.",
+    "description": "نساند شركتك قانونيًا منذ التأسيس: نختار معك الشكل القانوني المناسب، ونتولى إجراءات التأسيس وتعديل الكيان، ونصوغ عقودك التجارية ونراجعها، ونقدم استشارات دورية تساعدك على اتخاذ قراراتك بثقة.",
+    "audience": [
+      "رواد الأعمال والمؤسسون قبل تأسيس شركاتهم.",
+      "الشركات القائمة الراغبة في تعديل كيانها القانوني.",
+      "الشركات التي تحتاج إلى صياغة عقودها التجارية أو مراجعتها.",
+      "الشركات التي تحتاج إلى مستشار قانوني يتابع أعمالها بصفة دورية."
+    ],
+    "offer": [
+      "اختيار الشكل القانوني المناسب وإتمام إجراءات التأسيس.",
+      "تعديل الكيان القانوني للشركة وعقد تأسيسها.",
+      "صياغة العقود التجارية ومراجعتها قبل التوقيع.",
+      "استشارات قانونية دورية لإدارة الشركة."
+    ],
+    "steps": [
+      { "title": "جلسة استشارة", "text": "نستمع إليك ونفهم طبيعة نشاطك واحتياجك." },
+      { "title": "دراسة المستندات", "text": "نراجع مستندات الشركة وعقودها ونحدد المطلوب." },
+      { "title": "خطة العمل", "text": "نتفق على نطاق العمل والأتعاب قبل البدء." },
+      { "title": "التنفيذ والمتابعة", "text": "ننفذ الإجراءات أو الصياغة ونطلعك على كل مستجد." }
+    ],
+    "excludes": [
+      "الرسوم الحكومية ورسوم التوثيق والشهر، ما لم يُتفق على غير ذلك.",
+      "الخدمات المحاسبية والضريبية.",
+      "ضمان موافقة الجهات المختصة أو مدة محددة لصدورها."
+    ],
+    "faq": [
+      { "q": "ما الشكل القانوني الأنسب لشركتي؟", "a": "يتوقف ذلك على طبيعة النشاط وعدد الشركاء ورأس المال؛ نشرح لك الفروق ونرشح الأنسب لحالتك." },
+      { "q": "هل تراجعون عقدًا أعدّه الطرف الآخر؟", "a": "نعم، نراجعه ونوضح لك ما يحتاج إلى تعديل قبل التوقيع." },
+      { "q": "هل يمكن الاتفاق على استشارات مستمرة؟", "a": "نعم، نقدم استشارات دورية للشركات، ونتفق معك على نطاقها." }
+    ],
+    "cta": {
+      "title": "تحتاج إلى مستشار قانوني لشركتك؟",
+      "text": "احجز استشارتك وتحدث مع الفريق المختص بسرية تامة.",
+      "button": "اطلب استشارة قانونية"
+    }
+  },
+  "en": {
+    "name": "Corporate Law",
+    "summary": "Company formation and restructuring, drafting and reviewing commercial contracts, and ongoing legal advice for companies.",
+    "description": "We support your company legally from day one: we choose the right legal form with you, handle formation and changes to the entity, draft and review your commercial contracts, and provide ongoing advice that helps you make decisions with confidence.",
+    "audience": [
+      "Entrepreneurs and founders before they set up their companies.",
+      "Existing companies that want to change their legal structure.",
+      "Companies that need their commercial contracts drafted or reviewed.",
+      "Companies that need a legal advisor who follows their business on an ongoing basis."
+    ],
+    "offer": [
+      "Choosing the right legal form and completing the formation procedures.",
+      "Amending the company's legal structure and its articles of association.",
+      "Drafting commercial contracts and reviewing them before signing.",
+      "Ongoing legal advice for the company's management."
+    ],
+    "steps": [
+      { "title": "Consultation", "text": "We listen and understand your business and what you need." },
+      { "title": "Document review", "text": "We review the company's documents and contracts and define what is required." },
+      { "title": "Action plan", "text": "We agree on the scope of work and the fees before we start." },
+      { "title": "Execution", "text": "We carry out the procedures or the drafting and keep you updated on every development." }
+    ],
+    "excludes": [
+      "Government, notarization and registration fees, unless agreed otherwise.",
+      "Accounting and tax services.",
+      "A guarantee of the authorities' approval, or a fixed time for it to be issued."
+    ],
+    "faq": [
+      { "q": "Which legal form suits my company best?", "a": "It depends on the nature of the business, the number of partners and the capital. We explain the differences and recommend the one that fits your case." },
+      { "q": "Do you review a contract prepared by the other party?", "a": "Yes. We review it and show you what needs to change before you sign." },
+      { "q": "Can we agree on continuous advice?", "a": "Yes. We provide ongoing advice to companies and agree its scope with you." }
+    ],
+    "cta": {
+      "title": "Need a legal advisor for your company?",
+      "text": "Book a consultation and talk to the right team in full confidence.",
+      "button": "Request a legal consultation"
+    }
+  }
+}

@@ -82,8 +82,8 @@ waysz/
 ├─ .claude/skills/waysz-media/    SKILL.md (sources, licenses, ffmpeg recipes, budgets, credits)
 ├─ docs/brief/                    the approved brief (PDF)
 ├─ docs/home-creative-treatment.md  Home concept + storyboard v2 (§1.1–1.8)
-├─ scripts/                       Playwright QA: qa-shots · qa-immigration · qa-software · qa-weight · qa-fps (+ qa-browser: shared launch)
-│                                 data/media builds: build-borders (globe borders) · render-globe-still
+├─ scripts/                       Playwright QA: qa-shots · qa-immigration · qa-software · qa-legal · qa-weight · qa-fps (+ qa-browser: shared launch)
+│                                 data/media builds: build-borders (globe borders) · render-globe-still · render-scales-still
 ├─ docs/media-credits.md          one row per media file we ship (source, author, license)
 ├─ media-inbox/                   RAW downloads before optimizing — gitignored, never shipped
 ├─ public/
@@ -106,13 +106,14 @@ waysz/
    ├─ lib/                        forms.ts · site.ts (client data) · borders.ts (decodes the borders, country at a point)
    ├─ motion/                     index.ts · config.ts · smooth-scroll.ts · globals/ · scenes/
    │  ├─ code-glyphs.ts           decorative code blocks: split into characters, measure where each one sits
-   │  └─ stage/                   3D layer: stage.ts (renderer) · tier.ts · bridge.ts · acts/ (flight · wipe · globe · explore · glyphs) · shaders/
+   │  └─ stage/                   3D layer: stage.ts (renderer) · tier.ts · bridge.ts · acts/ (flight · wipe · globe · explore · glyphs · justice) · shaders/
    ├─ pages/                      THIN wrappers only (AR at /, EN under /en/)
    ├─ styles/                     tokens.css · base.css
    └─ views/                      real page content (HomePage, ServicesPage, …, MotionLab)
       ├─ home/                    one file per Home section: Areas · Why · How · Cta · Visa (markup + copy + styles)
       ├─ immigration/             sections of the Immigration group page: Hero · Journey · Services · Explore
-      └─ software/                sections of the Software group page: Hero · Services · Process · Missing (+ Code: a block of decorative code)
+      ├─ software/                sections of the Software group page: Hero · Services · Process · Missing (+ Code: a block of decorative code)
+      └─ legal/                   sections of the Legal group page: Hero · Services · Help · Why · How · Faq · Consult
 ```
 
 ## Pages & languages
@@ -130,9 +131,9 @@ waysz/
 - `src/content/services/<slug>.json` — the file name is the slug. Shape in `src/content.config.ts`.
 - `src/pages/services/[slug].astro` and `src/pages/en/services/[slug].astro` generate every service page
   through `src/views/ServiceDetailPage.astro`. NEVER hand-write a page per service.
-- A service GROUP may have its own page (brief §2.x): `/services/immigration-study-visa/`
-  (`src/views/ImmigrationPage.astro`) and `/services/software-technology/` (`src/views/SoftwarePage.astro`) are
-  static routes and win over `[slug]`; never name a service file like a group page.
+- A service GROUP may have its own page (brief §2.x): `/services/legal-services/` (`src/views/LegalPage.astro`),
+  `/services/immigration-study-visa/` (`src/views/ImmigrationPage.astro`) and `/services/software-technology/`
+  (`src/views/SoftwarePage.astro`) are static routes and win over `[slug]`; never name a service file like a group page.
   Its cards link to `/services/<slug>/` only when that service file exists.
 
 ## Media (real footage, photos, Lottie)
@@ -194,6 +195,10 @@ waysz/
 - 3D is tiered by DEVICE CAPABILITY, not by "mobile": `high` (desktop GPU) · `lite` (capable phones/tablets:
   same scene, cheaper shader, lower DPR) · `css` (weak device, no WebGL2, saveData, reduced motion: plain
   video + CSS layers / posters). The HTML underneath is always complete (LCP, no-JS, reduced motion).
+- The shared renderer has no depth buffer. Solid 3D models (the scales of the Legal page) are drawn by their act into
+  its own render target in `prerender` and finished by one full-screen pass — never a second renderer.
+- LCP: a still that does not fill the screen is a foreground image and becomes the LCP (slow). Phones get a
+  full-screen still behind the text (like the video posters), so the text is the largest paint.
 - No `<ClientRouter />`: page transitions are native CSS view transitions (already in base.css).
 
 ## Forms (no backend)
