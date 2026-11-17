@@ -1,0 +1,77 @@
+---
+/**
+ * "Legal Services" — the service-group page (brief §2.1). Same film as Home, Immigration and Software (dusk,
+ * deep navy, amber light) with its own idea: "From uncertainty to balance".
+ * A real-time 3D pair of scales (stage act `justice`) stands behind the whole page: it starts out of balance
+ * with a stone on one pan, every service puts its engraved weight on the other, and it reaches perfect balance
+ * exactly at the consultation call. ONE stage host holds the screen for the whole page (CSS sticky); the
+ * sections scroll over it. css tier / reduced motion / no JS: a still of the balanced scales and plain flow.
+ *   hero → the six services (weights) → «كيف يمكننا مساعدتك؟» (a walk between the columns, nine specialties)
+ *   → why (§1.4, the four points that matter for legal work) → how we work → FAQ → the call
+ * One file per section in views/legal/. Copy: brief §2.1, §1.4 and template sample (أ); Arabic is the source.
+ * CLIENT DECISION (2026-11): every legal service in the brief is offered — nothing here is «مقترح».
+ * Nothing is promised: the judgment belongs to the court alone. No numbers, names, cases or testimonials.
+ */
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from './legal/Hero.astro';
+import Services from './legal/Services.astro';
+import Help from './legal/Help.astro';
+import Why from './legal/Why.astro';
+import How from './legal/How.astro';
+import Faq from './legal/Faq.astro';
+import Consult from './legal/Consult.astro';
+import { useTranslations, type Lang } from '../i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+// §2.1 group intro, whole, as the hero lead
+const lead = {
+  ar: 'استشارات قانونية ومتابعة للقضايا والإجراءات، نشرح لك فيها موقفك القانوني بلغة بسيطة، ونساعدك على اتخاذ القرار الصحيح في الوقت المناسب، بما يحمي مصالحك وسمعتك.',
+  en: 'Legal consultations and follow-up on cases and procedures, in which we explain your legal position in plain language and help you make the right decision at the right time, in a way that protects your interests and your reputation.',
+}[lang];
+
+// §2.1 — the six services in the brief's order; name, summary, steps and FAQ come from the service files,
+// so the group page and the detail pages can never differ.
+const order = ['criminal-law', 'civil-law', 'family-law', 'corporate-law', 'immigration-nationality-law', 'dispute-resolution-arbitration'] as const;
+const entries = await getCollection('services', (e) => e.data.area === 'legal');
+const services = order.map((slug) => {
+  const entry = entries.find((e) => e.id === slug)!;
+  return { slug, ...entry.data[lang] };
+});
+const family = services[2];
+// a short FAQ built from the detail pages: the question every visitor asks first, then one per service
+const pick = (slug: (typeof order)[number], i: number) => {
+  const s = services.find((x) => x.slug === slug)!;
+  return { ...s.faq[i], service: s.name, slug };
+};
+const faq = [pick('family-law', 0), pick('criminal-law', 0), pick('civil-law', 0), pick('family-law', 1), pick('corporate-law', 1), pick('immigration-nationality-law', 0), pick('dispute-resolution-arbitration', 0)];
+---
+<BaseLayout lang={lang} title={t.pages.legal.title} description={t.pages.legal.description} headerOverlay>
+  <div class="legal theme-dark">
+    <div class="legal__stage stage-host" data-scene="legal-thread" aria-hidden="true"></div>
+    <div class="legal__body">
+      <Hero lang={lang} lead={lead} />
+      <Services lang={lang} title={t.nav.services} items={services.map(({ slug, name, summary }) => ({ slug, name, text: summary }))} />
+      <Help lang={lang} />
+      <Why lang={lang} />
+      <How lang={lang} steps={family.steps} />
+      <Faq lang={lang} items={faq} />
+      <Consult lang={lang} cta={family.cta} />
+    </div>
+  </div>
+</BaseLayout>
+
+<style is:global>
+  /* One stage host for the whole page: it sticks to the screen while the sections scroll over it. */
+  .legal { position: relative; background: var(--color-bg); }
+  .legal__stage { position: sticky; inset: 0 auto auto 0; width: 100%; height: 100vh; height: 100lvh; }
+  .legal__body { position: relative; margin-block-start: -100vh; margin-block-start: -100lvh; }
+  /* the still of the balanced scales (css tier, reduced motion, no JS) steps aside while the canvas paints */
+  .legal .scales-still { transition: opacity 0.9s var(--ease-out); }
+  .legal__stage.is-drawing ~ .legal__body .scales-still { opacity: 0; }
+  /* dev: re-rendering the still (scripts/render-scales-still.mjs) */
+  .legal.is-poster .legal__body, .legal.is-poster ~ * { visibility: hidden; }
+</style>

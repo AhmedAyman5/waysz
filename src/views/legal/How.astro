@@ -1,0 +1,76 @@
+---
+/**
+ * Legal page — how we work. Scene: motion/scenes/legal-how.ts.
+ * The four work steps of the brief's template sample (أ), read from the service file (the same four steps open
+ * every legal detail page), under the brief's own §1.5 heading. The line fills with scroll and each step lights
+ * up when the line reaches it. No pin, no sticky. No JS / reduced motion: the full line, every step visible.
+ */
+import type { Lang } from '../../i18n';
+
+interface Props { lang: Lang; steps: { title: string; text: string }[] }
+const { lang, steps } = Astro.props;
+const title = { ar: 'كيف نعمل معك؟', en: 'How we work with you' }[lang];
+const num = (i: number) => new Intl.NumberFormat(lang === 'ar' ? 'ar-EG' : 'en', { minimumIntegerDigits: 2 }).format(i);
+---
+<section class="lhow" data-scene="legal-how" data-shot data-waypoint aria-labelledby="lhow-title">
+  <div class="lhow__scrim" aria-hidden="true"></div>
+  <div class="lhow__in container">
+    <h2 class="lhow__title" id="lhow-title">{title}</h2>
+    <div class="lhow__route">
+      <div class="lhow__line" aria-hidden="true"><span class="lhow__fill"></span></div>
+      <ol class="lhow__list" role="list">
+        {steps.map((s, i) => (
+          <li class="lstep">
+            <span class="lstep__node" aria-hidden="true"></span>
+            <span class="lstep__num" aria-hidden="true">{num(i + 1)}</span>
+            <h3 class="lstep__name">{s.title}</h3>
+            <p class="lstep__text">{s.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .lhow { position: relative; padding-block: calc(var(--section-y) * 1.2); }
+  .lhow__scrim {
+    position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--color-bg) 70%, transparent) 18%, color-mix(in srgb, var(--color-bg) 70%, transparent) 82%, transparent);
+  }
+  .lhow__in { position: relative; }
+  .lhow__title { font-size: clamp(2.4rem, 1.4rem + 4.6vw, 5.5rem); line-height: 1.16; }
+  :global([dir='rtl']) .lhow__title { line-height: 1.34; }
+
+  .lhow__route { position: relative; margin-block-start: var(--space-8); }
+  .lhow__line { position: absolute; inset-block: 8px 0; inset-inline-start: 6px; width: 2px; background: color-mix(in srgb, var(--color-ink) 18%, transparent); }
+  .lhow__fill { position: absolute; inset: 0; background: var(--color-accent); transform-origin: 50% 0; }
+  .lhow__list { display: grid; gap: var(--space-7); }
+  .lstep { position: relative; padding-inline-start: var(--space-7); }
+  .lstep__node {
+    position: absolute; top: 4px; inset-inline-start: 0; width: 14px; height: 14px; border-radius: 50%;
+    background: var(--color-accent); box-shadow: 0 0 0 6px color-mix(in srgb, var(--color-accent) 22%, transparent);
+  }
+  .lstep__num { font-family: var(--font-display); font-weight: var(--weight-bold); font-size: var(--text-sm); color: var(--color-accent); }
+  .lstep__name { margin-block-start: var(--space-2); font-size: var(--text-xl); font-weight: var(--weight-bold); line-height: 1.4; }
+  .lstep__text { margin-block-start: var(--space-2); max-width: 30ch; line-height: 1.8; color: color-mix(in srgb, var(--color-ink) 88%, transparent); }
+  /* waiting steps are dimmed (still AA), only while the scene runs */
+  .lhow:global(.is-scrub) .lstep { opacity: 0.62; transition: opacity var(--dur-base) var(--ease-out); }
+  .lhow:global(.is-scrub) .lstep:global(.is-active) { opacity: 1; }
+  .lhow:global(.is-scrub) .lstep__node { background: var(--color-bg); box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--color-ink) 40%, transparent); transition: background-color var(--dur-base), box-shadow var(--dur-base); }
+  .lhow:global(.is-scrub) .lstep:global(.is-active) .lstep__node { background: var(--color-accent); box-shadow: 0 0 0 6px color-mix(in srgb, var(--color-accent) 22%, transparent); }
+
+  @media (min-width: 1024px) {
+    .lhow { min-height: 92vh; display: grid; align-items: end; }
+    .lhow__scrim { background: linear-gradient(to top, color-mix(in srgb, var(--color-bg) 92%, transparent) 0%, color-mix(in srgb, var(--color-bg) 76%, transparent) 55%, transparent 100%); }
+    .lhow__route { margin-block-start: var(--space-8); }
+    .lhow__line { inset-block: 6px auto; inset-inline: 0; width: auto; height: 2px; }
+    .lhow__fill { transform-origin: 0 50%; }
+    :global([dir='rtl']) .lhow__fill { transform-origin: 100% 50%; }
+    .lhow__list { grid-template-columns: repeat(4, 1fr); gap: var(--space-6); }
+    .lstep { padding-inline-start: 0; padding-block-start: var(--space-7); }
+    .lstep__node { top: 0; }
+    .lstep__name { font-size: var(--text-2xl); line-height: 1.25; }
+    :global([dir='rtl']) .lstep__name { line-height: 1.4; }
+  }
+</style>

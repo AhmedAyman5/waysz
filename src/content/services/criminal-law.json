@@ -1,0 +1,81 @@
+{
+  "area": "legal",
+  "order": 1,
+  "proposed": false,
+  "ar": {
+    "name": "القانون الجنائي",
+    "summary": "الدفاع والتمثيل القانوني في القضايا الجنائية بجميع مراحلها، من التحقيق وحتى صدور الحكم.",
+    "description": "نتولى الدفاع والتمثيل القانوني في القضايا الجنائية بجميع مراحلها، من التحقيق وحتى صدور الحكم. نشرح لك موقفك القانوني بلغة بسيطة، ونقف إلى جانبك في كل إجراء، مع التزام كامل بسرية ما تشاركه معنا.",
+    "audience": [
+      "من استُدعي للتحقيق أو وُجّه إليه اتهام ويحتاج إلى من يدافع عنه.",
+      "أسر المتهمين الراغبة في فهم الموقف والإجراءات.",
+      "المجني عليهم الراغبون في متابعة بلاغاتهم والمطالبة بحقوقهم.",
+      "الأفراد والشركات الراغبون في رأي قانوني قبل إجراء قد تترتب عليه مسؤولية جنائية."
+    ],
+    "offer": [
+      "استشارة لتقييم الموقف وشرح الإجراءات المتوقعة.",
+      "الحضور معك في التحقيقات أمام النيابة العامة.",
+      "الدفاع أمام المحاكم الجنائية بمختلف درجاتها.",
+      "إعداد المذكرات والطعون على الأحكام ومتابعتها."
+    ],
+    "steps": [
+      { "title": "جلسة استشارة", "text": "نستمع إليك ونفهم الوقائع بسرية تامة." },
+      { "title": "دراسة الأوراق", "text": "نراجع أوراق القضية ونحدد موقفك القانوني." },
+      { "title": "خطة الدفاع", "text": "نتفق على خطة الدفاع والأتعاب قبل البدء." },
+      { "title": "التمثيل والمتابعة", "text": "نحضر معك التحقيقات والجلسات ونطلعك على كل مستجد." }
+    ],
+    "excludes": [
+      "ضمان حكم بنتيجة معينة؛ فالحكم للمحكمة وحدها.",
+      "الرسوم القضائية والكفالات والغرامات، ما لم يُتفق على غير ذلك.",
+      "أي إجراء يخالف القانون أو يمس سير العدالة."
+    ],
+    "faq": [
+      { "q": "استُدعيت للتحقيق، فماذا أفعل؟", "a": "تواصل معنا قبل الموعد إن أمكن؛ نشرح لك الإجراء وحقوقك، ونحضر معك التحقيق." },
+      { "q": "هل تفاصيل قضيتي سرية؟", "a": "نعم، كل ما تشاركه يُعامل بسرية تامة ولا يطلع عليه إلا الفريق المختص." },
+      { "q": "هل يمكن الطعن على الحكم؟", "a": "يتوقف ذلك على نوع الحكم ومواعيد الطعن التي يحددها القانون؛ نراجع الحكم ونوضح لك الخيارات المتاحة." }
+    ],
+    "cta": {
+      "title": "تحتاج إلى رأي قانوني في حالتك؟",
+      "text": "احجز استشارتك وتحدث مع الفريق المختص بسرية تامة.",
+      "button": "اطلب استشارة قانونية"
+    }
+  },
+  "en": {
+    "name": "Criminal Law",
+    "summary": "Defense and legal representation in criminal cases at every stage, from the investigation until the judgment is issued.",
+    "description": "We handle defense and legal representation in criminal cases at every stage, from the investigation until the judgment is issued. We explain your legal position in plain language and stand beside you in every procedure, with full confidentiality for everything you share with us.",
+    "audience": [
+      "Anyone summoned for questioning or facing a charge who needs someone to defend them.",
+      "Families of the accused who want to understand the situation and the procedures.",
+      "Victims who want to follow up on their complaints and claim their rights.",
+      "Individuals and companies seeking a legal opinion before a step that may carry criminal liability."
+    ],
+    "offer": [
+      "A consultation to assess your position and explain the procedures to expect.",
+      "Attending investigations with you before the Public Prosecution.",
+      "Defense before the criminal courts at their different levels.",
+      "Preparing defense memoranda and appeals against judgments, and following them up."
+    ],
+    "steps": [
+      { "title": "Consultation", "text": "We listen and understand the facts in full confidence." },
+      { "title": "Case file review", "text": "We review the case papers and define your legal position." },
+      { "title": "Defense plan", "text": "We agree on the defense plan and the fees before we start." },
+      { "title": "Representation", "text": "We attend the investigations and hearings with you and keep you updated on every development." }
+    ],
+    "excludes": [
+      "A guaranteed outcome — the judgment belongs to the court alone.",
+      "Court fees, bail and fines, unless agreed otherwise.",
+      "Any step that breaks the law or interferes with the course of justice."
+    ],
+    "faq": [
+      { "q": "I have been summoned for questioning. What should I do?", "a": "Contact us before the appointment if you can. We explain the procedure and your rights, and attend the questioning with you." },
+      { "q": "Are the details of my case confidential?", "a": "Yes. Everything you share is handled in full confidence and seen only by the team on your case." },
+      { "q": "Can the judgment be appealed?", "a": "That depends on the type of judgment and the appeal deadlines set by law. We review the judgment and explain the options open to you." }
+    ],
+    "cta": {
+      "title": "Need a legal opinion on your case?",
+      "text": "Book a consultation and talk to the right team in full confidence.",
+      "button": "Request a legal consultation"
+    }
+  }
+}

@@ -1,0 +1,215 @@
+---
+/**
+ * Legal page — the six services of brief §2.1, "six weights". Scene: motion/scenes/legal-weights.ts.
+ * One sticky screen (CSS sticky, not a pin): the services take turns; each one drops its engraved bronze weight
+ * on the pan of the 3D scales (stage act `justice`) and plays its own small moment beside the text:
+ *   criminal: one beam of light crosses a dark page and leaves it readable · civil: loose sheets gather into one
+ *   file · family: warm soft shapes under one roof (no people) · corporate: a contract writes itself, is signed
+ *   and sealed · immigration & nationality: a globe draws itself and a status card is checked · disputes: two
+ *   opposing trails meet and leave as one line.
+ * The row of six small weights is real buttons: hover / focus drops that weight early, click goes to its service.
+ * The moments are decorative (aria-hidden); the path marked data-engrave is also what the act engraves on the
+ * weight. No JS / reduced motion: a grid of cards, every moment in its finished state.
+ * Every card links to its detail page (/services/<slug>/): the six files exist in src/content/services.
+ */
+import { localizePath, useTranslations, type Lang } from '../../i18n';
+
+export interface ServiceItem { slug: string; name: string; text: string }
+interface Props { lang: Lang; title: string; items: ServiceItem[] }
+const { lang, title, items } = Astro.props;
+const t = useTranslations(lang);
+
+type Fx = 'beam' | 'gather' | 'warm' | 'sign' | 'status' | 'merge';
+const fx: Fx[] = ['beam', 'gather', 'warm', 'sign', 'status', 'merge'];
+
+// one path per service (48 × 48): the tray button, the card badge and the engraving on its 3D weight
+const engrave: Record<Fx, string> = {
+  beam: 'M24 5 8 11v11c0 10 6.5 17 16 21 9.5-4 16-11 16-21V11L24 5ZM17 24l5 5 9-10',
+  gather: 'M12 6h17l8 8v28H12V6ZM29 6v8h8M17 22h14M17 28h14M17 34h9',
+  warm: 'M7 23 24 9l17 14M11 21v19h26V21M24 36c-5-3.6-7.5-6.4-7.5-9.4a4 4 0 0 1 7.5-2 4 4 0 0 1 7.5 2c0 3-2.5 5.8-7.5 9.4Z',
+  sign: 'M6 20 24 8l18 12M8 20h32M12 24v14M20 24v14M28 24v14M36 24v14M6 42h36M9 38h30',
+  status: 'M24 7a17 17 0 1 0 0 34 17 17 0 0 0 0-34ZM7 24h34M24 7c-7 5-7 29 0 34M24 7c7 5 7 29 0 34',
+  merge: 'M8 12c10 0 12 12 16 12M8 36c10 0 12-12 16-12M24 24h16M35 19l5 5-5 5',
+};
+
+const bars = [[150, 0], [224, 1], [190, 2], [224, 3], [120, 4], [180, 5]].map(([w, i]) => `<rect x="48" y="${44 + i * 22}" width="${w}" height="8" rx="4"/>`).join('');
+const moments: Record<Fx, string> = {
+  beam: `
+    <defs>
+      <clipPath id="lsvc-lit"><rect class="fx-wipe" x="0" y="0" width="320" height="200"/></clipPath>
+      <linearGradient id="lsvc-beam" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="currentColor" stop-opacity="0"/><stop offset="0.6" stop-color="currentColor" stop-opacity="0.55"/><stop offset="1" stop-color="currentColor" stop-opacity="0"/></linearGradient>
+    </defs>
+    <g class="fx-dim">${bars}</g>
+    <g class="fx-lit" clip-path="url(#lsvc-lit)">${bars}</g>
+    <polygon class="fx-beam" points="-50,0 34,0 74,200 -10,200" fill="url(#lsvc-beam)"/>`,
+  gather: `
+    <path class="fx-folder fx-stroke" d="M88 62h46l11 13h87v97H88Z"/>
+    ${[[-96, -34, -24], [112, -44, 18], [-78, 58, 14], [124, 46, -20], [4, -74, 8]].map(([x, y, r], i) => `<g class="fx-sheet" data-from="${x},${y},${r}"><rect x="${112 + i * 5}" y="${50 - i * 4}" width="92" height="112" rx="5"/><path d="M${124 + i * 5} ${70 - i * 4}h56M${124 + i * 5} ${84 - i * 4}h40"/></g>`).join('')}
+    <path class="fx-pocket" d="M88 104h144v68H88Z"/>
+    <path class="fx-tab fx-stroke" d="M110 138h62"/>`,
+  warm: `
+    <defs>
+      <radialGradient id="lsvc-orb-a"><stop offset="0" stop-color="var(--color-accent)" stop-opacity="0.95"/><stop offset="1" stop-color="var(--color-accent)" stop-opacity="0"/></radialGradient>
+      <radialGradient id="lsvc-orb-b"><stop offset="0" stop-color="var(--color-link)" stop-opacity="0.85"/><stop offset="1" stop-color="var(--color-link)" stop-opacity="0"/></radialGradient>
+    </defs>
+    <circle class="fx-orb" data-from="-52,8" cx="128" cy="116" r="58" fill="url(#lsvc-orb-a)"/>
+    <circle class="fx-orb" data-from="52,8" cx="192" cy="116" r="58" fill="url(#lsvc-orb-b)"/>
+    <circle class="fx-orb" data-from="0,44" cx="160" cy="136" r="32" fill="url(#lsvc-orb-a)"/>
+    <path class="fx-roof fx-stroke" d="M64 124c0-58 40-90 96-90s96 32 96 90"/>`,
+  sign: `
+    <rect class="fx-page" x="92" y="18" width="136" height="166" rx="6"/>
+    ${[100, 100, 100, 100, 62].map((w, i) => `<path class="fx-line fx-stroke" d="M110 ${44 + i * 17}h${w}"/>`).join('')}
+    <path class="fx-sign fx-stroke" d="M110 154c8-18 14-22 16-10s-8 18-4 6 16-26 22-14-2 16 4 10 10-14 16-8 2 10 10 6"/>
+    <g transform="translate(200 152)"><circle class="fx-shock" r="19"/><g class="fx-seal"><circle r="19"/><circle class="fx-seal-in" r="13"/><path d="m-6 0 4.500 4.500L7-5"/></g></g>`,
+  status: `
+    <g class="fx-globe">
+      <circle class="fx-stroke" cx="124" cy="100" r="60"/><path class="fx-stroke" d="M64 100h120"/>
+      <path class="fx-stroke" d="M124 40c-30 20-30 100 0 120"/><path class="fx-stroke" d="M124 40c30 20 30 100 0 120"/>
+      <path class="fx-stroke" d="M74 68c30 12 70 12 100 0"/><path class="fx-stroke" d="M74 132c30-12 70-12 100 0"/>
+    </g>
+    <g class="fx-card"><rect x="170" y="78" width="112" height="76" rx="9"/><circle cx="192" cy="103" r="9"/><path d="M212 98h54M212 110h34"/><path class="fx-check fx-stroke" d="m236 130 7 7 15-17"/></g>`,
+  merge: `
+    <path class="fx-trail fx-trail-a fx-stroke" d="M18 58c40 0 52 52 82 48s36-30 60-6"/>
+    <path class="fx-trail fx-trail-b fx-stroke" d="M302 142c-40 0-52-52-82-48s-36 30-60 6"/>
+    <circle class="fx-spark" cx="160" cy="100" r="16"/>
+    <path class="fx-one fx-stroke" d="M160 100V30"/>
+    <circle class="fx-end" cx="160" cy="26" r="5"/>`,
+};
+---
+<section class="lsvc-sec" id="services" data-scene="legal-weights" data-shot data-waypoint aria-labelledby="lsvc-title" style={`--n: ${items.length}`}>
+  <div class="lsvc__view">
+    <div class="lsvc__scrim" aria-hidden="true"></div>
+    <header class="lsvc__head container">
+      <h2 class="lsvc__title" id="lsvc-title">{title}</h2>
+      <div class="lsvc__tray" role="group" aria-labelledby="lsvc-title">
+        {items.map((s, i) => (
+          <button class="lsvc__tick" type="button" aria-label={s.name}>
+            <svg viewBox="0 0 48 48" width="26" height="26" aria-hidden="true"><path data-engrave d={engrave[fx[i]]} /></svg>
+          </button>
+        ))}
+      </div>
+    </header>
+
+    <ul class="lsvc__list container" role="list">
+      {items.map((s, i) => (
+        <li class="lsvc" data-fx={fx[i]}>
+          <div class="lsvc__fx" aria-hidden="true">
+            <svg viewBox="0 0 320 200" set:html={moments[fx[i]]} />
+          </div>
+          <div class="lsvc__text">
+            <h3 class="lsvc__name">{s.name}</h3>
+            <p class="lsvc__copy">{s.text}</p>
+            <a class="lsvc__link link-arrow" href={localizePath(`/services/${s.slug}/`, lang)} aria-label={`${t.cta.details}: ${s.name}`} data-cursor={t.cursor.explore}>
+              {t.cta.details}
+              <svg class="icon-dir" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  /* ---------- base: no JS / reduced motion — a grid of cards ---------- */
+  .lsvc-sec { position: relative; padding-block: var(--section-y); }
+  .lsvc__scrim { display: none; }
+  .lsvc__head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--space-5); }
+  .lsvc__title { font-size: clamp(2.4rem, 1.4rem + 4.6vw, 5.5rem); line-height: 1.16; }
+  :global([dir='rtl']) .lsvc__title { line-height: 1.34; }
+  .lsvc__tray { display: none; }
+
+  .lsvc__list { display: grid; gap: var(--space-5); grid-template-columns: repeat(auto-fill, minmax(min(100%, 21rem), 1fr)); margin-block-start: var(--space-7); }
+  .lsvc {
+    display: flex; flex-direction: column; gap: var(--space-5); padding: var(--space-5);
+    border: 1px solid var(--color-border); border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--color-bg-alt) 82%, transparent);
+  }
+  .lsvc__name { font-size: var(--text-2xl); font-weight: var(--weight-bold); line-height: 1.25; }
+  :global([dir='rtl']) .lsvc__name { line-height: 1.42; }
+  .lsvc__copy { margin-block: var(--space-3) var(--space-5); max-width: 44ch; line-height: 1.8; color: color-mix(in srgb, var(--color-ink) 88%, transparent); }
+  .lsvc__link { padding-block: var(--space-2); color: var(--color-ink); border-block-end: 1.5px solid var(--color-accent); }
+  .lsvc__link:hover { color: var(--color-link); }
+
+  /* ---------- the moments (drawings: nothing to read, nothing to mirror) ---------- */
+  .lsvc__fx {
+    position: relative; aspect-ratio: 16 / 10; width: 100%; max-width: 24rem; overflow: hidden;
+    border-radius: var(--radius-md); border: 1px solid var(--color-border);
+    background:
+      radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--color-accent) 9%, transparent), transparent 62%),
+      color-mix(in srgb, var(--color-bg) 62%, transparent);
+    color: var(--color-accent);
+  }
+  .lsvc__fx svg { width: 100%; height: 100%; overflow: visible; }
+  .lsvc__fx :global(.fx-stroke) { fill: none; stroke: var(--color-accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .lsvc__fx :global(.fx-dim) { fill: color-mix(in srgb, var(--color-ink) 13%, transparent); }
+  .lsvc__fx :global(.fx-lit) { fill: color-mix(in srgb, var(--color-ink) 88%, transparent); }
+  .lsvc__fx :global(.fx-lit rect:first-child) { fill: var(--color-accent); }
+  .lsvc__fx :global(.fx-beam) { opacity: 0; }
+  .lsvc__fx :global(.fx-sheet rect) { fill: var(--color-surface); stroke: color-mix(in srgb, var(--color-ink) 34%, transparent); stroke-width: 1.2; }
+  .lsvc__fx :global(.fx-sheet path) { fill: none; stroke: color-mix(in srgb, var(--color-ink) 46%, transparent); stroke-width: 2; stroke-linecap: round; }
+  .lsvc__fx :global(.fx-pocket) { fill: var(--color-bg-alt); stroke: var(--color-accent); stroke-width: 2; stroke-linejoin: round; }
+  .lsvc__fx :global(.fx-orb) { mix-blend-mode: screen; }
+  .lsvc__fx :global(.fx-roof) { stroke: color-mix(in srgb, var(--color-ink) 70%, transparent); stroke-width: 1.6; }
+  .lsvc__fx :global(.fx-page) { fill: color-mix(in srgb, var(--color-ink) 7%, transparent); stroke: color-mix(in srgb, var(--color-ink) 30%, transparent); stroke-width: 1.2; }
+  .lsvc__fx :global(.fx-line) { stroke: color-mix(in srgb, var(--color-ink) 55%, transparent); stroke-width: 3; }
+  .lsvc__fx :global(.fx-sign) { stroke: var(--color-ink); stroke-width: 2.2; }
+  .lsvc__fx :global(.fx-seal circle) { fill: var(--color-accent); }
+  .lsvc__fx :global(.fx-seal .fx-seal-in) { fill: none; stroke: var(--color-on-accent); stroke-width: 1.2; opacity: 0.6; }
+  .lsvc__fx :global(.fx-seal path) { fill: none; stroke: var(--color-on-accent); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+  .lsvc__fx :global(.fx-shock) { fill: none; stroke: var(--color-accent); stroke-width: 2; opacity: 0; }
+  .lsvc__fx :global(.fx-globe .fx-stroke) { stroke: color-mix(in srgb, var(--color-ink) 62%, transparent); stroke-width: 1.4; }
+  .lsvc__fx :global(.fx-card rect) { fill: var(--color-surface); stroke: color-mix(in srgb, var(--color-ink) 30%, transparent); stroke-width: 1.2; }
+  .lsvc__fx :global(.fx-card circle) { fill: color-mix(in srgb, var(--color-ink) 30%, transparent); }
+  .lsvc__fx :global(.fx-card path:not(.fx-check)) { fill: none; stroke: color-mix(in srgb, var(--color-ink) 46%, transparent); stroke-width: 3; stroke-linecap: round; }
+  .lsvc__fx :global(.fx-check) { stroke-width: 3; }
+  .lsvc__fx :global(.fx-trail-b) { stroke: var(--color-ink); }
+  .lsvc__fx :global(.fx-one) { stroke-width: 3; }
+  .lsvc__fx :global(.fx-spark) { fill: var(--color-accent); opacity: 0; }
+  .lsvc__fx :global(.fx-end) { fill: var(--color-accent); }
+
+  /* ---------- scene running: one sticky screen, the services take turns ---------- */
+  .lsvc-sec:global(.is-scrub) { padding-block: 0; height: calc(var(--n) * 88vh + 100vh); height: calc(var(--n) * 88lvh + 100lvh); }
+  .lsvc-sec:global(.is-scrub) .lsvc__view {
+    position: sticky; top: 0; height: 100vh; height: 100lvh; overflow: clip;
+    display: grid; grid-template-rows: auto 1fr; padding-block: calc(76px + var(--space-4)) calc(100lvh - 100svh + var(--space-6));
+  }
+  .lsvc-sec:global(.is-scrub) .lsvc__scrim {
+    display: block; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(to top, color-mix(in srgb, var(--color-bg) 96%, transparent) 0%, color-mix(in srgb, var(--color-bg) 86%, transparent) 40%, transparent 64%);
+  }
+  .lsvc-sec:global(.is-scrub) .lsvc__head { position: relative; align-items: center; }
+  .lsvc-sec:global(.is-scrub) .lsvc__title { font-size: var(--text-xl); }
+  .lsvc-sec:global(.is-scrub) .lsvc__tray { display: flex; gap: var(--space-1); }
+  .lsvc__tick {
+    display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%;
+    color: color-mix(in srgb, var(--color-ink) 62%, transparent);
+    border: 1px solid transparent; transition: color var(--dur-fast), border-color var(--dur-fast), background-color var(--dur-fast);
+  }
+  .lsvc__tick svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .lsvc__tick:hover, .lsvc__tick:focus-visible { color: var(--color-ink); border-color: color-mix(in srgb, var(--color-ink) 40%, transparent); }
+  .lsvc__tick:global(.is-on) { color: var(--color-on-accent); background: var(--color-accent); border-color: var(--color-accent); }
+
+  .lsvc-sec:global(.is-scrub) .lsvc__list { position: relative; display: block; margin: 0 auto; }
+  .lsvc-sec:global(.is-scrub) .lsvc {
+    position: absolute; inset: 0; justify-content: end; gap: var(--space-4);
+    padding: 0; border: 0; background: none; pointer-events: none;
+  }
+  .lsvc-sec:global(.is-scrub) .lsvc:global(.is-active) { pointer-events: auto; }
+  .lsvc-sec:global(.is-scrub) .lsvc__fx { max-width: min(15rem, 46vw); }
+  .lsvc-sec:global(.is-scrub) .lsvc__copy { margin-block: var(--space-2) var(--space-4); }
+  @media (max-height: 760px) and (max-width: 1023px) { .lsvc-sec:global(.is-scrub) .lsvc__fx { display: none; } }
+
+  @media (min-width: 1024px) {
+    .lsvc-sec:global(.is-scrub) .lsvc__view { padding-block-start: calc(76px + var(--space-6)); }
+    .lsvc-sec:global(.is-scrub) .lsvc__scrim { background: linear-gradient(to right, color-mix(in srgb, var(--color-bg) 88%, transparent) 0%, color-mix(in srgb, var(--color-bg) 60%, transparent) 36%, transparent 60%); }
+    :global([dir='rtl']) .lsvc-sec:global(.is-scrub) .lsvc__scrim { background: linear-gradient(to left, color-mix(in srgb, var(--color-bg) 88%, transparent) 0%, color-mix(in srgb, var(--color-bg) 60%, transparent) 36%, transparent 60%); }
+    .lsvc-sec:global(.is-scrub) .lsvc__title { font-size: var(--text-2xl); }
+    .lsvc-sec:global(.is-scrub) .lsvc__tick { width: 46px; height: 46px; }
+    .lsvc-sec:global(.is-scrub) .lsvc { inset-inline: 0 50%; justify-content: center; gap: var(--space-6); }
+    .lsvc-sec:global(.is-scrub) .lsvc__fx { max-width: min(26rem, 34vh * 1.6); }
+    .lsvc-sec:global(.is-scrub) .lsvc__name { font-size: clamp(2.4rem, 1rem + 3.6vw, 4.75rem); line-height: 1.12; }
+    :global([dir='rtl']) .lsvc-sec:global(.is-scrub) .lsvc__name { line-height: 1.34; }
+    .lsvc-sec:global(.is-scrub) .lsvc__copy { font-size: var(--text-lg); margin-block: var(--space-4) var(--space-5); }
+  }
+</style>

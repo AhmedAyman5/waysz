@@ -1,0 +1,81 @@
+{
+  "area": "legal",
+  "order": 5,
+  "proposed": false,
+  "ar": {
+    "name": "الهجرة والجنسية (الجانب القانوني)",
+    "summary": "الرأي القانوني في قضايا الإقامة والجنسية وازدواجها، وتقييم موقفك القانوني قبل أي إجراء.",
+    "description": "نقدم الرأي القانوني في قضايا الإقامة والجنسية وازدواجها، ونقيّم موقفك القانوني قبل أي إجراء، حتى تتخذ قرارك وأنت تعرف ما لك وما عليك. وحين يحتاج طلبك إلى أكثر من تخصص، نعمل مع فريق الهجرة والتأشيرات في WaysZ.",
+    "audience": [
+      "من يدرس التقدم بطلب إقامة أو جنسية ويريد معرفة موقفه القانوني أولًا.",
+      "مزدوجو الجنسية ومن يفكرون في اكتساب جنسية أخرى.",
+      "الأجانب المقيمون في مصر ولديهم استفسارات قانونية تخص إقامتهم.",
+      "الأسر التي تختلف جنسيات أفرادها."
+    ],
+    "offer": [
+      "استشارة لتقييم موقفك القانوني قبل أي إجراء.",
+      "إبداء الرأي القانوني في مسائل الإقامة والجنسية وازدواجها.",
+      "مراجعة المستندات من الناحية القانونية قبل تقديمها.",
+      "متابعة الإجراءات والمنازعات القانونية المتعلقة بالإقامة والجنسية."
+    ],
+    "steps": [
+      { "title": "جلسة استشارة", "text": "نستمع إليك ونفهم وضعك وهدفك." },
+      { "title": "دراسة المستندات", "text": "نراجع مستنداتك ونحدد موقفك القانوني." },
+      { "title": "الرأي والخطة", "text": "نشرح لك الخيارات، ونتفق على الخطة والأتعاب قبل البدء." },
+      { "title": "المتابعة", "text": "نتابع الإجراءات القانونية ونطلعك على كل مستجد." }
+    ],
+    "excludes": [
+      "ضمان الحصول على إقامة أو جنسية أو تأشيرة؛ فالقرار للجهات المختصة وحدها.",
+      "الرسوم الحكومية ورسوم الترجمة والتوثيق، ما لم يُتفق على غير ذلك.",
+      "خدمات التأشيرات وتجهيز ملفات السفر؛ ويقدمها فريق الهجرة والدراسة والتأشيرات في WaysZ."
+    ],
+    "faq": [
+      { "q": "هل يؤثر اكتساب جنسية أخرى على جنسيتي الحالية؟", "a": "يختلف ذلك من حالة إلى أخرى ومن دولة إلى أخرى؛ ندرس حالتك ونوضح لك الموقف القانوني قبل أي إجراء." },
+      { "q": "ما الفرق بين هذه الخدمة وخدمات الهجرة والتأشيرات؟", "a": "هنا نقدم الرأي القانوني وتقييم الموقف؛ أما اختيار البرنامج وتجهيز الملف فيتولاهما فريق الهجرة والدراسة والتأشيرات." },
+      { "q": "هل تفاصيل استشارتي سرية؟", "a": "نعم، كل ما تشاركه يُعامل بسرية تامة ولا يطلع عليه إلا الفريق المختص." }
+    ],
+    "cta": {
+      "title": "تحتاج إلى رأي قانوني في حالتك؟",
+      "text": "احجز استشارتك وتحدث مع الفريق المختص بسرية تامة.",
+      "button": "اطلب استشارة قانونية"
+    }
+  },
+  "en": {
+    "name": "Immigration & Nationality (Legal Side)",
+    "summary": "Legal opinions on residency, nationality and dual-nationality matters, and an assessment of your legal position before any step.",
+    "description": "We give legal opinions on residency, nationality and dual-nationality matters, and assess your legal position before any step, so you decide knowing your rights and your obligations. When your request needs more than one specialty, we work with the WaysZ immigration and visa team.",
+    "audience": [
+      "Anyone considering a residency or nationality application who wants to know their legal position first.",
+      "Dual nationals, and those thinking about acquiring another nationality.",
+      "Foreign nationals living in Egypt with legal questions about their residency.",
+      "Families whose members hold different nationalities."
+    ],
+    "offer": [
+      "A consultation to assess your legal position before any step.",
+      "A legal opinion on residency, nationality and dual-nationality questions.",
+      "A legal review of your documents before they are submitted.",
+      "Following up on legal procedures and disputes related to residency and nationality."
+    ],
+    "steps": [
+      { "title": "Consultation", "text": "We listen and understand your situation and your goal." },
+      { "title": "Document review", "text": "We review your documents and define your legal position." },
+      { "title": "Opinion and plan", "text": "We explain your options, and agree on the plan and the fees before we start." },
+      { "title": "Follow-up", "text": "We follow the legal procedures and keep you updated on every development." }
+    ],
+    "excludes": [
+      "A guarantee of residency, nationality or a visa — the decision belongs to the competent authorities alone.",
+      "Government, translation and notarization fees, unless agreed otherwise.",
+      "Visa services and preparing travel files — these are provided by the WaysZ immigration, study and visa team."
+    ],
+    "faq": [
+      { "q": "Does acquiring another nationality affect my current one?", "a": "It differs from one case to another and from one country to another. We study your case and explain the legal position before any step." },
+      { "q": "How is this different from the immigration and visa services?", "a": "Here we give the legal opinion and assess your position. Choosing the program and preparing the file are handled by the immigration, study and visa team." },
+      { "q": "Is my consultation confidential?", "a": "Yes. Everything you share is handled in full confidence and seen only by the team on your case." }
+    ],
+    "cta": {
+      "title": "Need a legal opinion on your case?",
+      "text": "Book a consultation and talk to the right team in full confidence.",
+      "button": "Request a legal consultation"
+    }
+  }
+}

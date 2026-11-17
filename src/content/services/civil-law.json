@@ -1,0 +1,81 @@
+{
+  "area": "legal",
+  "order": 2,
+  "proposed": false,
+  "ar": {
+    "name": "القانون المدني",
+    "summary": "قضايا التعويضات والمطالبات المالية والنزاعات المدنية والعقارية، رفعًا ودفاعًا ومتابعة حتى التنفيذ.",
+    "description": "نتولى قضايا التعويضات والمطالبات المالية والنزاعات المدنية والعقارية، رفعًا ودفاعًا، ونتابعها حتى تنفيذ الحكم. نبدأ بتقييم موقفك ومستنداتك، ونوضح لك الخيارات المتاحة قبل أي إجراء.",
+    "audience": [
+      "أصحاب المطالبات المالية والديون غير المسددة.",
+      "المتضررون الراغبون في المطالبة بتعويض.",
+      "أطراف النزاعات العقارية والإيجارية وعقود البيع.",
+      "من رُفعت ضده دعوى مدنية ويحتاج إلى من يدافع عنه."
+    ],
+    "offer": [
+      "استشارة لتقييم الموقف والمستندات وفرص التسوية.",
+      "إعداد الإنذارات والمطالبات الرسمية قبل التقاضي.",
+      "رفع الدعاوى المدنية والعقارية والدفاع فيها.",
+      "متابعة تنفيذ الأحكام بعد صدورها."
+    ],
+    "steps": [
+      { "title": "جلسة استشارة", "text": "نستمع إليك ونفهم تفاصيل النزاع." },
+      { "title": "دراسة المستندات", "text": "نراجع العقود والمستندات ونحدد موقفك القانوني." },
+      { "title": "خطة العمل", "text": "نتفق على الخطة والأتعاب قبل البدء." },
+      { "title": "التمثيل والمتابعة", "text": "نمثلك أمام المحكمة ونتابع معك حتى التنفيذ." }
+    ],
+    "excludes": [
+      "ضمان حكم بنتيجة معينة؛ فالحكم للمحكمة وحدها.",
+      "الرسوم القضائية وأتعاب الخبراء، ما لم يُتفق على غير ذلك.",
+      "ضمان تحصيل المبالغ المحكوم بها أو مدة محددة لانتهاء النزاع."
+    ],
+    "faq": [
+      { "q": "هل يمكن حل النزاع دون اللجوء إلى المحكمة؟", "a": "في كثير من الحالات نعم، عبر التفاوض أو التسوية الودية؛ ونوضح لك هذا الخيار قبل رفع الدعوى." },
+      { "q": "ما المستندات التي أحتاجها؟", "a": "تختلف حسب نوع النزاع؛ وفي جلسة الاستشارة نحدد لك المطلوب بدقة." },
+      { "q": "هل تتابعون تنفيذ الحكم بعد صدوره؟", "a": "نعم، نتابع إجراءات التنفيذ أمام الجهات المختصة ونطلعك على كل مستجد." }
+    ],
+    "cta": {
+      "title": "تحتاج إلى رأي قانوني في حالتك؟",
+      "text": "احجز استشارتك وتحدث مع الفريق المختص بسرية تامة.",
+      "button": "اطلب استشارة قانونية"
+    }
+  },
+  "en": {
+    "name": "Civil Law",
+    "summary": "Compensation cases, financial claims, and civil and real-estate disputes — filing, defending and following up until enforcement.",
+    "description": "We handle compensation cases, financial claims, and civil and real-estate disputes, whether filing or defending, and follow them until the judgment is enforced. We start by assessing your position and your documents, and explain the options open to you before any step is taken.",
+    "audience": [
+      "People and businesses with financial claims or unpaid debts.",
+      "Anyone who has suffered harm and wants to claim compensation.",
+      "Parties to real-estate, lease and sale-contract disputes.",
+      "Anyone facing a civil claim who needs someone to defend them."
+    ],
+    "offer": [
+      "A consultation to assess your position, your documents and the chances of a settlement.",
+      "Preparing formal notices and demands before litigation.",
+      "Filing civil and real-estate claims and defending against them.",
+      "Following up on the enforcement of judgments once they are issued."
+    ],
+    "steps": [
+      { "title": "Consultation", "text": "We listen and understand the details of the dispute." },
+      { "title": "Document review", "text": "We review the contracts and documents and define your legal position." },
+      { "title": "Action plan", "text": "We agree on the plan and the fees before we start." },
+      { "title": "Representation", "text": "We represent you in court and stay with you until enforcement." }
+    ],
+    "excludes": [
+      "A guaranteed outcome — the judgment belongs to the court alone.",
+      "Court fees and experts' fees, unless agreed otherwise.",
+      "A guarantee that the awarded sums will be collected, or a fixed time for the dispute to end."
+    ],
+    "faq": [
+      { "q": "Can the dispute be resolved without going to court?", "a": "In many cases, yes — through negotiation or an amicable settlement. We explain this option before a claim is filed." },
+      { "q": "Which documents do I need?", "a": "It depends on the type of dispute. In the consultation we tell you exactly what is required." },
+      { "q": "Do you follow up on enforcement after the judgment?", "a": "Yes. We follow the enforcement procedures with the competent authorities and keep you updated on every development." }
+    ],
+    "cta": {
+      "title": "Need a legal opinion on your case?",
+      "text": "Book a consultation and talk to the right team in full confidence.",
+      "button": "Request a legal consultation"
+    }
+  }
+}

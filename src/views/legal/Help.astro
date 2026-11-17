@@ -1,0 +1,112 @@
+---
+/**
+ * Legal page — «كيف يمكننا مساعدتك؟», the nine specialties listed under the group in brief §2.1.
+ * Scene: motion/scenes/legal-colonnade.ts. One sticky screen (CSS sticky, not a pin): the camera of the stage
+ * act `justice` walks between tall columns toward the scales, and every pair of columns it passes brings one
+ * specialty forward, on the side of that column. Scrubbed and reversible; hidden items are faded with opacity.
+ * The specialty names are the brief's; the one-line descriptions are new copy for the client to review.
+ * No JS / reduced motion: a plain list.
+ */
+import type { Lang } from '../../i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const copy = {
+  ar: {
+    title: 'كيف يمكننا مساعدتك؟',
+    items: [
+      ['التقاضي أمام المحاكم', 'تمثيلك أمام المحاكم بمختلف درجاتها، رفعًا ودفاعًا.'],
+      ['صياغة العقود ومراجعتها', 'عقود واضحة تحفظ حقوقك قبل التوقيع.'],
+      ['قضايا العمل والعمال', 'حقوق صاحب العمل والعامل والتزاماتهما، من العقد حتى انتهاء العلاقة.'],
+      ['القانون العقاري', 'البيع والإيجار والتسجيل ونزاعات الملكية.'],
+      ['الملكية الفكرية', 'حماية العلامات التجارية وحقوق المؤلف والابتكارات.'],
+      ['حماية البيانات', 'الالتزامات القانونية في جمع البيانات الشخصية وحفظها.'],
+      ['التحكيم التجاري', 'الفصل في النزاعات التجارية خارج المحاكم.'],
+      ['تأسيس الشركات', 'اختيار الشكل القانوني وإتمام إجراءات التأسيس.'],
+      ['تنفيذ الأحكام', 'متابعة إجراءات التنفيذ بعد صدور الحكم.'],
+    ],
+  },
+  en: {
+    title: 'How can we help you?',
+    items: [
+      ['Court litigation', 'Representing you before the courts at every level, filing and defending.'],
+      ['Contract drafting and review', 'Clear contracts that protect your rights before you sign.'],
+      ['Labor and employment cases', 'The rights and duties of employer and employee, from the contract to the end of the relationship.'],
+      ['Real-estate law', 'Sale, lease, registration and ownership disputes.'],
+      ['Intellectual property', 'Protecting trademarks, copyright and innovations.'],
+      ['Data protection', 'The legal obligations in collecting and keeping personal data.'],
+      ['Commercial arbitration', 'Deciding commercial disputes outside the courts.'],
+      ['Company formation', 'Choosing the legal form and completing the formation procedures.'],
+      ['Enforcement of judgments', 'Following the enforcement procedures once the judgment is issued.'],
+    ],
+  },
+}[lang];
+---
+<section class="lhelp" data-scene="legal-colonnade" data-shot data-waypoint aria-labelledby="lhelp-title" style={`--n: ${copy.items.length}`}>
+  <div class="lhelp__view">
+    <div class="lhelp__scrim" aria-hidden="true"></div>
+    <header class="lhelp__head container">
+      <h2 class="lhelp__title" id="lhelp-title">{copy.title}</h2>
+    </header>
+    <ul class="lhelp__list container" role="list">
+      {copy.items.map(([name, text], i) => (
+        <li class="lhelp__item" data-side={i % 2 ? 'end' : 'start'}>
+          <span class="lhelp__mark" aria-hidden="true"></span>
+          <h3 class="lhelp__name">{name}</h3>
+          <p class="lhelp__text">{text}</p>
+        </li>
+      ))}
+    </ul>
+    <div class="lhelp__ticks" aria-hidden="true">{copy.items.map(() => <span></span>)}</div>
+  </div>
+</section>
+
+<style>
+  /* ---------- base: no JS / reduced motion — a list ---------- */
+  .lhelp { position: relative; padding-block: var(--section-y); }
+  .lhelp__scrim, .lhelp__ticks { display: none; }
+  .lhelp__title { font-size: clamp(2.4rem, 1.4rem + 4.6vw, 5.5rem); line-height: 1.16; }
+  :global([dir='rtl']) .lhelp__title { line-height: 1.34; }
+  .lhelp__list { display: grid; gap: var(--space-6) var(--space-7); grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr)); margin-block-start: var(--space-7); }
+  .lhelp__item { padding-block-start: var(--space-4); border-block-start: 1px solid var(--color-border); }
+  .lhelp__mark { display: block; width: 28px; height: 2px; margin-block: calc(-1 * var(--space-4) - 1px) var(--space-4); background: var(--color-accent); }
+  .lhelp__name { font-size: var(--text-xl); font-weight: var(--weight-bold); line-height: 1.4; }
+  .lhelp__text { margin-block-start: var(--space-2); max-width: 36ch; line-height: 1.8; color: color-mix(in srgb, var(--color-ink) 86%, transparent); }
+
+  /* ---------- scene running: the walk ---------- */
+  .lhelp:global(.is-scrub) { padding-block: 0; height: calc(var(--n) * 46vh + 130vh); height: calc(var(--n) * 46lvh + 130lvh); }
+  .lhelp:global(.is-scrub) .lhelp__view { position: sticky; top: 0; height: 100vh; height: 100lvh; overflow: clip; }
+  .lhelp:global(.is-scrub) .lhelp__scrim {
+    display: block; position: absolute; inset: 0; pointer-events: none;
+    background:
+      linear-gradient(to bottom, color-mix(in srgb, var(--color-bg) 80%, transparent) 0%, transparent 30%),
+      radial-gradient(ellipse 70% 42% at 50% 62%, color-mix(in srgb, var(--color-bg) 72%, transparent), transparent);
+  }
+  .lhelp:global(.is-scrub) .lhelp__head { position: absolute; inset-inline: 0; top: calc(76px + var(--space-5)); text-align: center; }
+  .lhelp:global(.is-scrub) .lhelp__title { font-size: clamp(1.7rem, 1.1rem + 2.4vw, 3.25rem); }
+  .lhelp:global(.is-scrub) .lhelp__list { position: absolute; inset: 0; display: block; margin: 0 auto; }
+  .lhelp:global(.is-scrub) .lhelp__item {
+    position: absolute; inset-inline: 0; top: 50%; border: 0; padding: 0;
+    display: grid; justify-items: center; text-align: center; opacity: 0; will-change: transform, opacity;
+  }
+  .lhelp:global(.is-scrub) .lhelp__mark { width: 2px; height: clamp(2.5rem, 7vh, 4.5rem); margin: 0 0 var(--space-4); background: linear-gradient(to bottom, transparent, var(--color-accent)); }
+  .lhelp:global(.is-scrub) .lhelp__name { font-size: clamp(2.1rem, 1.1rem + 4.6vw, 5.25rem); line-height: 1.14; max-width: 14ch; }
+  :global([dir='rtl']) .lhelp:global(.is-scrub) .lhelp__name { line-height: 1.36; }
+  .lhelp:global(.is-scrub) .lhelp__text { margin-block-start: var(--space-4); font-size: var(--text-lg); max-width: 34ch; color: color-mix(in srgb, var(--color-ink) 92%, transparent); }
+  .lhelp:global(.is-scrub) .lhelp__ticks {
+    display: flex; gap: 6px; position: absolute; inset-inline: 0; bottom: calc(100lvh - 100svh + var(--space-6)); justify-content: center;
+  }
+  .lhelp__ticks span { width: 18px; height: 2px; background: color-mix(in srgb, var(--color-ink) 28%, transparent); transition: background-color var(--dur-base), width var(--dur-base) var(--ease-out); }
+  .lhelp__ticks span:global(.is-on) { width: 34px; background: var(--color-accent); }
+  @media (min-width: 1024px) {
+    /* each specialty stands on the side of the column that brought it */
+    .lhelp:global(.is-scrub) .lhelp__item { inset-inline: auto; width: 46%; justify-items: start; text-align: start; }
+    .lhelp:global(.is-scrub) .lhelp__item[data-side='start'] { inset-inline-start: 0; }
+    .lhelp:global(.is-scrub) .lhelp__item[data-side='end'] { inset-inline-end: 0; justify-items: end; text-align: end; }
+    .lhelp:global(.is-scrub) .lhelp__scrim {
+      background:
+        linear-gradient(to bottom, color-mix(in srgb, var(--color-bg) 78%, transparent) 0%, transparent 28%),
+        linear-gradient(to right, color-mix(in srgb, var(--color-bg) 78%, transparent) 0%, transparent 40%, transparent 60%, color-mix(in srgb, var(--color-bg) 78%, transparent) 100%);
+    }
+  }
+</style>

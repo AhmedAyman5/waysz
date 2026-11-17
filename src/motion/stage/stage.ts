@@ -6,6 +6,9 @@
  * - DPR capped per tier, downgrades itself when frames are slow, disposes on page leave
  * The canvas is moved into the host of the act that is MOST visible; that host gets `.is-drawing` while the
  * canvas paints there (its DOM version hides itself with CSS) and loses it when the canvas leaves.
+ * The shared canvas has NO depth buffer (the footage acts are flat layers). An act that needs real depth (solid
+ * 3D models) draws them into its own render target, which has one, in `prerender`, and its `scene` is then just
+ * the pass that puts that picture on the canvas (see acts/justice.ts). Still one renderer, one context.
  */
 import { gsap } from 'gsap';
 import { WebGLRenderer, type Camera, type Scene } from 'three';
@@ -22,6 +25,10 @@ export interface Act {
   resize(width: number, height: number): void;
   setQuality(quality: Quality): void;
   dispose(): void;
+  /** optional: load / compile what `prerender` needs (environment map, the shaders of the inner scene) */
+  prepare?(renderer: WebGLRenderer): Promise<unknown>;
+  /** optional: draw into the act's own render targets, right before `scene` is drawn to the canvas */
+  prerender?(renderer: WebGLRenderer): void;
 }
 
 const DPR: Record<Quality, number> = { high: 1.5, lite: 1.25 };
@@ -81,7 +88,8 @@ export class Stage {
     this.acts.set(act.host, act);
     act.setQuality(this.quality);
     // compile the shaders without blocking (KHR_parallel_shader_compile); render only when they are ready
-    this.renderer.compileAsync(act.scene, act.camera).then(() => this.compiled.add(act), () => this.fail());
+    Promise.all([this.renderer.compileAsync(act.scene, act.camera), act.prepare?.(this.renderer)])
+      .then(() => this.compiled.add(act), () => this.fail());
     this.io.observe(act.host);
   }
 
@@ -130,6 +138,7 @@ export class Stage {
     if (!act) return;
     act.update(time, deltaMs);
     if (!act.ready() || !this.compiled.has(act) || this.canvas.parentElement !== act.host) return;
+    act.prerender?.(this.renderer);
     this.renderer.render(act.scene, act.camera);
     this.setDrawing(act.host);
     if (!this.shown) { this.shown = true; this.canvas.classList.add('is-on'); }

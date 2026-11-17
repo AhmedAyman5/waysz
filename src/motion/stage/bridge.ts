@@ -73,3 +73,22 @@ export const code = {
   leave: 0,                                  // hero scroll progress 0…1: the code lifts off and flies away
   plate: [0, 1] as [number, number],         // footage box behind the screen: top offset and height, in screen heights
 };
+
+/**
+ * Legal page — "From uncertainty to balance". Written by scenes/legal-thread.ts (the page), legal-weights.ts
+ * (the six services) and legal-colonnade.ts (the walk between the columns); read by acts/justice.ts.
+ * Sections, in page order: 0 hero · 1 services · 2 colonnade · 3 why · 4 how · 5 faq · 6 consult.
+ */
+export const justice = {
+  shot: 0,                                   // section index + progress inside it (0…7): moves the camera
+  count: 0,                                  // how many service weights scrolling has put on the pan (0…6)
+  focus: -1,                                 // service under the pointer / keyboard focus: its weight goes on too (-1 = none)
+  final: false,                              // the last small weight: the consult section has arrived → perfect balance
+  walk: 0,                                   // 0…1 along the colonnade
+  veil: 0,                                   // 0…1 sweep of light that hides the cut into the colonnade
+  side: 1 as 1 | -1,                         // 1 = the scales stand on the right of the text (LTR) · -1 = on the left (RTL)
+  compact: false,                            // small / portrait screens: the scales hold the upper part of the screen
+  poster: false,                             // dev only (?scales=poster): balanced, centred, still — to re-render the poster
+  icons: [] as string[],                     // one SVG path (48 × 48 box) per service: engraved on its weight
+  impact: 0,                                 // counts the weights that have landed (the DOM may react)
+};

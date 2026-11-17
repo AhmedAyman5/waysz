@@ -1,0 +1,104 @@
+---
+/**
+ * Legal page — hero. Scene: motion/scenes/legal-hero.ts · the scales are drawn by the stage act `justice`
+ * in the page's one stage host (views/LegalPage.astro), out of balance and alive under the pointer.
+ * A tall section with a sticky screen (no pin): the headline rises by words; scrolling orbits the camera and
+ * lets the text leave. The lead and the buttons are painted at once (LCP) and never hidden.
+ * css tier / reduced motion / no JS: our own still of the balanced scales stands where the 3D ones would.
+ */
+import { localizePath, useTranslations, type Lang } from '../../i18n';
+
+interface Props { lang: Lang; lead: string }
+const { lang, lead } = Astro.props;
+const t = useTranslations(lang);
+const title = { ar: ['الخدمات', 'القانونية'], en: ['Legal', 'Services'] }[lang];
+---
+<section class="lhero" data-scene="legal-hero" data-shot data-waypoint aria-labelledby="lhero-title">
+  <div class="lhero__sticky">
+    <div class="lhero__still scales-still" aria-hidden="true">
+      <img src="/media/img/scales-poster.webp" alt="" width="1100" height="1300" decoding="async" fetchpriority="high" />
+    </div>
+    <div class="lhero__scrim" aria-hidden="true"></div>
+
+    <div class="lhero__content container">
+      <nav class="lhero__crumb" aria-label={t.nav.services}>
+        <a href={localizePath('/services/', lang)}>{t.nav.services}</a>
+        <svg class="icon-dir" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="m9 6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span aria-current="page">{t.areas.legal}</span>
+      </nav>
+      <h1 class="lhero__title" id="lhero-title" data-intro>
+        {title.map((line) => <span class="lhero__line">{line}{' '}</span>)}
+      </h1>
+      <p class="lhero__lead">{lead}</p>
+      <div class="lhero__actions">
+        <a class="btn btn--accent" href="#consult" data-magnetic>{t.cta.consult}</a>
+        <a class="btn btn--ghost" href="#services">{t.cta.explore}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .lhero { position: relative; }
+  .lhero__sticky {
+    position: relative; overflow: clip;
+    height: 100vh; height: 100svh; min-height: 38rem;
+    display: grid; align-items: end;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .lhero { height: 170vh; height: 170lvh; }
+    :global(.js) .lhero__sticky { position: sticky; top: 0; height: 100vh; height: 100lvh; }
+    :global(.js) .lhero__content { padding-block-end: calc(100lvh - 100svh + var(--space-8)); }
+  }
+
+  /* the still: upper part of the screen on phones, the free side on wide screens (never mirrored) */
+  .lhero__still {
+    position: absolute; inset-block: 76px 46%; inset-inline: 0;
+    pointer-events: none;
+    -webkit-mask: radial-gradient(closest-side, black 62%, transparent); mask: radial-gradient(closest-side, black 62%, transparent);
+  }
+  .lhero__still img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+  @media (min-width: 1024px) {
+    .lhero__still { inset-block: 4% 0; inset-inline: 50% 2%; }
+  }
+
+  /* the text always sits on a dark gradient, whatever the scales do behind it */
+  .lhero__scrim {
+    position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(to top, color-mix(in srgb, var(--color-bg) 94%, transparent) 0%, color-mix(in srgb, var(--color-bg) 70%, transparent) 34%, transparent 62%);
+  }
+  @media (min-width: 1024px) {
+    .lhero__scrim {
+      background:
+        linear-gradient(to right, color-mix(in srgb, var(--color-bg) 82%, transparent) 0%, color-mix(in srgb, var(--color-bg) 50%, transparent) 34%, transparent 58%),
+        linear-gradient(to top, color-mix(in srgb, var(--color-bg) 70%, transparent) 0%, transparent 34%);
+    }
+    :global([dir='rtl']) .lhero__scrim {
+      background:
+        linear-gradient(to left, color-mix(in srgb, var(--color-bg) 82%, transparent) 0%, color-mix(in srgb, var(--color-bg) 50%, transparent) 34%, transparent 58%),
+        linear-gradient(to top, color-mix(in srgb, var(--color-bg) 70%, transparent) 0%, transparent 34%);
+    }
+  }
+
+  .lhero__content { position: relative; z-index: 2; padding-block: calc(76px + var(--space-6)) var(--space-8); }
+  .lhero__crumb { display: flex; align-items: center; gap: var(--space-2); font-size: var(--text-sm); color: color-mix(in srgb, var(--color-ink) 80%, transparent); }
+  .lhero__crumb a { text-decoration: none; }
+  .lhero__crumb a:hover { color: var(--color-link); }
+  .lhero__title {
+    margin-block-start: var(--space-4);
+    font-size: clamp(3rem, 1rem + 8vw, 8.75rem); line-height: 1.06; letter-spacing: -0.015em;
+  }
+  :global([dir='rtl']) .lhero__title { letter-spacing: 0; line-height: 1.26; }
+  .lhero__line { display: block; }
+  .lhero__lead {
+    margin-block-start: var(--space-5); max-width: 47ch;
+    font-size: var(--text-lg); line-height: 1.75; color: color-mix(in srgb, var(--color-ink) 92%, transparent);
+  }
+  .lhero__actions { display: flex; flex-wrap: wrap; gap: var(--space-4); margin-block-start: var(--space-6); }
+  .lhero__actions .btn { min-height: 54px; padding-inline: var(--space-7); font-size: var(--text-base); }
+  @media (max-width: 639px) {
+    .lhero__lead { font-size: var(--text-base); }
+    .lhero__actions { gap: var(--space-3); }
+    .lhero__actions .btn { flex: 1 1 100%; min-height: 50px; }
+  }
+</style>
