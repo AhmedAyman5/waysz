@@ -34,6 +34,8 @@ requests) — open the link once and replace the note with the contributor's nam
 | public/media/img/earth-poster.webp                          | our own render of the map above (the WebGL globe, dev URL `?globe=poster`)           | WaysZ                 | —                      | 2026-11-13 | still image for the css tier (no WebGL) and no JS (§1.5)                                       |
 | public/media/img/dusk-env.hdr                               | https://polyhaven.com/a/belfast_sunset_puresky                                       | Dimitrios Savva (photography), Jarod Guest (sky edits), Greg Zaal (processing) | CC0 | 2026-11-17 | Legal page: the light of the 3D scales. 1k HDR download scaled to 256×128 (68 KB); the act turns it so its sun stands where the scene's sun does. Pure sky: no place, building or text in it |
 | public/media/img/scales-poster.webp · scales-poster-m.webp  | our own render of the 3D scales (the WebGL act `justice`, `scripts/render-scales-still.mjs`) | WaysZ          | —                      | 2026-11-17 | still of the balanced scales for the css tier (no WebGL) and no JS (Legal page): 1100×1300 beside the text on wide screens, 780×1688 full screen on phones |
+| public/media/img/curtain-poster.webp · curtain-poster-m.webp | our own render of the closed velvet curtain (the WebGL act `gala`, `scripts/render-gala-still.mjs`) | WaysZ | — | 2026-11-18 | still for the css tier (no WebGL), no JS and the first paint of the Exhibitions & Conferences page: 1600×1000 (30 KB) and 780×1688 full screen on phones (20 KB) |
+| public/media/img/hall-poster.webp · hall-poster-m.webp       | our own render of the hall with the curtain open (act `gala`, `?gala=hall`)          | WaysZ | — | 2026-11-18 | still of the hall behind the middle sections on the css tier: 1600×1000 (38 KB), 780×1688 (42 KB). No text, logo, flag, sponsor mark or person anywhere in the world |
 
 Astro generates the responsive WebP files of `src/assets/media/*` at build time (`dist/_astro/`).
 
@@ -75,3 +77,11 @@ Candidates downloaded for the take-off and rejected: Pexels 5008861 (true sunset
 The Legal page ships no model file: the scales, chains, weights, columns and dust are procedural geometry built in
 `src/motion/stage/acts/justice.ts`; the engravings on the weights and the six small "moments" are our own SVG paths.
 No gavel anywhere (Egyptian courts do not use one), no emblem, flag, real courthouse or readable document text.
+
+The Exhibitions & Conferences page ships no model file and no footage: the theatre, the velvet curtain, the seats, the
+LED wall, the turntable, the twenty stands of the expo, the red carpet, the badge and its lanyard are procedural geometry
+and shaders built in `src/motion/stage/acts/gala.ts` + `shaders/gala.glsl.ts`. It reuses `dusk-env.hdr` (above, CC0) as a
+faint environment for the gold and the brass. The logo on the badge is read from the page's own header SVG; the QR-like
+pattern on it is seeded noise with three finder squares — it encodes nothing. The event-type icons, service icons, the
+headset and the split-flap board are our own SVG / HTML. Stock photos of exhibition halls were not used: every candidate
+seen for the Home page showed readable booth signs, country names or faces (see the Home audit), and the 3D hall needs none.

@@ -92,9 +92,10 @@ const sentence = { ar: ['أهلًا', 'بكم', 'في', 'افتتاح', 'الف�
   .gint__wave { stroke-width: 3; opacity: 0; animation: gint-wave 1.8s var(--ease-out) infinite; animation-delay: calc(var(--k) * 0.22s); }
   .gint__wave--r { animation-delay: calc(var(--k) * 0.22s + 0.9s); }
   @keyframes gint-wave { 0% { opacity: 0; } 25% { opacity: 1; } 100% { opacity: 0; } }
-  .gint__say { position: relative; font-family: var(--font-display); font-weight: var(--weight-bold); font-size: var(--text-lg); color: var(--color-ink); min-height: 2.6em; }
+  .gint__say { display: grid; min-width: 0; font-family: var(--font-display); font-weight: var(--weight-bold); font-size: var(--text-lg); color: var(--color-ink); }
   .gint__line { display: block; }
-  :global(.js) .gint__say .gint__line { position: absolute; inset-inline: 0; top: 0; white-space: nowrap; }
+  /* with JS both lines share one cell (the box is as wide as the longer one) and take turns */
+  :global(.js) .gint__say .gint__line { grid-area: 1 / 1; justify-self: start; }
   .gint__w { display: inline-block; margin-inline-end: 0.3em; }
   .gint__line--en { color: var(--color-link); }
 

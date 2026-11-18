@@ -87,6 +87,8 @@ const icons: Record<string, string> = {
     background: linear-gradient(100deg, transparent, color-mix(in srgb, var(--color-accent) 22%, transparent) 45%, color-mix(in srgb, var(--color-ink) 10%, transparent) 50%, transparent);
   }
   .gcard__icon { width: 52px; height: 52px; fill: none; stroke: var(--color-accent); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  :global(.js) .gcard__icon { opacity: 0; }                  /* drawn by the scene when the card reaches the light */
+  :global(.js) .gcard__rule { opacity: 0; }
   .gcard__name { margin-block-start: var(--space-2); font-size: var(--text-xl); line-height: 1.35; }
   .gcard__text { color: color-mix(in srgb, var(--color-ink) 86%, transparent); line-height: 1.85; }
   .gcard__link { margin-block-start: var(--space-2); justify-self: start; color: var(--color-link); font-size: var(--text-sm); }

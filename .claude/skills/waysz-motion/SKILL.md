@@ -72,7 +72,11 @@ even there every GSAP scene, Lenis and the cursor run. Smoothness = the stage's 
   `glyphs` (Software page hero: instanced glyph quads from a canvas atlas that land on the DOM code + a swarm in
   depth with a pointer field; all motion in the vertex shader; 1100 swarm glyphs),
   `justice` (Legal page: procedural 3D scales with spring physics, engraved weights, a colonnade and dusk light —
-  ONE host that CSS keeps on screen for the whole page; see "Solid 3D" below).
+  ONE host that CSS keeps on screen for the whole page; see "Solid 3D" below),
+  `gala` (Exhibitions & Conferences page: one procedural theatre world — vertex-shader velvet curtain, raked hall
+  with a seat map, LED wall, turntable, foyer expo with twenty rising stands, an unrolling red carpet, spot beams,
+  dust, press flashes, a guest badge on a verlet lanyard in camera space; render target with MIPMAPS so the finish
+  pass blooms from its own mip levels — no extra pass; ONE host for the whole page like `justice`).
 - **Hand-off between acts**: the canvas moves into the host of the act that is MOST visible. While it paints
   there the host has `.is-drawing` — hide the section's DOM media with CSS on that class
   (`.host.is-drawing ~ .card .media { visibility: hidden }`); when the canvas leaves, the DOM version is back.
@@ -187,6 +191,8 @@ Home: preloader · hero-takeoff · image-sequence · areas · media-reveal · gl
 boarding-pass · footer-landing (every page). Immigration page: page-hero · journey-route · dossier ·
 explore-globe (+ boarding-pass, approach). Software page: code-hero · code-forge · build-steps · ask-box (+ approach).
 Legal page: legal-thread · legal-hero · legal-weights · legal-colonnade · legal-why · legal-how · legal-faq (+ accordion) · legal-consult.
+Events page: events-thread · events-hero · events-program · events-expo · events-arrivals · events-badge · events-interpret ·
+events-types · events-roof · events-how · events-faq (+ accordion) · events-consult.
 Other pages / Motion Lab: destinations · route-steps ·
 boarding-gate · text-scrub · services-filter · accordion · form-flight · hero-logo · dive.
 Contracts and what to reuse on Services / About / Contact: `reference.md`.

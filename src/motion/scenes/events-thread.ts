@@ -29,7 +29,7 @@ const scene: Scene = (host, env) => {
   gala.lang = host.dataset.lang === 'en' ? 'en' : 'ar';
   gala.icons = gsap.utils.toArray<SVGPathElement>('#types [data-engrave]', root).map((p) => p.getAttribute('d') ?? '');
 
-  let tops: number[] = [], heights: number[] = [];
+  let tops: number[] = [], heights: number[] = [], isHall = false;
   const measure = () => {
     const y = window.scrollY;
     tops = sections.map((s) => s.getBoundingClientRect().top + y);
@@ -54,7 +54,10 @@ const scene: Scene = (host, env) => {
     const s1 = sticky(1, y, vh), s3 = sticky(3, y, vh), s4 = sticky(4, y, vh);
     gala.carpet = i < 1 ? 0 : i === 1 ? 0.3 * s1 : i === 2 ? 0.3 + 0.08 * local : i === 3 ? 0.38 + 0.27 * s3 : i === 4 ? 0.65 + 0.35 * span(s4, 0, 0.5) : 1;
     gala.veil = Math.max(...CUTS.map((c) => clamp01(1 - Math.abs(line - tops[c]) / (vh * 0.32))));
-    host.classList.toggle('is-hall', (i > 0 || hero > 0.35) && i < last);
+    // DOM writes only when the state changes: this runs inside ScrollTrigger.refresh, where a write would force a
+    // new layout for every trigger measured after it
+    const hall = (i > 0 || hero > 0.35) && i < last;
+    if (hall !== isHall) { isHall = hall; host.classList.toggle('is-hall', hall); }
   };
   gsap.matchMedia().add({ wide: '(min-width: 1024px)', small: '(max-width: 1023px)' }, (ctx) => {
     gala.compact = !ctx.conditions!.wide;
@@ -68,7 +71,16 @@ const scene: Scene = (host, env) => {
     const still = new URLSearchParams(location.search).get('gala');
     if (still === 'curtain' || still === 'hall') { root.classList.add('is-poster'); gala.poster = still; }   // scripts/render-gala-still.mjs
   }
-  if (env.tier === 'css') return;
+  // the still of the hall is only seen without WebGL: load it then (also if the context is lost later)
+  const hallStill = () => {
+    host.querySelectorAll<HTMLElement>('.gala__still--hall [data-srcset], .gala__still--hall [data-src]').forEach((el) => {
+      if (el.dataset.srcset) el.setAttribute('srcset', el.dataset.srcset);
+      if (el.dataset.src) el.setAttribute('src', el.dataset.src);
+    });
+  };
+  if (env.tier === 'css') { hallStill(); return; }
+  new MutationObserver((_, mo) => { if (document.documentElement.dataset.tier === 'css') { mo.disconnect(); hallStill(); } })
+    .observe(document.documentElement, { attributes: true, attributeFilter: ['data-tier'] });
   void addAct(env, async () => (await import('../stage/acts/gala')).createGalaAct(host));
 };
 export default scene;

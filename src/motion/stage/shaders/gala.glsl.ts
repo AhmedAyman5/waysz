@@ -249,7 +249,7 @@ void main() {
   float cycle = floor(t);
   float phase = fract(t);
   float fire = step(0.62, h(cycle * 1.37 + aSeed * 91.0));
-  float burst = fire * (exp(-phase * 22.0) + 0.6 * exp(-max(phase - 0.09, 0.0) * 30.0) * step(0.09, phase) * step(0.5, h(cycle + aSeed)));
+  float burst = fire * (exp(-phase * 12.0) + 0.6 * exp(-max(phase - 0.12, 0.0) * 18.0) * step(0.12, phase) * step(0.5, h(cycle + aSeed)));
   vI = burst * uOn;
   vec4 mv = modelViewMatrix * vec4(position, 1.0);
   gl_PointSize = vI > 0.002 ? uSize * (0.5 + vI) / max(-mv.z, 0.5) : 0.0;

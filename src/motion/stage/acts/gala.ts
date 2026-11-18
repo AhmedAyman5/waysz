@@ -59,7 +59,8 @@ const CARPET_FROM = 114, CARPET_TO = 4.5;
 const LED_Z = -11;
 const TABLE = new Vector3(0, STAGE_Y, -4.6);
 const BOOTHS = GALA_BOOTHS;
-const LABELLED = [9, 8, 13, 12];     // the four stands that stand for a service (DOM legend order)
+// the four stands that stand for a service (DOM legend order), always on the free side of the screen (not under the text)
+const LABELLED_LTR = [10, 11, 14, 15], LABELLED_RTL = [9, 8, 13, 12];
 
 /** floor height under the carpet at z (foyer level → down the rake → the flat front of the hall) */
 const floorAt = (z: number) => (z >= HALL_BACK ? TOP : z <= 6 ? 0 : (z - 6) * RAKE);
@@ -240,6 +241,7 @@ async function badgeTextures(scope: Element, lang: 'ar' | 'en') {
 }
 
 export function createGalaAct(host: HTMLElement): Act {
+  const LABELLED = gala.side > 0 ? LABELLED_LTR : LABELLED_RTL;
   const keep: { dispose(): void }[] = [];
   const own = <T extends { dispose(): void }>(x: T) => { keep.push(x); return x; };
 
@@ -369,8 +371,24 @@ export function createGalaAct(host: HTMLElement): Act {
     if (k < 11) { dummy.position.set(sx * 15.9, 5.6, z + 1.6); dummy.updateMatrix(); sconces.setMatrixAt(sc++, dummy.matrix); }
   }
   add(fins); add(sconces);
+  // two tiers of boxes along the side walls: velvet parapets with a gilded rail, a warm lamp between each pair
+  const BOXES = 5, TIERS = [5.4, 8.9];
+  const parapets = new InstancedMesh(own(new BoxGeometry(1, 1, 1)), velvetMat, 2 * BOXES * TIERS.length);
+  const rails = new InstancedMesh(own(new BoxGeometry(1, 1, 1)), goldMat, 2 * BOXES * TIERS.length * 2);
+  const boxLamps = new InstancedMesh(own(new CylinderGeometry(0.09, 0.09, 0.32, 10)), own(new MeshBasicMaterial({ color: cWarm.clone().multiplyScalar(4) })), 2 * BOXES * TIERS.length);
+  let bp = 0, br = 0;
+  for (const sx of [-1, 1]) TIERS.forEach((y) => { for (let k = 0; k < BOXES; k++) {
+    const z = 7.5 + k * 5.2, x = sx * 14.7;
+    dummy.rotation.set(0, 0, 0);
+    dummy.position.set(x, y, z); dummy.scale.set(1.5, 1.05, 4.3); dummy.updateMatrix(); parapets.setMatrixAt(bp, dummy.matrix);
+    dummy.position.set(x - sx * 0.72, y + 0.56, z); dummy.scale.set(0.14, 0.09, 4.4); dummy.updateMatrix(); rails.setMatrixAt(br++, dummy.matrix);
+    dummy.position.set(x - sx * 0.72, y - 0.5, z); dummy.scale.set(0.1, 0.07, 4.4); dummy.updateMatrix(); rails.setMatrixAt(br++, dummy.matrix);
+    dummy.position.set(x + sx * 0.4, y + 1.1, z + 2.6); dummy.scale.setScalar(1); dummy.updateMatrix(); boxLamps.setMatrixAt(bp++, dummy.matrix);
+  } });
+  add(parapets); add(rails); add(boxLamps);
+
   // trusses with the fixtures of the moving heads and the corner beams
-  for (const z of [8, 18.5]) box(22, 0.3, 0.3, alumMat, 0, 13.6, z);
+  for (const z of [8, 18.5]) box(22, 0.3, 0.3, blackMat, 0, 13.6, z);
   const fixtureGeo = own(new CylinderGeometry(0.22, 0.3, 0.55, 18));
   const fixtures = new InstancedMesh(fixtureGeo, blackMat, 8);
   [...HEADS, ...CORNERS].forEach((p, k) => { dummy.position.copy(p); dummy.updateMatrix(); fixtures.setMatrixAt(k, dummy.matrix); });
@@ -602,7 +620,7 @@ export function createGalaAct(host: HTMLElement): Act {
     set(screens, i, o * (hw - 0.13), 1.75, 0, pPanel > 0.98 ? 1 : 0.0001, pPanel > 0.98 ? 1 : 0.0001, 1, -o * Math.PI / 2);
     // lights switch on with a flicker, the way real stand lights do
     const flick = pLight <= 0 ? 0 : pLight >= 1 ? 1 : (Math.sin(pLight * 47) > -0.2 ? 1 : 0.15) * pLight;
-    const boost = 1 + lit * 1.6;
+    const boost = (1 + lit * 2.4) * (1 - dimOthers * 0.55 * (1 - lit));
     for (let k = 0; k < 2; k++) {
       set(heads, i * 2 + k, o * (hw - 0.45), H - 0.25, (k ? 1 : -1) * hd * 0.45, 1, 1, 1);
       heads.setColorAt(i * 2 + k, e.copy(cWarm).multiplyScalar(6 * flick * boost));
@@ -613,13 +631,14 @@ export function createGalaAct(host: HTMLElement): Act {
     pools.setMatrixAt(i * 2 + 1, dummy.matrix);
     pools.setColorAt(i * 2, e.copy(cWarm).multiplyScalar(0.6 * flick * boost));
     pools.setColorAt(i * 2 + 1, e.copy(cWarm).multiplyScalar(0.28 * flick * boost));
-    fascias.setColorAt(i, e.copy(b.tint).multiplyScalar(0.9 + lit * 0.6));
+    fascias.setColorAt(i, e.copy(b.tint).multiplyScalar((0.9 + lit * 2.2) * (1 - dimOthers * 0.4 * (1 - lit))));
     backs.setColorAt(i, e.copy(cIvory).lerp(b.tint, 0.55));
     sides.setColorAt(i, e.copy(cIvory).lerp(b.tint, 0.18).multiplyScalar(0.8));
     counters.setColorAt(i, e.copy(cIvory).lerp(b.tint, 0.25).multiplyScalar(0.85));
-    screens.setColorAt(i, e.copy(b.tint).lerp(cIvory, 0.2).multiplyScalar((0.5 + lit) * flick));
+    screens.setColorAt(i, e.copy(b.tint).lerp(cIvory, 0.2).multiplyScalar((0.5 + lit * 3) * flick));
   };
   const e = new Color();
+  let dimOthers = 0;                                       // 0…1: one stand is lit, the rest step back
 
   // =====================================================================================
   // the red carpet: from the street door to the stage steps, unrolling with the scroll
@@ -894,11 +913,11 @@ export function createGalaAct(host: HTMLElement): Act {
 
   const physics = (dt: number) => {
     const seg = ROPE_LEN / (ROPE_N - 1);
-    const g = -3.6;
+    const g = -6.5, keep = Math.exp(-1.4 * dt);          // gravity (scaled to the badge's size) · air drag per second
     for (let k = 1; k < ROPE_N; k++) {
       const r = rope[k];
-      if (k === ROPE_N - 1 && grabbed) { r.o.copy(r.p); r.p.lerp(grabTo, 0.6); continue; }
-      tmp.copy(r.p).sub(r.o).multiplyScalar(0.985);
+      if (k === ROPE_N - 1 && grabbed) { r.o.copy(r.p); r.p.lerp(grabTo, 0.35); continue; }
+      tmp.copy(r.p).sub(r.o).multiplyScalar(keep);
       r.o.copy(r.p);
       r.p.add(tmp);
       r.p.y += g * dt * dt * (k === ROPE_N - 1 ? 2.2 : 1);   // the card is heavier than the strap
@@ -1012,12 +1031,15 @@ export function createGalaAct(host: HTMLElement): Act {
       const expoOn = gala.shot > 0.6 && gala.shot < 4.6;
       plan.visible = expoOn;
       planMat.uniforms.uDraw.value = gala.plan;
+      const anyLit = gala.booth >= 0 || gala.hover >= 0 ? 1 : 0;
+      const dimBefore = dimOthers;
+      dimOthers += (anyLit - dimOthers) * k(0.25);
       for (let i = 0; i < BOOTHS; i++) {
         const u = clamp(gala.booths - rank[i]);
         const label = LABELLED.indexOf(i);
         const want = label >= 0 && (label === gala.booth || label === gala.hover) ? 1 : 0;
         planLit[i] += (want - planLit[i]) * k(0.18);
-        if (Math.abs(u - booths[i].u) > 1e-4 || planLit[i] > 0.001 || firstFrame) { booths[i].u = u; placeBooth(i, u, planLit[i]); }
+        if (Math.abs(u - booths[i].u) > 1e-4 || planLit[i] > 0.001 || Math.abs(dimOthers - dimBefore) > 1e-4 || firstFrame) { booths[i].u = u; placeBooth(i, u, planLit[i]); }
       }
       for (const m of [decks, posts, backs, sides, fascias, counters, screens, heads, pools]) {
         m.instanceMatrix.needsUpdate = true;
@@ -1101,9 +1123,9 @@ export function createGalaAct(host: HTMLElement): Act {
         const g = gala.grab;
         const halfH = Math.tan((camera.fov * Math.PI) / 360) * -depth, halfW = halfH * aspect;
         const px3 = g.x * halfW, py3 = g.y * halfH;
-        if (g.down && !wasDown) {
-          const c = card.position;
-          if (Math.abs(px3 - c.x) < BW * 0.8 && py3 < c.y + 0.08 && py3 > c.y - BH - 0.1) { grabbed = true; grabOff.set(rope[ROPE_N - 1].p.x - px3, rope[ROPE_N - 1].p.y - py3, 0); }
+        if (g.down && !wasDown) {                                 // the pad lies over the badge only: a press takes the card
+          grabbed = true;
+          grabOff.set(rope[ROPE_N - 1].p.x - px3, clamp(rope[ROPE_N - 1].p.y - py3, -0.05, BH * 0.9), 0);
         }
         if (!g.down) grabbed = false;
         wasDown = g.down;

@@ -70,10 +70,11 @@ const brief = (slug: Slug) => ({ slug, name: svc(slug).name, text: svc(slug).sum
           <img src="/media/img/curtain-poster.webp" alt="" width="1600" height="1000" decoding="async" fetchpriority="high" />
         </picture>
       </div>
+      <!-- the hall: only the css tier ever shows it (it needs JS to appear), so the thread sets its source then -->
       <div class="gala__still gala__still--hall">
         <picture>
-          <source media="(max-width: 1023px)" srcset="/media/img/hall-poster-m.webp" width="780" height="1688" />
-          <img src="/media/img/hall-poster.webp" alt="" width="1600" height="1000" loading="lazy" decoding="async" />
+          <source media="(max-width: 1023px)" data-srcset="/media/img/hall-poster-m.webp" width="780" height="1688" />
+          <img data-src="/media/img/hall-poster.webp" alt="" width="1600" height="1000" decoding="async" />
         </picture>
       </div>
     </div>

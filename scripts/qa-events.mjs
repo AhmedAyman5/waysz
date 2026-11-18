@@ -89,12 +89,12 @@ for (const run of runs) {
         const expo = await page.evaluate(() => { const el = document.getElementById('expo'); return el.getBoundingClientRect().top + scrollY + (el.offsetHeight - innerHeight) * 0.95; });
         await scrollTo(expo, 1800);
         await page.locator('.gexpo__pick').nth(2).hover(); await page.waitForTimeout(900); await shot('h0-legend-hover');
-        await page.mouse.move(vh * 1.05, vh * 0.45); await page.waitForTimeout(900); await shot('h1-stand-pointer');
+        await page.mouse.move(run.viewport.width * (run.name.startsWith('ar') ? 0.28 : 0.72), vh * 0.5, { steps: 6 }); await page.waitForTimeout(900); await shot('h1-stand-pointer');
         const reg = await page.evaluate(() => { const el = document.getElementById('register'); return el.getBoundingClientRect().top + scrollY + (el.offsetHeight - innerHeight) * 0.5; });
         await scrollTo(reg, 2200);
         const box = await page.locator('.greg__pad').boundingBox();
         if (box) {
-          const cx = box.x + box.width / 2, cy = box.y + box.height * 0.6;
+          const cx = box.x + box.width / 2, cy = box.y + box.height * 0.55;
           await page.mouse.move(cx, cy); await page.mouse.down();
           await page.mouse.move(cx - 220 * (run.name.startsWith('ar') ? -1 : 1), cy - 60, { steps: 12 });
           await shot('h2-badge-grabbed');
