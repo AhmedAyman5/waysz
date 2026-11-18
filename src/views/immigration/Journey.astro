@@ -4,7 +4,7 @@
  * Built ONLY from the group intro of brief §2.2: its promise («من أول سؤال حتى تجهيز ملفك كاملًا») and the four
  * steps it lists after the colon. A flight path climbs across the section; scrolling draws it, the plane
  * rides it and each stop lights up with its own icon. Small screens: the same route, vertical.
- * No JS / reduced motion: the full route and every stop are visible.
+ * No JS: the full route and every stop are visible.
  */
 import type { Lang } from '../../i18n';
 
@@ -56,9 +56,7 @@ const icons = [
 <style>
   .journey { position: relative; overflow: clip; padding-block: var(--section-y); }
   /* rises over the last moment of the hero (the window is sinking into the same night): no empty screen between */
-  @media (prefers-reduced-motion: no-preference) {
-    :global(.js) .journey { margin-block-start: -34vh; margin-block-start: -34lvh; background: linear-gradient(to bottom, transparent, var(--color-bg) 30vh); }
-  }
+  :global(.js) .journey { margin-block-start: -34vh; margin-block-start: -34lvh; background: linear-gradient(to bottom, transparent, var(--color-bg) 30vh); }
   .journey__title { font-size: clamp(2.2rem, 1.2rem + 4.4vw, 5.5rem); line-height: 1.16; max-width: 17ch; }
   :global([dir='rtl']) .journey__title { line-height: 1.34; }
 

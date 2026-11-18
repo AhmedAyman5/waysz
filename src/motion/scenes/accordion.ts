@@ -3,7 +3,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { Scene } from '../index';
 
-const scene: Scene = (root, env) => {
+const scene: Scene = (root) => {
   root.querySelectorAll<HTMLElement>('.faq__item').forEach((item) => {
     const btn = item.querySelector<HTMLButtonElement>('button')!;
     const panel = item.querySelector<HTMLElement>('.faq__panel')!;
@@ -13,7 +13,7 @@ const scene: Scene = (root, env) => {
       panel.toggleAttribute('inert', open);
       gsap.to(panel, {
         height: open ? 0 : 'auto',
-        duration: env.reduce ? 0 : 0.45,
+        duration: 0.45,
         ease: 'power2.inOut',
         onComplete: () => ScrollTrigger.refresh(),
       });

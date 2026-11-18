@@ -89,7 +89,7 @@ const areas = (['legal', 'travel', 'events', 'software'] as const).map((key) => 
     .site-footer__brand { grid-column: 1 / -1; }
   }
   /* Curtain reveal on desktop (footer shorter than the viewport) */
-  @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  @media (min-width: 1024px) {
     .site-footer { position: sticky; bottom: 0; z-index: 0; }
   }
 </style>

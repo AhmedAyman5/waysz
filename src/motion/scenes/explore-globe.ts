@@ -4,7 +4,7 @@
  * pointer on the globe (drag = rotate with inertia, hover = name, click / tap = select; on touch a vertical
  * drag still scrolls the page — `touch-action: pan-y`), zoom buttons, and the welcome message in the DOM.
  * The globe itself is drawn by the shared WebGL stage (acts/explore.ts) and driven through ExploreControls.
- * css tier / reduced motion / WebGL failure: the same list and message over a still globe, no flight.
+ * css tier (no WebGL / context lost): the same list and message over a still globe, no flight.
  */
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -57,13 +57,11 @@ const scene: Scene = (root, env) => {
       url.searchParams.set('destination', id);
       a.href = url.toString();
     });
-    if (!env.reduce) {
-      split = SplitText.create(country, { type: 'words', mask: 'words', wordsClass: 'w', aria: 'auto' });   // never chars (Arabic)
-      gsap.timeline()
-        .fromTo(q('.explore__hello'), { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.7 })
-        .fromTo(split.words, { yPercent: 118 }, { yPercent: 0, duration: 1.2, stagger: 0.09 }, 0.08)
-        .fromTo(q('.explore__actions'), { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.8 }, 0.45);
-    }
+    split = SplitText.create(country, { type: 'words', mask: 'words', wordsClass: 'w', aria: 'auto' });   // never chars (Arabic)
+    gsap.timeline()
+      .fromTo(q('.explore__hello'), { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.7 })
+      .fromTo(split.words, { yPercent: 118 }, { yPercent: 0, duration: 1.2, stagger: 0.09 }, 0.08)
+      .fromTo(q('.explore__actions'), { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.8 }, 0.45);
     // small screens: the message sits under the globe — bring it into view if it is cut off
     const r = card.getBoundingClientRect();
     if (r.bottom > innerHeight - 12) {
@@ -135,7 +133,12 @@ const scene: Scene = (root, env) => {
     if (el) select(el.dataset.id!);
   });
 
-  if (env.reduce || env.tier === 'css') return;                             // the still globe + list + message
+  // title: words rise once (every visitor, with or without WebGL)
+  const title = root.querySelector<HTMLElement>('.explore__title')!;
+  const words = SplitText.create(title, { type: 'words', mask: 'words', wordsClass: 'w', aria: 'auto' }).words;
+  gsap.fromTo(words, { yPercent: 118 }, { yPercent: 0, duration: 1.1, stagger: 0.08, scrollTrigger: { trigger: root, start: 'top 55%', once: true } });
+
+  if (env.tier === 'css') return;                                           // no WebGL: the still globe + list + message
 
   // ---------- the live globe ----------
   const local = (e: PointerEvent | WheelEvent) => {
@@ -231,7 +234,6 @@ const scene: Scene = (root, env) => {
   ScrollTrigger.create({
     trigger: root, start: 'top 250%', once: true,
     onEnter: () => {
-      if (env.tier === 'css') return;
       void addAct(env, async () => {
         // one step per frame (parse three, decode the borders, build the globe): no long frame while scrolling
         const breathe = () => new Promise<void>((done) => { window.setTimeout(done, 0); });
@@ -240,7 +242,7 @@ const scene: Scene = (root, env) => {
         await breathe();
         const { createExploreAct } = await import('../stage/acts/explore');
         await breathe();
-        const act = createExploreAct(host, env.tier === 'high' ? 'high' : 'lite', borders, (id) => byId.has(id));
+        const act = createExploreAct(host, borders, (id) => byId.has(id));
         controls = act.controls;
         layout();
         root.classList.add('is-live');
@@ -248,16 +250,11 @@ const scene: Scene = (root, env) => {
       });
     },
   });
-  // the stage can give up later (slow frames, lost context): back to the still globe, the list still works
+  // the stage can give up later (WebGL context lost): back to the still globe, the list still works
   new MutationObserver(() => {
     if (document.documentElement.dataset.tier !== 'css') return;
     controls = null;
     root.classList.remove('is-live');
   }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-tier'] });
-
-  // title: words rise once
-  const title = root.querySelector<HTMLElement>('.explore__title')!;
-  const words = SplitText.create(title, { type: 'words', mask: 'words', wordsClass: 'w', aria: 'auto' }).words;
-  gsap.fromTo(words, { yPercent: 118 }, { yPercent: 0, duration: 1.1, stagger: 0.08, scrollTrigger: { trigger: root, start: 'top 55%', once: true } });
 };
 export default scene;

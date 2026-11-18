@@ -2,9 +2,9 @@
 /**
  * Home §1.3 «مجالات خدماتنا» — "Four destinations". Scene: motion/scenes/areas.ts.
  * One sticky screen (CSS sticky, not a pin): we come out of the cloud of §1.2b onto the section title, then
- * each area arrives through a different transition. WebGL tiers draw the photos in the shared stage
+ * each area arrives through a different transition. With WebGL the photos are drawn in the shared stage
  * (acts/wipe.ts); the css tier wipes the same <img>s with clip-path.
- * Without JS / reduced motion: the title, then four full-screen cards.
+ * Without JS: the title, then four full-screen cards.
  * Photos never mirror: the text sits on the side that is free in each photo (`side`).
  */
 import { Image } from 'astro:assets';
@@ -93,7 +93,7 @@ const icons: Record<string, string> = {
 </section>
 
 <style>
-  /* ---------- base: no JS / reduced motion — a title, then four full-screen cards ---------- */
+  /* ---------- base: no JS — a title, then four full-screen cards ---------- */
   .areas { position: relative; background: var(--color-bg); }
   .areas__view { position: relative; }
   .areas__stage { z-index: 1; display: none; }
@@ -141,9 +141,7 @@ const icons: Record<string, string> = {
   .area__link:hover { color: var(--color-link); }
   .areas__ticks { display: none; }
 
-  @media (prefers-reduced-motion: no-preference) {
-    .area { position: sticky; top: 0; }          /* CSS-only stacking when the scene is not running */
-  }
+  .area { position: sticky; top: 0; }          /* CSS-only stacking when the scene is not running */
   @media (max-width: 639px) {
     .area__copy { font-size: var(--text-base); }
     .area__body { padding-block-end: var(--space-8); }

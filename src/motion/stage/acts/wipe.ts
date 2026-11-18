@@ -5,12 +5,12 @@
  */
 import { gsap } from 'gsap';
 import { LinearFilter, Mesh, OrthographicCamera, PlaneGeometry, Scene, ShaderMaterial, Texture, Vector2 } from 'three';
-import type { Act, Quality } from '../stage';
+import type { Act } from '../stage';
 import { areas } from '../bridge';
 import { fragment, vertex } from '../shaders/wipe.glsl';
 import { token } from './util';
 
-const OCT: Record<Quality, number> = { high: 5, lite: 3 };
+const OCT = 5;                                            // the full shader on every device (quality policy)
 
 export function createWipeAct(host: HTMLElement, images: HTMLImageElement[], dir: 1 | -1, desktop: boolean): Act {
   const scene = new Scene();
@@ -59,7 +59,7 @@ export function createWipeAct(host: HTMLElement, images: HTMLImageElement[], dir
     uNavy: { value: token('--color-bg', dark) },
     uCloudLit: { value: token('--color-accent', page, ['--color-surface', 14]) },
   };
-  const material = new ShaderMaterial({ uniforms, vertexShader: vertex, fragmentShader: fragment, defines: { OCT: OCT.lite } });
+  const material = new ShaderMaterial({ uniforms, vertexShader: vertex, fragmentShader: fragment, defines: { OCT } });
   const mesh = new Mesh(new PlaneGeometry(2, 2), material);
   mesh.frustumCulled = false;
   scene.add(mesh);
@@ -98,7 +98,6 @@ export function createWipeAct(host: HTMLElement, images: HTMLImageElement[], dir
       if (b) { uniforms.uTo.value = b; size(b, uniforms.uToSize.value); uniforms.uFocus.value.y = focus[to - 1]; }
     },
     resize(width, height) { uniforms.uRes.value.set(width, height); },
-    setQuality(quality) { material.defines = { OCT: OCT[quality] }; material.needsUpdate = true; },
     dispose() {
       window.removeEventListener('pointermove', onMove);
       gsap.killTweensOf(mouse);

@@ -1,6 +1,6 @@
 ---
 name: waysz-motion
-description: WaysZ animation system — GSAP + ScrollTrigger + Lenis, the data-attribute motion API, scenes, the cinematic media toolkit (background video, scroll-scrubbed image sequences, expanding media, Lottie, mouse depth layers, plane cursor), RTL/Arabic rules, reduced-motion and performance rules. Use for ANY animation, scroll effect, transition, cursor, hover or micro-interaction, or motion bug on the WaysZ website.
+description: WaysZ animation system — GSAP + ScrollTrigger + Lenis, the data-attribute motion API, scenes, the cinematic media toolkit (background video, scroll-scrubbed image sequences, expanding media, Lottie, mouse depth layers, plane cursor), RTL/Arabic rules, the quality policy (full experience for every visitor) and performance rules. Use for ANY animation, scroll effect, transition, cursor, hover or micro-interaction, or motion bug on the WaysZ website.
 ---
 
 # WaysZ Motion System
@@ -26,12 +26,22 @@ for external files: a clear free license (approved list in **waysz-media**) + a 
 
 ## Wiring (already in place)
 
-1. `BaseLayout` `<head>` boot script: adds `.js`, adds `.intro-seen` (intro already played / reduced
-   motion), removes `.js` after 4s if motion never starts (failsafe).
+1. `BaseLayout` `<head>` boot script: adds `.js`, adds `.intro-seen` (intro already played this session).
+   Failsafe: at `DOMContentLoaded` it removes `.js` if the motion module never ran (`html.motion-boot` missing —
+   download failed, script error, no ES modules). Module scripts always run before that event, so it can never
+   fire on a healthy browser (Chrome, Edge, Firefox, Safari), however slow the network.
 2. `base.css` hides ONLY what JS reveals: `.js [data-reveal] / [data-split] / [data-intro]`.
-3. `initForms(); initMotion();` → `env = { reduce, rtl, dir, desktop, tier }`, Lenis on `gsap.ticker`,
+3. `initForms(); initMotion();` → `env = { rtl, dir, desktop, tier }`, Lenis on `gsap.ticker` (always),
    globals, then every `[data-scene]` lazy-loaded in DOM order, then `ScrollTrigger.refresh()`.
-   `env.tier` = `high | lite | css` (also on `<html data-tier>`); it can drop at runtime.
+   `env.tier` = `full | css` (also on `<html data-tier>`): `css` ONLY when WebGL2 is unavailable, or later when
+   the context is lost. `env.desktop` (≥ 1024px + a mouse) gates pointer-only effects, never quality.
+
+## Quality policy (client decision — CLAUDE.md)
+
+Every visitor gets the same full experience at the highest quality, on every device. No `env.reduce`, no
+`prefers-reduced-motion` / `saveData` / cores / memory / GPU-name / "mobile" branch, no `setQuality`, no
+"lite" variant of a scene, shader or act, no motion toggle. The css fallback exists only without WebGL, and
+even there every GSAP scene, Lenis and the cursor run. Smoothness = the stage's dynamic render scale only.
 
 ## Global data-* API (globals ignore anything inside a [data-scene])
 
@@ -60,7 +70,7 @@ for external files: a clear free license (approved list in **waysz-media**) + a 
   `globe` (Home §1.5 night Earth + route), `explore` (Immigration page: the same Earth with country borders,
   free rotation, picking and a flight from Egypt — the scene drives it through `ExploreControls` in `bridge.ts`),
   `glyphs` (Software page hero: instanced glyph quads from a canvas atlas that land on the DOM code + a swarm in
-  depth with a pointer field; all motion in the vertex shader; 1100 swarm glyphs on `high`, 320 on `lite`),
+  depth with a pointer field; all motion in the vertex shader; 1100 swarm glyphs),
   `justice` (Legal page: procedural 3D scales with spring physics, engraved weights, a colonnade and dusk light —
   ONE host that CSS keeps on screen for the whole page; see "Solid 3D" below).
 - **Hand-off between acts**: the canvas moves into the host of the act that is MOST visible. While it paints
@@ -70,7 +80,8 @@ for external files: a clear free license (approved list in **waysz-media**) + a 
 - **Adding an act** from a scene: `addAct(env, async () => (await import('../stage/acts/x')).createX(host, …))`
   inside a `ScrollTrigger` `once` at `top 250%` (the act's chunk and textures load only when the section is
   near). Host element: `<div class="stage-host" aria-hidden="true">` (styles in base.css). `addAct` does nothing
-  on the css tier / reduced motion, and a failing act never breaks the page.
+  on the css tier (no WebGL), and a failing act never breaks the page (an act that cannot compile leaves; the
+  others keep drawing).
 - Photo textures: `createImageBitmap(img, { imageOrientation: 'flipY' })` + `texture.flipY = false` — an `<img>`
   reports its layout size and breaks the upload on small screens. Reuse the section's own `<img>` (no second download).
 - Colours: our own shaders work in display space (token colour in → same colour out). three's built-in
@@ -86,18 +97,24 @@ for external files: a clear free license (approved list in **waysz-media**) + a 
   dynamic-imports three.js. Shaders compile with `renderer.compileAsync` (non-blocking). This keeps the
   heaviest work out of page load (blocking time); until then the DOM version is on screen.
 - **One loop**: rendering runs on `gsap.ticker`. It stops when the act's host is off screen
-  (IntersectionObserver) or the tab is hidden. DPR cap: 1.5 high · 1.25 lite.
-- **Tiers by device capability** (`tier.ts`), never by "is it a phone":
-  `high` desktop GPU · `lite` capable phones/tablets (WebGL2, ≥ 4 cores, ≥ 4 GB when reported, not a weak GPU)
-  · `css` everything else, plus saveData and reduced motion. Dev: force with `?tier=high|lite|css`.
-- **Watchdog**: two slow sample windows in a row (avg frame > 27ms) → `high → lite → css`. `css` = dispose
-  and show the DOM version again. `webglcontextlost` does the same.
+  (IntersectionObserver) or the tab is hidden.
+- **Two states only** (`tier.ts`): `full` = any browser that can create a WebGL2 context (three.js needs it) →
+  every act at full quality · `css` = no WebGL2. Dev: force with `?tier=full|css`.
+- **Dynamic render scale** (`stage.ts`) — the ONLY runtime adaptation: canvas pixel ratio from
+  `min(devicePixelRatio, 1.5)` down to 0.75 in 0.125 steps, one decision per 60 rendered frames, judged by the
+  MEDIAN frame gap. Slower than 22 ms → try one step down, keep it only if frames get ≥ 10% faster (otherwise
+  the cause is not the GPU — a 30 fps Energy Saver cap, a busy main thread — so the full ratio comes back and is
+  held). Faster than 18 ms → one step up; in between, below the top, it re-tries a step up every 8 windows.
+  The canvas carries `data-ratio` (QA). Acts get the new size through `resize(width, height)`.
+- **Context lost** (`webglcontextlost`) → dispose, `env.tier = 'css'`, every section shows its DOM version
+  again; all GSAP scenes keep running. Slowness NEVER does this.
 - **Dispose** on `pagehide`: geometries, materials, textures, `renderer.dispose()`, `forceContextLoss()`.
 - **Scenes and the stage talk through `bridge.ts`** (plain object `flight`): scenes own scroll and write
   `push`, `veil`, `mix`, `speed`, `frame`; the act reads them every frame. Scenes never import three.
 - **The DOM version always exists underneath** (poster/video, 2D canvas, CSS cloud layers, veil element).
   `.is-live` on `[data-flight]` hides those media while the canvas draws; text and scrims stay DOM.
-- Shaders live in `shaders/*.glsl.ts`. Quality is set with `#define`s (`OCT`, `LAYERS`, `RAYS`), not branches.
+- Shaders live in `shaders/*.glsl.ts`. Options are `#define`s (`OCT`, `LAYERS`, `RAYS`), always at their full
+  values — never a cheaper variant per device.
   Work in display (sRGB) space for footage plates; read colors from the semantic tokens (see `token()` in
   `acts/flight.ts`) — no hex in shaders.
 - New 3D section = a new act + its host element + a few fields in `bridge.ts`. Reuse the stage.
@@ -106,7 +123,7 @@ for external files: a clear free license (approved list in **waysz-media**) + a 
 
 ### Plane cursor — `CursorPlane.astro` + `globals/cursor.ts`
 
-- Desktop + `pointer: fine` + no reduced motion only. Uses the logo plane path, colored `--color-accent`.
+- Desktop + `pointer: fine` (it needs a mouse) — every visitor with one. Uses the logo plane path, colored `--color-accent`.
 - Follows the pointer with `gsap.quickTo` (x/y ~0.35s), rotates toward the movement direction
   (angle from velocity, smoothed; keep the last angle when still).
 - Hover on `a, button, [data-cursor]`: scale up; `[data-cursor="…"]` shows the text label beside it.
@@ -123,10 +140,11 @@ for external files: a clear free license (approved list in **waysz-media**) + a 
 
 - Props: `name` (→ `/media/video/<name>.webm|.mp4|-poster.webp`), `mobile` (lighter variant name),
   `eager` (first screen only), `focus` (object-position), `class`.
-- Renders the poster as a real `<img>` (LCP, no-JS, reduced motion; `<picture>` picks the mobile poster)
+- Renders the poster as a real `<img>` (LCP, no-JS, no-WebGL; `<picture>` picks the mobile poster)
   and an empty `<video muted loop playsinline preload="none">` on top that fades in once it plays.
 - JS picks the mobile variant below 1024px and webm/mp4, sets `src` when near the viewport, plays when
-  ≥25% visible, pauses otherwise. Reduced motion OR `navigator.connection.saveData` → poster only.
+  ≥25% visible, pauses otherwise. Every visitor gets the video (no reduced-motion / saveData branch); the
+  poster stays only if the browser blocks autoplay.
 - Text on top: dark gradient overlay (`::after`), never raw text on footage.
 
 ### Scroll-scrubbed image sequence — `ImageSequence.astro` + `scenes/image-sequence.ts`
@@ -143,7 +161,7 @@ for external files: a clear free license (approved list in **waysz-media**) + a 
   long, and freed bitmaps are closed in idle time. Keep frames ≤ 1280px wide.
 - Section pins: desktop `end: '+=300%'`, mobile `+=180%`, `scrub: 0.5`; frame = round(progress × (n−1)).
 - Captions take turns around their `data-at`; small ticks show which one is on.
-- Without JS / reduced motion: no pin, frame 1 as a still, every caption visible.
+- Without JS: no pin, frame 1 as a still, every caption visible.
 
 ### Expanding media — `scenes/media-reveal.ts`
 
@@ -161,7 +179,7 @@ for external files: a clear free license (approved list in **waysz-media**) + a 
 - `<Lottie src="/media/lottie/plane.json" mode="loop|once|hover|scrub" label? />`.
 - `lottie-web` is dynamically imported ONLY if `[data-lottie]` exists. SVG renderer. Load at ~1 viewport away.
 - `scrub`: ScrollTrigger progress → `goToAndStop(frame, true)`. `once`: play when in view.
-- Reduced motion: show the last frame, no playback. Decorative → `aria-hidden`; meaningful → `label`.
+- Plays for every visitor. Decorative → `aria-hidden`; meaningful → `label`.
 
 ## Scenes (`src/motion/scenes/<name>.ts`)
 
@@ -177,7 +195,7 @@ Contracts and what to reuse on Services / About / Contact: `reference.md`.
 
 A tall section, a `position: sticky; top: 0; height: 100lvh` view inside it, and ONE scrubbed timeline
 (`trigger: section, start: 'top top', end: 'bottom bottom'`). The scene adds `.is-scrub` to the root; all the
-sticky/absolute layout lives under that class, so without JS or with reduced motion the section is plain flow.
+sticky/absolute layout lives under that class, so without JS the section is plain flow.
 - Let content REST: map scroll to progress with plateaus (see `span()` in `areas.ts`, `HOPS` in `globe-route.ts`).
 - State that scroll hides is faded with `opacity` (never `autoAlpha`): it stays in the accessibility tree; toggle
   `pointer-events` with an `.is-active` class and scroll a focused link's card into place.
@@ -193,10 +211,7 @@ import type { Scene } from "../index";
 
 const scene: Scene = (root, env) => {
   const q = gsap.utils.selector(root);
-  if (env.reduce) {
-    gsap.set(q(".item"), { autoAlpha: 1 });
-    return;
-  }
+  // no reduced-motion / device branch here: every visitor gets the scene (quality policy)
   const mm = gsap.matchMedia();
   mm.add(
     { desktop: "(min-width: 1024px)", mobile: "(max-width: 1023px)" },
@@ -232,9 +247,13 @@ export default scene;
 4. Arabic: split by words or lines only. Never chars. Decorative Latin code (Software page) may be split into
    characters (`motion/code-glyphs.ts`); it is always LTR, so its horizontal motion is NOT multiplied by `env.dir`.
 5. RTL: horizontal values × `env.dir`. Logos, photos and videos never mirror.
-6. Reduced motion: final state instantly; no Lenis, pins, parallax, depth, cursor, video autoplay.
+6. Quality policy: every visitor gets the full motion and 3D. Never read `prefers-reduced-motion`, saveData,
+   cores, memory or the GPU name; no `env.reduce`, no quality tier, no motion toggle. The only fallback is the
+   css tier (no WebGL2 / context lost), where every GSAP scene, Lenis and the cursor still run. Smoothness comes
+   from the stage's dynamic render scale, never from drawing less.
 7. Mobile (< 1024px or touch): pins ≤ `+=180%` (sequences) / `+=100%` (others); no depth, cursor,
-   magnetic, spotlight; lighter media.
+   magnetic, spotlight (they need a mouse); media at the right size for the screen (same look) — never a
+   cheaper scene, shader or act.
 8. Max **2 pinned scenes per page — 3 on Home**, only while scrolling stays smooth (Home uses 1: the Journey).
    Never animate the pinned element itself — animate its children. Prefer CSS `position: sticky` + a
    scrubbed ScrollTrigger when a scene only needs to hold the screen (the Home hero does this).
@@ -248,7 +267,7 @@ export default scene;
 13. Images: animate a wrapper, not the `<img>`. Always width/height. Below-the-fold media lazy.
 14. After layout changes call `ScrollTrigger.refresh()`.
 15. Test with DevTools CPU 4× and "Fast 4G" (`node scripts/qa-fps.mjs <url> 4`). If a section stutters,
-    reduce frames/resolution first.
+    make it cheaper for EVERYONE (fewer frames, smaller frames, a smarter shader) — never a per-device variant.
 16. ScrambleText only on Latin text. All other GSAP plugins are allowed; register only what a page uses.
 17. 3D never carries content: no text in the canvas, canvas `aria-hidden`, and the page must be complete
     with the canvas removed (tier `css`).
@@ -257,9 +276,12 @@ export default scene;
 
 - [ ] Chrome, Safari (macOS + iOS), Firefox, Chrome on a mid-range Android.
 - [ ] Arabic `/…` and English `/en/…`.
-- [ ] Reduced motion ON → everything visible, nothing moves, posters instead of video.
+- [ ] Quality policy: `node scripts/qa-policy.mjs` on the production preview — OS reduce-motion ON + saveData +
+      CPU 4× + 30 fps cap → tier `full`, the canvas draws, every scene, video, Lenis and the cursor run; only
+      the render scale (`data-ratio`) may drop.
 - [ ] JS disabled → content + first frames/posters visible, no preloader.
 - [ ] Resize desktop ↔ mobile → no broken pins; mobile media variants load.
 - [ ] Network tab: nothing below the fold loads before you scroll near it (`node scripts/qa-weight.mjs`).
-- [ ] Every tier: `?tier=high`, `?tier=lite`, `?tier=css` (`node scripts/qa-shots.mjs out/` shoots them all).
+- [ ] WebGL on and off: `?tier=full`, `?tier=css` (no-WebGL fallback: stills/posters, every GSAP scene still
+      runs) — `node scripts/qa-shots.mjs out/` shoots both, plus OS reduce-motion ON (must look the same).
 - [ ] No console errors; no long tasks > 50ms while scrolling.

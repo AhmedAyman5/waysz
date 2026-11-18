@@ -90,7 +90,7 @@ void main() {
   vec2 cuv = (uv - 0.5) * vec2(aspect, 1.0);
   vec3 col = plate(uv);
 
-  // sun: soft glow that leans toward the pointer (+ god rays on the high tier)
+  // sun: soft glow that leans toward the pointer (+ god rays, RAYS > 0)
   vec2 sun = uSun + uMouse * 0.035;
   #if RAYS > 0
     vec2 stepv = (sun - uv) / float(RAYS) * 0.6;

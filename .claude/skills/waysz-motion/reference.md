@@ -42,7 +42,7 @@ Rendered by `BaseLayout` when the page passes `preloader`. Dispatches `waysz:int
   only settle 28px on a first visit. Then `startFlightStage(env)`.
 - Scroll: the hero is 190lvh tall with a sticky 100lvh inner (no pin). Progress 0→1 = the camera pushes
   into the clouds and ends in a white-out exactly when the journey pins.
-- `high` / `lite`: video + clouds + rays are drawn by the stage (`.is-live` hides `.hero__media`).
+- `full` (WebGL): video + clouds + rays are drawn by the stage (`.is-live` hides `.hero__media`).
   `css`: the video, the two cloud photos (`data-src`, fetched after the entrance) and `.hero__veil` do it.
 - The logo mark is NOT in the hero — the intro already showed it. (Motion Lab keeps the old logo hero
   as `hero-logo`.)
@@ -79,7 +79,7 @@ last 12% climbs back into it, ending in the page background colour.
 ```
 
 One sticky screen, 4.4 "units" of scroll: title on the page colour (we are still in the cloud) → each area in
-turn, resting between transitions. WebGL tiers: cloud wipe · liquid displacement · light sweep · iris
+turn, resting between transitions. With WebGL: cloud wipe · liquid displacement · light sweep · iris
 (`wipe.glsl.ts`); css tier: clip-path wipes of the same `<img>`s. Photos never mirror — `data-side` says where
 the text goes. No JS: stacked full-screen cards.
 
@@ -142,16 +142,16 @@ The scene owns the combobox, the pointer on `.explore__pad` (`touch-action: pan-
 vertical drag scrolls the page; tap / click selects; ctrl + wheel or the buttons zoom) and the welcome message
 (DOM, words only). The act `explore` draws the globe and is driven through `ExploreControls`
 (`pick · hover · drag · release · zoom · flyTo · setAuto · setLayout`). Borders + act load at `top 250%`.
-css tier / reduced motion: `earth-borders-poster.webp` + the same list and message, no flight. `.is-live` on the
+css tier (no WebGL): `earth-borders-poster.webp` + the same list and message, no flight. `.is-live` on the
 section = the globe is interactive. Selecting a country also fills `[data-destination-chip]` and adds
 `?destination=<ISO>` to `a[data-consult]` anywhere on the page.
 
 ### code-hero — Software hero, "Code in flight" (`views/software/Hero.astro`)
 
 `.chero > .chero__sticky (.chero__media > .chero__plate > BgVideo + .chero__scrim, .chero__codebox > pre.code, .chero__stage.stage-host, .chero__content (crumb, h1[data-intro], lead, actions))`.
-180lvh section with a sticky screen (no pin). Entrance on every tier: the characters of the code (DOM spans; whole
+180lvh section with a sticky screen (no pin). Entrance with or without WebGL: the characters of the code (DOM spans; whole
 tokens on small screens) fly in from depth and land, the headline rises by words; lead + buttons are never hidden.
-When it has settled (`bridge.code.settled`) the act `glyphs` takes over on the WebGL tiers: the scene measures every
+When it has settled (`bridge.code.settled`) the act `glyphs` takes over when WebGL is on: the scene measures every
 character (`measureCode`) and the act lands one instanced glyph on each, adds the swarm and the pointer field, and
 flies the code away with `bridge.code.leave` (scroll, reversible). css tier: the lines lift off as DOM elements.
 The backdrop shader repeats the plate box (`--plate-top`, `--plate-h`) and the three layers of `.chero__scrim` —
@@ -166,7 +166,7 @@ data-dim · data-hide · data-stroke` (in DOM order, or at `data-t`); `{{bad|goo
 that fly out and get replaced. Wide: CSS sticky screen (`.is-scrub`, height from `--n`), the services take turns
 (opacity, never visibility); the first code assembles while the section arrives. Small: each window is scrubbed as
 it crosses the screen. The timelines are built only when the section is near (one per frame): nothing at page load.
-No JS / reduced motion: a list, every window finished.
+No JS: a list, every window finished.
 
 ### build-steps — Software "how we work" (`views/software/Process.astro`)
 
@@ -186,7 +186,7 @@ The host is `position: sticky` for the whole page (the body starts with `margin-
 screen is in and how far (`bridge.justice.shot` → camera), the dip of light at the cut into the colonnade (`veil`)
 and whether the consult section has arrived (`final` → the last weight → perfect balance). All of it is a function
 of the scroll position, so it reverses. Section order is fixed: hero · services · colonnade · why · how · faq · consult.
-css tier / reduced motion / no JS: `.scales-still` images (our render: `node scripts/render-scales-still.mjs`);
+css tier (no WebGL) / no JS: `.scales-still` images (our render: `node scripts/render-scales-still.mjs`);
 they fade out while `.legal__stage.is-drawing`. Text always sits on a DOM scrim, never on the bare canvas.
 
 ### legal-hero · legal-weights · legal-colonnade · legal-why · legal-how · legal-faq · legal-consult

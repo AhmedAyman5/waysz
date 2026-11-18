@@ -7,9 +7,8 @@
 import { gsap } from 'gsap';
 import type { Scene } from '../index';
 
-const scene: Scene = (root, env) => {
+const scene: Scene = (root) => {
   const q = gsap.utils.selector(root);
-  if (env.reduce) return;
 
   gsap.timeline({ delay: 0.15 })
     .fromTo(q('.lhero__line'), { y: 54 }, { y: 0, duration: 1.4, stagger: 0.12 })

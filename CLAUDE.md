@@ -16,6 +16,27 @@ The brief is Arabic; write the English version as a faithful, natural translatio
 terms in the PR description). Never invent services, numbers, claims, clients or testimonials.
 Items marked «مقترح» are pending approval: build them with `proposed: true` in the data.
 
+## Quality policy (client decision — final)
+
+**Every visitor gets the same full experience at the highest quality, on every device. No exceptions.**
+
+- Any browser with WebGL2 gets the full scene on every page: all acts, all effects, the same materials, shaders,
+  geometry, particle counts and post-processing. No capability tiers: never branch on cores, memory, GPU name,
+  screen size / "mobile", `navigator.connection.saveData` or battery.
+- No `prefers-reduced-motion` branches anywhere (scenes, globals, media toolkit, boot script, CSS) and **no
+  visitor-facing motion / quality toggle**. Videos autoplay, sequences scrub, Lottie plays, Lenis and the cursor
+  run for everyone.
+- The **css fallback** (posters / stills instead of the canvas) exists ONLY when WebGL2 is unavailable or the
+  context is lost. Even then every GSAP / ScrollTrigger animation, Lenis, the cursor and all scroll scenes run.
+- Smoothness is protected ONLY by the stage's **dynamic render scale** (`src/motion/stage/stage.ts`: canvas pixel
+  ratio between `min(devicePixelRatio, 1.5)` and 0.75, lowered only when that measurably speeds frames up).
+  Never by drawing less, never by falling back to css.
+- Allowed differences are input and size, not quality: pointer-only effects (cursor, depth, magnetic, spotlight)
+  need a mouse; responsive image / video / sequence sizes per screen width are the same look at the right size.
+- The no-JS version stays (content readable without JavaScript).
+- **Every new page, scene, 3D act and effect must be built this way.** Do not add an `env.reduce`, a tier, a
+  `setQuality`, or a "lite" path.
+
 ## Visual direction (most important)
 
 **Cinematic, Apple-product-page level.** The pages are built from REAL footage and photos plus
@@ -34,7 +55,8 @@ The Home page concept ("The Journey", one continuous flight) is in `docs/home-cr
   our own) when it matches the premium, cinematic look (recolored to our tokens if needed),
 - background layers that move with the mouse (depth), and a plane-shaped cursor on desktop,
 - a 3D layer (three.js + custom GLSL) that puts the footage inside one WebGL stage: shader clouds the camera
-  flies through, sun glow / god rays, grain, vignette. It is an enhancement: every scene also works without it.
+  flies through, sun glow / god rays, grain, vignette. Every visitor with WebGL gets it in full (Quality policy);
+  every scene also works without WebGL (the css fallback).
 - The logo "Take-off" intro (preloader) stays as it is.
   Reuse what exists when it is good enough; source or create something new when that is more impressive.
   Trust and clarity still matter (legal audience): motion never hides content or slows reading.
@@ -47,7 +69,7 @@ The Home page concept ("The Journey", one continuous flight) is in `docs/home-cr
   text only — never on Arabic. Register only the plugins a page really uses.
 - **three.js** for 3D, with its addons from `three/examples/jsm` (GLTFLoader, DRACOLoader, EffectComposer,
   passes) and custom GLSL where it looks better than stock materials. Always through the shared stage in
-  `src/motion/stage/` (one renderer per page, lazy-loaded, capability tiers) — never a second renderer.
+  `src/motion/stage/` (one renderer per page, lazy-loaded, dynamic render scale) — never a second renderer.
 - **lottie-web** for Lottie animations (lazy-loaded only on pages that use it).
 - **Plain CSS** with tokens from `src/styles/tokens.css`.
 - Font: **Almarai** (Arabic + Latin), self-hosted via `@fontsource/almarai`. Weights 400 / 700 / 800 only —
@@ -65,8 +87,9 @@ npm run check      # TypeScript + Astro diagnostics — must be 0 errors before 
 npm run build      # → dist/  (what we upload to the hosting)
 npm run preview    # serve dist/ locally to test the production build
 
-# Visual QA (Playwright, uses your installed Chrome). Dev only: force a tier with ?tier=high|lite|css
-node scripts/qa-shots.mjs <outDir>     # screenshots while scrolling: AR/EN · desktop/phone/360 · every tier · reduced motion · no JS
+# Visual QA (Playwright, uses your installed Chrome). Dev only: force WebGL on/off with ?tier=full|css
+node scripts/qa-shots.mjs <outDir>     # screenshots while scrolling: AR/EN · desktop/phone/360 · WebGL + css fallback · OS reduce-motion ON (must change nothing) · no JS
+node scripts/qa-policy.mjs             # quality policy on the production preview: reduce-motion + saveData + CPU 4× + 30 fps cap → full scene everywhere
 node scripts/qa-weight.mjs             # page weight of the production preview (run `npm run preview -- --port 4322` first)
 node scripts/qa-fps.mjs <url> 4        # scroll frame times with CPU throttling 4x (whole page)
 # No Google Chrome on the machine (e.g. Linux)? Point the scripts at any Chromium:
@@ -82,7 +105,7 @@ waysz/
 ├─ .claude/skills/waysz-media/    SKILL.md (sources, licenses, ffmpeg recipes, budgets, credits)
 ├─ docs/brief/                    the approved brief (PDF)
 ├─ docs/home-creative-treatment.md  Home concept + storyboard v2 (§1.1–1.8)
-├─ scripts/                       Playwright QA: qa-shots · qa-immigration · qa-software · qa-legal · qa-weight · qa-fps (+ qa-browser: shared launch)
+├─ scripts/                       Playwright QA: qa-shots · qa-policy · qa-immigration · qa-software · qa-legal · qa-weight · qa-fps (+ qa-browser: shared launch)
 │                                 data/media builds: build-borders (globe borders) · render-globe-still · render-scales-still
 ├─ docs/media-credits.md          one row per media file we ship (source, author, license)
 ├─ media-inbox/                   RAW downloads before optimizing — gitignored, never shipped
@@ -106,7 +129,7 @@ waysz/
    ├─ lib/                        forms.ts · site.ts (client data) · borders.ts (decodes the borders, country at a point)
    ├─ motion/                     index.ts · config.ts · smooth-scroll.ts · globals/ · scenes/
    │  ├─ code-glyphs.ts           decorative code blocks: split into characters, measure where each one sits
-   │  └─ stage/                   3D layer: stage.ts (renderer) · tier.ts · bridge.ts · acts/ (flight · wipe · globe · explore · glyphs · justice) · shaders/
+   │  └─ stage/                   3D layer: stage.ts (renderer + render scale) · tier.ts (WebGL or css) · bridge.ts · acts/ (flight · wipe · globe · explore · glyphs · justice) · shaders/
    ├─ pages/                      THIN wrappers only (AR at /, EN under /en/)
    ├─ styles/                     tokens.css · base.css
    └─ views/                      real page content (HomePage, ServicesPage, …, MotionLab)
@@ -192,9 +215,9 @@ waysz/
   ScrollTrigger — prefer that whenever a scene only needs to hold the screen.
 - Content that a scroll state hides (stacked cards, waiting steps) is faded with `opacity`, never
   `visibility`/`autoAlpha`, so screen readers and keyboard focus still reach it; dimmed text stays ≥ AA contrast.
-- 3D is tiered by DEVICE CAPABILITY, not by "mobile": `high` (desktop GPU) · `lite` (capable phones/tablets:
-  same scene, cheaper shader, lower DPR) · `css` (weak device, no WebGL2, saveData, reduced motion: plain
-  video + CSS layers / posters). The HTML underneath is always complete (LCP, no-JS, reduced motion).
+- 3D follows the **Quality policy**: two states only — `full` (WebGL2: the full scene, every device) and `css`
+  (no WebGL2 or context lost: plain video + CSS layers / posters, all GSAP scenes still run). The only runtime
+  adaptation is the stage's dynamic render scale. The HTML underneath is always complete (LCP, no-JS, no-WebGL).
 - The shared renderer has no depth buffer. Solid 3D models (the scales of the Legal page) are drawn by their act into
   its own render target in `prerender` and finished by one full-screen pass — never a second renderer.
 - LCP: a still that does not fill the screen is a foreground image and becomes the LCP (slow). Phones get a
@@ -217,7 +240,9 @@ waysz/
 ## Definition of Done (every page / section)
 
 - `npm run check` → 0 errors. No console errors.
-- Works in Arabic AND English, desktop AND 360px mobile, with reduced motion ON, and with JS OFF.
+- Works in Arabic AND English, desktop AND 360px mobile, with JS OFF, and in the no-WebGL fallback (`?tier=css`).
+- Quality policy holds: `node scripts/qa-policy.mjs` passes (OS reduce-motion, saveData, CPU 4×, 30 fps cap →
+  tier `full`, the canvas draws, every scene runs; only the render scale may drop).
 - Media: initial page weight ≤ 4 MB on desktop / ≤ 2 MB on mobile; nothing below the fold loads early.
 - Lighthouse mobile: Performance ≥ 75 · Accessibility ≥ 95 · SEO ≥ 95. LCP ≤ 2.5s (hard rule).
 - Smooth: no dropped frames while scrolling with DevTools CPU throttling 4× on the scrubbed sections.

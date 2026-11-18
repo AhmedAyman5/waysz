@@ -8,7 +8,7 @@ const scene: Scene = (root, env) => {
   if (!form) return;
 
   form.addEventListener('waysz:form-success', () => {
-    if (env.reduce || !plane) return;
+    if (!plane) return;
     gsap.timeline()
       .to(plane, {
         duration: 1, ease: 'power2.in', rotation: -25 * env.dir, autoAlpha: 0,
@@ -22,7 +22,6 @@ const scene: Scene = (root, env) => {
   });
 
   form.addEventListener('waysz:form-error', () => {
-    if (env.reduce) return;
     gsap.fromTo(form, { x: 0 }, { keyframes: { x: [-8, 8, -5, 5, 0] }, duration: 0.45, ease: 'none' });
   });
 };

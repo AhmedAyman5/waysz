@@ -4,10 +4,9 @@ import { SplitText } from 'gsap/SplitText';
 import type { Scene } from '../index';
 import { LOGO, introDone } from '../config';
 
-const scene: Scene = async (root, env) => {
+const scene: Scene = async (root) => {
   const q = gsap.utils.selector(root);
   gsap.set(q('[data-intro]'), { autoAlpha: 1 });
-  if (env.reduce) return;
   await introDone();
 
   const plane = root.querySelector<SVGPathElement>('.mark-plane')!;

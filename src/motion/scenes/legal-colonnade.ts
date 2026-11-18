@@ -15,7 +15,6 @@ const ease = (t: number) => t * t * (3 - 2 * t);
 const LEAD = 0.07;                                           // part of the walk done while the section arrives
 
 const scene: Scene = (root, env) => {
-  if (env.reduce) return;
   const items = gsap.utils.toArray<HTMLElement>('.lhelp__item', root);
   const ticks = gsap.utils.toArray<HTMLElement>('.lhelp__ticks span', root);
   const n = items.length;

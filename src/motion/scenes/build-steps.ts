@@ -13,8 +13,7 @@ import type { Scene } from '../index';
 
 gsap.registerPlugin(ScrambleTextPlugin);
 
-const scene: Scene = (root, env) => {
-  if (env.reduce) return;
+const scene: Scene = (root) => {
   const steps = gsap.utils.toArray<HTMLElement>('.bstep', root);
   const fill = root.querySelector<HTMLElement>('.steps__fill')!;
   const route = root.querySelector<HTMLElement>('.steps__route')!;

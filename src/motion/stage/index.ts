@@ -2,13 +2,14 @@
  * Entry of the 3D layer — ONE stage (renderer + canvas) per page, shared by every act.
  * getStage() waits for the visitor's FIRST INTERACTION (pointer move, touch, wheel, key, scroll) before
  * loading three.js in a separate chunk: parsing three and compiling shaders is the heaviest work on the
- * page, and this keeps it out of the loading phase (LCP, blocking time). Until then — and on the css tier,
- * with reduced motion, or if WebGL fails — every section shows its DOM version, which is always complete.
+ * page, and this keeps it out of the loading phase (LCP, blocking time). Until then — and when WebGL is
+ * unavailable or its context is lost (the css tier) — every section shows its DOM version, which is always
+ * complete. Every act draws its full scene on every device (quality policy, CLAUDE.md).
  *   startFlightStage(env)            Home §1.2 + §1.2b (called by the hero once its text is on screen)
  *   addAct(env, (stage) => act)      any other section: registers its act when the stage exists
  */
 import type { MotionEnv } from '../index';
-import type { Act, Quality, Stage } from './stage';
+import type { Act, Stage } from './stage';
 import { setStageLive } from './bridge';
 
 const EVENTS = ['pointermove', 'pointerdown', 'touchstart', 'wheel', 'keydown', 'scroll'] as const;
@@ -23,13 +24,14 @@ let pending: Promise<Stage | null> | null = null;
 
 /** The page's stage, or null when this visit runs without WebGL. */
 export function getStage(env: MotionEnv): Promise<Stage | null> {
-  if (env.tier === 'css' || env.reduce) return Promise.resolve(null);
+  if (env.tier === 'css') return Promise.resolve(null);
   pending ??= (async () => {
     await firstInteraction();
     try {
       const { Stage } = await import('./stage');
-      return new Stage(env.tier as Quality, () => {
-        // too slow / context lost → every section falls back to its DOM version for the rest of the visit
+      return new Stage(() => {
+        // WebGL context lost → every section falls back to its DOM version for the rest of the visit
+        // (all GSAP / ScrollTrigger scenes keep running; only the canvas is gone)
         env.tier = 'css';
         document.documentElement.dataset.tier = 'css';
         pending = Promise.resolve(null);

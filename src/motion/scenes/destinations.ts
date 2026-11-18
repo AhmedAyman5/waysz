@@ -2,8 +2,7 @@
 import { gsap } from 'gsap';
 import type { Scene } from '../index';
 
-const scene: Scene = (root, env) => {
-  if (env.reduce) return;
+const scene: Scene = (root) => {
   const cards = gsap.utils.selector(root)('.dest-card') as HTMLElement[];
   cards.forEach((card, i) => {
     gsap.fromTo(card.querySelectorAll('.dest-card__icon :is(path, circle, line, rect, polyline)'),

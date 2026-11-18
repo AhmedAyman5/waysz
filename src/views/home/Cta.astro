@@ -71,9 +71,7 @@ const LIGHTS = 11;
     background: radial-gradient(closest-side, var(--color-ink) 12%, var(--color-accent) 38%, transparent);
     scale: var(--f); opacity: 0.3;
   }
-  @media (prefers-reduced-motion: no-preference) {
-    .cta:global(.is-live) .cta__lights span { animation: approach 1.9s linear infinite; animation-delay: calc(var(--i) * 0.11s - 2s); }
-  }
+  .cta:global(.is-live) .cta__lights span { animation: approach 1.9s linear infinite; animation-delay: calc(var(--i) * 0.11s - 2s); }
   @keyframes approach { 0%, 60%, 100% { opacity: 0.22; } 70% { opacity: 1; } 86% { opacity: 0.4; } }
 
   .cta__content { position: relative; text-align: center; padding-block: calc(76px + var(--space-6)) var(--space-9); }

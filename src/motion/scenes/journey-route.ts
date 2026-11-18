@@ -11,7 +11,6 @@ import { SplitText } from 'gsap/SplitText';
 import type { Scene } from '../index';
 
 const scene: Scene = (root, env) => {
-  if (env.reduce) return;
   const q = gsap.utils.selector(root);
   const stops = gsap.utils.toArray<HTMLElement>('.stop', root);
   const route = root.querySelector<HTMLElement>('.journey__route')!;

@@ -1,8 +1,10 @@
 /**
- * Visual QA: screenshots of a page while scrolling, for every language / viewport / tier.
+ * Visual QA: screenshots of a page while scrolling, for every language / viewport, with and without WebGL.
  *   node scripts/qa-shots.mjs [outDir] [--only=name-fragment] [--base=http://localhost:4321]
  * Needs the dev server (npm run dev) — the ?tier= override only exists in dev.
- * Uses the installed Google Chrome (channel "chrome") with the real GPU so WebGL tiers render.
+ * Uses the installed Google Chrome (channel "chrome") with the real GPU so the WebGL stage renders.
+ * The *-osreduce runs turn the OS "reduce motion" setting ON: the page must look exactly like the full run
+ * (quality policy — the setting changes nothing).
  */
 import { launch } from './qa-browser.mjs';
 import { mkdirSync, writeFileSync } from 'node:fs';
@@ -23,20 +25,19 @@ const stops = [0, 0.3, 0.6, 0.85, 1.0, 1.4, 2.0, 2.7, 3.3, 3.75, 3.95, 4.6];
 const mobileStops = [0, 0.3, 0.6, 0.85, 1.0, 1.3, 1.7, 2.1, 2.5, 2.65, 2.8, 3.4];
 
 const runs = [
-  { name: 'ar-desktop-high', path: '/?tier=high', viewport: desktop },
-  { name: 'en-desktop-high', path: '/en/?tier=high', viewport: desktop },
-  { name: 'ar-phone-lite', path: '/?tier=lite', viewport: phone, mobile: true },
-  { name: 'en-phone-lite', path: '/en/?tier=lite', viewport: phone, mobile: true },
+  { name: 'ar-desktop-full', path: '/?tier=full', viewport: desktop },
+  { name: 'en-desktop-full', path: '/en/?tier=full', viewport: desktop },
+  { name: 'ar-phone-full', path: '/?tier=full', viewport: phone, mobile: true },
+  { name: 'en-phone-full', path: '/en/?tier=full', viewport: phone, mobile: true },
   { name: 'ar-phone-css', path: '/?tier=css', viewport: phone, mobile: true },
   { name: 'ar-desktop-css', path: '/?tier=css', viewport: desktop },
   { name: 'ar-small-css', path: '/?tier=css', viewport: small, mobile: true },
   { name: 'en-small-css', path: '/en/?tier=css', viewport: small, mobile: true },
-  { name: 'en-desktop-reduced', path: '/en/', viewport: desktop, reduce: true, stops: [0, 1, 2, 3.5, 5, 6.5, 8, 9.5, 11] },
+  { name: 'en-desktop-osreduce', path: '/en/', viewport: desktop, reduce: true },
   { name: 'en-desktop-nojs', path: '/en/', viewport: desktop, nojs: true, stops: [0, 1, 2] },
-  { name: 'ar-desktop-reduced', path: '/', viewport: desktop, reduce: true, stops: [0, 1, 2] },
-  { name: 'ar-phone-reduced', path: '/', viewport: phone, mobile: true, reduce: true, stops: [0, 1, 2, 4, 6, 8, 10, 12, 14] },
+  { name: 'ar-phone-osreduce', path: '/', viewport: phone, mobile: true, reduce: true },
   { name: 'ar-desktop-nojs', path: '/', viewport: desktop, nojs: true, stops: [0, 1, 2] },
-  { name: 'ar-desktop-intro', path: '/?tier=high', viewport: desktop, intro: true, stops: [0] },
+  { name: 'ar-desktop-intro', path: '/?tier=full', viewport: desktop, intro: true, stops: [0] },
 ].filter((r) => !only || r.name.includes(only));
 
 const browser = await launch();

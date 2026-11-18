@@ -3,7 +3,7 @@
  * Immigration page — the eight services of brief §2.2. Scene: motion/scenes/dossier.ts.
  * Each service is a sheet of the visitor's file: wide screens hold the screen (CSS sticky, not a pin) and
  * scrolling slides the sheets past, each one settling upright as it reaches the middle while its icon draws
- * itself. Small screens / no JS / reduced motion: a plain list of the same sheets.
+ * itself. Small screens / no JS: a plain list of the same sheets.
  * A sheet links to /services/<slug>/ ONLY when that service file exists (src/content/services); the visa
  * sheet goes to WaysZ Visa; every other button goes to the consultation call at the end of the page.
  */
@@ -75,7 +75,7 @@ const button = (s: ServiceItem) =>
 </section>
 
 <style>
-  /* ---------- base: no JS / reduced motion / small screens — a list of sheets ---------- */
+  /* ---------- base: no JS / small screens — a list of sheets ---------- */
   .dossier { position: relative; background: var(--color-bg-alt); padding-block: var(--section-y); }
   .dossier__head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--space-5); }
   .dossier__title { font-size: clamp(2.4rem, 1.4rem + 4.6vw, 5.5rem); line-height: 1.16; max-width: 14ch; }

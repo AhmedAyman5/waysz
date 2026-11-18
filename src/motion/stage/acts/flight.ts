@@ -7,15 +7,13 @@ import {
   Color, LinearFilter, Mesh, OrthographicCamera, PlaneGeometry, Scene, ShaderMaterial,
   Texture, Vector2, VideoTexture,
 } from 'three';
-import type { Act, Quality } from '../stage';
+import type { Act } from '../stage';
 import { flight } from '../bridge';
 import { fragment, vertex } from '../shaders/flight.glsl';
 import { token } from './util';
 
-const DEFINES: Record<Quality, Record<string, number>> = {
-  high: { OCT: 5, LAYERS: 3, RAYS: 10 },
-  lite: { OCT: 3, LAYERS: 2, RAYS: 0 },
-};
+/** the full shader on every device (quality policy): 5 octaves, 3 cloud layers, god rays */
+const DEFINES = { OCT: 5, LAYERS: 3, RAYS: 10 };
 
 export function createFlightAct(host: HTMLElement, video: HTMLVideoElement, desktop: boolean): Act {
   const scene = new Scene();
@@ -53,7 +51,7 @@ export function createFlightAct(host: HTMLElement, video: HTMLVideoElement, desk
   const veilCloud = uniforms.uCloudLit.value;
   const veilPage = token('--color-bg', light);
 
-  const material = new ShaderMaterial({ uniforms, vertexShader: vertex, fragmentShader: fragment, defines: { ...DEFINES.lite } });
+  const material = new ShaderMaterial({ uniforms, vertexShader: vertex, fragmentShader: fragment, defines: { ...DEFINES } });
   const mesh = new Mesh(new PlaneGeometry(2, 2), material);
   mesh.frustumCulled = false;
   scene.add(mesh);
@@ -106,10 +104,6 @@ export function createFlightAct(host: HTMLElement, video: HTMLVideoElement, desk
     },
     resize(width, height) {
       uniforms.uRes.value.set(width, height);
-    },
-    setQuality(quality) {
-      material.defines = { ...DEFINES[quality] };
-      material.needsUpdate = true;
     },
     dispose() {
       window.removeEventListener('pointermove', onMove);

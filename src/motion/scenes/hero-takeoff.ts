@@ -19,7 +19,6 @@ const smooth = (a: number, b: number, x: number) => {
 const scene: Scene = async (root, env) => {
   const q = gsap.utils.selector(root);
   const title = root.querySelector<HTMLElement>('.hero__title')!;
-  if (env.reduce) { gsap.set(title, { autoAlpha: 1 }); return; }
 
   // ---------- entrance ----------
   // Lead + buttons are never hidden (they are the LCP). On a first visit they wait a few px lower under
@@ -47,7 +46,7 @@ const scene: Scene = async (root, env) => {
   })
     .to(q('.hero__text'), { y: -90, autoAlpha: 0, duration: 0.3 }, 0)
     .to(q('.hero__scrim'), { autoAlpha: 0, duration: 0.35 }, 0.25)
-    // CSS tier (ignored visually on the WebGL tiers: these layers are hidden there)
+    // css tier (no WebGL) only: these layers are hidden while the WebGL stage draws
     .to(q('.hero__plate'), { scale: 1.22, duration: 1 }, 0)
     .to(q('.hero__cloud--far'), { scale: 2.1, duration: 1 }, 0)
     .to(q('.hero__cloud--near'), { scale: 3.4, yPercent: -18, duration: 1 }, 0)
@@ -58,19 +57,27 @@ const scene: Scene = async (root, env) => {
   const tl = gsap.timeline({ delay: 0.15 }).to(split.words, { yPercent: 0, duration: 1.3, stagger: 0.07 });
   if (firstVisit) tl.to(followers, { y: 0, duration: 0.9, stagger: 0.1 }, 0.3);
   // After the LCP (text is on screen): start the WebGL stage — or, on the css tier, fetch the cloud
-  // photo layers (the WebGL tiers draw their clouds in the shader and never download them).
+  // photo layers (the WebGL stage draws its clouds in the shader and never downloads them).
+  const loadClouds = () =>
+    root.querySelectorAll<HTMLImageElement>('img[data-src]').forEach((img) => { img.src = img.dataset.src!; });
   tl.add(() => {
     if (env.tier === 'css') {
       // The cloud layers only matter once the camera pushes in, so they wait for the first interaction —
-      // loaded during page load they would be measured as the (late) largest paint on weak devices.
+      // loaded during page load they would be measured as the (late) largest paint.
       const events = ['pointermove', 'pointerdown', 'touchstart', 'wheel', 'keydown', 'scroll'] as const;
-      const load = () => {
-        events.forEach((e) => window.removeEventListener(e, load));
-        root.querySelectorAll<HTMLImageElement>('img[data-src]').forEach((img) => { img.src = img.dataset.src!; });
-      };
+      const load = () => { events.forEach((e) => window.removeEventListener(e, load)); loadClouds(); };
       if (window.scrollY > 0) load();
       else events.forEach((e) => window.addEventListener(e, load, { passive: true }));
-    } else void startFlightStage(env);
+    } else {
+      void startFlightStage(env);
+      // WebGL context lost later → the css version takes over: it needs its cloud layers now
+      const watch = new MutationObserver(() => {
+        if (document.documentElement.dataset.tier !== 'css') return;
+        watch.disconnect();
+        loadClouds();
+      });
+      watch.observe(document.documentElement, { attributes: true, attributeFilter: ['data-tier'] });
+    }
   }, 0.8);
 };
 export default scene;

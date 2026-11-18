@@ -89,7 +89,8 @@ bdi { unicode-bidi: isolate; }
 /* ==========================================================================
    Motion boot (see .claude/skills/waysz-motion/SKILL.md)
    Hide ONLY what JavaScript will reveal. The boot script in <head> adds .js,
-   and removes it again after 4s if motion never starts (failsafe).
+   and removes it again at DOMContentLoaded if the motion module never ran
+   (failsafe). Every visitor gets the same motion: no reduced-motion branch.
    ========================================================================== */
 .preloader { display: none; }
 .js:not(.intro-seen) .preloader { display: grid; }
@@ -98,14 +99,8 @@ bdi { unicode-bidi: isolate; }
 .js [data-split],
 .js [data-intro] { visibility: hidden; }
 
-@media (prefers-reduced-motion: reduce) {
-  .js [data-reveal],
-  .js [data-split],
-  .js [data-intro] { visibility: visible; }
-}
-
 /* Desktop only: hide the scrollbar — the flight rail replaces it */
-@media (pointer: fine) and (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+@media (pointer: fine) and (min-width: 1024px) {
   html.js { scrollbar-width: none; }
   html.js::-webkit-scrollbar { display: none; }
 }
@@ -114,23 +109,12 @@ bdi { unicode-bidi: isolate; }
 .js .faq__panel { height: 0; overflow: hidden; }
 
 /* ---------- Page transitions: native cross-document View Transitions ---------- */
-@media (prefers-reduced-motion: no-preference) {
-  @view-transition { navigation: auto; }
-  ::view-transition-old(root) { animation: 0.35s var(--ease-in-out) both vt-out; }
-  ::view-transition-new(root) { animation: 0.6s var(--ease-out) both vt-in; }
-  .site-header { view-transition-name: site-header; }
-}
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: 0.35s var(--ease-in-out) both vt-out; }
+::view-transition-new(root) { animation: 0.6s var(--ease-out) both vt-in; }
+.site-header { view-transition-name: site-header; }
 @keyframes vt-out { to { opacity: 0; transform: scale(0.98); } }
 @keyframes vt-in  { from { clip-path: inset(100% 0 0 0); } to { clip-path: inset(0 0 0 0); } }
-
-/* ---------- Reduced motion: kill CSS animations/transitions globally ---------- */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
 
 /* ---------- data-spotlight (pointer light, desktop) — JS sets --mx / --my ---------- */
 [data-spotlight] { position: relative; isolation: isolate; }

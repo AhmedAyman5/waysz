@@ -5,7 +5,7 @@
  * Beside them a sealed file: its lines are covered, and only the pointer's light shows the writing under them
  * (data-spotlight sets --mx / --my). It is decorative (aria-hidden, drawn strokes, nothing to read): the real
  * sentence about confidentiality is always readable in the list. Touch / no pointer: a slow light crosses it.
- * No JS / reduced motion: the list and the file, still.
+ * No JS: the list and the file, still.
  */
 import type { Lang } from '../../i18n';
 
@@ -118,7 +118,7 @@ const rows = [[40, 150, 3], [58, 196, 5], [76, 176, 7], [94, 196, 2], [112, 120,
   }
   .file__seal { position: absolute; inset-inline-end: 9%; bottom: 8%; fill: none; stroke: var(--color-accent); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
   @media (hover: none), (max-width: 1023px) {
-    @media (prefers-reduced-motion: no-preference) { .file { animation: file-sweep 7s var(--ease-in-out) infinite alternate; } }
+    .file { animation: file-sweep 7s var(--ease-in-out) infinite alternate; }
   }
   @property --mx { syntax: '<length-percentage>'; inherits: true; initial-value: 30%; }
   @property --my { syntax: '<length-percentage>'; inherits: true; initial-value: 24%; }

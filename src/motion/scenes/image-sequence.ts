@@ -2,7 +2,7 @@
  * Scroll-scrubbed image sequence (ImageSequence.astro) — Home §1.2b "The Journey".
  * Pinned; scroll plays the footage frame by frame; captions take turns at their data-at points.
  * Draws on its own 2D canvas, or hands the frame to the WebGL stage when that is live (data-veil = Home).
- * Frames load in order, only once the section is near (see the trigger below). Reduced motion: CSS still + captions.
+ * Frames load in order, only once the section is near (see the trigger below). No JS: CSS still + captions.
  */
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -13,8 +13,7 @@ import { flight, onStageLive } from '../stage/bridge';
 const PARALLEL = 3;
 const clamp01 = gsap.utils.clamp(0, 1);
 
-const scene: Scene = (root, env) => {
-  if (env.reduce) return;
+const scene: Scene = (root) => {
 
   const small = matchMedia(BP.mobile).matches;
   const mobileSet = small && !!root.dataset.mobile && Number(root.dataset.mobileFrames) > 0;

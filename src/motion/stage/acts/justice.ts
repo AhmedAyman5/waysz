@@ -12,8 +12,8 @@
  * DEPTH: the shared canvas has no depth buffer, so the world is drawn into this act's own render target
  * (depth + MSAA, linear HDR) in `prerender`; `scene` is one full-screen pass that finishes the picture
  * (god rays, tone mapping, grain). One renderer, one context — see stage.ts.
- * Tiers: high = fluted columns, roughness/bump maps, 4× MSAA, god rays, 4 physics steps per frame;
- *        lite = the same model with plain materials, fewer segments, 2× MSAA, a glow instead of rays, 2 steps.
+ * Every device gets the full scene (quality policy): fluted columns, roughness/bump maps, 4× MSAA, god rays,
+ * 4 physics steps per frame. Only the stage's render scale adapts.
  * The scene is decorative: every service, description and link lives in the DOM.
  */
 import {
@@ -26,7 +26,7 @@ import {
   ZeroFactor, type Texture, type WebGLRenderer,
 } from 'three';
 import { HDRLoader } from 'three/examples/jsm/loaders/HDRLoader.js';
-import type { Act, Quality } from '../stage';
+import type { Act } from '../stage';
 import { justice } from '../bridge';
 import {
   dustFragment, dustVertex, finishFragment, finishVertex, shaftFragment, shaftVertex, skyFragment, skyVertex,
@@ -137,8 +137,7 @@ function engravingAtlas(icons: string[]) {
   return tex;
 }
 
-export function createJusticeAct(host: HTMLElement, quality: Quality): Act {
-  const high = quality === 'high';
+export function createJusticeAct(host: HTMLElement): Act {
   const keep: { dispose(): void }[] = [];
   const own = <T extends { dispose(): void }>(x: T) => { keep.push(x); return x; };
 
@@ -162,10 +161,10 @@ export function createJusticeAct(host: HTMLElement, quality: Quality): Act {
   world.fog = new FogExp2(cNavy.clone().lerp(cHorizon, 0.5).multiplyScalar(0.55), 0.021);
   const camera = new PerspectiveCamera(FOV, 1, 0.3, 400);
 
-  const noise = high ? own(noiseTexture(256)) : null;
+  const noise = own(noiseTexture(256));
   const metal = (color: Color, roughness: number, bump = 0.012) => {
     const m = own(new MeshStandardMaterial({ color, metalness: 1, roughness, envMapIntensity: 0.9 }));
-    if (noise) { m.roughnessMap = noise; m.bumpMap = noise; m.bumpScale = bump; m.roughness = roughness * 1.5; }
+    m.roughnessMap = noise; m.bumpMap = noise; m.bumpScale = bump; m.roughness = roughness * 1.5;
     return m;
   };
   const brass = metal(cBrass, 0.3);
@@ -204,7 +203,7 @@ export function createJusticeAct(host: HTMLElement, quality: Quality): Act {
   floor.position.z = 30;
   if (noise) { floorMat.roughnessMap = noise; floorMat.roughness = 0.62; }
   world.add(floor);
-  const plinth = new Mesh(own(lathe([[0, 0], [1.6, 0], [1.6, 0.13], [1.53, 0.18], [0, 0.18]], high ? 72 : 40)), stone);
+  const plinth = new Mesh(own(lathe([[0, 0], [1.6, 0], [1.6, 0.13], [1.53, 0.18], [0, 0.18]], 72)), stone);
   world.add(plinth);
   // contact shadow: a soft dark disc (no shadow maps on the shared renderer)
   const blobCanvas = document.createElement('canvas');
@@ -227,7 +226,7 @@ export function createJusticeAct(host: HTMLElement, quality: Quality): Act {
   const panShadow = [blob(-ARM, 0.194, 0, 1.25), blob(ARM, 0.194, 0, 1.25)];
 
   // ---------- the scales ----------
-  const seg = high ? 64 : 32;
+  const seg = 64;
   const stand = new Mesh(own(lathe([
     [0, 0.18], [0.6, 0.18], [0.66, 0.21], [0.64, 0.26], [0.52, 0.3], [0.5, 0.36], [0.34, 0.41], [0.22, 0.5], [0.13, 0.62],
     [0.085, 0.8], [0.1, 0.9], [0.16, 0.98], [0.1, 1.07], [0.07, 1.2], [0.055, 1.7], [0.06, 2.3], [0.085, 2.4], [0.13, 2.48],
@@ -242,11 +241,11 @@ export function createJusticeAct(host: HTMLElement, quality: Quality): Act {
     [0, -ARM - 0.05], [0.04, -ARM - 0.03], [0.058, -ARM], [0.036, -ARM + 0.06], [0.03, -0.9], [0.05, -0.62], [0.036, -0.34],
     [0.05, -0.17], [0.1, -0.06], [0.115, 0], [0.1, 0.06], [0.05, 0.17], [0.036, 0.34], [0.05, 0.62], [0.03, 0.9],
     [0.036, ARM - 0.06], [0.058, ARM], [0.04, ARM + 0.03], [0, ARM + 0.05],
-  ], high ? 28 : 16, 120));
+  ], 28, 120));
   armGeo.rotateZ(Math.PI / 2);
   // the needle above the pivot shows the balance, like on a real pair of scales
-  const needle = own(lathe([[0, 0.08], [0.05, 0.1], [0.028, 0.18], [0.018, 0.36], [0.05, 0.44], [0.06, 0.5], [0.03, 0.58], [0, 0.66]], high ? 24 : 12, 60));
-  const boss = own(new TorusGeometry(0.13, 0.022, 10, high ? 40 : 24));
+  const needle = own(lathe([[0, 0.08], [0.05, 0.1], [0.028, 0.18], [0.018, 0.36], [0.05, 0.44], [0.06, 0.5], [0.03, 0.58], [0, 0.66]], 24, 60));
+  const boss = own(new TorusGeometry(0.13, 0.022, 10, 40));
   beam.add(new Mesh(armGeo, brass), new Mesh(needle, brass), new Mesh(boss, brass));
 
   // a pan with its hook and three chains; local origin = the point it hangs from
@@ -312,8 +311,8 @@ export function createJusticeAct(host: HTMLElement, quality: Quality): Act {
     const body = own(lathe([
       [0, 0], [R * 0.9, 0], [R, 0.014], [R, h * 0.4], [R * 0.93, h * 0.47], [R * 0.93, h * 0.53], [R, h * 0.6], [R, h - 0.014],
       [R * 0.94, h], [R * 0.82, h], [R * 0.8, h - 0.01], [0, h - 0.01],
-    ], high ? 48 : 28));
-    const face = own(new CircleGeometry(R * 0.8, high ? 48 : 28));
+    ], 48));
+    const face = own(new CircleGeometry(R * 0.8, 48));
     face.rotateX(-Math.PI / 2);
     if (!last) {                                          // its own cell of the atlas
       const uv = face.attributes.uv;
@@ -342,12 +341,12 @@ export function createJusticeAct(host: HTMLElement, quality: Quality): Act {
   let waveT = 1;
 
   // ---------- the hall: a colonnade toward the scales and an apse behind them ----------
-  const colSeg = high ? 80 : 20;
+  const colSeg = 80;
   const shaft: [number, number][] = [[0.64, 0], [0.64, 0.12], [0.57, 0.16], [0.62, 0.25], [0.53, 0.31], [0.5, 0.38]];
   for (let i = 0; i <= 12; i++) { const t = i / 12; shaft.push([0.47 - 0.085 * Math.pow(t, 1.7), 0.42 + t * 7.86]); }
   shaft.push([0.4, 8.33], [0.43, 8.4], [0.56, 8.6], [0.6, 8.7], [0, 8.7]);
   const colGeo = own(lathe(shaft, colSeg));
-  if (high) {                                             // flutes: carve the shaft
+  {                                                       // flutes: carve the shaft
     const pos = colGeo.attributes.position;
     for (let i = 0; i < pos.count; i++) {
       const x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i);
@@ -379,7 +378,7 @@ export function createJusticeAct(host: HTMLElement, quality: Quality): Act {
   }
   const arc = ((APSE.at(-1)! - APSE[0] + 10) * Math.PI) / 180;
   const ringProfile = [[APSE_R - 0.58, COL_H], [APSE_R + 0.58, COL_H], [APSE_R + 0.58, COL_H + 1], [APSE_R - 0.58, COL_H + 1], [APSE_R - 0.58, COL_H]].map(([r, y]) => new Vector2(r, y));
-  const apseRing = new Mesh(own(new LatheGeometry(ringProfile, high ? 48 : 24, Math.PI - arc / 2, arc)), stone);
+  const apseRing = new Mesh(own(new LatheGeometry(ringProfile, 48, Math.PI - arc / 2, arc)), stone);
   world.add(apseRing);
 
   // ---------- light shafts through the gaps, and their pools on the floor ----------
@@ -402,7 +401,7 @@ export function createJusticeAct(host: HTMLElement, quality: Quality): Act {
   const up = new Vector3(0, 1, 0);
   gaps.forEach(([mid, across], g) => {
     const half = 1.45, far = L.clone().multiplyScalar(reach);
-    for (const off of high ? [-0.9, 0, 0.9] : [0]) {      // a few sheets per gap read as a volume
+    for (const off of [-0.9, 0, 0.9]) {      // a few sheets per gap read as a volume
       const base = mid.clone().addScaledVector(across, off);
       const a = base.clone().addScaledVector(up, COL_H * 0.98), b = base.clone().addScaledVector(up, 0.4);
       quad(a, b, b.clone().addScaledVector(L, reach * 0.9), a.clone().add(far), 0, g * 0.37 + off);
@@ -430,7 +429,7 @@ export function createJusticeAct(host: HTMLElement, quality: Quality): Act {
   world.add(shafts);
 
   // ---------- dust in the light ----------
-  const dustCount = high ? 1500 : 420;
+  const dustCount = 1500;
   const dPos = new Float32Array(dustCount * 3), dSeed = new Float32Array(dustCount);
   let seed = 23;
   const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
@@ -459,7 +458,7 @@ export function createJusticeAct(host: HTMLElement, quality: Quality): Act {
   const flatCamera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
   const finish = own(new ShaderMaterial({
     vertexShader: finishVertex, fragmentShader: finishFragment, depthTest: false, depthWrite: false,
-    defines: { RAYS: high ? 28 : 0 },
+    defines: { RAYS: 28 },
     uniforms: {
       tScene: { value: null as Texture | null }, uSun: { value: new Vector2(0.3, 0.6) }, uRes: { value: new Vector2(1, 1) },
       uSunOn: { value: 0 }, uVeil: { value: 0 }, uDim: { value: 1 }, uTime: time, uExposure: { value: 1.0 },
@@ -611,7 +610,7 @@ export function createJusticeAct(host: HTMLElement, quality: Quality): Act {
 
       const float = renderer.extensions.has('EXT_color_buffer_float') || renderer.extensions.has('EXT_color_buffer_half_float');
       target = own(new WebGLRenderTarget(Math.max(width, 2), Math.max(height, 2), {
-        type: float ? HalfFloatType : UnsignedByteType, depthBuffer: true, stencilBuffer: false, samples: high ? 4 : 2,
+        type: float ? HalfFloatType : UnsignedByteType, depthBuffer: true, stencilBuffer: false, samples: 4,
         minFilter: LinearFilter, magFilter: LinearFilter, generateMipmaps: false,
       }));
       finish.uniforms.tScene.value = target.texture;
@@ -641,7 +640,7 @@ export function createJusticeAct(host: HTMLElement, quality: Quality): Act {
       ndc.set(0, PIVOT_Y, 0).project(camera);
       near.beam = 1 - smooth(clamp(Math.hypot((ndc.x - pointer.x) * aspect, ndc.y - pointer.y) / 1.1));
 
-      const steps = justice.poster ? 0 : high ? 4 : 2;
+      const steps = justice.poster ? 0 : 4;
       for (let i = 0; i < steps; i++) physics(dt / steps, t);
       place();
       weights.forEach((w, i) => fly(w, i, dt));
@@ -703,7 +702,6 @@ export function createJusticeAct(host: HTMLElement, quality: Quality): Act {
       finish.uniforms.uRes.value.set(width, height);
       dustMat.uniforms.uSize.value = height * 0.055;
     },
-    setQuality() { /* geometry, maps and samples are fixed when the act is created */ },
     dispose() {
       window.removeEventListener('pointermove', onPointer);
       keep.forEach((d) => d.dispose());

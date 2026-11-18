@@ -8,8 +8,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import type { Scene } from '../index';
 
-const scene: Scene = (root, env) => {
-  if (env.reduce) return;
+const scene: Scene = (root) => {
   const q = gsap.utils.selector(root);
   const title = root.querySelector<HTMLElement>('.cta__title')!;
   const words = SplitText.create(title, { type: 'words', mask: 'words', wordsClass: 'w', aria: 'auto' }).words;

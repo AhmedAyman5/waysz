@@ -19,7 +19,6 @@ const HOPS = [[0.14, 0.36], [0.42, 0.64], [0.7, 0.92]];
 
 const scene: Scene = (root, env) => {
   const steps = gsap.utils.toArray<HTMLElement>('.step', root);
-  if (env.reduce) return;
   const q = gsap.utils.selector(root);
   const host = root.querySelector<HTMLElement>('.how__stage')!;
   const track = root.querySelector<HTMLElement>('.how__track')!;
@@ -65,12 +64,12 @@ const scene: Scene = (root, env) => {
     }
   });
 
-  // WebGL tiers: load the globe (its own chunk + the night map) when the section is near
+  // WebGL: load the globe (its own chunk + the night map) when the section is near
   ScrollTrigger.create({
     trigger: root, start: 'top 250%', once: true,
     onEnter: () => {
       if (env.tier === 'css') return;
-      void addAct(env, async () => (await import('../stage/acts/globe')).createGlobeAct(host, env.tier === 'high' ? 'high' : 'lite'));
+      void addAct(env, async () => (await import('../stage/acts/globe')).createGlobeAct(host));
     },
   });
 

@@ -77,8 +77,7 @@ function buildTimeline(svc: HTMLElement) {
   return tl;
 }
 
-const scene: Scene = (root, env) => {
-  if (env.reduce) return;
+const scene: Scene = (root) => {
   const services = gsap.utils.toArray<HTMLElement>('.svc', root);
   const ticks = gsap.utils.toArray<HTMLElement>('.forge__ticks span', root);
   const n = services.length;

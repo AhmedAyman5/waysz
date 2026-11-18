@@ -9,7 +9,7 @@
  *   opposing trails meet and leave as one line.
  * The row of six small weights is real buttons: hover / focus drops that weight early, click goes to its service.
  * The moments are decorative (aria-hidden); the path marked data-engrave is also what the act engraves on the
- * weight. No JS / reduced motion: a grid of cards, every moment in its finished state.
+ * weight. No JS: a grid of cards, every moment in its finished state.
  * Every card links to its detail page (/services/<slug>/): the six files exist in src/content/services.
  */
 import { localizePath, useTranslations, type Lang } from '../../i18n';
@@ -111,7 +111,7 @@ const moments: Record<Fx, string> = {
 </section>
 
 <style>
-  /* ---------- base: no JS / reduced motion — a grid of cards ---------- */
+  /* ---------- base: no JS — a grid of cards ---------- */
   .lsvc-sec { position: relative; padding-block: var(--section-y); }
   .lsvc__scrim { display: none; }
   .lsvc__head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--space-5); }

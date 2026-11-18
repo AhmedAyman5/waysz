@@ -11,7 +11,6 @@ import type { Scene } from '../index';
 import { lenis } from '../smooth-scroll';
 
 const scene: Scene = (root, env) => {
-  if (env.reduce) return;
   const track = root.querySelector<HTMLElement>('.dossier__track')!;
   const sheets = gsap.utils.toArray<HTMLElement>('.sheet', root);
   const now = root.querySelector<HTMLElement>('.dossier__now')!;

@@ -4,19 +4,19 @@
  * swarm of glyphs drifting in depth. A glyph atlas is drawn once on a 2D canvas with the page's own monospace
  * font. Behind them a full-screen backdrop draws the dusk footage exactly like the DOM version.
  * Reads `code` from ../bridge (written by scenes/code-hero.ts). No text lives here: the canvas is decorative.
- * Glyphs per tier: the code (about 110) + a swarm of 1100 (high) or 320 (lite).
+ * Glyphs: the code (about 110) + a swarm of 1100, on every device.
  */
 import { gsap } from 'gsap';
 import {
   CanvasTexture, InstancedBufferAttribute, InstancedBufferGeometry, LinearFilter, LinearMipmapLinearFilter, Mesh,
   PerspectiveCamera, PlaneGeometry, Scene, ShaderMaterial, Texture, Vector2, VideoTexture,
 } from 'three';
-import type { Act, Quality } from '../stage';
+import type { Act } from '../stage';
 import { code } from '../bridge';
 import { backdropFragment, backdropVertex, glyphFragment, glyphVertex } from '../shaders/glyphs.glsl';
 import { token } from './util';
 
-const SWARM: Record<Quality, number> = { high: 1100, lite: 320 };
+const SWARM = 1100;                                       // swarm glyphs, on every device (quality policy)
 const MAX_CODE = 400;
 const DIST = 1000;                  // camera distance: at z = 0 one world unit is one CSS pixel
 const DEPTH = 2600;                 // how far back the swarm reaches
@@ -77,7 +77,7 @@ export function createGlyphAct(host: HTMLElement, video: HTMLVideoElement, poste
   scene.add(backMesh);
 
   // ---------- glyphs ----------
-  const total = MAX_CODE + SWARM.high;
+  const total = MAX_CODE + SWARM;
   const slot = new Float32Array(total * 3), from = new Float32Array(total * 3);
   const cell = new Float32Array(total * 2), meta = new Float32Array(total * 4);
   const quad = new PlaneGeometry(1, 1);
@@ -113,7 +113,6 @@ export function createGlyphAct(host: HTMLElement, video: HTMLVideoElement, poste
   mesh.renderOrder = 1;
   scene.add(mesh);
 
-  let quality: Quality = 'lite';
   let built = -1, builtW = 0, builtH = 0, codeCount = 0, atlasKey = '';
   let cw = 1, ch = 1;                                       // atlas cell, in atlas pixels
 
@@ -183,7 +182,7 @@ export function createGlyphAct(host: HTMLElement, video: HTMLVideoElement, poste
       }
     }
     Object.values(attrs).forEach((a) => { a.needsUpdate = true; });
-    geometry.instanceCount = codeCount + SWARM[quality];
+    geometry.instanceCount = codeCount + SWARM;
   };
 
   // ---------- pointer: position in host pixels (centred, y up) + field strength ----------
@@ -242,10 +241,6 @@ export function createGlyphAct(host: HTMLElement, video: HTMLVideoElement, poste
       camera.aspect = w / h;
       camera.fov = (2 * Math.atan(h / 2 / DIST) * 180) / Math.PI;
       camera.updateProjectionMatrix();
-    },
-    setQuality(q) {
-      quality = q;
-      if (built >= 0) geometry.instanceCount = codeCount + SWARM[q];
     },
     dispose() {
       window.removeEventListener('pointermove', onMove);

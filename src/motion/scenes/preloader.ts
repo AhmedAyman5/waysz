@@ -4,10 +4,10 @@ import type { Scene } from '../index';
 import { LOGO } from '../config';
 import { lenis } from '../smooth-scroll';
 
-const scene: Scene = (root, env) => {
+const scene: Scene = (root) => {
   const html = document.documentElement;
   const finish = () => window.dispatchEvent(new Event('waysz:intro-done'));
-  if (html.classList.contains('intro-seen') || env.reduce) { root.remove(); finish(); return; }
+  if (html.classList.contains('intro-seen')) { root.remove(); finish(); return; }
   try { sessionStorage.setItem('waysz-intro', '1'); } catch { /* private mode */ }
   lenis?.stop();
 

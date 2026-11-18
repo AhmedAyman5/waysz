@@ -10,7 +10,7 @@ import {
   RingGeometry, Scene, ShaderMaterial, SphereGeometry, TextureLoader, TubeGeometry, Vector3,
   type Material, type Texture,
 } from 'three';
-import type { Act, Quality } from '../stage';
+import type { Act } from '../stage';
 import { route } from '../bridge';
 import { arcFragment, arcVertex, globeFragment, globeVertex, haloFragment } from '../shaders/globe.glsl';
 import { token } from './util';
@@ -31,7 +31,7 @@ const STOPS: [number, number][] = [[30.0, 31.2], [25.2, 55.3], [13.7, 100.5], [3
 const AMBIENT: [number, number][] = [[48.8, 2.3], [51.5, -0.1], [40.7, -74.0], [-26.2, 28.0], [55.7, 37.6], [-33.9, 151.2], [6.5, 3.4]];
 const FOV = 28;
 
-export function createGlobeAct(host: HTMLElement, quality: Quality): Act {
+export function createGlobeAct(host: HTMLElement): Act {
   const scene = new Scene();
   const camera = new PerspectiveCamera(FOV, 1, 0.1, 100);
   const navy = token('--color-bg', host);
@@ -51,7 +51,7 @@ export function createGlobeAct(host: HTMLElement, quality: Quality): Act {
   const sunDir = { value: new Vector3(-0.75, 0.35, 0.55).normalize() };
 
   // stars — a still backdrop
-  const starCount = quality === 'high' ? 700 : 350;
+  const starCount = 700;
   const starPos = new Float32Array(starCount * 3);
   let seed = 7;
   const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
@@ -75,13 +75,13 @@ export function createGlobeAct(host: HTMLElement, quality: Quality): Act {
 
   let map: Texture | null = null;
   let ready = false;
-  const segments = quality === 'high' ? 72 : 48;
+  const segments = 72;
   const sphereGeo = keep(new SphereGeometry(1, segments, segments / 2));
   const globeMat = keep(new ShaderMaterial({
     vertexShader: globeVertex, fragmentShader: globeFragment, ...flat,
     uniforms: { uMap: { value: null }, uAmber: { value: amber }, uNavy: { value: navy }, uSky: { value: sky }, uSunDir: sunDir, uFade: fade },
   }));
-  new TextureLoader().load(`/media/img/earth-night${quality === 'high' ? '' : '-m'}.webp`, (t) => {
+  new TextureLoader().load('/media/img/earth-night.webp', (t) => {
     t.minFilter = t.magFilter = LinearFilter;
     t.generateMipmaps = false;
     map = t;
@@ -230,7 +230,6 @@ export function createGlobeAct(host: HTMLElement, quality: Quality): Act {
       });
     },
     resize(width, height) { aspect = width / Math.max(height, 1); layout(); },
-    setQuality() { /* geometry and texture size are fixed when the act is created */ },
     dispose() {
       disposables.forEach((d) => d.dispose());
       (plane.material as Material).dispose();

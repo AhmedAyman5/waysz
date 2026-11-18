@@ -1,6 +1,5 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import type { MotionEnv } from '../index';
 import { isFree } from './util';
 
 const FROM: Record<string, gsap.TweenVars> = {
@@ -11,10 +10,9 @@ const FROM: Record<string, gsap.TweenVars> = {
 };
 
 /** data-reveal="up|fade|scale|clip" — enters once when 85% into view. Use sparingly. */
-export function initReveal(env: MotionEnv) {
+export function initReveal() {
   const items = gsap.utils.toArray<HTMLElement>('[data-reveal]').filter(isFree);
   if (!items.length) return;
-  if (env.reduce) { gsap.set(items, { autoAlpha: 1 }); return; }
   ScrollTrigger.batch(items, {
     start: 'top 85%',
     once: true,

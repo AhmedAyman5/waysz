@@ -57,12 +57,17 @@ const enUrl = new URL(switchLangPath(path, 'en'), Astro.site);
         var html = document.documentElement;
         html.classList.add('js');
         try {
-          if (sessionStorage.getItem('waysz-intro') ||
-              matchMedia('(prefers-reduced-motion: reduce)').matches) html.classList.add('intro-seen');
+          if (sessionStorage.getItem('waysz-intro')) html.classList.add('intro-seen');
         } catch (e) { html.classList.add('intro-seen'); }
-        setTimeout(function () {
-          if (!html.classList.contains('motion-ready')) html.classList.remove('js');
-        }, 4000);
+        // Failsafe: the motion module adds .motion-boot as its first step. Module scripts always run BEFORE
+        // DOMContentLoaded (Chrome, Edge, Firefox, Safari), so this only fires when the module really did not
+        // run (download failed, script error, no ES modules) — never on a healthy browser, however slow the
+        // network: then the page drops .js and shows its plain no-JS version.
+        document.addEventListener('DOMContentLoaded', function () {
+          setTimeout(function () {
+            if (!html.classList.contains('motion-boot')) html.classList.remove('js');
+          }, 0);
+        });
       })();
     </script>
   </head>

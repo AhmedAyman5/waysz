@@ -50,10 +50,11 @@ for (const device of [
     return {
       frames: d.length, median: at(0.5), p95: at(0.95), worst: d.at(-1),
       over33: d.filter((x) => x > 33.4).length, over50: d.filter((x) => x > 50).length,
-      tier: document.documentElement.dataset.tier, live: !!document.querySelector('[data-flight].is-live'),
+      tier: document.documentElement.dataset.tier, live: !!document.querySelector('.stage-canvas.is-on'),
+      ratio: document.querySelector('.stage-canvas')?.dataset.ratio ?? '-',
     };
   });
-  console.log(`${name} · CPU ${rate}x · tier ${stats.tier} (WebGL live: ${stats.live}) · ${stats.frames} frames · median ${stats.median.toFixed(1)}ms · p95 ${
+  console.log(`${name} · CPU ${rate}x · tier ${stats.tier} (WebGL drew: ${stats.live}, render ratio ${stats.ratio}) · ${stats.frames} frames · median ${stats.median.toFixed(1)}ms · p95 ${
     stats.p95.toFixed(1)}ms · worst ${stats.worst.toFixed(0)}ms · >33ms: ${stats.over33} · >50ms: ${stats.over50}`);
   await context.close();
 }

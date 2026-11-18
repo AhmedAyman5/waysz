@@ -5,7 +5,7 @@
  * A real-time 3D pair of scales (stage act `justice`) stands behind the whole page: it starts out of balance
  * with a stone on one pan, every service puts its engraved weight on the other, and it reaches perfect balance
  * exactly at the consultation call. ONE stage host holds the screen for the whole page (CSS sticky); the
- * sections scroll over it. css tier / reduced motion / no JS: a still of the balanced scales and plain flow.
+ * sections scroll over it. css tier (no WebGL) / no JS: a still of the balanced scales and plain flow.
  *   hero → the six services (weights) → «كيف يمكننا مساعدتك؟» (a walk between the columns, nine specialties)
  *   → why (§1.4, the four points that matter for legal work) → how we work → FAQ → the call
  * One file per section in views/legal/. Copy: brief §2.1, §1.4 and template sample (أ); Arabic is the source.
@@ -69,7 +69,7 @@ const faq = [pick('family-law', 0), pick('criminal-law', 0), pick('civil-law', 0
   .legal { position: relative; background: var(--color-bg); }
   .legal__stage { position: sticky; inset: 0 auto auto 0; width: 100%; height: 100vh; height: 100lvh; }
   .legal__body { position: relative; margin-block-start: -100vh; margin-block-start: -100lvh; }
-  /* the still of the balanced scales (css tier, reduced motion, no JS) steps aside while the canvas paints */
+  /* the still of the balanced scales (css tier, no JS) steps aside while the canvas paints */
   .legal .scales-still { transition: opacity 0.9s var(--ease-out); }
   .legal__stage.is-drawing ~ .legal__body .scales-still { opacity: 0; }
   /* dev: re-rendering the still (scripts/render-scales-still.mjs) */

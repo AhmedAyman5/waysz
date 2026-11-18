@@ -57,14 +57,14 @@ One real pin (the Journey). The hero, the four areas, "why" and "how" hold the s
 - **Lenis** smooth scroll (already there) on `gsap.ticker`.
 - **Flight progress** — the existing flight rail becomes the flight-progress indicator: plane on a
   dashed line with one tick per section; mobile gets a 2px amber progress line under the header.
-- **Grain + vignette** — in the shader on high tier, a tiny tiled noise PNG via CSS on low tier.
+- **Grain + vignette** — in the shader with WebGL; a tiny tiled noise PNG via CSS in the no-WebGL fallback.
 - **Pointer light** — the amber sun glow follows the pointer inside dark sections (extends `data-spotlight`).
 - **Magnetic buttons** (existing) on the primary CTAs only. Native view transitions stay as they are.
 - ScrambleText is not used on Home (Arabic first); it stays allowed for Latin-only labels elsewhere.
 
-## 4 · 3D layer — architecture and tiers
+## 4 · 3D layer — architecture and quality policy
 
-`src/motion/stage/` — `stage.ts` (renderer, ticker, visibility, watchdog, dispose), `tier.ts`,
+`src/motion/stage/` — `stage.ts` (renderer, ticker, visibility, render scale, dispose), `tier.ts`,
 `bridge.ts` (scroll state shared with the DOM scenes), `acts/*.ts` (one module per scene), `shaders/*.glsl.ts`.
 
 - Created lazily: after `waysz:intro-done`, once the hero text is on screen, on the first interaction;
@@ -74,20 +74,23 @@ One real pin (the Journey). The hero, the four areas, "why" and "how" hold the s
 - Disposal on `pagehide`: geometries, materials, textures, `renderer.dispose()`, `forceContextLoss()`;
   ticker callbacks removed. `webglcontextlost` → the DOM version takes over; nothing breaks.
 
-**Tiers are chosen by what the device can do — never by "mobile".** Most of our audience is on phones,
-so a capable phone gets real WebGL:
+**Quality policy (client decision, 2026-11-18 — see CLAUDE.md): every visitor gets the same full experience at
+the highest quality.** No capability tiers, no reduced-motion or saveData branch, no motion toggle:
 
-| Tier     | Who gets it                                                                                                      | Hero                                                                                  | Journey                                                    |
-| -------- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
-| **high** | desktop-class device (≥ 1024px + fine pointer) with WebGL2, a hardware GPU, ≥ 4 cores                            | video texture + 3 shader cloud layers (5 noise octaves) + god rays + grain · DPR ≤ 1.5 | frames as texture + streaks + cloud fly-through            |
-| **lite** | capable phones / tablets / touch laptops: WebGL2, hardware GPU not on the weak list, ≥ 4 cores, ≥ 4 GB if reported | same scene, cheaper: 2 cloud layers (3 octaves), sun glow instead of rays · DPR ≤ 1.25 | same, with the lighter portrait frame set (70 frames)      |
-| **css**  | weak GPU (old Adreno/Mali/PowerVR, software rendering), no WebGL2, < 4 cores, < 4 GB, `saveData`                 | plain `<video>` + 2 cloud photo layers + CSS veil                                     | 2D-canvas sequence + CSS veil                              |
-| static   | reduced motion, or JS off                                                                                        | poster image, text in final state                                                     | first frame, all captions visible, no pin                  |
+| State     | Who gets it                                         | Hero                                                                                    | Journey                                         |
+| --------- | --------------------------------------------------- | --------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| **full**  | every browser that can create a WebGL2 context      | video texture + 3 shader cloud layers (5 noise octaves) + god rays + grain               | frames as texture + streaks + cloud fly-through |
+| **css**   | no WebGL2, or the context is lost                   | plain `<video>` + 2 cloud photo layers + CSS veil (every GSAP scene still runs)          | 2D-canvas sequence + CSS veil                   |
+| no JS     | JavaScript off                                      | poster image, text in final state                                                       | first frame, all captions visible, no pin       |
 
-- A watchdog measures real frame times: two slow windows in a row → `high → lite → css` for the rest of
-  the visit. So a device that was judged too optimistically still ends up smooth.
-- The HTML always contains the poster / first frame and the full text, so LCP, no-JS and reduced
-  motion never depend on WebGL. The hero lead and buttons are painted at once and never hidden.
+- Screens below 1024px get the portrait frame set of the journey (70 frames): the same shot cropped and sized
+  for the screen, not a lower quality.
+- The only runtime adaptation is the **dynamic render scale**: the canvas pixel ratio goes from
+  `min(devicePixelRatio, 1.5)` down to 0.75, and only when that measurably speeds frames up (a 30 fps Energy
+  Saver cap or a busy main thread never lowers it). Slowness never switches to css.
+- The HTML always contains the poster / first frame and the full text, so LCP and no-JS never depend on
+  WebGL. The hero lead and buttons are painted at once and never hidden.
+- The measurements in §11–12 were taken under the former high / lite tiers (replaced on 2026-11-18).
 
 ## 5 · Media audit of `media-inbox/` (checked frame by frame)
 
@@ -138,7 +141,7 @@ No HDRI is needed: the sky is footage + shader. Every shipped file gets a row in
 - Canvas, videos, cloud layers: `aria-hidden`. All copy is real HTML above them.
 - Text over media always on a dark gradient scrim (AA measured on the brightest frame).
 - Arabic is split by words/lines only. Horizontal motion × `env.dir`. Footage, photos and logo never mirror.
-- Reduced motion: final states, poster, no pin, no 3D, no cursor. JS off: same, via HTML/CSS only.
+- Every visitor gets the full motion (quality policy). JS off: final states, posters, no pin, via HTML/CSS only.
 - Legal notice and form consent text are never animated.
 
 ## 9 · Rule updates that ship with Part 1
@@ -162,7 +165,7 @@ without the old "dive" scene.
 - **D — Justice-scales Lottie:** replace with a credited free LottieFiles animation (Part 2).
 - **E — Events photos:** replace both (Part 2).
 - **Unsplash:** re-download the kept photos at 2400px (Part 2).
-- **Tiers:** by device capability, not by "mobile" (§4).
+- **Tiers:** replaced on 2026-11-18 by the quality policy — the full experience for every visitor (§4).
 
 ## 11 · Part 1 as built — measured
 

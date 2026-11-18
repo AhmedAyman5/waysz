@@ -2,12 +2,11 @@
 import { gsap } from 'gsap';
 import type { Scene } from '../index';
 
-const scene: Scene = (root, env) => {
+const scene: Scene = (root) => {
   const q = gsap.utils.selector(root);
   const steps = q('.step') as HTMLElement[];
   const light = (p: number) =>
     steps.forEach((s, i) => s.classList.toggle('is-active', p >= i / steps.length));
-  if (env.reduce) { light(1); return; }
 
   const mm = gsap.matchMedia();
   mm.add('(min-width: 1024px)', () => {

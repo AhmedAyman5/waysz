@@ -5,7 +5,7 @@
  * A tall section with a sticky screen (no pin); scrolling orbits the camera and lets the text leave.
  * The headline, the lead and the buttons are painted at once and never hidden: on phones the headline is the
  * largest paint (LCP), so its entrance is a transform-only settle of its two lines, not a reveal.
- * css tier / reduced motion / no JS: our own still of the balanced scales stands where the 3D ones would.
+ * css tier (no WebGL) / no JS: our own still of the balanced scales stands where the 3D ones would.
  */
 import { localizePath, useTranslations, type Lang } from '../../i18n';
 
@@ -49,11 +49,9 @@ const title = { ar: ['الخدمات', 'القانونية'], en: ['Legal', 'Ser
     height: 100vh; height: 100svh; min-height: 38rem;
     display: grid; align-items: end;
   }
-  @media (prefers-reduced-motion: no-preference) {
-    :global(.js) .lhero { height: 170vh; height: 170lvh; }
-    :global(.js) .lhero__sticky { position: sticky; top: 0; height: 100vh; height: 100lvh; }
-    :global(.js) .lhero__content { padding-block-end: calc(100lvh - 100svh + var(--space-8)); }
-  }
+  :global(.js) .lhero { height: 170vh; height: 170lvh; }
+  :global(.js) .lhero__sticky { position: sticky; top: 0; height: 100vh; height: 100lvh; }
+  :global(.js) .lhero__content { padding-block-end: calc(100lvh - 100svh + var(--space-8)); }
 
   /* the still (never mirrored): a tall render that fills the screen on phones — like the posters of the other
      pages, so the text stays the largest paint — and a soft-edged one on the free side of wide screens */
