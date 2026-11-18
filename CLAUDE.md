@@ -260,3 +260,10 @@ waysz/
   have one owner at a time — announce in the group before editing.
 - Before building a section: read its brief section, its storyboard row in waysz-motion `reference.md`,
   and the matching Motion Lab example. Replace the section's `<TodoSection>`.
+
+## Finishing a task (every session)
+
+- Never end your turn while a background job, shell or agent you started is still running: wait for it.
+- End a task ONLY when everything is done: all checks run, all changes committed AND pushed, the working tree clean.
+- Start the final message with the line `FINISHED — pushed <commit hash> to <branch>`, then the report.
+- If something cannot be finished, start the final message with `NOT FINISHED —` and say exactly what is left.
