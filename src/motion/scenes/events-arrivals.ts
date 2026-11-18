@@ -75,23 +75,36 @@ const scene: Scene = (root) => {
       b.tiles.forEach((t, i) => roll(t, want[i] ?? '', delay + i * (latin ? 0.035 : 0.12), tl, want[i]?.trim() || t.now.trim() ? stops : 0));
       return tl;
     };
-    let stage = 0, booted = false, built = false;
+    let stage = 0, booted = false, built = false, done = false;
+    const ready: (() => void)[] = [];
+    const whenBuilt = (fn: () => void) => { if (done) fn(); else ready.push(fn); };
     // the tiles, built once the section is near; they start on the first stage of the scroll
     const make = () => {
       if (built) return;
       built = true;
-      board = cells.map((cell, k) => ({ cell, col: k % 3, tiles: build(cell, k % 3, cell.dataset.text ?? '') }));
-      status = board.filter((b) => b.col === 2);
-      board.forEach((b) => b.tiles.forEach((t) => gsap.set(t.layers.slice(2), { opacity: 0, transformPerspective: 260 })));
-      status.forEach((b, r) => b.tiles.forEach((t, i) => { const u = units(states[0][r], 2)[i] ?? ''; [0, 1, 2, 3].forEach((l) => write(t, l, u)); t.now = u; }));
+      // one cell per frame: hundreds of small elements, never in one long task
+      const queue = cells.map((cell, k) => () => {
+        const b: Cell = { cell, col: k % 3, tiles: build(cell, k % 3, cell.dataset.text ?? '') };
+        b.tiles.forEach((t) => gsap.set(t.layers.slice(2), { opacity: 0, transformPerspective: 260 }));
+        if (b.col === 2) {
+          const r = Math.floor(k / 3);
+          b.tiles.forEach((t, i) => { const u = units(states[stage][r], 2)[i] ?? ''; [0, 1, 2, 3].forEach((l) => write(t, l, u)); t.now = u; });
+          status.push(b);
+        }
+        board.push(b);
+      });
+      const step = () => { queue.shift()?.(); if (queue.length) requestAnimationFrame(step); else { done = true; ready.splice(0).forEach((fn) => fn()); } };
+      requestAnimationFrame(step);
     };
     ScrollTrigger.create({ trigger: root, start: 'top 220%', once: true, onEnter: make });
     ScrollTrigger.create({
       trigger: root, start: 'top 72%', once: true,
       onEnter: () => {
         make();
-        booted = true;
-        board.forEach((b, k) => setCell(b, b.col === 2 ? states[stage][Math.floor(k / 3)] : (b.cell.dataset.text ?? ''), k * 0.05, latin ? 3 : 2));
+        whenBuilt(() => {
+          booted = true;
+          board.forEach((b, k) => setCell(b, b.col === 2 ? states[stage][Math.floor(k / 3)] : (b.cell.dataset.text ?? ''), k * 0.05, latin ? 3 : 2));
+        });
       },
     });
     const wide = window.matchMedia('(min-width: 1024px)');

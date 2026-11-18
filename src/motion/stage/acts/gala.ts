@@ -287,14 +287,12 @@ export function createGalaAct(host: HTMLElement): Act {
   world.add(hemi);
   const ledLight = new PointLight(cCoral, 0, 30, 2);
   ledLight.position.set(0, 5.5, LED_Z + 2.5);
-  const sconceL = new PointLight(cWarm, 18, 26, 2), sconceR = new PointLight(cWarm, 18, 26, 2);
-  sconceL.position.set(-13, 6, 18); sconceR.position.set(13, 6, 18);
-  const foyerLights = [80, 66, 52].map((z) => { const l = new PointLight(cWarm, 0, 30, 2); l.position.set(0, TOP + 8.5, z); return l; });
+  const foyerLights = [84, 58].map((z) => { const l = new PointLight(cWarm, 0, 30, 2); l.position.set(0, TOP + 8.5, z); return l; });
   const meet = new PointLight(cWarm, 0, 14, 2);          // where the four beams meet
   meet.position.set(0, STAGE_Y + 1.2, -3.2);
   const house = [new PointLight(cWarm, 0, 34, 2), new PointLight(cWarm, 0, 34, 2)];
   house[0].position.set(-6, 12, 22); house[1].position.set(6, 12, 22);
-  world.add(ledLight, sconceL, sconceR, meet, ...house, ...foyerLights);
+  world.add(ledLight, meet, ...house, ...foyerLights);
 
   // ---------- the spot rig: 0 follow spot · 1–4 moving heads (they light surfaces) · 5–8 beams of "one roof" ----------
   type Spot = { pos: Vector3; aim: Vector3; cos: number; i: number; gPos: Vector3; gAim: Vector3; gCos: number; gI: number; col: Color };
@@ -326,10 +324,20 @@ export function createGalaAct(host: HTMLElement): Act {
   // the hall
   // =====================================================================================
   const add = <T extends Object3D>(o: T) => { world.add(o); return o; };
+  // static boxes are collected per material and merged into ONE mesh each (bake()): a few draw calls, not a hundred
+  const statics = new Map<Material, BufferGeometry[]>();
   const box = (w: number, h: number, d: number, mat: Material, x: number, y: number, z: number) => {
-    const m = new Mesh(own(new BoxGeometry(w, h, d)), mat);
-    m.position.set(x, y, z);
-    return add(m);
+    const g = new BoxGeometry(w, h, d).translate(x, y, z);
+    if (!statics.has(mat)) statics.set(mat, []);
+    statics.get(mat)!.push(g);
+  };
+  const bake = () => {
+    statics.forEach((list, mat) => {
+      const merged = own(mergeGeometries(list)!);
+      list.forEach((g) => g.dispose());
+      add(new Mesh(merged, mat));
+    });
+    statics.clear();
   };
   // floors: the flat front, the rake, the stage
   const front = new Mesh(own(new PlaneGeometry(32, 4.2)), woodMat);
@@ -638,7 +646,7 @@ export function createGalaAct(host: HTMLElement): Act {
     screens.setColorAt(i, e.copy(b.tint).lerp(cIvory, 0.2).multiplyScalar((0.5 + lit * 3) * flick));
   };
   const e = new Color();
-  let dimOthers = 0;                                       // 0…1: one stand is lit, the rest step back
+  let dimOthers = 0, boothsMoved = true;                                       // 0…1: one stand is lit, the rest step back
 
   // =====================================================================================
   // the red carpet: from the street door to the stage steps, unrolling with the scroll
@@ -770,7 +778,7 @@ export function createGalaAct(host: HTMLElement): Act {
   const scanLine = new Mesh(own(new PlaneGeometry(1, 1)), scanMat);
   card.add(scanLine);
   let qr = { y0: 0.62, y1: 0.92, w: 0.45 };
-  void badgeTextures(host, gala.lang).then((tx) => {
+  const faces = badgeTextures(host, gala.lang).then((tx) => {
     own(tx.front); own(tx.back);
     frontMat.map = tx.front; backMat.map = tx.back; frontMat.needsUpdate = backMat.needsUpdate = true;
     qr = tx.qr;
@@ -797,15 +805,15 @@ export function createGalaAct(host: HTMLElement): Act {
   badge.add(strap);
   const badgeKey = new PointLight(cWarm.clone().lerp(cIvory, 0.5), 4, 6, 2);
   badgeKey.position.set(0.9, 0.9, -1.6);
-  const badgeRim = new PointLight(cVelvet, 2.5, 6, 2);
-  badgeRim.position.set(-1.2, -0.4, -3.8);
-  camera.add(badgeKey, badgeRim);
+  camera.add(badgeKey);
   // rope state (camera space)
   const rope = Array.from({ length: ROPE_N }, () => ({ p: new Vector3(), o: new Vector3() }));
   const anchor = new Vector3();
   let ropeReady = false, grabbed = false, wasDown = false;
   const grabOff = new Vector3(), grabTo = new Vector3();
   let cardAngle = 0, cardSpin = 0, cardTwist = 0, cardTwistV = 0;
+
+  bake();
 
   // =====================================================================================
   // the pass that puts the world on the shared canvas
@@ -969,7 +977,13 @@ export function createGalaAct(host: HTMLElement): Act {
       finish.uniforms.tScene.value = target.texture;
       if (!float) finish.uniforms.uExposure.value = 1.25;
       for (let i = 0; i < BOOTHS; i++) placeBooth(i, 0, 0);
+      // compile EVERY material now, the hidden ones too (badge with its printed face, waves, beams, floor plan):
+      // three compiles only visible objects, and a first compile in the middle of the scroll stalls for seconds
+      await faces;
+      const hidden: Object3D[] = [];
+      world.traverse((o) => { if (!o.visible) { hidden.push(o); o.visible = true; } });
       await renderer.compileAsync(world, camera);
+      hidden.forEach((o) => { o.visible = false; });
       ready = true;
     },
 
@@ -1038,15 +1052,21 @@ export function createGalaAct(host: HTMLElement): Act {
         const u = clamp(gala.booths - rank[i]);
         const label = LABELLED.indexOf(i);
         const want = label >= 0 && (label === gala.booth || label === gala.hover) ? 1 : 0;
+        const litBefore = planLit[i];
         planLit[i] += (want - planLit[i]) * k(0.18);
-        if (Math.abs(u - booths[i].u) > 1e-4 || planLit[i] > 0.001 || Math.abs(dimOthers - dimBefore) > 1e-4 || firstFrame) { booths[i].u = u; placeBooth(i, u, planLit[i]); }
+        if (Math.abs(planLit[i] - want) < 0.003) planLit[i] = want;
+        if (Math.abs(u - booths[i].u) > 1e-4 || planLit[i] !== litBefore || Math.abs(dimOthers - dimBefore) > 1e-4 || firstFrame) {
+          booths[i].u = u; placeBooth(i, u, planLit[i]); boothsMoved = true;
+        }
       }
+      if (Math.abs(dimOthers - anyLit) < 0.003) dimOthers = anyLit;
+      const standsOn = expoOn || gala.shot < 1.2;
       for (const m of [decks, posts, backs, sides, fascias, counters, screens, heads, pools]) {
-        m.instanceMatrix.needsUpdate = true;
-        if (m.instanceColor) m.instanceColor.needsUpdate = true;
-        m.visible = expoOn || gala.shot < 1.2;
+        if (boothsMoved) { m.instanceMatrix.needsUpdate = true; if (m.instanceColor) m.instanceColor.needsUpdate = true; }
+        m.visible = standsOn;
       }
-      foyerLights.forEach((l, i) => { l.intensity = (18 + 50 * clamp(gala.booths / BOOTHS)) * (i === 1 ? 1.2 : 1); });
+      boothsMoved = false;
+      foyerLights.forEach((l) => { l.intensity = (26 + 70 * clamp(gala.booths / BOOTHS)) * (expoOn || gala.shot < 1.2 ? 1 : 0); });
 
       // ---------- camera ----------
       aim();
@@ -1109,8 +1129,7 @@ export function createGalaAct(host: HTMLElement): Act {
         }
       });
       hemi.intensity = 0.06 + 0.1 * openNow;
-      sconceL.intensity = sconceR.intensity = 6 + 16 * openNow * (1 - gala.final * 0.6);
-      house.forEach((l) => { l.intensity = (10 + 34 * openNow) * (1 - gala.final * 0.7); });
+      house.forEach((l) => { l.intensity = (16 + 40 * openNow) * (1 - gala.final * 0.7); });
 
       // ---------- the badge ----------
       badge.visible = badgeNow > 0.01;

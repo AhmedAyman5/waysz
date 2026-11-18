@@ -7,6 +7,7 @@
  * Set up only when the section comes near (motion/near.ts): nothing of it runs during page load.
  */
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import type { Scene } from '../index';
 import { whenNear } from '../near';
@@ -48,19 +49,19 @@ const scene: Scene = (root, env) => {
       gsap.set(rects, { drawSVG: '0%', fillOpacity: 0 });
       gsap.set(root.querySelector('.gexpo__aisle'), { drawSVG: '0%' });
     }
-    gsap.timeline({
-      scrollTrigger: {
-        trigger: root, start: 'top top', end: 'bottom bottom', scrub: 0.4,
-        onUpdate: (self) => {
-          const p = self.progress;
-          gala.plan = span(p, 0.02, 0.3);
-          gala.booths = span(p, 0.22, 0.86) * GALA_BOOTHS;
-          if (env.tier === 'css') order.forEach((r, k) => gsap.set(r, { drawSVG: `${span(p * 20 - k * 0.6, 0, 2.2) * 100}%`, fillOpacity: span(gala.booths - k, 0, 1) }));
-        },
+    // (the SVG plan is drawn only on the css tier: no SVG measuring on every scroll when WebGL draws the floor)
+    const plan = env.tier === 'css'
+      ? gsap.timeline({ paused: true }).fromTo(root.querySelector('.gexpo__aisle'), { drawSVG: '0%' }, { drawSVG: '100%', duration: 0.25, ease: 'none' }, 0).set({}, {}, 1)
+      : undefined;
+    ScrollTrigger.create({
+      trigger: root, start: 'top top', end: 'bottom bottom', scrub: plan ? 0.4 : false, animation: plan,
+      onUpdate: (self) => {
+        const p = self.progress;
+        gala.plan = span(p, 0.02, 0.3);
+        gala.booths = span(p, 0.22, 0.86) * GALA_BOOTHS;
+        if (plan) order.forEach((r, k) => gsap.set(r, { drawSVG: `${span(p * 20 - k * 0.6, 0, 2.2) * 100}%`, fillOpacity: span(gala.booths - k, 0, 1) }));
       },
-    })
-      .fromTo(root.querySelector('.gexpo__aisle'), { drawSVG: '0%' }, { drawSVG: '100%', duration: 0.25, ease: 'none' }, 0)
-      .set({}, {}, 1);
+    });
   });
 };
 export default scene;
