@@ -1,11 +1,11 @@
 /**
  * Software page — hero, "Code in flight" (views/software/Hero.astro). Sticky + scrubbed, not a pin.
- * Entrance: the characters of the code fly in from depth and land in their place (DOM spans, every tier —
+ * Entrance: the characters of the code fly in from depth and land in their place (DOM spans, with or without WebGL —
  * the WebGL stage only loads on the first interaction); the headline rises by words. Lead and buttons are
  * never hidden (LCP).
- * Then, on the WebGL tiers, the act "glyphs" takes over the settled code (it lands one glyph on every DOM
+ * Then, with WebGL, the act "glyphs" takes over the settled code (it lands one glyph on every DOM
  * character), adds the swarm in depth and the pointer field, and flies the code away as the hero scrolls.
- * css tier: the lines lift off as DOM elements. Either way scrolling back re-assembles the code.
+ * css tier (no WebGL): the lines lift off as DOM elements. Either way scrolling back re-assembles the code.
  * The code is LTR in both languages: no horizontal value here is multiplied by env.dir.
  */
 import { gsap } from 'gsap';
@@ -22,7 +22,6 @@ const scene: Scene = (root, env) => {
   const box = root.querySelector<HTMLElement>('.chero__codebox')!;
   const frame = root.querySelector<HTMLElement>('.chero__sticky')!;
   const host = root.querySelector<HTMLElement>('.chero__stage')!;
-  if (env.reduce) { gsap.set([title, box], { autoAlpha: 1 }); return; }
 
   const wide = matchMedia('(min-width: 1024px)').matches;
   const rnd = gsap.utils.random;
@@ -61,7 +60,7 @@ const scene: Scene = (root, env) => {
     .to(q('.chero__media'), { opacity: 0, duration: 0.45 }, 0.5)
     .set({}, {}, 1);
 
-  // ---------- WebGL tiers: where every character sits, for the act ----------
+  // ---------- WebGL: where every character sits, for the act ----------
   const style = getComputedStyle(frame);
   const measure = () => {
     const layout = measureCode(box, frame);

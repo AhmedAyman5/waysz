@@ -21,10 +21,10 @@ mkdirSync(out, { recursive: true });
 
 const desktop = { width: 1440, height: 900 }, phone = { width: 390, height: 844 }, small = { width: 360, height: 740 };
 const runs = [
-  { name: 'ar-desktop-high', path: `/${path}?tier=high`, viewport: desktop },
-  { name: 'en-desktop-high', path: `/en/${path}?tier=high`, viewport: desktop },
-  { name: 'ar-phone-lite', path: `/${path}?tier=lite`, viewport: phone, mobile: true },
-  { name: 'en-phone-lite', path: `/en/${path}?tier=lite`, viewport: phone, mobile: true },
+  { name: 'ar-desktop-full', path: `/${path}?tier=full`, viewport: desktop },
+  { name: 'en-desktop-full', path: `/en/${path}?tier=full`, viewport: desktop },
+  { name: 'ar-phone-full', path: `/${path}?tier=full`, viewport: phone, mobile: true },
+  { name: 'en-phone-full', path: `/en/${path}?tier=full`, viewport: phone, mobile: true },
   { name: 'ar-small-css', path: `/${path}?tier=css`, viewport: small, mobile: true },
   { name: 'en-desktop-css', path: `/en/${path}?tier=css`, viewport: desktop },
   { name: 'ar-desktop-reduced', path: `/${path}`, viewport: desktop, reduce: true },

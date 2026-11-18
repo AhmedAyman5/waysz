@@ -19,10 +19,10 @@ mkdirSync(out, { recursive: true });
 const page_ = 'services/immigration-study-visa/';
 const desktop = { width: 1440, height: 900 }, phone = { width: 390, height: 844 }, small = { width: 360, height: 740 };
 const runs = [
-  { name: 'ar-desktop-high', path: `/${page_}?tier=high`, viewport: desktop },
-  { name: 'en-desktop-high', path: `/en/${page_}?tier=high`, viewport: desktop },
-  { name: 'ar-phone-lite', path: `/${page_}?tier=lite`, viewport: phone, mobile: true },
-  { name: 'en-phone-lite', path: `/en/${page_}?tier=lite`, viewport: phone, mobile: true },
+  { name: 'ar-desktop-full', path: `/${page_}?tier=full`, viewport: desktop },
+  { name: 'en-desktop-full', path: `/en/${page_}?tier=full`, viewport: desktop },
+  { name: 'ar-phone-full', path: `/${page_}?tier=full`, viewport: phone, mobile: true },
+  { name: 'en-phone-full', path: `/en/${page_}?tier=full`, viewport: phone, mobile: true },
   { name: 'ar-small-css', path: `/${page_}?tier=css`, viewport: small, mobile: true },
   { name: 'en-desktop-css', path: `/en/${page_}?tier=css`, viewport: desktop },
   { name: 'ar-desktop-reduced', path: `/${page_}`, viewport: desktop, reduce: true },

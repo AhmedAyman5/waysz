@@ -3,8 +3,7 @@ import { gsap } from 'gsap';
 import { SplitText } from 'gsap/SplitText';
 import type { Scene } from '../index';
 
-const scene: Scene = (root, env) => {
-  if (env.reduce) return;
+const scene: Scene = (root) => {
   const statement = root.querySelector<HTMLElement>('.statement');
   if (!statement) return;
   const split = SplitText.create(statement, { type: 'words', aria: 'auto' });

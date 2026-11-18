@@ -9,7 +9,6 @@ import type { MotionEnv } from '../index';
 export function initFlightRail(env: MotionEnv) {
   const rail = document.querySelector<HTMLElement>('.flight-rail');
   const bar = document.querySelector<HTMLElement>('.flight-bar');
-  if (env.reduce) { rail?.remove(); bar?.remove(); return; }
 
   if (!env.desktop) {
     rail?.remove();

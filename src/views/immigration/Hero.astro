@@ -49,12 +49,10 @@ const title = { ar: ['الهجرة والدراسة', 'والتأشيرات'], e
     height: 100vh; height: 100svh; min-height: 36rem;
     display: grid; align-items: end;
   }
-  /* scroll room for the window to close — only when the scene can run */
-  @media (prefers-reduced-motion: no-preference) {
-    :global(.js) .phero { height: 165vh; height: 165lvh; }
-    :global(.js) .phero__sticky { position: sticky; top: 0; height: 100vh; height: 100lvh; }
-    :global(.js) .phero__content { padding-block-end: calc(100lvh - 100svh + var(--space-8)); }
-  }
+  /* scroll room for the window to close — with JS (the scene runs for every visitor) */
+  :global(.js) .phero { height: 165vh; height: 165lvh; }
+  :global(.js) .phero__sticky { position: sticky; top: 0; height: 100vh; height: 100lvh; }
+  :global(.js) .phero__content { padding-block-end: calc(100lvh - 100svh + var(--space-8)); }
   .phero__window, .phero__scrim { position: absolute; inset: 0; }
   .phero__window { overflow: hidden; will-change: clip-path; }
   .phero__plate { position: absolute; inset: -4%; }

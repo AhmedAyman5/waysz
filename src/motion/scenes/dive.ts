@@ -8,8 +8,7 @@ import { gsap } from 'gsap';
 import type { Scene } from '../index';
 import { LOGO } from '../config';
 
-const scene: Scene = (root, env) => {
-  if (env.reduce) return;
+const scene: Scene = (root) => {
   const q = gsap.utils.selector(root);
   const mark = q('.hero__mark')[0] as HTMLElement;
   const [OX, OY] = LOGO.roadPoint;

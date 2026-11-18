@@ -4,7 +4,7 @@
  * it (bridge.justice.shot → the camera of acts/justice.ts), the dip of light at the cut into the colonnade
  * (veil), and whether the consult section has arrived (final → the last weight → perfect balance).
  * Everything is a pure function of the scroll position, so scrolling back unbalances the scales again.
- * css tier / reduced motion: nothing to do — the sections show the still of the balanced scales.
+ * css tier (no WebGL): nothing to do — the sections show the still of the balanced scales.
  */
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -20,7 +20,7 @@ const scene: Scene = (host, env) => {
   const sections = gsap.utils.toArray<HTMLElement>('[data-shot]', root);
   justice.side = env.dir;
   justice.icons = gsap.utils.toArray<SVGPathElement>('[data-engrave]', root).map((p) => p.getAttribute('d') ?? '');
-  if (env.reduce || env.tier === 'css') return;
+  if (env.tier === 'css') return;
 
   let tops: number[] = [], heights: number[] = [];
   const measure = () => {
@@ -51,6 +51,6 @@ const scene: Scene = (host, env) => {
     root.classList.add('is-poster');                         // see scripts/render-scales-still.mjs
     justice.poster = true;
   }
-  void addAct(env, async () => (await import('../stage/acts/justice')).createJusticeAct(host, env.tier === 'high' ? 'high' : 'lite'));
+  void addAct(env, async () => (await import('../stage/acts/justice')).createJusticeAct(host));
 };
 export default scene;

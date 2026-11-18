@@ -72,7 +72,6 @@ function moment(card: HTMLElement, dir: 1 | -1) {
 }
 
 const scene: Scene = (root, env) => {
-  if (env.reduce) return;
   const services = gsap.utils.toArray<HTMLElement>('.lsvc', root);
   const ticks = gsap.utils.toArray<HTMLButtonElement>('.lsvc__tick', root);
   const texts = services.map((s) => s.querySelector<HTMLElement>('.lsvc__text')!);

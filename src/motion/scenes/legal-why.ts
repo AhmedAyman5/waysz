@@ -8,7 +8,6 @@ import { SplitText } from 'gsap/SplitText';
 import type { Scene } from '../index';
 
 const scene: Scene = (root, env) => {
-  if (env.reduce) return;
   const q = gsap.utils.selector(root);
   const title = root.querySelector<HTMLElement>('.lwhy__title')!;
   const words = SplitText.create(title, { type: 'words', mask: 'words', wordsClass: 'w', aria: 'auto' }).words;

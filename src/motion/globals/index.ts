@@ -14,13 +14,13 @@ import { initCursor } from './cursor';
 
 export function initGlobals(env: MotionEnv) {
   initHeader();
-  initReveal(env);
-  initSplit(env);
+  initReveal();
+  initSplit();
   initDraw(env);
   initFlightRail(env);
-  initVideo(env);
-  initLottie(env);
-  if (env.desktop && !env.reduce) {
+  initVideo();
+  initLottie();
+  if (env.desktop) {            // pointer-driven effects need a mouse; every visitor with one gets them
     initParallax();
     initMagnetic();
     initSpotlight();

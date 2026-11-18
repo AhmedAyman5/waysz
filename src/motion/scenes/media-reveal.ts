@@ -42,7 +42,6 @@ function iconTimeline(item: HTMLElement, dir: number) {
 }
 
 const scene: Scene = (root, env) => {
-  if (env.reduce) return;
   const q = gsap.utils.selector(root);
   const track = root.querySelector<HTMLElement>('.why__track') ?? root;
   const view = root.querySelector<HTMLElement>('.why__view') ?? root;

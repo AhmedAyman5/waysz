@@ -18,7 +18,6 @@ const TAIL = 0.4;                                            // the last card re
 const span = (k: number) => (k === 0 ? [0.1, 0.8] : [0.3, 0.95]);
 
 const scene: Scene = (root, env) => {
-  if (env.reduce) return;
   const host = root.querySelector<HTMLElement>('.areas__stage')!;
   const intro = root.querySelector<HTMLElement>('.areas__intro')!;
   const title = root.querySelector<HTMLElement>('.areas__title')!;
@@ -32,7 +31,7 @@ const scene: Scene = (root, env) => {
   const words = (el: HTMLElement) =>
     SplitText.create(el, { type: 'words', mask: 'words', wordsClass: 'w', aria: 'auto' }).words;   // never chars (Arabic)
 
-  // css-tier wipes: a different way in for each photo (the WebGL tiers have their own, see wipe.glsl.ts)
+  // css-tier wipes: a different way in for each photo (the WebGL stage has its own, see wipe.glsl.ts)
   const wipes = [
     null,
     [env.dir === 1 ? 'inset(0% 0% 0% 100%)' : 'inset(0% 100% 0% 0%)', 'inset(0% 0% 0% 0%)'],
@@ -104,7 +103,7 @@ const scene: Scene = (root, env) => {
     });
   });
 
-  // WebGL tiers: register the act once the section is near (its photos start loading then, too)
+  // WebGL: register the act once the section is near (its photos start loading then, too)
   ScrollTrigger.create({
     trigger: root, start: 'top 250%', once: true,
     onEnter: () => {

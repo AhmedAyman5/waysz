@@ -1,6 +1,6 @@
 /**
  * Shared browser launch for the QA scripts: the installed Google Chrome with the real GPU, so the WebGL
- * tiers render. Set QA_CHROME=/path/to/chrome to use another Chromium build (e.g. Playwright's own on Linux).
+ * stage renders. Set QA_CHROME=/path/to/chrome to use another Chromium build (e.g. Playwright's own on Linux).
  */
 import { chromium } from 'playwright';
 

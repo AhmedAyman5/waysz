@@ -7,9 +7,8 @@ import { gsap } from 'gsap';
 import { SplitText } from 'gsap/SplitText';
 import type { Scene } from '../index';
 
-const scene: Scene = (root, env) => {
+const scene: Scene = (root) => {
   root.querySelectorAll('.faq__panel').forEach((panel) => panel.setAttribute('inert', ''));
-  if (env.reduce) return;
   const title = root.querySelector<HTMLElement>('.lfaq__title')!;
   const words = SplitText.create(title, { type: 'words', mask: 'words', wordsClass: 'w', aria: 'auto' }).words;
   gsap.timeline({ scrollTrigger: { trigger: root, start: 'top 62%', once: true } })

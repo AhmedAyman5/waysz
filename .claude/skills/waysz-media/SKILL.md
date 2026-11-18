@@ -110,12 +110,11 @@ ffmpeg -i in.jpg -vf "crop=W:H:X:Y,curves=all='0/0 0.5/0.44 1/0.92',colorbalance
 #   huesaturation=hue=28:saturation=0.1:intensity=-0.35:colors=c+b+g , curves=… , vignette=PI/3.4
 # Night-Earth globe texture (NASA Black Marble, public domain) — desktop + lighter phone map
 ffmpeg -i BlackMarble_2016_01deg.jpg -vf "scale=2048:1024:flags=lanczos" -c:v libwebp -quality 72 public/media/img/earth-night.webp
-ffmpeg -i BlackMarble_2016_01deg.jpg -vf "scale=1024:512:flags=lanczos" -c:v libwebp -quality 70 public/media/img/earth-night-m.webp
 ```
 
 **Globe still (`public/media/img/earth-poster.webp`)** — the css-tier / no-JS version of Home §1.5 is a render of
 our own WebGL globe. Re-render it whenever the palette or the globe shader changes: run `npm run dev`, open
-`/en/?tier=high&globe=poster` in a 1100×1100 window (dev only: the whole globe is centred), scroll to §1.5, hide
+`/en/?tier=full&globe=poster` in a 1100×1100 window (dev only: the whole globe is centred), scroll to §1.5, hide
 `.how__content, .how__scrim, .how__poster`, screenshot `.how__stage`, convert to WebP (quality 80).
 
 **Scales stills (`public/media/img/scales-poster.webp` + `scales-poster-m.webp`)** — the css-tier / no-JS version

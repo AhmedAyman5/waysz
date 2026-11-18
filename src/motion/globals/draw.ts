@@ -5,7 +5,6 @@ import { isFree } from './util';
 /** data-draw (once on enter) · data-draw="scrub" (follows scroll). On path/line/polyline/circle/rect. */
 export function initDraw(env: MotionEnv) {
   gsap.utils.toArray<SVGGeometryElement>('[data-draw]').filter(isFree).forEach((p) => {
-    if (env.reduce) return;
     const scrub = p.dataset.draw === 'scrub';
     gsap.fromTo(
       p,

@@ -1,34 +1,26 @@
 /**
- * Quality tier — decided by what the DEVICE can do, never by "is it a phone".
- *   high  desktop-class GPU: full shader (3 cloud layers, god rays, 1.5 DPR)
- *   lite  capable phones / tablets / small laptops: same scene, cheaper shader (2 layers, no rays, 1–1.25 DPR)
- *   css   weak devices, no WebGL2, software GPU, saveData, reduced motion: plain video + CSS layers / posters
- * The stage also downgrades by itself (high → lite → css) when frames get slow.
- * Dev only: force a tier with ?tier=high|lite|css.
+ * Quality policy (client decision — see CLAUDE.md "Quality policy"):
+ * every visitor gets the same full experience at the highest quality. There are NO capability tiers:
+ * no checks of cores, memory, GPU name, screen size, saveData or prefers-reduced-motion.
+ *   full  the browser can create a WebGL2 context (three.js needs WebGL2) → the full 3D scene on every page
+ *   css   WebGL2 is unavailable (or the context is lost later): posters / stills instead of the canvas.
+ *         Every GSAP / ScrollTrigger animation, Lenis, the cursor and all scroll scenes still run.
+ * Smoothness is protected only by the stage's dynamic render scale (stage.ts), never by drawing less.
+ * Dev only: force a tier with ?tier=full|css.
  */
-export type Tier = 'high' | 'lite' | 'css';
+export type Tier = 'full' | 'css';
 
-type Nav = Navigator & { connection?: { saveData?: boolean }; deviceMemory?: number };
-
-const WEAK_GPU = /swiftshader|llvmpipe|software|basic render|adreno \(tm\) [1-5]\d\d\b|mali-(4\d\d|t\d{3})|powervr (sgx|rogue ge)/i;
-
-export function detectTier(reduce: boolean, desktop: boolean): Tier {
+export function detectTier(): Tier {
   if (import.meta.env.DEV) {
     const forced = new URLSearchParams(location.search).get('tier');
-    if (forced === 'high' || forced === 'lite' || forced === 'css') return forced;
+    if (forced === 'full' || forced === 'css') return forced;
   }
-  const nav = navigator as Nav;
-  if (reduce || nav.connection?.saveData) return 'css';
-
-  const gl = document.createElement('canvas').getContext('webgl2', { failIfMajorPerformanceCaveat: true });
-  if (!gl) return 'css';
-  const info = gl.getExtension('WEBGL_debug_renderer_info');
-  const gpu = info ? String(gl.getParameter(info.UNMASKED_RENDERER_WEBGL)) : '';
-  const maxTexture = gl.getParameter(gl.MAX_TEXTURE_SIZE) as number;
-  gl.getExtension('WEBGL_lose_context')?.loseContext();
-
-  const cores = nav.hardwareConcurrency ?? 4;
-  const memory = nav.deviceMemory ?? 4;          // not reported by Safari/Firefox → assume enough
-  if (WEAK_GPU.test(gpu) || maxTexture < 4096 || cores < 4 || memory < 4) return 'css';
-  return desktop ? 'high' : 'lite';
+  try {
+    const gl = document.createElement('canvas').getContext('webgl2');
+    if (!gl) return 'css';
+    gl.getExtension('WEBGL_lose_context')?.loseContext();   // free the probe context right away
+    return 'full';
+  } catch {
+    return 'css';
+  }
 }

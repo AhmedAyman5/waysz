@@ -9,8 +9,7 @@ import type { Scene } from '../index';
 
 gsap.registerPlugin(ScrambleTextPlugin);
 
-const scene: Scene = (root, env) => {
-  if (env.reduce) return;
+const scene: Scene = (root) => {
   const q = gsap.utils.selector(root);
   const code = root.querySelector<HTMLElement>('.ask__code')!;
   const text = code.textContent ?? '';

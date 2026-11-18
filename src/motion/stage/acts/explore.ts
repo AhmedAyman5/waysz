@@ -14,7 +14,7 @@ import {
   PointsMaterial, Quaternion, RingGeometry, Scene, ShaderMaterial, ShapeUtils, SphereGeometry, TextureLoader,
   TubeGeometry, Vector2, Vector3, type Texture,
 } from 'three';
-import type { Act, Quality } from '../stage';
+import type { Act } from '../stage';
 import type { ExploreControls } from '../bridge';
 import { countryAt, type Borders, type Country, type Ring } from '../../../lib/borders';
 import { arcFragment, arcVertex, globeVertex, haloFragment } from '../shaders/globe.glsl';
@@ -32,7 +32,7 @@ const clamp = (v: number, a: number, b: number) => Math.min(Math.max(v, a), b);
 const turnTo = (a: number, b: number) => a + ((((b - a + Math.PI) % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI)) - Math.PI;
 
 export function createExploreAct(
-  host: HTMLElement, quality: Quality, borders: Borders, selectable: (id: string) => boolean,
+  host: HTMLElement, borders: Borders, selectable: (id: string) => boolean,
 ): Act & { controls: ExploreControls } {
   const scene = new Scene();
   const camera = new PerspectiveCamera(FOV, 1, 0.1, 100);
@@ -53,7 +53,7 @@ export function createExploreAct(
   const sunDir = { value: new Vector3(-0.75, 0.35, 0.55).normalize() };
 
   // ---------- stars ----------
-  const starCount = quality === 'high' ? 800 : 400;
+  const starCount = 800;
   const starPos = new Float32Array(starCount * 3);
   let seed = 11;
   const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
@@ -76,7 +76,7 @@ export function createExploreAct(
   globe.add(turn);
 
   // land mask: the border polygons painted on an equirectangular canvas
-  const W = quality === 'high' ? 2048 : 1024, H = W / 2;
+  const W = 2048, H = W / 2;
   const maskCanvas = document.createElement('canvas');
   maskCanvas.width = W; maskCanvas.height = H;
   const ctx = maskCanvas.getContext('2d')!;
@@ -100,13 +100,13 @@ export function createExploreAct(
 
   let map: Texture | null = null;
   let ready = false;
-  const segments = quality === 'high' ? 96 : 56;
+  const segments = 96;
   const sphereGeo = keep(new SphereGeometry(1, segments, segments / 2));
   const globeMat = keep(new ShaderMaterial({
     vertexShader: globeVertex, fragmentShader: exploreFragment, ...flat,
     uniforms: { uMap: { value: null }, uLand: { value: land }, uAmber: { value: amber }, uNavy: { value: navy }, uSky: { value: sky }, uSunDir: sunDir, uFade: fade },
   }));
-  new TextureLoader().load(`/media/img/earth-night${quality === 'high' ? '' : '-m'}.webp`, (t) => {
+  new TextureLoader().load('/media/img/earth-night.webp', (t) => {
     t.minFilter = t.magFilter = LinearFilter;
     t.generateMipmaps = false;
     map = t;
@@ -438,7 +438,6 @@ export function createExploreAct(
       hostH = host.clientHeight || 1;
       layout();
     },
-    setQuality() { /* geometry and texture sizes are fixed when the act is created */ },
     dispose() {
       tl?.kill();
       gsap.killTweensOf([fade, flight]);

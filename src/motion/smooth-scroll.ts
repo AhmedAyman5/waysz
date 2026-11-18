@@ -3,7 +3,7 @@ import 'lenis/dist/lenis.css';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-/** Live binding: undefined until initSmoothScroll() runs (and stays undefined on reduced motion). */
+/** Live binding: undefined until initSmoothScroll() runs (every visitor gets smooth scroll). */
 export let lenis: Lenis | undefined;
 
 export function initSmoothScroll() {

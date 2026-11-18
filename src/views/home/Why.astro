@@ -4,7 +4,7 @@
  * A cabin-window-shaped view of the dusk sky opens to full screen (CSS sticky + scrub), then the six
  * reasons arrive, each icon with its own small movement. Wide screens: the reasons settle over the photo
  * inside the same sticky screen. Small screens: the photo stays behind and the reasons scroll over it.
- * Without JS / reduced motion: photo band, heading, plain list.
+ * Without JS: photo band, heading, plain list.
  */
 import { Image } from 'astro:assets';
 import type { Lang } from '../../i18n';
@@ -76,7 +76,7 @@ const icons: Record<string, string> = {
 </section>
 
 <style>
-  /* ---------- base: no JS / reduced motion ---------- */
+  /* ---------- base: no JS ---------- */
   .why { position: relative; }
   .why__view { position: relative; height: 68vh; min-height: 24rem; overflow: hidden; display: grid; align-items: end; }
   .reveal__media, .reveal__inner, .why__shade { position: absolute; inset: 0; }

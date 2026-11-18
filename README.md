@@ -37,7 +37,7 @@ npm run preview   # test dist/ locally
 1. `git pull` on `main`, then a branch: `git checkout -b feat/home-hero`.
 2. Open Claude Code (`claude`) and give it the task (template below). It reads `CLAUDE.md` and the
    waysz-motion skill by itself.
-3. Review in the browser: Arabic + `/en/`, mobile size, reduced motion ON.
+3. Review in the browser: Arabic + `/en/`, mobile size, the no-WebGL fallback (`?tier=css` in dev).
 4. `npm run check` → commit → push → Pull Request → one teammate reviews → merge.
 
 Task template for Claude Code:

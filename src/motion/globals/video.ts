@@ -1,13 +1,11 @@
-import type { MotionEnv } from '../index';
-
 /**
  * Background video (BgVideo.astro): picks the mobile/desktop + webm/mp4 file, loads it only near the
- * viewport, plays while ≥25% visible, pauses otherwise. Reduced motion or saveData → poster only.
+ * viewport, plays while ≥25% visible, pauses otherwise. Every visitor gets the video (quality policy: no
+ * reduced-motion or saveData branch); the poster stays only if the browser blocks autoplay.
  */
-export function initVideo(env: MotionEnv) {
+export function initVideo() {
   const videos = document.querySelectorAll<HTMLVideoElement>('video[data-bgvideo]');
-  const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
-  if (!videos.length || env.reduce || saveData) return;
+  if (!videos.length) return;
 
   const small = matchMedia('(max-width: 1023px)').matches;
   const pick = (v: HTMLVideoElement) => {

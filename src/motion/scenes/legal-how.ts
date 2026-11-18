@@ -8,8 +8,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import type { Scene } from '../index';
 
-const scene: Scene = (root, env) => {
-  if (env.reduce) return;
+const scene: Scene = (root) => {
   const steps = gsap.utils.toArray<HTMLElement>('.lstep', root);
   const fill = root.querySelector<HTMLElement>('.lhow__fill')!;
   const route = root.querySelector<HTMLElement>('.lhow__route')!;

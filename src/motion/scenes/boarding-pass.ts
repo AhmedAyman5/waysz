@@ -7,7 +7,6 @@ import { gsap } from 'gsap';
 import type { Scene } from '../index';
 
 const scene: Scene = (root, env) => {
-  if (env.reduce) return;
   const q = gsap.utils.selector(root);
   const pass = root.querySelector<HTMLElement>('.pass')!;
 

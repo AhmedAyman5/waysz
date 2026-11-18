@@ -1,6 +1,6 @@
 /**
  * Re-renders public/media/img/earth-borders-poster.webp — the still globe of the Immigration page's
- * "Explore the world" (css tier, reduced motion, no JS). It is a screenshot of our own WebGL globe.
+ * "Explore the world" (css tier = no WebGL, no JS). It is a screenshot of our own WebGL globe.
  * Run it again whenever the palette, the globe shader or the borders file change:
  *   npm run dev      then      node scripts/render-globe-still.mjs      (needs ffmpeg for the WebP)
  */
@@ -11,7 +11,7 @@ import { rmSync } from 'node:fs';
 const base = process.argv[2] ?? 'http://localhost:4321';
 const browser = await launch();
 const page = await (await browser.newContext({ viewport: { width: 1000, height: 1300 }, deviceScaleFactor: 1 })).newPage();
-await page.goto(`${base}/en/services/immigration-study-visa/?tier=high`, { waitUntil: 'load' });
+await page.goto(`${base}/en/services/immigration-study-visa/?tier=full`, { waitUntil: 'load' });
 await page.waitForTimeout(1500);
 await page.mouse.move(200, 200); await page.mouse.move(240, 230);          // first interaction → the stage loads
 await page.addStyleTag({ content: '.explore__scrim, .explore__hint, .explore__zoom, .explore__poster, .cursor { display: none !important }' });

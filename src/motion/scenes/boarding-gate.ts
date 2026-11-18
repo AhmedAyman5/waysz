@@ -3,7 +3,6 @@ import { gsap } from 'gsap';
 import type { Scene } from '../index';
 
 const scene: Scene = (root, env) => {
-  if (env.reduce) return;
   const q = gsap.utils.selector(root);
   gsap.timeline({ scrollTrigger: { trigger: root, start: 'top 70%', once: true } })
     .fromTo(q('.pass'), { autoAlpha: 0, y: 60, rotation: -2 * env.dir }, { autoAlpha: 1, y: 0, rotation: 0, duration: 1 })

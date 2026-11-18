@@ -5,7 +5,7 @@
  *                    the dip into night that hides the cut into the colonnade, vignette, grain (display space)
  * The render target's ALPHA is a sky mask: the sky writes 0, every solid thing writes 1, and the additive
  * layers leave it alone — the god rays only gather light from pixels where the sky is visible.
- * Quality is set with #define RAYS (0 = no rays, a soft glow instead).
+ * #define RAYS = ray-march samples (the act always uses 28; 0 would be a soft glow instead).
  */
 export const skyVertex = /* glsl */ `
 varying vec3 vDir;

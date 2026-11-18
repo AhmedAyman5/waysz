@@ -1,12 +1,10 @@
 import { gsap } from 'gsap';
 import { SplitText } from 'gsap/SplitText';
-import type { MotionEnv } from '../index';
 import { isFree } from './util';
 
 /** data-split="words|lines" — headline words/lines rise from a mask. NEVER chars (breaks Arabic). */
-export function initSplit(env: MotionEnv) {
+export function initSplit() {
   gsap.utils.toArray<HTMLElement>('[data-split]').filter(isFree).forEach((el) => {
-    if (env.reduce) { gsap.set(el, { autoAlpha: 1 }); return; }
     const type = el.dataset.split === 'lines' ? 'lines' : 'words';
     SplitText.create(el, {
       type,
