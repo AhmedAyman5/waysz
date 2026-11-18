@@ -1,7 +1,7 @@
 /**
  * Page weight of the production build: bytes transferred before any scroll, and after scrolling the page.
  *   npm run build && npm run preview -- --port 4322    then    node scripts/qa-weight.mjs [url]
- * Also reports console errors and which quality tier the device got.
+ * Also reports console errors, the tier (full = WebGL, css = no WebGL) and whether the WebGL stage drew.
  */
 import { launch } from './qa-browser.mjs';
 
@@ -47,8 +47,8 @@ for (const device of [
   }
   await page.waitForTimeout(3000);
   report('after full scroll');
-  console.log(`  tier: ${await page.evaluate(() => document.documentElement.dataset.tier)} · WebGL live: ${
-    await page.evaluate(() => !!document.querySelector('[data-flight].is-live'))} · errors: ${errors.length ? errors.join(' | ') : 'none'}`);
+  console.log(`  tier: ${await page.evaluate(() => document.documentElement.dataset.tier)} · WebGL drew: ${
+    await page.evaluate(() => !!document.querySelector('.stage-canvas.is-on'))} · errors: ${errors.length ? errors.join(' | ') : 'none'}`);
   await context.close();
 }
 await browser.close();
