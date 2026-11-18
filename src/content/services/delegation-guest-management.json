@@ -1,0 +1,81 @@
+{
+  "area": "events",
+  "order": 5,
+  "proposed": false,
+  "ar": {
+    "name": "استقبال الوفود وإدارة الضيوف",
+    "summary": "استقبال الوفود والمتحدثين في المطار، وتنسيق تنقلاتهم وإقامتهم وبرامجهم الرسمية طوال أيام الحدث.",
+    "description": "نستقبل وفودك ومتحدثيك من لحظة وصولهم إلى المطار، وننسق تنقلاتهم وإقامتهم وبرامجهم الرسمية طوال أيام الحدث حتى المغادرة؛ ليشعر كل ضيف بالترحيب، وتطمئن أنت إلى أن كل التفاصيل في مكانها.",
+    "audience": [
+      "منظمو المؤتمرات والمعارض الدولية.",
+      "الجهات الحكومية التي تستضيف وفودًا رسمية.",
+      "الشركات التي تستقبل شركاء أو عملاء من الخارج.",
+      "الجامعات والجمعيات التي تستضيف متحدثين دوليين."
+    ],
+    "offer": [
+      "الاستقبال في المطار والمرافقة إلى مقر الإقامة.",
+      "حجز الإقامة وتنسيقها حسب برنامج كل وفد.",
+      "التنقلات اليومية بين الفندق والقاعات والفعاليات.",
+      "إعداد البرامج الرسمية والزيارات المصاحبة.",
+      "فريق تواصل مع الضيوف طوال أيام الحدث حتى المغادرة."
+    ],
+    "steps": [
+      { "title": "قائمة الضيوف", "text": "نستلم بيانات الوفود ومواعيد وصولهم." },
+      { "title": "الخطة", "text": "نجهز خطة الاستقبال والإقامة والتنقلات." },
+      { "title": "الاستقبال", "text": "نستقبل الضيوف ونرافقهم إلى مقر إقامتهم." },
+      { "title": "حتى المغادرة", "text": "ننسق برامجهم يوميًا حتى توديعهم." }
+    ],
+    "excludes": [
+      "تذاكر الطيران وتكاليف الإقامة، ما لم تُذكر في العرض.",
+      "قرارات منح التأشيرات؛ فهي للسفارات وحدها.",
+      "النفقات الشخصية للضيوف."
+    ],
+    "faq": [
+      { "q": "هل تستقبلون أكثر من وفد في الوقت نفسه؟", "a": "نعم، نضع خطة لكل وفد حسب مواعيد وصوله وبرنامجه، وننسقها جميعًا في جدول واحد." },
+      { "q": "هل يمكن ترتيب برنامج زيارات للوفود؟", "a": "نعم، نعد البرامج الرسمية والزيارات المصاحبة بالتنسيق معك." }
+    ],
+    "cta": {
+      "title": "تستضيف وفودًا أو متحدثين دوليين؟",
+      "text": "أرسل لنا موعد الحدث وعدد الضيوف، وسنعد لك خطة استقبال مناسبة.",
+      "button": "اطلب عرضًا لفعاليتك"
+    }
+  },
+  "en": {
+    "name": "Delegation Reception & Guest Management",
+    "summary": "Meeting delegations and speakers at the airport, and coordinating their transport, accommodation and official programmes throughout the event.",
+    "description": "We welcome your delegations and speakers from the moment they land, and coordinate their transport, accommodation and official programmes throughout the event until they leave — so every guest feels welcome, and you know every detail is in place.",
+    "audience": [
+      "Organizers of international conferences and exhibitions.",
+      "Government bodies hosting official delegations.",
+      "Companies receiving partners or clients from abroad.",
+      "Universities and associations hosting international speakers."
+    ],
+    "offer": [
+      "Airport meet-and-greet and escort to the hotel.",
+      "Booking and coordinating accommodation around each delegation's programme.",
+      "Daily transport between the hotel, the halls and the events.",
+      "Preparing official programmes and accompanying visits.",
+      "A guest-relations team throughout the event, until departure."
+    ],
+    "steps": [
+      { "title": "Guest list", "text": "We receive the delegations' details and arrival times." },
+      { "title": "Plan", "text": "We prepare the reception, accommodation and transport plan." },
+      { "title": "Reception", "text": "We meet your guests and take them to their hotel." },
+      { "title": "Until departure", "text": "We coordinate their programme every day until we see them off." }
+    ],
+    "excludes": [
+      "Flights and accommodation costs, unless stated in the proposal.",
+      "Visa decisions — these belong to the embassies alone.",
+      "Guests' personal expenses."
+    ],
+    "faq": [
+      { "q": "Can you receive several delegations at the same time?", "a": "Yes. We plan each delegation around its arrival and programme, and bring them all together in one schedule." },
+      { "q": "Can you arrange a visit programme for delegations?", "a": "Yes. We prepare official programmes and accompanying visits in coordination with you." }
+    ],
+    "cta": {
+      "title": "Hosting international delegations or speakers?",
+      "text": "Send us the event date and the number of guests, and we'll prepare a reception plan to match.",
+      "button": "Request a proposal for your event"
+    }
+  }
+}

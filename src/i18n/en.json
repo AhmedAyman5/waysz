@@ -102,6 +102,10 @@
     "legal": {
       "title": "Legal Services | WaysZ",
       "description": "Legal consultations and follow-up on cases and procedures: criminal and civil law, family matters, corporate law, immigration and nationality, dispute resolution and arbitration. We explain your legal position in plain language."
+    },
+    "events": {
+      "title": "International Exhibitions & Conferences | WaysZ",
+      "description": "We organize complete international exhibitions and conferences, from the idea and the planning to opening day and beyond: the venue, the setup, the delegations, registration and simultaneous interpretation."
     }
   },
   "explore": {

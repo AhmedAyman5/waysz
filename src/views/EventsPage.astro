@@ -1,0 +1,121 @@
+---
+/**
+ * "International Exhibitions & Conferences" — the service-group page (brief §2.3). The most theatrical page of the
+ * site, same film as the others (dusk, deep navy, amber light) plus deep velvet red for the stage.
+ * Idea: "The show is about to begin". The page is a grand event hall: it opens with a curtain and closes with one.
+ * A real-time 3D world (stage act `gala`) stands behind the whole page — ONE stage host that CSS keeps on screen
+ * (sticky); the sections scroll over it and move its camera:
+ *   hero (the curtain opens on the hall) → the ten services (we walk in on the red carpet) → the expo builds itself
+ *   → the arrivals board (delegations, visas) → registration (a badge, the seats fill) → interpretation and the LED
+ *   wall → the event types on a turntable → "under one roof" (four beams meet) → who we serve + how we work → FAQ
+ *   → the call (the spotlights converge and the curtain closes again)
+ * css tier (no WebGL) / no JS: our own stills of the curtain and of the hall behind the same content.
+ * One file per section in views/events/. Copy: brief §2.3 and template sample (ج); Arabic is the source.
+ * CLIENT DECISION (2026-11): every service in the brief is offered — nothing here is «مقترح».
+ * Nothing is promised (attendance, sponsorships, visas). No events, clients, venues, cities, numbers or names.
+ */
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from './events/Hero.astro';
+import Services from './events/Services.astro';
+import Expo from './events/Expo.astro';
+import Arrivals from './events/Arrivals.astro';
+import Register from './events/Register.astro';
+import Interpret from './events/Interpret.astro';
+import Types from './events/Types.astro';
+import Roof from './events/Roof.astro';
+import How from './events/How.astro';
+import Faq from './events/Faq.astro';
+import Consult from './events/Consult.astro';
+import { useTranslations, type Lang } from '../i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+// §2.3 group intro, whole, as the hero lead
+const lead = {
+  ar: 'ننظم معارض ومؤتمرات دولية متكاملة، من الفكرة والتخطيط حتى يوم الافتتاح وما بعده. نتولى كل التفاصيل: المكان، والتجهيزات، والوفود، والتسجيل، والترجمة الفورية؛ لتخرج فعاليتك بصورة تليق باسمك أمام جمهور محلي ودولي.',
+  en: 'We organize complete international exhibitions and conferences, from the idea and the planning to opening day and beyond. We take care of every detail — the venue, the setup, the delegations, registration and simultaneous interpretation — so your event comes out in a way worthy of your name, before a local and international audience.',
+}[lang];
+
+// §2.3 — the ten services in the brief's order; name, summary, steps and FAQ come from the service files,
+// so the group page and the detail pages can never differ.
+const order = [
+  'international-conferences', 'trade-exhibitions', 'exhibition-participation', 'stand-design-build', 'delegation-guest-management',
+  'registration-attendance', 'interpretation-event-technology', 'delegation-visas', 'event-marketing', 'sponsor-speaker-management',
+] as const;
+type Slug = (typeof order)[number];
+const entries = await getCollection('services', (e) => e.data.area === 'events');
+const services = order.map((slug) => {
+  const entry = entries.find((e) => e.id === slug)!;
+  return { slug, ...entry.data[lang] };
+});
+const svc = (slug: Slug) => services.find((s) => s.slug === slug)!;
+const conference = svc('international-conferences');
+// a short FAQ built from the detail pages: the question every organizer asks first, then the ones that matter most
+const pick = (slug: Slug, i: number) => ({ ...svc(slug).faq[i], service: svc(slug).name, slug });
+const faq = [
+  pick('international-conferences', 0), pick('international-conferences', 1), pick('delegation-visas', 0), pick('sponsor-speaker-management', 0),
+  pick('stand-design-build', 0), pick('registration-attendance', 0), pick('interpretation-event-technology', 0),
+];
+const brief = (slug: Slug) => ({ slug, name: svc(slug).name, text: svc(slug).summary });
+---
+<BaseLayout lang={lang} title={t.pages.events.title} description={t.pages.events.description} headerOverlay>
+  <div class="gala theme-dark">
+    <div class="gala__stage stage-host" data-scene="events-thread" data-lang={lang} aria-hidden="true">
+      <div class="gala__still gala__still--curtain">
+        <picture>
+          <source media="(max-width: 1023px)" srcset="/media/img/curtain-poster-m.webp" width="780" height="1688" />
+          <img src="/media/img/curtain-poster.webp" alt="" width="1600" height="1000" decoding="async" fetchpriority="high" />
+        </picture>
+      </div>
+      <div class="gala__still gala__still--hall">
+        <picture>
+          <source media="(max-width: 1023px)" srcset="/media/img/hall-poster-m.webp" width="780" height="1688" />
+          <img src="/media/img/hall-poster.webp" alt="" width="1600" height="1000" loading="lazy" decoding="async" />
+        </picture>
+      </div>
+    </div>
+    <div class="gala__body">
+      <Hero lang={lang} lead={lead} />
+      <Services lang={lang} title={t.nav.services} items={services.map(({ slug, name, summary }) => ({ slug, name, text: summary }))} />
+      <Expo lang={lang} items={[brief('trade-exhibitions'), brief('exhibition-participation'), brief('stand-design-build'), brief('event-marketing')]} />
+      <Arrivals lang={lang} items={[brief('delegation-guest-management'), brief('delegation-visas')]} />
+      <Register lang={lang} item={brief('registration-attendance')} />
+      <Interpret lang={lang} item={brief('interpretation-event-technology')} />
+      <Types lang={lang} />
+      <Roof lang={lang} />
+      <How lang={lang} audience={conference.audience} steps={conference.steps} />
+      <Faq lang={lang} items={faq} />
+      <Consult lang={lang} cta={conference.cta} />
+    </div>
+  </div>
+</BaseLayout>
+
+<style is:global>
+  /* One stage host for the whole page: it sticks to the screen while the sections scroll over it. */
+  .gala { position: relative; background: var(--color-bg); }
+  .gala__stage { position: sticky; inset: 0 auto auto 0; width: 100%; height: 100vh; height: 100lvh; }
+  .gala__body { position: relative; margin-block-start: -100vh; margin-block-start: -100lvh; }
+
+  /* our own stills (css tier, no JS): the closed curtain at both ends of the page, the hall in between.
+     Full screen, so they are background-like and the hero text stays the largest paint. Never mirrored. */
+  .gala__still { position: absolute; inset: 0; transition: opacity 0.9s var(--ease-out); }
+  .gala__still img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 42%; }
+  .gala__still--hall { opacity: 0; }
+  .gala__stage.is-hall .gala__still--hall { opacity: 1; }
+  .gala__stage.is-drawing .gala__still { opacity: 0; }
+  .gala__stage .stage-canvas { position: absolute; inset: 0; }
+
+  /* shared by the sections: a text block always sits on a dark gradient over the 3D hall */
+  .gala .g-scrim { position: absolute; inset: 0; pointer-events: none; }
+  .gala .g-title { font-size: clamp(2.4rem, 1.3rem + 4.6vw, 5.5rem); line-height: 1.12; letter-spacing: -0.01em; }
+  [dir='rtl'] .gala .g-title { line-height: 1.34; letter-spacing: 0; }
+  .gala .g-lead { margin-block-start: var(--space-4); max-width: 46ch; font-size: var(--text-lg); line-height: 1.75; color: color-mix(in srgb, var(--color-ink) 90%, transparent); }
+  @media (max-width: 639px) { .gala .g-lead { font-size: var(--text-base); } }
+  .gala .g-link { font-size: var(--text-sm); color: var(--color-link); }
+
+  /* dev: re-rendering the stills (scripts/render-gala-still.mjs) */
+  .gala.is-poster .gala__body, .gala.is-poster ~ * { visibility: hidden; }
+</style>

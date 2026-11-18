@@ -1,0 +1,79 @@
+{
+  "area": "events",
+  "order": 9,
+  "proposed": false,
+  "ar": {
+    "name": "التسويق والترويج للفعالية",
+    "summary": "هوية بصرية للحدث، وحملات رقمية ودعوات، وتغطية إعلامية قبل الفعالية وأثناءها.",
+    "description": "نصمم لفعاليتك هوية بصرية تعرّف بها، ونطلق حملات رقمية ودعوات تصل إلى جمهورها، ونرتب التغطية الإعلامية قبل الفعالية وأثناءها؛ ليعرف جمهورك بالحدث في الوقت المناسب.",
+    "audience": [
+      "منظمو المؤتمرات والمعارض والمنتديات.",
+      "الشركات التي تطلق منتجًا جديدًا.",
+      "الجهات التي تريد الوصول إلى جمهور محلي ودولي.",
+      "العارضون الذين يريدون جذب الزوار إلى أجنحتهم."
+    ],
+    "offer": [
+      "هوية بصرية للحدث: الشعار والألوان والمطبوعات.",
+      "حملات رقمية على المنصات المناسبة لجمهورك.",
+      "تصميم الدعوات وإرسالها.",
+      "التغطية الإعلامية والتصوير قبل الفعالية وأثناءها."
+    ],
+    "steps": [
+      { "title": "الجمهور والرسالة", "text": "نحدد معك الجمهور وما تريد أن يعرفه." },
+      { "title": "الهوية والخطة", "text": "نقدم الهوية البصرية وخطة الحملة وميزانيتها." },
+      { "title": "الإطلاق", "text": "نطلق الحملات والدعوات ونتابع نتائجها." },
+      { "title": "التغطية", "text": "نرتب التغطية الإعلامية قبل الحدث وأثناءه." }
+    ],
+    "excludes": [
+      "ضمان أعداد حضور أو مشاهدات بعينها.",
+      "ميزانية الإعلانات المدفوعة، ما لم تُذكر في العرض.",
+      "رسوم النشر في وسائل الإعلام، ما لم تُذكر في العرض."
+    ],
+    "faq": [
+      { "q": "متى نبدأ الترويج للفعالية؟", "a": "يختلف ذلك حسب حجم الفعالية وجمهورها، ونقترح معك جدولًا يبدأ قبل الحدث بوقت كافٍ." },
+      { "q": "هل تتولون التغطية يوم الحدث؟", "a": "نعم، نرتب التغطية الإعلامية والتصوير أثناء الفعالية." }
+    ],
+    "cta": {
+      "title": "تريد أن يعرف جمهورك بفعاليتك؟",
+      "text": "حدثنا عن فعاليتك وجمهورها، وسنقترح عليك خطة ترويج مناسبة.",
+      "button": "اطلب عرضًا لفعاليتك"
+    }
+  },
+  "en": {
+    "name": "Event Marketing & Promotion",
+    "summary": "A visual identity for the event, digital campaigns and invitations, and media coverage before and during the event.",
+    "description": "We design a visual identity that introduces your event, run digital campaigns and invitations that reach its audience, and arrange media coverage before and during the event — so your audience hears about it at the right time.",
+    "audience": [
+      "Organizers of conferences, exhibitions and forums.",
+      "Companies launching a new product.",
+      "Bodies that want to reach a local and international audience.",
+      "Exhibitors who want to draw visitors to their stands."
+    ],
+    "offer": [
+      "A visual identity for the event: logo, colours and print.",
+      "Digital campaigns on the platforms that suit your audience.",
+      "Designing and sending the invitations.",
+      "Media coverage and photography before and during the event."
+    ],
+    "steps": [
+      { "title": "Audience and message", "text": "Together we define the audience and what you want them to know." },
+      { "title": "Identity and plan", "text": "We present the visual identity, the campaign plan and its budget." },
+      { "title": "Launch", "text": "We launch the campaigns and invitations and track how they perform." },
+      { "title": "Coverage", "text": "We arrange media coverage before and during the event." }
+    ],
+    "excludes": [
+      "Any guaranteed attendance or view numbers.",
+      "Paid advertising budgets, unless stated in the proposal.",
+      "Media publishing fees, unless stated in the proposal."
+    ],
+    "faq": [
+      { "q": "When should we start promoting the event?", "a": "It depends on the size of the event and its audience. We'll propose a schedule with you that starts well before the event." },
+      { "q": "Do you cover the event day itself?", "a": "Yes. We arrange media coverage and photography during the event." }
+    ],
+    "cta": {
+      "title": "Want your audience to hear about your event?",
+      "text": "Tell us about your event and its audience, and we'll suggest the right promotion plan.",
+      "button": "Request a proposal for your event"
+    }
+  }
+}

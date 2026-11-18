@@ -1,0 +1,83 @@
+{
+  "area": "events",
+  "order": 2,
+  "proposed": false,
+  "ar": {
+    "name": "تنظيم المعارض التجارية والمتخصصة",
+    "summary": "إدارة المعارض من التخطيط وتوزيع المساحات واستقطاب العارضين والزوار، حتى الافتتاح والتشغيل والإغلاق.",
+    "description": "ننظم معارض تجارية ومتخصصة متكاملة، من دراسة الفكرة وتخطيط المساحات وتوزيعها، إلى استقطاب العارضين والزوار، ثم الافتتاح والتشغيل اليومي وحتى الإغلاق؛ ليظهر معرضك منظمًا من أول زائر حتى آخر جناح.",
+    "audience": [
+      "الجهات الحكومية والهيئات المنظمة للمعارض.",
+      "الاتحادات والغرف التجارية والصناعية.",
+      "الشركات التي تطلق معرضًا خاصًا بقطاعها.",
+      "الجمعيات المهنية والمتخصصة."
+    ],
+    "offer": [
+      "دراسة الفكرة وتحديد القطاع والجمهور المستهدف.",
+      "تخطيط المساحات وتوزيع الأجنحة ومسارات الزوار.",
+      "استقطاب العارضين والتواصل معهم حتى التعاقد.",
+      "دعوة الزوار والتسجيل المسبق.",
+      "إدارة التجهيز والافتتاح والتشغيل اليومي والإغلاق.",
+      "تقرير ختامي بعد انتهاء المعرض."
+    ],
+    "steps": [
+      { "title": "الفكرة والأهداف", "text": "نحدد معك القطاع والجمهور وحجم المعرض." },
+      { "title": "المساحات والخطة", "text": "نخطط توزيع الأجنحة ونقدم الميزانية والجدول الزمني." },
+      { "title": "العارضون والزوار", "text": "نستقطب العارضين وندعو الزوار ونجهز الموقع." },
+      { "title": "الافتتاح والتشغيل", "text": "نُدير أيام المعرض حتى الإغلاق ونسلمك تقريرًا ختاميًا." }
+    ],
+    "excludes": [
+      "رسوم أرض المعرض والتصاريح الحكومية، ما لم تُذكر في العرض.",
+      "ضمان أعداد عارضين أو زوار بعينها.",
+      "تكاليف أجنحة العارضين الخاصة بهم، ما لم يُتفق على غير ذلك."
+    ],
+    "faq": [
+      { "q": "هل تساعدوننا في اختيار مكان المعرض؟", "a": "نعم، نرشح لك أماكن تناسب حجم المعرض وطبيعته، ونتولى التنسيق معها." },
+      { "q": "هل يمكن تنظيم معرض لقطاع محدد؟", "a": "نعم، نبني المعرض حول قطاعك وجمهوره، من توزيع المساحات حتى برنامج الأيام." }
+    ],
+    "cta": {
+      "title": "تخطط لمعرض تجاري أو متخصص؟",
+      "text": "حدثنا عن معرضك، وسنرسل لك تصورًا مبدئيًا وعرضًا مناسبًا لأهدافك.",
+      "button": "اطلب عرضًا لفعاليتك"
+    }
+  },
+  "en": {
+    "name": "Trade & Specialized Exhibitions",
+    "summary": "Running exhibitions from planning, space allocation and attracting exhibitors and visitors, through opening, daily operations and closing.",
+    "description": "We organize complete trade and specialized exhibitions — from studying the idea and planning and allocating the space, to attracting exhibitors and visitors, then the opening and daily operations, all the way to closing — so your exhibition runs smoothly from the first visitor to the last stand.",
+    "audience": [
+      "Government bodies and authorities that host exhibitions.",
+      "Federations and chambers of commerce and industry.",
+      "Companies launching an exhibition for their sector.",
+      "Professional and specialized associations."
+    ],
+    "offer": [
+      "Studying the idea and defining the sector and target audience.",
+      "Planning the space, laying out the stands and the visitor routes.",
+      "Attracting exhibitors and following up with them through to contract.",
+      "Inviting visitors and handling pre-registration.",
+      "Managing the build-up, the opening, daily operations and closing.",
+      "A final report once the exhibition is over."
+    ],
+    "steps": [
+      { "title": "Idea and goals", "text": "Together we define the sector, the audience and the size of the exhibition." },
+      { "title": "Space and plan", "text": "We plan the stand layout and present the budget and timeline." },
+      { "title": "Exhibitors and visitors", "text": "We attract exhibitors, invite visitors and prepare the venue." },
+      { "title": "Opening and operations", "text": "We run the exhibition days through to closing and hand you a final report." }
+    ],
+    "excludes": [
+      "Venue fees and government permits, unless stated in the proposal.",
+      "Any guaranteed number of exhibitors or visitors.",
+      "Exhibitors' own stand costs, unless agreed otherwise."
+    ],
+    "faq": [
+      { "q": "Can you help us choose the venue?", "a": "Yes. We suggest venues that suit the size and nature of the exhibition and handle the coordination with them." },
+      { "q": "Can you organize an exhibition for one specific sector?", "a": "Yes. We build the exhibition around your sector and its audience, from the space layout to the daily programme." }
+    ],
+    "cta": {
+      "title": "Planning a trade or specialized exhibition?",
+      "text": "Tell us about your exhibition, and we'll send you an initial concept and a proposal suited to your goals.",
+      "button": "Request a proposal for your event"
+    }
+  }
+}

@@ -1,0 +1,111 @@
+---
+/**
+ * Events page — «ما يميزنا في الفعاليات الدولية» (brief §2.3): "under one roof". Scene: motion/scenes/events-roof.ts.
+ * A sticky screen (no pin). Four beams of light come from the four corners of the hall — the four WaysZ teams the
+ * brief names (visas, translation, software, legal) — and meet at one point on the stage, which lights up
+ * (stage act `gala`, bridge `gala.beams`). Each beam's label, in its corner of the screen, links to that team's page.
+ * The paragraph is the brief's own, with real links. No JS / css tier: the labels sit in a row under the text.
+ */
+import { site } from '../../lib/site';
+import { localizePath, type Lang } from '../../i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const visa = site.visaSite;
+const immigration = localizePath('/services/immigration-study-visa/', lang);
+const software = localizePath('/services/software-technology/', lang);
+const legal = localizePath('/services/legal-services/', lang);
+const copy = {
+  ar: {
+    title: 'ما يميزنا في الفعاليات الدولية',
+    beams: [
+      { label: 'تأشيرات الوفود', via: 'WaysZ Visa', href: visa, external: true },
+      { label: 'الترجمة المعتمدة والفورية', via: 'الهجرة والدراسة والتأشيرات', href: immigration },
+      { label: 'منصة التسجيل وموقع الفعالية', via: 'البرمجيات والتقنية', href: software },
+      { label: 'العقود واتفاقيات الرعاية', via: 'الخدمات القانونية', href: legal },
+    ],
+  },
+  en: {
+    title: 'What sets us apart in international events',
+    beams: [
+      { label: 'Delegation visas', via: 'WaysZ Visa', href: visa, external: true },
+      { label: 'Certified & simultaneous translation', via: 'Immigration, Study & Visa', href: immigration },
+      { label: 'Registration platform & event website', via: 'Software & Technology', href: software },
+      { label: 'Contracts & sponsorship agreements', via: 'Legal Services', href: legal },
+    ],
+  },
+}[lang];
+---
+<section class="groof" id="one-roof" data-scene="events-roof" data-shot data-waypoint aria-labelledby="groof-title">
+  <div class="groof__view">
+    <div class="groof__scrim g-scrim" aria-hidden="true"></div>
+    <svg class="groof__lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M6 10 50 62" /><path d="M94 10 50 62" /><path d="M6 92 50 62" /><path d="M94 92 50 62" />
+    </svg>
+    <div class="groof__in container">
+      <h2 class="g-title groof__title" id="groof-title">{copy.title}</h2>
+      {lang === 'ar' ? (
+        <p class="g-lead groof__text">
+          كل ما تحتاجه فعاليتك تحت سقف واحد؛ <a href={immigration}>تأشيرات الوفود</a> من <a href={visa} rel="noopener"><bdi>WaysZ Visa</bdi></a>،
+          والترجمة المعتمدة والفورية، و<a href={software}>منصة التسجيل وموقع الفعالية</a> من فريق البرمجيات،
+          و<a href={legal}>صياغة العقود واتفاقيات الرعاية</a> من الفريق القانوني. جهة واحدة تنسق كل شيء، بدل التعامل مع موردين متعددين.
+        </p>
+      ) : (
+        <p class="g-lead groof__text">
+          Everything your event needs, under one roof: <a href={immigration}>delegation visas</a> from <a href={visa} rel="noopener">WaysZ Visa</a>,
+          certified and simultaneous translation, <a href={software}>the registration platform and the event website</a> from our software team,
+          and <a href={legal}>contracts and sponsorship agreements</a> drafted by our legal team. One party coordinates everything,
+          instead of dealing with many different suppliers.
+        </p>
+      )}
+    </div>
+    <ul class="groof__beams" role="list">
+      {copy.beams.map((b, i) => (
+        <li class="groof__beam" data-corner={i}>
+          <a href={b.href} rel={b.external ? 'noopener' : undefined}>
+            <span class="groof__label">{b.label}</span>
+            <span class="groof__via">{b.external ? <bdi>{b.via}</bdi> : b.via}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .groof { position: relative; }
+  .groof__view { position: relative; overflow: clip; display: grid; padding-block: calc(76px + var(--space-6)) var(--space-8); gap: var(--space-7); }
+  .groof__scrim { background: radial-gradient(ellipse 70% 60% at 50% 46%, color-mix(in srgb, var(--color-bg) 70%, transparent), color-mix(in srgb, var(--color-bg) 30%, transparent) 70%, transparent); }
+  .groof__in { position: relative; text-align: center; display: grid; justify-items: center; }
+  .groof__text { max-width: 58ch; margin-inline: auto; }
+  .groof__text a { color: var(--color-link); }
+  .groof__lines { display: none; }
+
+  .groof__beams { position: relative; display: grid; gap: var(--space-3); width: var(--container); margin-inline: auto; }
+  @media (min-width: 640px) { .groof__beams { grid-template-columns: 1fr 1fr; } }
+  .groof__beam a {
+    display: grid; gap: 2px; padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); text-decoration: none;
+    background: color-mix(in srgb, var(--color-bg) 78%, transparent); border: 1px solid var(--color-border);
+    transition: border-color var(--dur-fast) var(--ease-out);
+  }
+  .groof__beam a:hover, .groof__beam a:focus-visible { border-color: var(--color-accent); }
+  .groof__label { font-family: var(--font-display); font-weight: var(--weight-bold); }
+  .groof__via { font-size: var(--text-sm); color: var(--color-link); }
+
+  /* with JS on wide screens: one sticky screen, the four labels in the four corners, a line from each to the stage */
+  @media (min-width: 1024px) {
+    :global(.js) .groof { height: 240vh; height: 240lvh; }
+    :global(.js) .groof__view { position: sticky; top: 0; height: 100vh; height: 100lvh; padding: 0; display: block; }
+    :global(.js) .groof__in { position: absolute; inset-inline: 0; top: 50%; translate: 0 -40%; }
+    :global(.js) .groof__beams { position: absolute; inset: calc(76px + var(--space-4)) 0 var(--space-6); width: auto; display: block; }
+    :global(.js) .groof__beam { position: absolute; width: 19rem; }
+    :global(.js) .groof__beam[data-corner='0'] { inset-block-start: 0; inset-inline-start: var(--space-6); }
+    :global(.js) .groof__beam[data-corner='1'] { inset-block-start: 0; inset-inline-end: var(--space-6); }
+    :global(.js) .groof__beam[data-corner='2'] { inset-block-end: 0; inset-inline-start: var(--space-6); }
+    :global(.js) .groof__beam[data-corner='3'] { inset-block-end: 0; inset-inline-end: var(--space-6); }
+    :global(.js) .groof__beam[data-corner='1'] a, :global(.js) .groof__beam[data-corner='3'] a { text-align: end; }
+    :global(.js) .groof__lines { display: block; position: absolute; inset: 0; width: 100%; height: 100%; fill: none; stroke: var(--color-accent); stroke-width: 0.12; vector-effect: non-scaling-stroke; opacity: 0.5; }
+    :global(.js) .groof__lines path { vector-effect: non-scaling-stroke; stroke-width: 1px; }
+    :global(html[data-tier='full']) .groof__lines { opacity: 0; }
+  }
+</style>

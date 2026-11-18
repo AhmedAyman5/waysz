@@ -1,0 +1,83 @@
+{
+  "area": "events",
+  "order": 6,
+  "proposed": false,
+  "ar": {
+    "name": "التسجيل وإدارة الحضور",
+    "summary": "منصة تسجيل إلكترونية، وبطاقات دخول، وإدارة قوائم الحضور والدعوات، بالتكامل مع فريقنا التقني.",
+    "description": "نجهز لفعاليتك منصة تسجيل إلكترونية وبطاقات دخول، وندير قوائم الحضور والدعوات من أول تسجيل حتى يوم الحدث، بالتكامل مع فريق البرمجيات لدينا؛ لتعرف من سيحضر، ويدخل ضيوفك بسهولة.",
+    "audience": [
+      "منظمو المؤتمرات والمعارض والمنتديات.",
+      "الجهات التي ترسل دعوات رسمية لضيوفها.",
+      "الشركات التي تنظم اجتماعات سنوية أو إطلاق منتجات.",
+      "الجامعات والجمعيات العلمية في مؤتمراتها وورشها."
+    ],
+    "offer": [
+      "منصة تسجيل إلكترونية بنموذج يناسب فعاليتك.",
+      "إرسال الدعوات وتأكيدات التسجيل.",
+      "بطاقات دخول للحضور.",
+      "إدارة قوائم الحضور وتحديثها حتى يوم الحدث.",
+      "مكاتب تسجيل واستقبال في موقع الفعالية.",
+      "تقرير بالحضور بعد الفعالية."
+    ],
+    "steps": [
+      { "title": "فهم الفعالية", "text": "نحدد معك فئات الحضور وطريقة الدعوة." },
+      { "title": "المنصة والدعوات", "text": "نجهز منصة التسجيل ونرسل الدعوات." },
+      { "title": "المتابعة", "text": "نتابع التسجيلات ونحدّث القوائم أولًا بأول." },
+      { "title": "يوم الحدث", "text": "نستقبل الحضور ونسلمك تقريرًا بالحضور." }
+    ],
+    "excludes": [
+      "ضمان أعداد حضور بعينها.",
+      "بيع التذاكر وتحصيل رسومها، ما لم يُتفق على غير ذلك.",
+      "استخدام بيانات الحضور في غير أغراض الفعالية."
+    ],
+    "faq": [
+      { "q": "هل منصة التسجيل خاصة بفعاليتنا؟", "a": "نعم، يجهزها فريق البرمجيات لدينا لفعاليتك، ويمكن ربطها بموقع الفعالية." },
+      { "q": "هل تديرون الدعوات الرسمية أيضًا؟", "a": "نعم، نرسل الدعوات ونتابع الردود، ونحدّث قوائم الحضور حتى يوم الحدث." }
+    ],
+    "cta": {
+      "title": "تريد تسجيلًا منظمًا لفعاليتك؟",
+      "text": "أخبرنا بنوع الفعالية وفئات الحضور، وسنقترح عليك طريقة التسجيل المناسبة.",
+      "button": "اطلب عرضًا لفعاليتك"
+    }
+  },
+  "en": {
+    "name": "Registration & Attendance Management",
+    "summary": "An online registration platform, entry badges, and management of attendee lists and invitations — built with our technology team.",
+    "description": "We set up an online registration platform and entry badges for your event, and manage the attendee lists and invitations from the first sign-up to the event day, working with our software team — so you know who is coming, and your guests get in easily.",
+    "audience": [
+      "Organizers of conferences, exhibitions and forums.",
+      "Bodies that send official invitations to their guests.",
+      "Companies holding annual meetings or product launches.",
+      "Universities and scientific societies, for their conferences and workshops."
+    ],
+    "offer": [
+      "An online registration platform with a form built for your event.",
+      "Sending invitations and registration confirmations.",
+      "Entry badges for attendees.",
+      "Managing and updating attendee lists up to the event day.",
+      "Registration and welcome desks at the venue.",
+      "An attendance report after the event."
+    ],
+    "steps": [
+      { "title": "Understanding the event", "text": "Together we define the attendee groups and how to invite them." },
+      { "title": "Platform and invitations", "text": "We set up the registration platform and send the invitations." },
+      { "title": "Follow-up", "text": "We track sign-ups and keep the lists up to date." },
+      { "title": "Event day", "text": "We welcome the attendees and hand you an attendance report." }
+    ],
+    "excludes": [
+      "Any guaranteed attendance numbers.",
+      "Ticket sales and fee collection, unless agreed otherwise.",
+      "Using attendee data for anything other than the event."
+    ],
+    "faq": [
+      { "q": "Is the registration platform built for our event?", "a": "Yes. Our software team sets it up for your event, and it can be connected to the event website." },
+      { "q": "Do you manage official invitations too?", "a": "Yes. We send the invitations, follow up on the replies and keep the attendee lists updated until the event day." }
+    ],
+    "cta": {
+      "title": "Want well-organized registration for your event?",
+      "text": "Tell us the type of event and your attendee groups, and we'll suggest the right registration set-up.",
+      "button": "Request a proposal for your event"
+    }
+  }
+}

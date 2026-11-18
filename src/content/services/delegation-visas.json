@@ -1,0 +1,81 @@
+{
+  "area": "events",
+  "order": 8,
+  "proposed": false,
+  "ar": {
+    "name": "تأشيرات الوفود والمشاركين",
+    "summary": "خطابات الدعوة الرسمية، وإرشاد المشاركين الدوليين في تأشيرات الأعمال والمؤتمرات عبر WaysZ Visa.",
+    "description": "نجهز خطابات الدعوة الرسمية للمشاركين في فعاليتك، ونرشد المشاركين الدوليين في تأشيرات الأعمال والمؤتمرات عبر منصتنا WaysZ Visa، بالتنسيق مع فريق الفعالية؛ لتبدأ إجراءات ضيوفك مبكرًا وبخطوات واضحة.",
+    "audience": [
+      "منظمو المؤتمرات والمعارض الذين يستضيفون مشاركين من الخارج.",
+      "الوفود الرسمية والمتحدثون الدوليون.",
+      "العارضون القادمون من الخارج.",
+      "الشركات المشاركة في معارض دولية."
+    ],
+    "offer": [
+      "إعداد خطابات الدعوة الرسمية باسم الجهة المنظمة.",
+      "إرشاد المشاركين إلى نوع التأشيرة والمستندات المطلوبة.",
+      "متابعة ملفات المشاركين عبر WaysZ Visa.",
+      "جدول زمني للتأشيرات يتوافق مع موعد الفعالية.",
+      "تنسيق مستمر مع فريق استقبال الوفود."
+    ],
+    "steps": [
+      { "title": "قائمة المشاركين", "text": "نستلم بيانات المشاركين وموعد الفعالية." },
+      { "title": "خطابات الدعوة", "text": "نعد خطابات الدعوة الرسمية للمشاركين." },
+      { "title": "إرشاد كل مشارك", "text": "نرشد كل مشارك في ملفه عبر WaysZ Visa." },
+      { "title": "المتابعة حتى السفر", "text": "نتابع الملفات وننسق مع فريق الاستقبال." }
+    ],
+    "excludes": [
+      "قرارات منح التأشيرات؛ فهي للسفارات وحدها.",
+      "رسوم التأشيرات والسفارات.",
+      "تذاكر الطيران وتكاليف الإقامة، ما لم تُذكر في العرض."
+    ],
+    "faq": [
+      { "q": "هل تضمنون حصول المشاركين على التأشيرة؟", "a": "لا؛ قرار منح التأشيرة للسفارة وحدها، ودورنا أن نجهز الملف بوضوح وفي وقت مناسب." },
+      { "q": "متى يبدأ المشاركون إجراءات التأشيرة؟", "a": "كلما كان مبكرًا كان أفضل، لأن مواعيد السفارات ومدد الإجراءات تختلف من دولة لأخرى." }
+    ],
+    "cta": {
+      "title": "تستضيف مشاركين من الخارج؟",
+      "text": "أرسل لنا موعد فعاليتك وعدد المشاركين، وسنضع معك خطة التأشيرات.",
+      "button": "اطلب عرضًا لفعاليتك"
+    }
+  },
+  "en": {
+    "name": "Delegation & Participant Visas",
+    "summary": "Official invitation letters, and guidance for international participants on business and conference visas through WaysZ Visa.",
+    "description": "We prepare official invitation letters for the participants in your event, and guide international participants on business and conference visas through our WaysZ Visa platform, in coordination with the event team — so your guests can start their applications early, with clear steps.",
+    "audience": [
+      "Conference and exhibition organizers hosting participants from abroad.",
+      "Official delegations and international speakers.",
+      "Exhibitors travelling from abroad.",
+      "Companies taking part in international exhibitions."
+    ],
+    "offer": [
+      "Preparing official invitation letters on behalf of the organizer.",
+      "Guiding participants on the visa type and the documents required.",
+      "Following up on participants' applications through WaysZ Visa.",
+      "A visa timeline that matches the event date.",
+      "Ongoing coordination with the delegation reception team."
+    ],
+    "steps": [
+      { "title": "Participant list", "text": "We receive the participants' details and the event date." },
+      { "title": "Invitation letters", "text": "We prepare the official invitation letters." },
+      { "title": "Guiding each participant", "text": "We guide every participant through their application on WaysZ Visa." },
+      { "title": "Follow-up until travel", "text": "We follow the applications and coordinate with the reception team." }
+    ],
+    "excludes": [
+      "Visa decisions — these belong to the embassies alone.",
+      "Visa and embassy fees.",
+      "Flights and accommodation costs, unless stated in the proposal."
+    ],
+    "faq": [
+      { "q": "Do you guarantee that participants will get their visas?", "a": "No. The visa decision belongs to the embassy alone; our role is to prepare the application clearly and in good time." },
+      { "q": "When should participants start their visa applications?", "a": "The earlier the better, because embassy appointments and processing times differ from one country to another." }
+    ],
+    "cta": {
+      "title": "Hosting participants from abroad?",
+      "text": "Send us your event date and the number of participants, and we'll plan the visas with you.",
+      "button": "Request a proposal for your event"
+    }
+  }
+}

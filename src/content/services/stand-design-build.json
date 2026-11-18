@@ -1,0 +1,81 @@
+{
+  "area": "events",
+  "order": 4,
+  "proposed": false,
+  "ar": {
+    "name": "تصميم وتجهيز أجنحة العرض",
+    "summary": "تصميم أجنحة تعكس هوية علامتك وتجذب الزوار، وتنفيذها وتركيبها في موقع المعرض.",
+    "description": "نصمم جناحك ليعكس هوية علامتك ويجذب الزوار، ثم ننفذه ونركبه في موقع المعرض ونسلمه جاهزًا قبل الافتتاح؛ لتستقبل زوارك في مساحة تليق باسمك.",
+    "audience": [
+      "الشركات المشاركة في معارض محلية أو دولية.",
+      "الجهات الحكومية والهيئات التي تشارك بجناح.",
+      "العلامات التي تطلق منتجًا داخل معرض.",
+      "منظمو المعارض الذين يحتاجون أجنحة موحدة للعارضين."
+    ],
+    "offer": [
+      "فهم هويتك وأهداف مشاركتك ومساحة الجناح.",
+      "تصميم ثلاثي الأبعاد للجناح قبل التنفيذ.",
+      "اختيار الخامات والإضاءة والشاشات والأثاث.",
+      "التنفيذ والتركيب في موقع المعرض وفق اشتراطاته.",
+      "تسليم الجناح جاهزًا قبل الافتتاح، والمتابعة أثناء المعرض."
+    ],
+    "steps": [
+      { "title": "الفكرة", "text": "نتعرف على علامتك وأهدافك ومساحة الجناح." },
+      { "title": "التصميم", "text": "نقدم تصميمًا ثلاثي الأبعاد وميزانية واضحة." },
+      { "title": "التنفيذ", "text": "نصنع الجناح ونجهز الخامات والإضاءة." },
+      { "title": "التركيب والتسليم", "text": "نركب الجناح في الموقع ونسلمه جاهزًا." }
+    ],
+    "excludes": [
+      "رسوم المساحة التي تفرضها إدارة المعرض.",
+      "التعديلات الجوهرية بعد اعتماد التصميم، ما لم يُتفق عليها.",
+      "تصاريح إدارة المعرض، إن وُجدت، ما لم تُذكر في العرض."
+    ],
+    "faq": [
+      { "q": "هل أرى الجناح قبل تنفيذه؟", "a": "نعم، نقدم لك تصميمًا ثلاثي الأبعاد تراجعه وتعتمده قبل أن نبدأ التنفيذ." },
+      { "q": "هل تجهزون أجنحة في معارض بالخارج؟", "a": "نعم، ضمن خدمة المشاركة في المعارض الدولية، وننسق التنفيذ مع إدارة المعرض." }
+    ],
+    "cta": {
+      "title": "تحتاج جناحًا يليق بعلامتك؟",
+      "text": "أرسل لنا مساحة الجناح وموعد المعرض، وسنعود إليك بتصور مبدئي وعرض مناسب.",
+      "button": "اطلب عرضًا لفعاليتك"
+    }
+  },
+  "en": {
+    "name": "Stand Design & Build",
+    "summary": "Stands designed to reflect your brand and draw visitors in — then built and installed at the exhibition venue.",
+    "description": "We design your stand to reflect your brand and draw visitors in, then build it, install it at the venue and hand it over ready before the opening — so you welcome your visitors in a space worthy of your name.",
+    "audience": [
+      "Companies exhibiting at local or international exhibitions.",
+      "Government bodies and authorities taking part with a stand.",
+      "Brands launching a product at an exhibition.",
+      "Exhibition organizers who need uniform stands for their exhibitors."
+    ],
+    "offer": [
+      "Understanding your brand, your goals and the stand space.",
+      "A 3D design of the stand before it is built.",
+      "Choosing the materials, lighting, screens and furniture.",
+      "Building and installing at the venue, following its rules.",
+      "Handing the stand over ready before the opening, and support during the exhibition."
+    ],
+    "steps": [
+      { "title": "Concept", "text": "We get to know your brand, your goals and the stand space." },
+      { "title": "Design", "text": "We present a 3D design and a clear budget." },
+      { "title": "Build", "text": "We build the stand and prepare the materials and lighting." },
+      { "title": "Install and hand over", "text": "We install the stand on site and hand it over ready." }
+    ],
+    "excludes": [
+      "Space fees charged by the organizers.",
+      "Major changes after the design is approved, unless agreed.",
+      "Organizer permits, where required, unless stated in the proposal."
+    ],
+    "faq": [
+      { "q": "Will I see the stand before it is built?", "a": "Yes. We give you a 3D design to review and approve before we start building." },
+      { "q": "Do you build stands at exhibitions abroad?", "a": "Yes, as part of our international exhibition participation service, coordinating the build with the organizers." }
+    ],
+    "cta": {
+      "title": "Need a stand worthy of your brand?",
+      "text": "Send us the stand size and the exhibition date, and we'll come back with an initial concept and a proposal.",
+      "button": "Request a proposal for your event"
+    }
+  }
+}

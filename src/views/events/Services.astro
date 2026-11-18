@@ -1,0 +1,94 @@
+---
+/**
+ * Events page — the ten services of brief §2.3: "the programme". Scene: motion/scenes/events-program.ts.
+ * Behind it the camera walks in on the red carpet from the street door while the carpet unrolls ahead
+ * (stage act `gala`; scenes/events-thread.ts). The cards scroll over it in two staggered columns; as each one
+ * reaches the light a follow spot sweeps across it, its line icon draws itself and a gold rule runs along its top.
+ * Every card links to its detail page (/services/<slug>/): the ten files exist in src/content/services.
+ * No JS: a plain grid, every icon drawn.
+ */
+import { localizePath, useTranslations, type Lang } from '../../i18n';
+
+export interface ServiceItem { slug: string; name: string; text: string }
+interface Props { lang: Lang; title: string; items: ServiceItem[] }
+const { lang, title, items } = Astro.props;
+const t = useTranslations(lang);
+const intro = {
+  ar: 'من الفكرة حتى الختام: كل ما تحتاجه فعاليتك، يديره فريق واحد.',
+  en: 'From the idea to the closing: everything your event needs, run by one team.',
+}[lang];
+
+// our own line icons (48 × 48), drawn by the scene
+const icons: Record<string, string> = {
+  'international-conferences': '<path d="M14 42h20M24 42V27"/><path d="M11 27h26l-3-8H14l-3 8Z"/><path d="M24 19V9M20 9h8"/><path d="M31 11c2.500 2 2.500 6 0 8M34 8c4.500 3.500 4.500 10.500 0 14"/>',
+  'trade-exhibitions': '<path d="M5 41h38"/><path d="M8 41V19l16-9 16 9v22"/><path d="M8 19h32"/><path d="M16 41V27h16v14"/><path d="M24 27v14"/>',
+  'exhibition-participation': '<circle cx="24" cy="24" r="17"/><path d="M7 24h34M24 7c-7 5-7 29 0 34M24 7c7 5 7 29 0 34"/>',
+  'stand-design-build': '<path d="M24 6 40 15v18L24 42 8 33V15L24 6Z"/><path d="m8 15 16 9 16-9M24 24v18"/>',
+  'delegation-guest-management': '<rect x="8" y="9" width="32" height="18" rx="2"/><path d="M14 27v13M34 27v13M15 16h18M19 21h10"/>',
+  'registration-attendance': '<rect x="12" y="9" width="24" height="33" rx="3"/><path d="M20 5h8v7h-8z"/><circle cx="24" cy="21" r="4"/><path d="M18 31h12M18 36h8"/>',
+  'interpretation-event-technology': '<path d="M10 29v-5a14 14 0 0 1 28 0v5"/><rect x="8" y="28" width="6" height="11" rx="2"/><rect x="34" y="28" width="6" height="11" rx="2"/><path d="M37 39c0 3-4 5-9 5"/>',
+  'delegation-visas': '<path d="M12 6h22a2 2 0 0 1 2 2v32a2 2 0 0 1-2 2H12V6Z"/><circle cx="24" cy="21" r="6"/><path d="M18 21h12M24 15c-2 2-2 10 0 12M24 15c2 2 2 10 0 12M18 34h12"/>',
+  'event-marketing': '<path d="M8 20v8h6l14 8V12l-14 8H8Z"/><path d="m14 28 3 10h5l-2-9"/><path d="M33 18c2.500 3 2.500 9 0 12M37 14c5 5 5 15 0 20"/>',
+  'sponsor-speaker-management': '<rect x="19" y="6" width="10" height="20" rx="5"/><path d="M14 20a10 10 0 0 0 20 0M24 30v8M17 42h14"/>',
+};
+---
+<section class="gsvc" id="services" data-scene="events-program" data-shot data-waypoint aria-labelledby="gsvc-title">
+  <div class="gsvc__scrim g-scrim" aria-hidden="true"></div>
+  <div class="gsvc__in container">
+    <header class="gsvc__head">
+      <h2 class="g-title gsvc__title" id="gsvc-title">{title}</h2>
+      <p class="g-lead">{intro}</p>
+    </header>
+    <ul class="gsvc__list" role="list">
+      {items.map((s) => (
+        <li class="gcard" data-spotlight>
+          <span class="gcard__rule" aria-hidden="true"></span>
+          <span class="gcard__sweep" aria-hidden="true"></span>
+          <svg class="gcard__icon" viewBox="0 0 48 48" width="48" height="48" aria-hidden="true" set:html={icons[s.slug] ?? ''} />
+          <h3 class="gcard__name">{s.name}</h3>
+          <p class="gcard__text">{s.text}</p>
+          <a class="gcard__link link-arrow" href={localizePath(`/services/${s.slug}/`, lang)} data-cursor={t.cursor.explore}>
+            {t.cta.details}<span class="visually-hidden">: {s.name}</span>
+            <svg class="icon-dir" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .gsvc { position: relative; padding-block: calc(var(--section-y) * 1.6) var(--section-y); }
+  .gsvc__scrim {
+    background: linear-gradient(to bottom, transparent 0, color-mix(in srgb, var(--color-bg) 55%, transparent) 30vh, color-mix(in srgb, var(--color-bg) 55%, transparent) calc(100% - 30vh), transparent 100%);
+  }
+  .gsvc__in { position: relative; }
+  .gsvc__head { max-width: 40rem; }
+  .gsvc__list { display: grid; gap: var(--space-5); margin-block-start: var(--space-8); }
+  @media (min-width: 760px) { .gsvc__list { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1024px) {
+    .gsvc__list { gap: var(--space-6) var(--space-7); }
+    .gsvc__list > :nth-child(even) { translate: 0 var(--space-9); }       /* two columns that walk, not a table */
+    .gsvc__list { padding-block-end: var(--space-9); }
+  }
+
+  .gcard {
+    position: relative; overflow: hidden; isolation: isolate;
+    display: grid; align-content: start; gap: var(--space-3);
+    padding: var(--space-6) var(--space-6) var(--space-5);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(160deg, color-mix(in srgb, var(--color-bg-alt) 92%, transparent), color-mix(in srgb, var(--color-bg) 94%, transparent));
+    border: 1px solid var(--color-border);
+    box-shadow: 0 30px 60px -30px color-mix(in srgb, var(--color-velvet-deep) 80%, transparent);
+  }
+  .gcard__rule { position: absolute; inset-block-start: 0; inset-inline: var(--space-6); height: 2px; background: linear-gradient(90deg, transparent, var(--color-accent), transparent); transform-origin: center; }
+  .gcard__sweep {
+    position: absolute; inset: -20% auto -20% 0; width: 55%; z-index: -1; pointer-events: none; opacity: 0;
+    background: linear-gradient(100deg, transparent, color-mix(in srgb, var(--color-accent) 22%, transparent) 45%, color-mix(in srgb, var(--color-ink) 10%, transparent) 50%, transparent);
+  }
+  .gcard__icon { width: 52px; height: 52px; fill: none; stroke: var(--color-accent); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .gcard__name { margin-block-start: var(--space-2); font-size: var(--text-xl); line-height: 1.35; }
+  .gcard__text { color: color-mix(in srgb, var(--color-ink) 86%, transparent); line-height: 1.85; }
+  .gcard__link { margin-block-start: var(--space-2); justify-self: start; color: var(--color-link); font-size: var(--text-sm); }
+  .gcard:hover { border-color: color-mix(in srgb, var(--color-accent) 40%, transparent); }
+</style>
