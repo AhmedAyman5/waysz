@@ -9,8 +9,10 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import type { Scene } from '../index';
 import { sky, UNITE } from '../stage/bridge';
+import { whenNear } from '../near';
 
-const scene: Scene = (root) => {
+// far below the fold: its trigger and SplitText are set up only when the visitor gets near (blocking time)
+const scene: Scene = (root) => whenNear(root, () => {
   const items = gsap.utils.toArray<HTMLElement>('.unite__item', root);
   const close = root.querySelector<HTMLElement>('.unite__close');
   const title = root.querySelector<HTMLElement>('.unite__title')!;
@@ -37,5 +39,5 @@ const scene: Scene = (root) => {
       scrollTrigger: { trigger: root, start: 'top 70%', toggleActions: 'play none none reverse' },
     });
   });
-};
+});
 export default scene;

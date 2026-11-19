@@ -17,6 +17,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { Scene } from '../index';
 import { lenis } from '../smooth-scroll';
 import { sky } from '../stage/bridge';
+import { whenNear } from '../near';
 
 type Key = 'all' | 'legal' | 'travel' | 'events' | 'software';
 
@@ -178,11 +179,11 @@ const scene: Scene = (root, env) => {
 
   // ---------- Legal: the sub-specialties light up in sequence ----------
   const chips = gsap.utils.toArray<HTMLElement>('.chip', root);
-  if (chips.length) {
+  if (chips.length) whenNear(chips[0].parentElement!, () => {
     const tl = gsap.timeline({ paused: true })
       .to(chips, { '--lit': 1, duration: 0.4, stagger: 0.12, ease: 'power2.out' })
       .to(chips, { '--lit': 0.3, duration: 1.4, stagger: 0.12, ease: 'power2.inOut' }, 0.5);
     ScrollTrigger.create({ trigger: chips[0].parentElement, start: 'top 85%', onEnter: () => tl.restart(), onEnterBack: () => tl.restart() });
-  }
+  });
 };
 export default scene;
