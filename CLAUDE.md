@@ -14,7 +14,8 @@ Source of truth for structure and copy: `docs/brief/WaysZ-Website-Brief-v2.pdf`.
 Sections are numbered (e.g. "1.4 Why WaysZ"); use the same numbers in comments, TODOs and commits.
 The brief is Arabic; write the English version as a faithful, natural translation (flag doubtful
 terms in the PR description). Never invent services, numbers, claims, clients or testimonials.
-Items marked «مقترح» are pending approval: build them with `proposed: true` in the data.
+CLIENT DECISION (final): WaysZ offers every service in the brief. Items marked «مقترح» there are built as
+normal services: no label, no flag, no `proposed` field.
 
 ## Quality policy (client decision — final)
 
