@@ -254,7 +254,7 @@ constellation — or the whole sky — fits that box. So the layout decides wher
 constellations never mirror). It also writes `night`, the pointer over `[data-sky-pad]` (the act reports the star under it:
 a label, a click → `sky:pick` → its card), and on desktop adds a short star trail behind the plane cursor.
 Stars are numbered like `src/data/services.ts` (`data-star` on the cards). css tier / no JS: `sky-scatter` (hero, the canvas
-starts from exactly it), `sky-all` (after the title settles) and one `sky-<area>` still per area window (screen blend):
+starts from exactly it), `sky-all` (css tier: behind the hero once the title settles and the finale; plain stars elsewhere) and one `sky-<area>` still per area window (alpha):
 `node scripts/render-sky-still.mjs`.
 
 ### services-hero · services-directory · services-unite

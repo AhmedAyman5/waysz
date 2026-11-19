@@ -30,8 +30,9 @@ const cards = await serviceCards(lang);
 <BaseLayout lang={lang} title={t.pages.services.title} description={t.pages.services.description} headerOverlay>
   <div class="sky theme-dark">
     <div class="sky__stage stage-host" data-scene="services-sky" aria-hidden="true">
-      <!-- our own renders of the sky (css tier, no JS, first paint before the stage): the scattered stars of the hero
-           and the four constellations, swapped once the title has settled. Full screen: the hero text stays the LCP. -->
+      <!-- our own renders of the sky (css tier, no JS, first paint before the stage): the plain sky of scattered stars,
+           and (css tier only) the four constellations behind the hero once the title has settled and behind the finale;
+           each area shows its own constellation in its window. Full screen: the hero text stays the LCP. -->
       <div class="sky__still sky__still--scatter">
         <picture>
           <source media="(orientation: portrait)" srcset="/media/img/sky-scatter-m.webp" width="780" height="1688" />
@@ -43,12 +44,6 @@ const cards = await serviceCards(lang);
           <source media="(orientation: portrait)" data-srcset="/media/img/sky-all-m.webp" width="780" height="1688" />
           <img data-src="/media/img/sky-all.webp" alt="" width="1600" height="1000" decoding="async" />
         </picture>
-        <noscript>
-          <picture>
-            <source media="(orientation: portrait)" srcset="/media/img/sky-all-m.webp" width="780" height="1688" />
-            <img src="/media/img/sky-all.webp" alt="" width="1600" height="1000" decoding="async" />
-          </picture>
-        </noscript>
       </div>
       <p class="sky__tip"></p>
     </div>
@@ -75,7 +70,7 @@ const cards = await serviceCards(lang);
   .sky__still { position: absolute; inset: 0; transition: opacity 1.6s var(--ease-out); }
   .sky__still img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .sky__still--all { opacity: 0; }
-  .sky__stage.is-assembled .sky__still--all, html:not(.js) .sky__still--all { opacity: 1; }
+  .sky__stage.is-assembled .sky__still--all { opacity: 1; }
   .sky__stage.is-drawing .sky__still { opacity: 0; transition-duration: 0.9s; }
 
   /* the name of the star under the pointer (a copy of its card's title: decorative) */

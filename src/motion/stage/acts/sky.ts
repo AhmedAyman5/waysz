@@ -44,10 +44,10 @@ type E = [number, number, 1?];      // two point indices, 1 = dashed
 interface Emblem { pts: P[]; edges: E[] }
 
 const plane = (() => {
-  const c = { x: 0.5, y: 0.42 }, a = (38 * Math.PI) / 180;
+  const c = { x: 0.42, y: 0.36 }, a = (38 * Math.PI) / 180;
   const d = { x: Math.cos(a), y: Math.sin(a) }, n = { x: -d.y, y: d.x };
   const at = (u: number, v: number) => ({ x: c.x + d.x * u + n.x * v, y: c.y + d.y * u + n.y * v });
-  return { nose: at(0.44, 0), root: at(0.06, 0), wingL: at(-0.14, 0.5), wingR: at(-0.14, -0.5), tail: at(-0.36, 0), finL: at(-0.44, 0.18), finR: at(-0.44, -0.18) };
+  return { nose: at(0.6, 0), root: at(0.14, 0), wingL: at(-0.12, 0.44), wingR: at(-0.12, -0.44), tail: at(-0.4, 0), finL: at(-0.5, 0.17), finR: at(-0.5, -0.17) };
 })();
 
 const EMBLEMS: Emblem[] = [
@@ -62,7 +62,7 @@ const EMBLEMS: Emblem[] = [
   },
   { // travel — a plane on its route
     pts: [
-      { x: -1.02, y: -0.82, s: 0 }, { x: -0.62, y: -0.6, s: 1 }, { x: -0.26, y: -0.32, s: 2 }, { x: 0.04, y: 0.0, s: 3 },
+      { x: -1.04, y: -0.88, s: 0 }, { x: -0.7, y: -0.7, s: 1 }, { x: -0.42, y: -0.47, s: 2 }, { x: -0.18, y: -0.22, s: 3 },
       { ...plane.tail, s: 4 }, { ...plane.root }, { ...plane.nose, s: 5 }, { ...plane.wingL, s: 6 }, { ...plane.wingR, s: 7 },
       { ...plane.finL }, { ...plane.finR },
     ],

@@ -3,8 +3,9 @@
  * first paint before the stage loads. Screenshots of our own WebGL sky (act `sky`, dev URL ?sky=…):
  *   public/media/img/sky-scatter(.webp | -m.webp)   the hero's scattered stars (the canvas starts exactly like this)
  *   public/media/img/sky-all(.webp | -m.webp)       the four constellations, drawn
- *   public/media/img/sky-<area>.webp                one constellation on black (shown with mix-blend-mode: screen
- *                                                   in its area's window, `.area__sky`)
+ *   public/media/img/sky-<area>.webp                one constellation, rendered on black and turned into alpha (light =
+ *                                                   opacity) for its area's window, `.area__sky` (no blend mode: the sticky
+ *                                                   side column is its own stacking context)
  * Run again whenever the palette, the emblems or the sky shaders change:
  *   npm run dev      then      node scripts/render-sky-still.mjs      (needs ffmpeg for the WebP)
  */
@@ -30,7 +31,11 @@ for (const [still, file, width, height, quality] of jobs) {
   await page.waitForTimeout(2500);
   await page.locator('.sky__stage').screenshot({ path: png });
   await page.context().close();
-  execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', png, '-c:v', 'libwebp', '-quality', String(quality), webp]);
+  // a constellation on black → colour + alpha (alpha = the brightest channel, colour un-premultiplied)
+  const M = 'max(max(r(X,Y),g(X,Y)),b(X,Y))';
+  const alpha = ['legal', 'travel', 'events', 'software'].includes(still)
+    ? ['-vf', `format=rgba,geq=r='if(gt(${M},0),r(X,Y)*255/${M},0)':g='if(gt(${M},0),g(X,Y)*255/${M},0)':b='if(gt(${M},0),b(X,Y)*255/${M},0)':a='${M}'`] : [];
+  execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', png, ...alpha, '-c:v', 'libwebp', '-quality', String(quality), webp]);
   rmSync(png);
   console.log(`wrote ${webp}`);
 }

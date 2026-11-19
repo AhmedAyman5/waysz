@@ -52,7 +52,8 @@ const scene: Scene = (host, env) => {
   }
 
   // ---------- scroll → focus, box, night ----------
-  let dirTop = 1;
+  let dirTop = 1, settled = false, assembled = false;
+  const css = () => document.documentElement.dataset.tier === 'css';
   const update = () => {
     const vw = host.clientWidth, vh = window.innerHeight, mid = vh * 0.5;
     let focus = -1;
@@ -70,6 +71,10 @@ const scene: Scene = (host, env) => {
     } else Object.assign(sky.box, { x: 0, y: 60, w: vw, h: vh - 60 });
     sky.focus = focus;
     sky.night = clamp01(window.scrollY / dirTop);
+    // css tier: the still of the four constellations only behind the hero and the finale (the areas show their own);
+    // DOM write only when it changes (this also runs inside ScrollTrigger.refresh)
+    const all = css() && settled && (pad === unitePad && !!pad || (focus < 0 && window.scrollY < dirTop - vh * 0.5));
+    if (all !== assembled) { assembled = all; host.classList.toggle('is-assembled', all); }
   };
   ScrollTrigger.create({
     trigger: root, start: 'top bottom', end: 'bottom top',
@@ -135,7 +140,7 @@ const scene: Scene = (host, env) => {
       if (el.dataset.src) el.setAttribute('src', el.dataset.src);
     });
     root.querySelectorAll<HTMLImageElement>('.area__still[data-src]').forEach((img) => { img.src = img.dataset.src!; });
-    gsap.delayedCall(1.2, () => host.classList.add('is-assembled'));   // the stars "gather": scattered → assembled
+    gsap.delayedCall(1.2, () => { settled = true; update(); });   // the stars "gather": scattered → assembled
   };
   if (env.tier === 'css') { stills(); return; }
   new MutationObserver((_, mo) => { if (document.documentElement.dataset.tier === 'css') { mo.disconnect(); stills(); } })

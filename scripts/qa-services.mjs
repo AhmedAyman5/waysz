@@ -119,7 +119,7 @@ for (const run of runs) {
       await shot('h-card');
     }
     // the header submenu: ?area= opens the tab
-    await page.goto(`${base}${run.path.replace('?', '?area=events&')}`, { waitUntil: 'load' });
+    await page.goto(`${base}${run.path}${run.path.includes('?') ? '&' : '?'}area=events`, { waitUntil: 'load' });
     await page.waitForTimeout(2200);
     await shot('q-area-events');
     const q = await page.evaluate(() => [...document.querySelectorAll('.area')].filter((a) => !a.hidden).map((a) => a.dataset.area).join(','));

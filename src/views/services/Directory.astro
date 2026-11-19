@@ -200,7 +200,7 @@ const label = (a: Area | 'all') => (a === 'all' ? s.all : s.tabs[a]);
   .area + .area { border-block-start: 1px solid color-mix(in srgb, var(--color-ink) 8%, transparent); }
   .area__in { display: grid; gap: var(--space-6); }
   .area__sky { position: relative; height: 34vh; height: 34svh; min-height: 200px; display: grid; place-items: center; }
-  .area__still { display: none; width: auto; height: 100%; max-width: 100%; object-fit: contain; mix-blend-mode: screen; }
+  .area__still { display: none; width: auto; height: 100%; max-width: 100%; object-fit: contain; }
   :global(html[data-tier='css']) .area__still, :global(html:not(.js)) .area__still { display: block; }
   .area__text {
     position: relative; display: grid; justify-items: start; gap: var(--space-4);
