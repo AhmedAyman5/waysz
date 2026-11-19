@@ -1,0 +1,118 @@
+---
+/**
+ * Events detail page — Service Details Template (brief §3) for the services whose `area` is "events": the ten
+ * services of brief §2.3 (template sample ج). Legal keeps LegalServicePage, travel TravelServicePage, software
+ * ServiceDetailPage.
+ * The Events page's visual language, calm (team decision): the theatre — deep velvet, warm gold light — with no
+ * WebGL, no pins, no scrubbed scenes: only data-split headings, one data-reveal per section, the shared accordion
+ * for the FAQ and CSS hover / focus transitions.
+ *   hero (photo of the service) → who it's for + what we offer → how we work (the running order)
+ *   → what's not included → FAQ → the area's ten services → the call
+ * Wide screens: a sticky side card with the call beside sections 2–5 (plain CSS).
+ * Styles are `is:inline` (class-prefixed: esp · esh · esl · est · esx · esf · esa · esc): services/[slug].astro
+ * imports this view for every service, and a bundled stylesheet would be linked from the other areas' pages too.
+ * Copy: src/content/services/<slug>.json (Arabic first). One file per section in views/events-service/.
+ */
+import type { CollectionEntry } from 'astro:content';
+import type { ImageMetadata } from 'astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from './events-service/Hero.astro';
+import Lists from './events-service/Lists.astro';
+import Steps from './events-service/Steps.astro';
+import Excludes from './events-service/Excludes.astro';
+import Faq from './events-service/Faq.astro';
+import Services from './events-service/Services.astro';
+import Cta from './events-service/Cta.astro';
+import { EVENTS_ICONS } from './events-service/icons';
+import { site, waHref } from '../lib/site';
+import { localizePath, useTranslations, type Lang } from '../i18n';
+
+interface Props { lang: Lang; entry: CollectionEntry<'services'> }
+const { lang, entry } = Astro.props;
+const t = useTranslations(lang);
+const s = entry.data[lang];
+const slug = entry.id;
+
+// one header photo per service (src/assets/media/events-<slug>.jpg — sources in docs/media-credits.md);
+// a future events service without its own photo falls back to the conference hall of the Home page
+const photos = import.meta.glob<{ default: ImageMetadata }>('../assets/media/events-*.jpg', { eager: true });
+const photo = photos[`../assets/media/events-${slug}.jpg`]?.default ?? photos['../assets/media/events-hall.jpg'].default;
+const alts: Record<string, { ar: string; en: string; focus?: string }> = {
+  'international-conferences': { ar: 'قاعة مؤتمرات واسعة بطاولات مستديرة وثلاث شاشات عرض', en: 'A large conference hall with round tables and three projection screens', focus: '50% 40%' },
+  'trade-exhibitions': { ar: 'بهو معرض واسع بأرضية لامعة وأضواء دافئة في السقف', en: 'A wide exhibition foyer with a polished floor and warm ceiling lights', focus: '50% 45%' },
+  'exhibition-participation': { ar: 'طائرة تهبط في الضباب عند الغسق فوق أضواء المدرج', en: 'An airliner landing in the mist at dusk over the runway lights', focus: '40% 45%' },
+  'stand-design-build': { ar: 'جناح عرض أبيض فارغ بمنصة استقبال تحت إضاءة المعرض', en: 'An empty white exhibition stand with a reception counter under the hall lights', focus: '55% 50%' },
+  'delegation-guest-management': { ar: 'مسافر يجر حقيبته على ممشى متحرك في صالة مطار', en: 'A traveller pulling a suitcase along a moving walkway in an airport terminal', focus: '60% 50%' },
+  'registration-attendance': { ar: 'بطاقة دخول فارغة معلقة بشريط حول العنق', en: 'A blank entry badge hanging from a lanyard', focus: '30% 50%' },
+  'interpretation-event-technology': { ar: 'سماعة رأس على خلفية داكنة', en: 'A headset against a dark background', focus: '70% 60%' },
+  'delegation-visas': { ar: 'مظروف دعوة يُختم بالشمع الأحمر', en: 'An invitation envelope being sealed with red wax', focus: '50% 50%' },
+  'event-marketing': { ar: 'كاميرا فيديو تصور مسرح فعالية تحت الأضواء', en: 'A video camera filming an event stage under the lights', focus: '62% 45%' },
+  'sponsor-speaker-management': { ar: 'منصة متحدث على خشبة مسرح تحت ضوء واحد', en: "A speaker's lectern on a stage under a single light", focus: '45% 55%' },
+};
+const alt = alts[slug] ?? { ar: '', en: '' };
+---
+<BaseLayout lang={lang} title={`${s.name} | WaysZ`} description={s.description} headerOverlay>
+  <div class="esp theme-dark">
+    <Hero lang={lang} name={s.name} description={s.description} photo={photo} alt={alt[lang]} focus={alt.focus} />
+
+    <div class="esp__body container">
+      <div class="esp__main">
+        <Lists lang={lang} audience={s.audience} offer={s.offer} />
+        <Steps lang={lang} steps={s.steps} />
+        <Excludes lang={lang} items={s.excludes} />
+        <Faq lang={lang} items={s.faq} />
+      </div>
+
+      <aside class="esp__aside" aria-label={s.cta.title}>
+        <div class="esp__card">
+          <svg viewBox="0 0 48 48" width="48" height="48" aria-hidden="true" set:html={EVENTS_ICONS[slug] ?? ''} />
+          <p class="esp__card-name">{s.name}</p>
+          <p class="esp__card-title">{s.cta.title}</p>
+          <a class="btn btn--accent" href={localizePath('/contact/', lang)}>{s.cta.button}</a>
+          {site.whatsapp && (
+            <a class="btn btn--ghost" href={waHref(site.whatsapp, `${t.whatsapp.message}${s.name}`)} target="_blank" rel="noopener">{t.cta.whatsapp}</a>
+          )}
+        </div>
+      </aside>
+    </div>
+
+    <Services lang={lang} current={slug} />
+    <Cta lang={lang} name={s.name} cta={s.cta} />
+  </div>
+</BaseLayout>
+
+<style is:inline>
+  /* shared by the sections in views/events-service/: the dark of a theatre, a breath of velvet in it */
+  .esp {
+    --esp-bg: color-mix(in srgb, var(--color-velvet-deep) 42%, var(--color-bg));
+    --esp-surface: color-mix(in srgb, var(--color-velvet-deep) 55%, var(--color-surface));
+    background: var(--esp-bg);
+  }
+  .esp-sec { padding-block: clamp(3rem, 2rem + 4vw, 5.5rem); }
+  .esp-sec + .esp-sec { border-block-start: 1px solid var(--color-border); }
+  .esp-h2 { font-size: clamp(1.8rem, 1.3rem + 2vw, 3rem); line-height: 1.25; }
+  [dir='rtl'] .esp-h2 { line-height: 1.45; }
+
+  .esp__body { display: grid; gap: 0 var(--space-8); }
+  .esp__main { min-width: 0; }
+  .esp__aside { display: none; }
+  @media (min-width: 1024px) {
+    .esp__body { grid-template-columns: minmax(0, 1fr) 19rem; }
+    .esp__aside { display: block; padding-block: clamp(3rem, 2rem + 4vw, 5.5rem); }
+    /* the programme card: velvet, a gold rule along its top, like a printed invitation */
+    .esp__card {
+      position: sticky; top: calc(76px + var(--space-5)); overflow: hidden;
+      display: grid; gap: var(--space-4); padding: var(--space-7) var(--space-6) var(--space-6); border-radius: var(--radius-md);
+      background:
+        radial-gradient(ellipse 90% 60% at 50% 0%, color-mix(in srgb, var(--color-accent) 14%, transparent), transparent 70%),
+        var(--esp-surface);
+      border: 1px solid color-mix(in srgb, var(--color-accent) 30%, transparent);
+      box-shadow: 0 30px 60px -30px rgb(0 0 0 / 0.7);
+    }
+    .esp__card::before { content: ''; position: absolute; inset-block-start: 0; inset-inline: var(--space-6); height: 2px; background: linear-gradient(90deg, transparent, var(--color-accent), transparent); }
+    .esp__card svg { fill: none; stroke: var(--color-accent); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+    .esp__card-name { font-size: var(--text-sm); color: var(--color-accent); font-weight: var(--weight-bold); }
+    .esp__card-title { font-family: var(--font-display); font-weight: var(--weight-bold); font-size: var(--text-xl); line-height: 1.4; }
+    .esp__card .btn { white-space: normal; text-align: center; }
+  }
+</style>

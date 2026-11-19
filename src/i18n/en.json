@@ -153,5 +153,10 @@
     "services": "Immigration, Study & Visa services",
     "servicesLead": "We stay with you on your journey from the first question until your file is complete. Choose the service you need, or request a consultation and we will work out the right path with you.",
     "current": "Current service"
+  },
+  "eventsService": {
+    "services": "Exhibition & conference services",
+    "servicesLead": "From the idea to the closing: everything your event needs, run by one team.",
+    "current": "Current service"
   }
 }

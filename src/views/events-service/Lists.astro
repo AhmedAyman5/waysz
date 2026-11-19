@@ -1,0 +1,40 @@
+---
+/**
+ * Events detail page — who it's for + what we offer, side by side on wide screens. Icons, not numbers.
+ */
+import Bidi from './Bidi.astro';
+import { useTranslations, type Lang } from '../../i18n';
+
+interface Props { lang: Lang; audience: string[]; offer: string[] }
+const { lang, audience, offer } = Astro.props;
+const t = useTranslations(lang);
+const lists = [
+  { id: 'esl-aud', title: t.service.audience, items: audience, icon: '<circle cx="12" cy="8" r="3.5"/><path d="M5 20c1.2-3.8 3.800-5.5 7-5.5s5.800 1.700 7 5.500"/>' },
+  { id: 'esl-off', title: t.service.offer, items: offer, icon: '<path d="m5 12.5 4.500 4.500L19 7.500"/>' },
+].filter((l) => l.items.length > 0);
+---
+{lists.length > 0 && (
+  <section class="esl esp-sec" aria-label={lists.map((l) => l.title).join(' · ')}>
+    {lists.map((l) => (
+      <div class="esl__col">
+        <h2 class="esp-h2" id={l.id} data-split="words">{l.title}</h2>
+        <ul class="esl__list" role="list" aria-labelledby={l.id}>
+          {l.items.map((x) => (
+            <li><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" set:html={l.icon} /><span><Bidi text={x} lang={lang} /></span></li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </section>
+)}
+
+<style is:inline>
+  .esl { display: grid; gap: var(--space-8); }
+  @media (min-width: 1024px) { .esl { grid-template-columns: 1fr 1fr; gap: var(--space-7); } }
+  .esl__list { margin-block-start: var(--space-5); border-block-start: 1px solid var(--color-border); }
+  .esl__list li {
+    display: grid; grid-template-columns: 22px 1fr; gap: var(--space-4); align-items: start;
+    padding-block: var(--space-4); border-block-end: 1px solid var(--color-border); line-height: 1.8;
+  }
+  .esl__list svg { margin-block-start: 0.3em; fill: none; stroke: var(--color-accent); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+</style>

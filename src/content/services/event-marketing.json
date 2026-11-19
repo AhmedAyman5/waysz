@@ -30,7 +30,9 @@
     ],
     "faq": [
       { "q": "متى نبدأ الترويج للفعالية؟", "a": "يختلف ذلك حسب حجم الفعالية وجمهورها، ونقترح معك جدولًا يبدأ قبل الحدث بوقت كافٍ." },
-      { "q": "هل تتولون التغطية يوم الحدث؟", "a": "نعم، نرتب التغطية الإعلامية والتصوير أثناء الفعالية." }
+      { "q": "هل تتولون التغطية يوم الحدث؟", "a": "نعم، نرتب التغطية الإعلامية والتصوير أثناء الفعالية." },
+      { "q": "هل تصممون هوية بصرية كاملة للفعالية؟", "a": "نعم: الشعار والألوان والمطبوعات والدعوات، لتظهر فعاليتك بصورة واحدة في كل مكان." },
+      { "q": "هل تضمنون أعدادًا من الحضور أو المشاهدات؟", "a": "لا نعد بأرقام بعينها، لكننا نختار القنوات المناسبة لجمهورك ونتابع معك نتائج الحملات." }
     ],
     "cta": {
       "title": "تريد أن يعرف جمهورك بفعاليتك؟",
@@ -67,7 +69,9 @@
     ],
     "faq": [
       { "q": "When should we start promoting the event?", "a": "It depends on the size of the event and its audience. We'll propose a schedule with you that starts well before the event." },
-      { "q": "Do you cover the event day itself?", "a": "Yes. We arrange media coverage and photography during the event." }
+      { "q": "Do you cover the event day itself?", "a": "Yes. We arrange media coverage and photography during the event." },
+      { "q": "Do you design a complete visual identity for the event?", "a": "Yes: the logo, colours, printed materials and invitations, so your event looks the same everywhere." },
+      { "q": "Do you guarantee attendance or view numbers?", "a": "We do not promise specific numbers, but we choose the right channels for your audience and follow the campaigns' results with you." }
     ],
     "cta": {
       "title": "Want your audience to hear about your event?",

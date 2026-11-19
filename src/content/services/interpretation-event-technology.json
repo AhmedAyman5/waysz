@@ -31,7 +31,9 @@
     ],
     "faq": [
       { "q": "هل توفرون الترجمة الفورية لأكثر من لغة؟", "a": "نعم، نحدد معك اللغات المطلوبة، ونجهز لكل لغة مترجميها وقناتها." },
-      { "q": "هل يمكن بث الفعالية مباشرة؟", "a": "نعم، نجهز البث المباشر ومنصات المشاركة عن بُعد إلى جانب الحضور في القاعة." }
+      { "q": "هل يمكن بث الفعالية مباشرة؟", "a": "نعم، نجهز البث المباشر ومنصات المشاركة عن بُعد إلى جانب الحضور في القاعة." },
+      { "q": "هل يمكن الترجمة في أكثر من قاعة في الوقت نفسه؟", "a": "نعم، نخطط الترجمة والتجهيزات لكل قاعة حسب برنامج جلساتها." },
+      { "q": "هل تختبرون الأنظمة قبل الفعالية؟", "a": "نعم، نركب الأنظمة ونجربها في القاعة قبل الافتتاح، ويبقى فريقنا التقني في الموقع طوال الفعالية." }
     ],
     "cta": {
       "title": "تحتاج ترجمة فورية وتجهيزات لفعاليتك؟",
@@ -69,7 +71,9 @@
     ],
     "faq": [
       { "q": "Do you provide interpretation into more than one language?", "a": "Yes. We agree the languages with you and set up interpreters and a channel for each one." },
-      { "q": "Can the event be streamed live?", "a": "Yes. We set up live streaming and remote-participation platforms alongside the in-hall audience." }
+      { "q": "Can the event be streamed live?", "a": "Yes. We set up live streaming and remote-participation platforms alongside the in-hall audience." },
+      { "q": "Can you interpret in more than one hall at the same time?", "a": "Yes. We plan the interpretation and the equipment for each hall according to its session programme." },
+      { "q": "Do you test the systems before the event?", "a": "Yes. We install and test the systems in the hall before the opening, and our technical team stays on site throughout the event." }
     ],
     "cta": {
       "title": "Need interpretation and technical set-up for your event?",

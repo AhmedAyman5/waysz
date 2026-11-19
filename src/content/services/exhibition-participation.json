@@ -31,7 +31,9 @@
     ],
     "faq": [
       { "q": "متى نبدأ الإعداد لمعرض بالخارج؟", "a": "كلما كان مبكرًا كان أفضل؛ فاختيار المساحة وتجهيز الجناح والتأشيرات تحتاج وقتًا." },
-      { "q": "هل تتولون تأشيرات فريق العمل؟", "a": "نرشد فريقك في تأشيرات الأعمال والمعارض عبر WaysZ Visa، ونجهز معه الملف خطوة بخطوة." }
+      { "q": "هل تتولون تأشيرات فريق العمل؟", "a": "نرشد فريقك في تأشيرات الأعمال والمعارض عبر WaysZ Visa، ونجهز معه الملف خطوة بخطوة." },
+      { "q": "كيف نختار المعرض المناسب لنا؟", "a": "نرشح لك المعارض التي تناسب قطاعك وأهدافك وميزانيتك، ونوضح لك جمهور كل معرض وطبيعته قبل أن تقرر." },
+      { "q": "هل نحتاج إلى جناح بتصميم خاص؟", "a": "ليس دائمًا؛ نوضح لك الخيارات التي تتيحها إدارة المعرض الذي تختاره، ونصمم جناحك ونجهزه إن احتجت إلى ذلك." }
     ],
     "cta": {
       "title": "تفكر في المشاركة بمعرض دولي؟",
@@ -69,7 +71,9 @@
     ],
     "faq": [
       { "q": "When should we start preparing for an exhibition abroad?", "a": "The earlier the better: choosing the space, building the stand and the visas all take time." },
-      { "q": "Do you handle visas for our team?", "a": "We guide your team on business and exhibition visas through WaysZ Visa and prepare the file with them step by step." }
+      { "q": "Do you handle visas for our team?", "a": "We guide your team on business and exhibition visas through WaysZ Visa and prepare the file with them step by step." },
+      { "q": "How do we choose the right exhibition?", "a": "We suggest the exhibitions that fit your sector, goals and budget, and explain each one's audience and character before you decide." },
+      { "q": "Do we need a custom-designed stand?", "a": "Not always. We explain the options the organizer of your chosen exhibition offers, and design and build your stand if you need one." }
     ],
     "cta": {
       "title": "Thinking of exhibiting abroad?",

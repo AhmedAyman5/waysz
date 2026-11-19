@@ -31,7 +31,9 @@
     ],
     "faq": [
       { "q": "هل تستقبلون أكثر من وفد في الوقت نفسه؟", "a": "نعم، نضع خطة لكل وفد حسب مواعيد وصوله وبرنامجه، وننسقها جميعًا في جدول واحد." },
-      { "q": "هل يمكن ترتيب برنامج زيارات للوفود؟", "a": "نعم، نعد البرامج الرسمية والزيارات المصاحبة بالتنسيق معك." }
+      { "q": "هل يمكن ترتيب برنامج زيارات للوفود؟", "a": "نعم، نعد البرامج الرسمية والزيارات المصاحبة بالتنسيق معك." },
+      { "q": "ماذا لو تغيرت مواعيد وصول الضيوف؟", "a": "نتابع مواعيد الرحلات، ونحدّث خطة الاستقبال والتنقلات أولًا بأول." },
+      { "q": "هل يتحدث فريق التواصل لغة الضيوف؟", "a": "نحدد معك لغات الوفود مسبقًا، ونرتب فريق تواصل يناسبها قدر الإمكان." }
     ],
     "cta": {
       "title": "تستضيف وفودًا أو متحدثين دوليين؟",
@@ -69,7 +71,9 @@
     ],
     "faq": [
       { "q": "Can you receive several delegations at the same time?", "a": "Yes. We plan each delegation around its arrival and programme, and bring them all together in one schedule." },
-      { "q": "Can you arrange a visit programme for delegations?", "a": "Yes. We prepare official programmes and accompanying visits in coordination with you." }
+      { "q": "Can you arrange a visit programme for delegations?", "a": "Yes. We prepare official programmes and accompanying visits in coordination with you." },
+      { "q": "What if guests' arrival times change?", "a": "We follow the flight times and update the reception and transport plan as things change." },
+      { "q": "Does the liaison team speak the guests' language?", "a": "We agree on the delegations' languages with you in advance and arrange a liaison team to match them as far as possible." }
     ],
     "cta": {
       "title": "Hosting international delegations or speakers?",

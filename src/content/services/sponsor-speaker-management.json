@@ -32,7 +32,9 @@
     ],
     "faq": [
       { "q": "هل تضمنون رعاة لفعاليتنا؟", "a": "لا نعد برعايات بعينها، لكننا نعد باقات واضحة، ونتواصل مع الرعاة المناسبين ونتابع معهم." },
-      { "q": "هل تتولون كل ما يخص المتحدثين؟", "a": "نعم، من الدعوة وتأكيد المشاركة إلى مواعيد الجلسات، وننسق سفرهم وإقامتهم مع فريق استقبال الوفود." }
+      { "q": "هل تتولون كل ما يخص المتحدثين؟", "a": "نعم، من الدعوة وتأكيد المشاركة إلى مواعيد الجلسات، وننسق سفرهم وإقامتهم مع فريق استقبال الوفود." },
+      { "q": "من يصوغ اتفاقيات الرعاية؟", "a": "نصوغها مع فريقنا القانوني، وتراجعها وتعتمدها قبل التوقيع." },
+      { "q": "كيف يظهر الرعاة في الفعالية؟", "a": "وفق ما تتضمنه باقة كل راعٍ، وننسق ظهورهم في الفعالية كما اتُّفق عليه." }
     ],
     "cta": {
       "title": "تبحث عن رعاة ومتحدثين لفعاليتك؟",
@@ -71,7 +73,9 @@
     ],
     "faq": [
       { "q": "Do you guarantee sponsors for our event?", "a": "We don't promise specific sponsorships, but we prepare clear packages, reach out to suitable sponsors and follow up with them." },
-      { "q": "Do you take care of everything for the speakers?", "a": "Yes — from the invitation and confirmation to the session times, and we coordinate their travel and accommodation with the delegation reception team." }
+      { "q": "Do you take care of everything for the speakers?", "a": "Yes — from the invitation and confirmation to the session times, and we coordinate their travel and accommodation with the delegation reception team." },
+      { "q": "Who drafts the sponsorship agreements?", "a": "We draft them with our legal team, and you review and approve them before signing." },
+      { "q": "How do sponsors appear at the event?", "a": "According to what each sponsor's package includes; we coordinate their presence at the event as agreed." }
     ],
     "cta": {
       "title": "Looking for sponsors and speakers for your event?",
