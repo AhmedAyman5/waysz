@@ -1,0 +1,49 @@
+---
+/**
+ * Software detail page — FAQ. The shared `accordion` scene opens / closes the answers (on the list, so the heading
+ * stays free for data-split). Without JS every answer is open. Same pattern as views/legal-service/Faq.astro.
+ */
+import Bidi from './Bidi.astro';
+import { useTranslations, type Lang } from '../../i18n';
+
+interface Props { lang: Lang; items: { q: string; a: string }[] }
+const { lang, items } = Astro.props;
+const t = useTranslations(lang);
+---
+{items.length > 0 && (
+  <section class="ssf ssp-sec" aria-labelledby="ssf-title">
+    <h2 class="ssp-h2" id="ssf-title" data-split="words">{t.service.faq}</h2>
+    <div class="ssf__list" data-scene="accordion">
+      {items.map((x, i) => (
+        <div class="faq__item">
+          <h3 class="ssf__q">
+            <button type="button" aria-expanded="false" aria-controls={`ssf-${i}`}>
+              <span><Bidi text={x.q} lang={lang} /></span>
+              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
+            </button>
+          </h3>
+          <div class="faq__panel" id={`ssf-${i}`}>
+            <p class="ssf__a"><Bidi text={x.a} lang={lang} /></p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+)}
+
+<style is:inline>
+  .ssf__list { margin-block-start: var(--space-6); border-block-start: 1px solid var(--color-border); }
+  .ssf .faq__item { border-block-end: 1px solid var(--color-border); }
+  .ssf__q { font: inherit; }
+  .ssf__q button {
+    display: flex; width: 100%; align-items: center; justify-content: space-between; gap: var(--space-5);
+    padding-block: var(--space-5); background: none; border: 0; color: inherit; cursor: pointer; text-align: start;
+    font-family: var(--font-display); font-weight: var(--weight-bold); font-size: var(--text-lg); line-height: 1.5;
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+  .ssf__q button:hover { color: var(--color-link); }
+  .ssf__q svg { flex: none; fill: none; stroke: var(--color-area-software); stroke-width: 1.8; stroke-linecap: round; transition: rotate var(--dur-base) var(--ease-out); }
+  .ssf__q button[aria-expanded='true'] svg { rotate: 45deg; }
+  html:not(.js) .ssf__q svg { display: none; }
+  .ssf__a { padding-block-end: var(--space-5); max-width: 66ch; line-height: 1.85; color: var(--color-ink-muted); }
+</style>

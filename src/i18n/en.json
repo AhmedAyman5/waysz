@@ -158,5 +158,10 @@
     "services": "Exhibition & conference services",
     "servicesLead": "From the idea to the closing: everything your event needs, run by one team.",
     "current": "Current service"
+  },
+  "softwareService": {
+    "services": "Software & technology services",
+    "servicesLead": "Practical digital solutions that help your organization present itself professionally and organize its work. Choose the service you need, or request a consultation and we will suggest what fits best.",
+    "current": "Current service"
   }
 }

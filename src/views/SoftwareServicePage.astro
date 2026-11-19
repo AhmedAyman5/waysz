@@ -1,0 +1,117 @@
+---
+/**
+ * Software detail page — Service Details Template (brief §3) for the services whose `area` is "software" (today:
+ * website-design-development, template sample د). Every area now has its own view: legal LegalServicePage,
+ * travel TravelServicePage, events EventsServicePage.
+ * The Software page's visual language, calm (team decision): dusk city, deep navy, code-cyan light; no WebGL,
+ * no pins, no scrubbed scenes — only data-split headings, one data-reveal per section, the shared accordion for
+ * the FAQ and CSS hover / focus transitions. The hero's code block is static.
+ *   hero (photo + decorative code) → who it's for + what we offer → how we work → what's not included → FAQ
+ *   → the area's six services → the call
+ * Wide screens: a sticky side card with the call beside sections 2–5 (plain CSS).
+ * Styles are `is:inline` (class-prefixed: ssp · ssh · ssl · sst · ssx · ssf · ssa · ssc): services/[slug].astro
+ * imports this view for every service, and a bundled stylesheet would be linked from the other areas' pages too.
+ * Copy: src/content/services/<slug>.json (Arabic first). The steps of website-design-development are also read
+ * by the Software page («خطوات العمل»). One file per section in views/software-service/.
+ */
+import type { CollectionEntry } from 'astro:content';
+import type { ImageMetadata } from 'astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero, { type CodeLine } from './software-service/Hero.astro';
+import Lists from './software-service/Lists.astro';
+import Steps from './software-service/Steps.astro';
+import Excludes from './software-service/Excludes.astro';
+import Faq from './software-service/Faq.astro';
+import Services from './software-service/Services.astro';
+import Cta from './software-service/Cta.astro';
+import { SOFTWARE_ICONS, SOFTWARE_ICON_OF } from './software-service/icons';
+import { site, waHref } from '../lib/site';
+import { localizePath, useTranslations, type Lang } from '../i18n';
+
+interface Props { lang: Lang; entry: CollectionEntry<'services'> }
+const { lang, entry } = Astro.props;
+const t = useTranslations(lang);
+const s = entry.data[lang];
+const slug = entry.id;
+
+// one header photo per service (src/assets/media/software-<slug>.jpg — sources in docs/media-credits.md);
+// a future software service without its own photo falls back to the Software page's code photo
+const photos = import.meta.glob<{ default: ImageMetadata }>('../assets/media/software-*.jpg', { eager: true });
+const photo = photos[`../assets/media/software-${slug}.jpg`]?.default ?? photos['../assets/media/software-code.jpg'].default;
+const alts: Record<string, { ar: string; en: string; focus?: string }> = {
+  'website-design-development': { ar: 'حاسوب محمول على مكتب خشبي ليلًا بجوار مصباح ونافذة تطل على المدينة', en: 'A laptop on a wooden desk at night beside a lamp and a window onto the city', focus: '42% 50%' },
+};
+const alt = alts[slug] ?? { ar: '', en: '' };
+
+// decorative code beside the hero text (wide screens): ours, short, about what the service does; always LTR
+const code: Record<string, CodeLine[]> = {
+  'website-design-development': [
+    [['c', '// waysz: website']],
+    [['k', 'const '], ['i', 'site'], ['p', ' = '], ['f', 'design'], ['p', '('], ['i', 'brand'], ['p', ', {']],
+    [['i', '  languages'], ['p', ': ['], ['s', '"ar"'], ['p', ', '], ['s', '"en"'], ['p', '],']],
+    [['i', '  screens'], ['p', ': '], ['s', '"all"'], ['p', ',']],
+    [['p', '});']],
+    [['f', 'build'], ['p', '('], ['i', 'site'], ['p', ').'], ['f', 'then'], ['p', '('], ['i', 'launch'], ['p', ');']],
+  ],
+};
+const icon = SOFTWARE_ICONS[SOFTWARE_ICON_OF[slug] ?? 'site'];
+---
+<BaseLayout lang={lang} title={`${s.name} | WaysZ`} description={s.description} headerOverlay>
+  <div class="ssp theme-dark">
+    <Hero lang={lang} name={s.name} description={s.description} photo={photo} alt={alt[lang]} focus={alt.focus} code={code[slug]} />
+
+    <div class="ssp__body container">
+      <div class="ssp__main">
+        <Lists lang={lang} audience={s.audience} offer={s.offer} />
+        <Steps lang={lang} steps={s.steps} />
+        <Excludes lang={lang} items={s.excludes} />
+        <Faq lang={lang} items={s.faq} />
+      </div>
+
+      <aside class="ssp__aside" aria-label={s.cta.title}>
+        <div class="ssp__card">
+          <svg viewBox="0 0 48 48" width="48" height="48" aria-hidden="true" set:html={icon} />
+          <p class="ssp__card-name">{s.name}</p>
+          <p class="ssp__card-title">{s.cta.title}</p>
+          <a class="btn btn--accent" href={localizePath('/contact/', lang)}>{s.cta.button}</a>
+          {site.whatsapp && (
+            <a class="btn btn--ghost" href={waHref(site.whatsapp, `${t.whatsapp.message}${s.name}`)} target="_blank" rel="noopener">{t.cta.whatsapp}</a>
+          )}
+        </div>
+      </aside>
+    </div>
+
+    <Services lang={lang} current={slug} />
+    <Cta lang={lang} name={s.name} cta={s.cta} />
+  </div>
+</BaseLayout>
+
+<style is:inline>
+  /* shared by the sections in views/software-service/ */
+  .ssp { background: var(--color-bg); }
+  .ssp-sec { padding-block: clamp(3rem, 2rem + 4vw, 5.5rem); }
+  .ssp-sec + .ssp-sec { border-block-start: 1px solid var(--color-border); }
+  .ssp-h2 { font-size: clamp(1.8rem, 1.3rem + 2vw, 3rem); line-height: 1.25; }
+  [dir='rtl'] .ssp-h2 { line-height: 1.45; }
+
+  .ssp__body { display: grid; gap: 0 var(--space-8); }
+  .ssp__main { min-width: 0; }
+  .ssp__aside { display: none; }
+  @media (min-width: 1024px) {
+    .ssp__body { grid-template-columns: minmax(0, 1fr) 19rem; }
+    .ssp__aside { display: block; padding-block: clamp(3rem, 2rem + 4vw, 5.5rem); }
+    /* the call card: navy glass with a code-cyan edge along its start side */
+    .ssp__card {
+      position: sticky; top: calc(76px + var(--space-5)); overflow: hidden;
+      display: grid; gap: var(--space-4); padding: var(--space-6); border-radius: var(--radius-md);
+      background: color-mix(in srgb, var(--color-surface) 75%, var(--color-bg));
+      border: 1px solid color-mix(in srgb, var(--color-area-software) 26%, transparent);
+      box-shadow: 0 30px 60px -30px color-mix(in srgb, var(--color-area-software) 25%, transparent);
+    }
+    .ssp__card::before { content: ''; position: absolute; inset-block: var(--space-6); inset-inline-start: 0; width: 2px; background: var(--color-area-software); }
+    .ssp__card svg { fill: none; stroke: var(--color-area-software); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+    .ssp__card-name { font-size: var(--text-sm); color: var(--color-area-software); font-weight: var(--weight-bold); }
+    .ssp__card-title { font-family: var(--font-display); font-weight: var(--weight-bold); font-size: var(--text-xl); line-height: 1.4; }
+    .ssp__card .btn { white-space: normal; text-align: center; }
+  }
+</style>

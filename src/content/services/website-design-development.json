@@ -8,13 +8,16 @@
     "audience": [
       "الشركات التي تحتاج إلى موقع رسمي أو إعادة تصميم موقعها.",
       "رواد الأعمال والمشروعات الناشئة.",
-      "المهنيون (مكاتب المحاماة، العيادات، الاستشاريون)."
+      "المهنيون (مكاتب المحاماة، العيادات، الاستشاريون).",
+      "الجمعيات والمنظمات التي تريد التعريف بنشاطها."
     ],
     "offer": [
       "تحليل احتياجاتك وتحديد هيكل الموقع وصفحاته.",
       "تصميم واجهات عصرية متجاوبة، بالعربية والإنجليزية.",
       "تطوير الموقع وتجهيزه للإطلاق وفق أفضل الممارسات.",
-      "بنية قابلة لإضافة لوحة تحكم أو أنظمة لاحقًا."
+      "بنية قابلة لإضافة لوحة تحكم أو أنظمة لاحقًا.",
+      "تهيئة أساسية لمحركات البحث وسرعة التحميل.",
+      "نماذج تواصل تصلك رسائلها مباشرة."
     ],
     "steps": [
       { "title": "جلسة تعريفية", "text": "نتعرف على نشاطك وأهدافك وجمهورك." },
@@ -24,11 +27,17 @@
     ],
     "excludes": [
       "رسوم الدومين والاستضافة، ما لم تُذكر في العرض.",
-      "الخصائص غير المتفق عليها في نطاق العمل (تُسعّر منفصلة)."
+      "الخصائص غير المتفق عليها في نطاق العمل (تُسعّر منفصلة).",
+      "كتابة محتوى الموقع وتصوير المنتجات، ما لم يُتفق عليهما.",
+      "ضمان ترتيب معين في نتائج محركات البحث."
     ],
     "faq": [
       { "q": "كم يستغرق تنفيذ الموقع؟", "a": "حسب عدد الصفحات والخصائص، ونحدد جدولًا زمنيًا واضحًا بعد الاتفاق على نطاق العمل." },
-      { "q": "هل يعمل الموقع على الموبايل؟", "a": "بالتأكيد، كل مواقعنا متجاوبة وتعمل بكفاءة على جميع الشاشات." }
+      { "q": "هل يعمل الموقع على الموبايل؟", "a": "بالتأكيد، كل مواقعنا متجاوبة وتعمل بكفاءة على جميع الشاشات." },
+      { "q": "هل يكون الموقع بالعربية والإنجليزية؟", "a": "نعم، نصمم الواجهات باللغتين، مع مراعاة اتجاه الكتابة في كل لغة." },
+      { "q": "هل يمكنني تعديل محتوى الموقع بنفسي؟", "a": "نعم، إذا اتفقنا على لوحة تحكم ضمن نطاق العمل؛ فتعدّل النصوص والصور دون الحاجة إلى مبرمج. وإن لم تبدأ بها، فالبنية تسمح بإضافتها لاحقًا." },
+      { "q": "هل تتولون الدومين والاستضافة؟", "a": "نساعدك في اختيارهما وتجهيز الموقع عليهما، وتبقى رسومهما خارج العرض ما لم تُذكر فيه." },
+      { "q": "هل تتابعون الموقع بعد إطلاقه؟", "a": "نعم، عبر خدمة الدعم الفني والصيانة: نتابع الموقع ونحدّثه ونحل المشكلات الفنية أولًا بأول." }
     ],
     "cta": {
       "title": "جاهز لإطلاق موقعك؟",
@@ -43,13 +52,16 @@
     "audience": [
       "Companies that need an official website or a redesign of their current one.",
       "Entrepreneurs and startups.",
-      "Professionals (law offices, clinics, consultants)."
+      "Professionals (law offices, clinics, consultants).",
+      "Associations and organizations that want to present their work."
     ],
     "offer": [
       "Analysing your needs and defining the site's structure and pages.",
       "Modern, responsive interface design, in Arabic and English.",
       "Developing the site and preparing it for launch according to best practices.",
-      "A structure that can take a dashboard or systems later."
+      "A structure that can take a dashboard or systems later.",
+      "Basic search-engine readiness and fast loading.",
+      "Contact forms whose messages reach you directly."
     ],
     "steps": [
       { "title": "Introductory session", "text": "We get to know your business, your goals and your audience." },
@@ -59,11 +71,17 @@
     ],
     "excludes": [
       "Domain and hosting fees, unless stated in the offer.",
-      "Features not agreed in the scope of work (priced separately)."
+      "Features not agreed in the scope of work (priced separately).",
+      "Writing the site's content and product photography, unless agreed.",
+      "A guarantee of a particular ranking in search results."
     ],
     "faq": [
       { "q": "How long does it take to build the website?", "a": "It depends on the number of pages and features; we set a clear timeline once the scope of work is agreed." },
-      { "q": "Does the website work on mobile?", "a": "Certainly. All our websites are responsive and work efficiently on every screen." }
+      { "q": "Does the website work on mobile?", "a": "Certainly. All our websites are responsive and work efficiently on every screen." },
+      { "q": "Will the website be in Arabic and English?", "a": "Yes. We design the interfaces in both languages, respecting the writing direction of each." },
+      { "q": "Can I edit the website's content myself?", "a": "Yes, if a dashboard is agreed in the scope of work: you then edit the text and images without needing a developer. If you do not start with one, the structure lets you add it later." },
+      { "q": "Do you take care of the domain and hosting?", "a": "We help you choose them and set the website up on them; their fees stay outside the offer unless stated in it." },
+      { "q": "Do you look after the website after launch?", "a": "Yes, through our technical support and maintenance service: we look after the website, update it and solve technical problems as they arise." }
     ],
     "cta": {
       "title": "Ready to launch your website?",

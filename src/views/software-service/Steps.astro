@@ -1,0 +1,60 @@
+---
+/**
+ * Software detail page — how we work: the steps as a real sequence (numbers belong here), each one a square node
+ * on a code-cyan line, like the commits of a build. Vertical on phones, a row on wide screens. Static CSS.
+ */
+import Bidi from './Bidi.astro';
+import { useTranslations, type Lang } from '../../i18n';
+
+interface Props { lang: Lang; steps: { title: string; text: string }[] }
+const { lang, steps } = Astro.props;
+const t = useTranslations(lang);
+const num = (i: number) => new Intl.NumberFormat(lang === 'ar' ? 'ar-EG' : 'en', { minimumIntegerDigits: 2 }).format(i);
+---
+{steps.length > 0 && (
+  <section class="sst ssp-sec" aria-labelledby="sst-title">
+    <h2 class="ssp-h2" id="sst-title" data-split="words">{t.service.steps}</h2>
+    <ol class="sst__list" role="list" data-reveal="up" style={`--n: ${steps.length}`}>
+      {steps.map((s, i) => (
+        <li class="sst__step">
+          <span class="sst__num" aria-hidden="true">{num(i + 1)}</span>
+          <h3 class="sst__name">{s.title}</h3>
+          <p class="sst__text"><Bidi text={s.text} lang={lang} /></p>
+        </li>
+      ))}
+    </ol>
+  </section>
+)}
+
+<style is:inline>
+  .sst__list { position: relative; display: grid; gap: var(--space-6); margin-block-start: var(--space-7); }
+  /* the line that joins the nodes: down the start edge on phones, across the top on wide screens */
+  .sst__list::before {
+    content: ''; position: absolute; inset-block: 21px 21px; inset-inline-start: 20px; width: 1.5px;
+    background: linear-gradient(var(--color-area-software), color-mix(in srgb, var(--color-area-software) 20%, transparent));
+  }
+  .sst__step { position: relative; display: grid; grid-template-columns: 42px 1fr; column-gap: var(--space-4); align-content: start; }
+  .sst__num {
+    grid-row: span 2; display: grid; place-items: center; width: 42px; height: 42px; border-radius: var(--radius-sm);
+    background: var(--color-bg); border: 1.5px solid var(--color-area-software); color: var(--color-area-software);
+    box-shadow: 0 0 0 6px var(--color-bg);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-weight: var(--weight-bold); font-size: var(--text-sm);
+  }
+  .sst__step:last-child .sst__num {
+    background: var(--color-area-software); color: var(--color-bg);
+    box-shadow: 0 0 0 6px var(--color-bg), 0 0 24px 2px color-mix(in srgb, var(--color-area-software) 40%, transparent);
+  }
+  .sst__name { align-self: center; font-size: var(--text-lg); font-weight: var(--weight-bold); line-height: 1.4; }
+  .sst__text { grid-column: 2; margin-block-start: var(--space-2); color: var(--color-ink-muted); line-height: 1.75; }
+  @media (min-width: 1024px) {
+    .sst__list { grid-template-columns: repeat(var(--n), 1fr); gap: var(--space-5); }
+    .sst__list::before {
+      inset-block: 20px auto; inset-inline: 21px 21px; width: auto; height: 1.5px;
+      background: linear-gradient(to right, var(--color-area-software), color-mix(in srgb, var(--color-area-software) 20%, transparent));
+    }
+    [dir='rtl'] .sst__list::before { background: linear-gradient(to left, var(--color-area-software), color-mix(in srgb, var(--color-area-software) 20%, transparent)); }
+    .sst__step { grid-template-columns: 1fr; row-gap: var(--space-4); }
+    .sst__num { grid-row: auto; }
+    .sst__text { grid-column: 1; margin-block-start: 0; }
+  }
+</style>
