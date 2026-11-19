@@ -16,6 +16,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from './legal/Hero.astro';
 import Services from './legal/Services.astro';
+import More from './legal/More.astro';
 import Help from './legal/Help.astro';
 import Why from './legal/Why.astro';
 import How from './legal/How.astro';
@@ -51,6 +52,7 @@ const faq = [pick('family-law', 0), pick('criminal-law', 0), pick('civil-law', 0
     <div class="legal__body">
       <Hero lang={lang} lead={lead} />
       <Services lang={lang} title={t.nav.services} items={services.map(({ slug, name, summary }) => ({ slug, name, text: summary }))} />
+      <More lang={lang} />
       <Help lang={lang} />
       <Why lang={lang} />
       <How lang={lang} steps={family.steps} />

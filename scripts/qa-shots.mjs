@@ -1,6 +1,6 @@
 /**
  * Visual QA: screenshots of a page while scrolling, for every language / viewport, with and without WebGL.
- *   node scripts/qa-shots.mjs [outDir] [--only=name-fragment] [--base=http://localhost:4321]
+ *   node scripts/qa-shots.mjs [outDir] [--only=a,b] [--base=http://localhost:4321] [--page=services/criminal-law/]
  * Needs the dev server (npm run dev) — the ?tier= override only exists in dev.
  * Uses the installed Google Chrome (channel "chrome") with the real GPU so the WebGL stage renders.
  * The *-osreduce runs turn the OS "reduce motion" setting ON: the page must look exactly like the full run
@@ -15,6 +15,7 @@ const args = process.argv.slice(2);
 const out = args.find((a) => !a.startsWith('--')) ?? 'qa-shots';
 const only = args.find((a) => a.startsWith('--only='))?.slice(7);
 const base = args.find((a) => a.startsWith('--base='))?.slice(7) ?? 'http://localhost:4321';
+const pagePath = args.find((a) => a.startsWith('--page='))?.slice(7) ?? '';   // e.g. services/criminal-law/ (default: Home)
 mkdirSync(out, { recursive: true });
 
 const desktop = { width: 1440, height: 900 };
@@ -38,7 +39,8 @@ const runs = [
   { name: 'ar-phone-osreduce', path: '/', viewport: phone, mobile: true, reduce: true },
   { name: 'ar-desktop-nojs', path: '/', viewport: desktop, nojs: true, stops: [0, 1, 2] },
   { name: 'ar-desktop-intro', path: '/?tier=full', viewport: desktop, intro: true, stops: [0] },
-].filter((r) => !only || r.name.includes(only));
+].filter((r) => !only || only.split(',').some((o) => r.name.includes(o)))
+  .map((r) => ({ ...r, path: r.path.replace(/^(\/en)?\//, (m) => m + pagePath) }));
 
 const browser = await launch();
 const problems = [];

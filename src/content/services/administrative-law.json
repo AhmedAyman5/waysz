@@ -1,0 +1,98 @@
+{
+  "area": "legal",
+  "order": 7,
+  "ar": {
+    "name": "القانون الإداري ومجلس الدولة",
+    "summary": "الطعن على القرارات الإدارية، وقضايا التعيينات والترقيات الحكومية، وقضايا الضرائب أمام محاكم مجلس الدولة.",
+    "scope": [
+      "الطعن على القرارات الإدارية",
+      "قضايا التعيينات الحكومية",
+      "قضايا الترقيات الحكومية",
+      "قضايا الضرائب"
+    ],
+    "description": "يختص قسم القانون الإداري ومجلس الدولة بالطعن على القرارات الإدارية، وقضايا التعيينات والترقيات الحكومية، وقضايا الضرائب. نساعدك على فهم القرار الذي صدر بشأنك وحقوقك تجاهه، ونتولى الطعن عليه أمام محاكم مجلس الدولة المختصة في المواعيد التي يحددها القانون.",
+    "audience": [
+      "من صدر بشأنه قرار إداري يرى أنه يمس حقه.",
+      "الموظفون العموميون في قضايا التعيين والترقية وما يتصل بها.",
+      "المتقدمون لوظائف حكومية ولديهم نزاع حول التعيين.",
+      "الأفراد والشركات في قضايا الضرائب أمام القضاء."
+    ],
+    "offer": [
+      "استشارة لدراسة القرار الإداري وتقييم فرص الطعن عليه.",
+      "إعداد التظلمات الإدارية قبل اللجوء إلى القضاء عند الحاجة.",
+      "الطعن على القرارات الإدارية وطلب وقف تنفيذها وإلغائها.",
+      "قضايا التعيينات والترقيات الحكومية أمام المحاكم المختصة.",
+      "تمثيلك في قضايا الضرائب أمام القضاء.",
+      "متابعة الدعوى حتى صدور الحكم وتنفيذه."
+    ],
+    "steps": [
+      { "title": "جلسة استشارة", "text": "نستمع إليك ونفهم القرار وظروف صدوره." },
+      { "title": "دراسة المستندات", "text": "نراجع القرار ومستنداتك، ونحدد مواعيد الطعن المتاحة." },
+      { "title": "خطة العمل", "text": "نتفق على الطريق، تظلمًا أو دعوى، وعلى الأتعاب قبل البدء." },
+      { "title": "التمثيل والمتابعة", "text": "نمثلك أمام المحكمة المختصة ونطلعك على كل مستجد." }
+    ],
+    "excludes": [
+      "ضمان حكم بنتيجة معينة؛ فالحكم للمحكمة وحدها.",
+      "ضمان الحصول على وظيفة أو ترقية بعينها.",
+      "الرسوم القضائية، وأي ضرائب أو مستحقات مطلوبة منك للدولة، ما لم يُتفق على غير ذلك."
+    ],
+    "faq": [
+      { "q": "هل للطعن على القرار الإداري موعد محدد؟", "a": "نعم، يحدد القانون مواعيد للطعن تبدأ عادةً من تاريخ العلم بالقرار، وفواتها قد يُسقط حقك في الطعن؛ لذلك ننصحك بالتواصل معنا فور علمك بالقرار." },
+      { "q": "هل يجب أن أتظلم من القرار قبل رفع الدعوى؟", "a": "في بعض أنواع القرارات يشترط القانون التظلم أولًا؛ ندرس قرارك ونحدد لك إن كان التظلم لازمًا وكيف يُقدَّم." },
+      { "q": "ما الفرق بين هذا القسم وقسم المحاسبة القانونية والضرائب؟", "a": "هنا نتولى الجانب القضائي في قضايا الضرائب أمام المحاكم؛ أما الفحص الضريبي وإمساك الدفاتر والمراجعة المالية فيتولاها قسم المحاسبة القانونية والمراجعة المالية والضرائب، ونعمل معًا حين تحتاج قضيتك إلى الاثنين." },
+      { "q": "هل تفاصيل قضيتي سرية؟", "a": "نعم، كل ما تشاركه يُعامل بسرية تامة ولا يطلع عليه إلا الفريق المختص." }
+    ],
+    "cta": {
+      "title": "صدر بشأنك قرار إداري؟",
+      "text": "لا تترك موعد الطعن يفوتك؛ احجز استشارتك وتحدث مع الفريق المختص بسرية تامة.",
+      "button": "اطلب استشارة قانونية"
+    }
+  },
+  "en": {
+    "name": "Administrative Law & the State Council",
+    "summary": "Challenging administrative decisions, government appointment and promotion cases, and tax cases before the State Council courts.",
+    "scope": [
+      "Challenging administrative decisions",
+      "Government appointment cases",
+      "Government promotion cases",
+      "Tax cases"
+    ],
+    "description": "The Administrative Law and State Council Department handles challenges to administrative decisions, government appointment and promotion cases, and tax cases. We help you understand the decision issued about you and your rights in the face of it, and we challenge it before the competent State Council courts within the deadlines set by law.",
+    "audience": [
+      "Anyone affected by an administrative decision they believe infringes their rights.",
+      "Public employees in appointment and promotion cases and related matters.",
+      "Applicants for government posts who have a dispute over the appointment.",
+      "Individuals and companies in tax cases before the courts."
+    ],
+    "offer": [
+      "A consultation to study the administrative decision and assess the chances of challenging it.",
+      "Preparing administrative grievances before going to court, where needed.",
+      "Challenging administrative decisions and requesting their suspension and annulment.",
+      "Government appointment and promotion cases before the competent courts.",
+      "Representing you in tax cases before the courts.",
+      "Following the case until the judgment is issued and enforced."
+    ],
+    "steps": [
+      { "title": "Consultation", "text": "We listen and understand the decision and the circumstances in which it was issued." },
+      { "title": "Document review", "text": "We review the decision and your documents and identify the deadlines for a challenge." },
+      { "title": "Plan of action", "text": "We agree on the route, a grievance or a lawsuit, and on the fees before we start." },
+      { "title": "Representation", "text": "We represent you before the competent court and keep you updated on every development." }
+    ],
+    "excludes": [
+      "A guaranteed outcome — the judgment belongs to the court alone.",
+      "A guarantee of obtaining a specific post or promotion.",
+      "Court fees, and any taxes or dues you owe the state, unless agreed otherwise."
+    ],
+    "faq": [
+      { "q": "Is there a deadline for challenging an administrative decision?", "a": "Yes. The law sets deadlines for a challenge, which usually run from the date you learn of the decision, and missing them can cost you the right to challenge it. That is why we advise you to contact us as soon as you learn of the decision." },
+      { "q": "Do I have to file a grievance before going to court?", "a": "For some types of decision the law requires a grievance first. We study your decision and tell you whether a grievance is required and how to file it." },
+      { "q": "How is this department different from the Legal Accounting and Tax Department?", "a": "Here we handle the court side of tax cases. Tax audits, bookkeeping and financial review are handled by the Legal Accounting, Financial Audit and Tax Department, and the two work together when your case needs both." },
+      { "q": "Are the details of my case confidential?", "a": "Yes. Everything you share is handled in full confidence and seen only by the team on your case." }
+    ],
+    "cta": {
+      "title": "Has an administrative decision been issued about you?",
+      "text": "Don't let the deadline for a challenge pass. Book a consultation and talk to the right team in full confidence.",
+      "button": "Request a legal consultation"
+    }
+  }
+}

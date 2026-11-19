@@ -4,17 +4,24 @@
   "ar": {
     "name": "القانون المدني",
     "summary": "قضايا التعويضات والمطالبات المالية والنزاعات المدنية والعقارية، رفعًا ودفاعًا ومتابعة حتى التنفيذ.",
-    "description": "نتولى قضايا التعويضات والمطالبات المالية والنزاعات المدنية والعقارية، رفعًا ودفاعًا، ونتابعها حتى تنفيذ الحكم. نبدأ بتقييم موقفك ومستنداتك، ونوضح لك الخيارات المتاحة قبل أي إجراء.",
+    "scope": [
+      "نزاعات العقارات والأراضي",
+      "عقود الإيجار",
+      "دعاوى التعويضات المالية"
+    ],
+    "description": "يختص القسم المدني بنزاعات العقارات والأراضي، وعقود الإيجار، ودعاوى التعويضات المالية. نتولى هذه القضايا رفعًا ودفاعًا، ونتابعها حتى تنفيذ الحكم. نبدأ بتقييم موقفك ومستنداتك، ونوضح لك الخيارات المتاحة، ومنها التسوية الودية، قبل أي إجراء.",
     "audience": [
-      "أصحاب المطالبات المالية والديون غير المسددة.",
-      "المتضررون الراغبون في المطالبة بتعويض.",
-      "أطراف النزاعات العقارية والإيجارية وعقود البيع.",
+      "ملاك العقارات والأراضي وأطراف عقود بيعها.",
+      "المؤجرون والمستأجرون في نزاعات الإيجار.",
+      "المتضررون الراغبون في المطالبة بتعويض مالي.",
       "من رُفعت ضده دعوى مدنية ويحتاج إلى من يدافع عنه."
     ],
     "offer": [
       "استشارة لتقييم الموقف والمستندات وفرص التسوية.",
+      "نزاعات ملكية العقارات والأراضي وحيازتها وحدودها.",
+      "صياغة عقود الإيجار ومراجعتها، ودعاوى الإيجار من إخلاء ومطالبة بالأجرة وفسخ للعقد.",
+      "دعاوى التعويض عن الأضرار المادية والأدبية، رفعًا ودفاعًا.",
       "إعداد الإنذارات والمطالبات الرسمية قبل التقاضي.",
-      "رفع الدعاوى المدنية والعقارية والدفاع فيها.",
       "متابعة تنفيذ الأحكام بعد صدورها."
     ],
     "steps": [
@@ -30,6 +37,7 @@
     ],
     "faq": [
       { "q": "هل يمكن حل النزاع دون اللجوء إلى المحكمة؟", "a": "في كثير من الحالات نعم، عبر التفاوض أو التسوية الودية؛ ونوضح لك هذا الخيار قبل رفع الدعوى." },
+      { "q": "يوجد نزاع على ملكية عقار أو أرض أو على حدودها، فمن أين أبدأ؟", "a": "ابدأ بجمع ما لديك من عقود ومستندات ملكية؛ نراجعها معك في جلسة الاستشارة، ونوضح لك الطريق الأنسب: تسوية ودية، أو إنذار رسمي، أو دعوى." },
       { "q": "ما المستندات التي أحتاجها؟", "a": "تختلف حسب نوع النزاع؛ وفي جلسة الاستشارة نحدد لك المطلوب بدقة." },
       { "q": "هل تتابعون تنفيذ الحكم بعد صدوره؟", "a": "نعم، نتابع إجراءات التنفيذ أمام الجهات المختصة ونطلعك على كل مستجد." }
     ],
@@ -42,18 +50,25 @@
   "en": {
     "name": "Civil Law",
     "summary": "Compensation cases, financial claims, and civil and real-estate disputes — filing, defending and following up until enforcement.",
-    "description": "We handle compensation cases, financial claims, and civil and real-estate disputes, whether filing or defending, and follow them until the judgment is enforced. We start by assessing your position and your documents, and explain the options open to you before any step is taken.",
+    "scope": [
+      "Real estate and land disputes",
+      "Lease contracts",
+      "Financial compensation claims"
+    ],
+    "description": "The Civil Department handles real estate and land disputes, lease contracts and financial compensation claims. We take these cases on, as claimant or defendant, and follow them through to the enforcement of the judgment. We start by assessing your position and your documents and explain the options open to you, including an amicable settlement, before any step is taken.",
     "audience": [
-      "People and businesses with financial claims or unpaid debts.",
-      "Anyone who has suffered harm and wants to claim compensation.",
-      "Parties to real-estate, lease and sale-contract disputes.",
-      "Anyone facing a civil claim who needs someone to defend them."
+      "Owners of real estate and land, and parties to its sale contracts.",
+      "Landlords and tenants in lease disputes.",
+      "Anyone harmed who wants to claim financial compensation.",
+      "Anyone facing a civil lawsuit who needs someone to defend them."
     ],
     "offer": [
       "A consultation to assess your position, your documents and the chances of a settlement.",
+      "Disputes over the ownership, possession and boundaries of real estate and land.",
+      "Drafting and reviewing lease contracts, and lease lawsuits: eviction, claims for rent and termination of the contract.",
+      "Claims for compensation for material and moral damage, as claimant or defendant.",
       "Preparing formal notices and demands before litigation.",
-      "Filing civil and real-estate claims and defending against them.",
-      "Following up on the enforcement of judgments once they are issued."
+      "Following up the enforcement of judgments once they are issued."
     ],
     "steps": [
       { "title": "Consultation", "text": "We listen and understand the details of the dispute." },
@@ -68,6 +83,7 @@
     ],
     "faq": [
       { "q": "Can the dispute be resolved without going to court?", "a": "In many cases, yes — through negotiation or an amicable settlement. We explain this option before a claim is filed." },
+      { "q": "There is a dispute over the ownership or boundaries of a property or a plot of land. Where do I start?", "a": "Start by gathering your contracts and ownership documents. We review them with you in the consultation and explain the best route: an amicable settlement, a formal notice or a lawsuit." },
       { "q": "Which documents do I need?", "a": "It depends on the type of dispute. In the consultation we tell you exactly what is required." },
       { "q": "Do you follow up on enforcement after the judgment?", "a": "Yes. We follow the enforcement procedures with the competent authorities and keep you updated on every development." }
     ],

@@ -1,0 +1,98 @@
+{
+  "area": "legal",
+  "order": 9,
+  "ar": {
+    "name": "المحاسبة القانونية والمراجعة المالية والضرائب",
+    "summary": "الفحص الضريبي وإمساك الدفاتر والمراجعة المالية، وتسوية النزاعات مع مصلحة الضرائب المصرية.",
+    "scope": [
+      "الفحص الضريبي",
+      "إمساك الدفاتر",
+      "المراجعة المالية",
+      "تسوية النزاعات مع مصلحة الضرائب المصرية"
+    ],
+    "description": "يختص قسم المحاسبة القانونية والمراجعة المالية والضرائب بالفحص الضريبي، وإمساك الدفاتر، والمراجعة المالية، وتسوية النزاعات مع مصلحة الضرائب المصرية. نجمع بين الفهم المحاسبي والقانوني، حتى تكون دفاترك منظمة وموقفك الضريبي واضحًا قبل أن يتحول أي خلاف إلى نزاع.",
+    "audience": [
+      "الشركات والمنشآت الخاضعة للفحص الضريبي.",
+      "أصحاب الأعمال والمهنيون الذين يحتاجون إلى إمساك دفاتر منتظمة.",
+      "الشركات الراغبة في مراجعة مالية لأوضاعها قبل قرار مهم.",
+      "الممولون الذين لديهم خلاف أو نزاع قائم مع مصلحة الضرائب."
+    ],
+    "offer": [
+      "الاستعداد للفحص الضريبي، ومرافقتك فيه، ومراجعة نتائجه.",
+      "إمساك الدفاتر والسجلات المحاسبية وتنظيمها.",
+      "المراجعة المالية لأوضاع الشركة وقوائمها.",
+      "إعداد الاعتراضات على نتائج الفحص ومتابعتها أمام الجهات المختصة.",
+      "التفاوض مع مصلحة الضرائب للوصول إلى تسوية النزاعات.",
+      "التنسيق مع قسم القانون الإداري ومجلس الدولة حين يحتاج النزاع إلى القضاء."
+    ],
+    "steps": [
+      { "title": "جلسة استشارة", "text": "نستمع إليك ونفهم نشاطك وموقفك الضريبي." },
+      { "title": "مراجعة الدفاتر والمستندات", "text": "نراجع دفاترك وإقراراتك ومراسلاتك مع مصلحة الضرائب." },
+      { "title": "خطة العمل", "text": "نتفق على نطاق العمل والأتعاب قبل البدء." },
+      { "title": "التنفيذ والمتابعة", "text": "ننفذ العمل ونتابع مع مصلحة الضرائب، ونطلعك على كل مستجد." }
+    ],
+    "excludes": [
+      "الضرائب والغرامات والمستحقات المطلوبة للدولة.",
+      "ضمان نتيجة بعينها للفحص أو للاعتراض؛ فالقرار للجهات المختصة.",
+      "إخفاء أي دخل أو نشاط، أو أي إجراء يخالف القانون."
+    ],
+    "faq": [
+      { "q": "وصلني إخطار بالفحص الضريبي، فماذا أفعل؟", "a": "تواصل معنا مبكرًا؛ نراجع الإخطار والمستندات المطلوبة، ونجهز معك دفاترك وأوراقك قبل الموعد، ونرافقك في الفحص." },
+      { "q": "لم أوافق على نتيجة الفحص، فهل يمكن الاعتراض؟", "a": "نعم، يتيح القانون الاعتراض على نتيجة الفحص في مواعيد محددة؛ نراجع النتيجة، ونعد الاعتراض، ونتابعه أمام الجهات المختصة." },
+      { "q": "هل تقدمون إمساك الدفاتر بصفة مستمرة؟", "a": "نعم، نتفق معك على نطاق العمل ودوريته بما يناسب حجم نشاطك." },
+      { "q": "هل تفاصيل حساباتي سرية؟", "a": "نعم، كل ما تشاركه يُعامل بسرية تامة ولا يطلع عليه إلا الفريق المختص." }
+    ],
+    "cta": {
+      "title": "تحتاج إلى ترتيب موقفك الضريبي؟",
+      "text": "احجز استشارتك وتحدث مع الفريق المختص بسرية تامة.",
+      "button": "اطلب استشارة"
+    }
+  },
+  "en": {
+    "name": "Legal Accounting, Financial Audit & Tax",
+    "summary": "Tax audits, bookkeeping and financial review, and settling disputes with the Egyptian Tax Authority.",
+    "scope": [
+      "Tax audits",
+      "Bookkeeping",
+      "Financial review",
+      "Settling disputes with the Egyptian Tax Authority"
+    ],
+    "description": "The Legal Accounting, Financial Audit and Tax Department handles tax audits, bookkeeping, financial review and the settlement of disputes with the Egyptian Tax Authority. We bring accounting and legal understanding together, so that your books are in order and your tax position is clear before any disagreement turns into a dispute.",
+    "audience": [
+      "Companies and businesses subject to a tax audit.",
+      "Business owners and professionals who need their books kept in order.",
+      "Companies that want a financial review of their position before an important decision.",
+      "Taxpayers with a disagreement or an ongoing dispute with the Tax Authority."
+    ],
+    "offer": [
+      "Preparing for a tax audit, accompanying you through it and reviewing its results.",
+      "Keeping and organizing your books and accounting records.",
+      "A financial review of the company's position and statements.",
+      "Preparing objections to audit results and following them up before the competent bodies.",
+      "Negotiating with the Tax Authority to reach a settlement of disputes.",
+      "Working with the Administrative Law and State Council Department when a dispute needs to go to court."
+    ],
+    "steps": [
+      { "title": "Consultation", "text": "We listen and understand your business and your tax position." },
+      { "title": "Books and documents", "text": "We review your books, your tax returns and your correspondence with the Tax Authority." },
+      { "title": "Plan of action", "text": "We agree on the scope of work and the fees before we start." },
+      { "title": "Follow-through", "text": "We carry out the work and follow up with the Tax Authority, keeping you updated on every development." }
+    ],
+    "excludes": [
+      "Taxes, fines and dues owed to the state.",
+      "A guaranteed result for the audit or the objection — the decision belongs to the competent authorities.",
+      "Concealing any income or activity, or any step that breaks the law."
+    ],
+    "faq": [
+      { "q": "I received a tax audit notice. What should I do?", "a": "Contact us early. We review the notice and the documents required, prepare your books and papers with you before the appointment, and accompany you through the audit." },
+      { "q": "I don't agree with the audit result. Can I object?", "a": "Yes. The law allows objections to audit results within set deadlines. We review the result, prepare the objection and follow it up before the competent bodies." },
+      { "q": "Do you offer ongoing bookkeeping?", "a": "Yes. We agree with you on the scope and frequency of the work to suit the size of your business." },
+      { "q": "Are the details of my accounts confidential?", "a": "Yes. Everything you share is handled in full confidence and seen only by the team on your file." }
+    ],
+    "cta": {
+      "title": "Need to put your tax position in order?",
+      "text": "Book a consultation and talk to the right team in full confidence.",
+      "button": "Request a consultation"
+    }
+  }
+}

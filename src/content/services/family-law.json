@@ -4,17 +4,28 @@
   "ar": {
     "name": "قضايا الأسرة ومحكمة الأسرة",
     "summary": "الطلاق والخلع والنفقة والحضانة والرؤية، بأسلوب يحفظ خصوصية الأسرة ويراعي مصلحة الأبناء.",
-    "description": "نقدم الدعم القانوني في قضايا الأحوال الشخصية أمام محكمة الأسرة، من الاستشارة الأولى وحتى تنفيذ الحكم، مع التزام كامل بسرية التفاصيل الأسرية ومراعاة مصلحة الأبناء في كل خطوة.",
+    "scope": [
+      "الطلاق",
+      "الزواج",
+      "المواريث",
+      "النفقة",
+      "الحضانة"
+    ],
+    "description": "يختص قسم الأسرة والأحوال الشخصية بقضايا الطلاق والزواج والمواريث والنفقة والحضانة. نقدم لك الدعم القانوني فيها أمام محكمة الأسرة والجهات المختصة، من الاستشارة الأولى وحتى تنفيذ الحكم، مع التزام كامل بسرية التفاصيل الأسرية ومراعاة مصلحة الأبناء في كل خطوة.",
     "audience": [
       "الأزواج والزوجات الراغبون في معرفة حقوقهم قبل أي قرار.",
+      "المقبلون على الزواج الراغبون في فهم حقوقهم وتوثيق اتفاقاتهم.",
       "الآباء والأمهات في قضايا الحضانة والرؤية والنفقة.",
+      "الورثة الراغبون في حصر التركة وقسمتها أو في فض نزاع بينهم.",
       "من يرغب في تسوية ودية تحفظ حقوق الطرفين.",
       "المقيمون بالخارج ولديهم قضايا أسرة قائمة."
     ],
     "offer": [
       "استشارة لتقييم الموقف وشرح الخيارات المتاحة.",
-      "رفع دعاوى الطلاق والخلع والنفقة والحضانة والرؤية.",
-      "الدفاع في الدعاوى المرفوعة ضدك.",
+      "إجراءات توثيق الزواج وإثباته، وصياغة الاتفاقات المرتبطة به.",
+      "رفع دعاوى الطلاق والخلع والدفاع فيها.",
+      "دعاوى النفقة بأنواعها، والحضانة والرؤية.",
+      "المواريث: إعلام الوراثة وحصر التركة وقسمتها وفض النزاعات بين الورثة.",
       "صياغة اتفاقات التسوية الودية ومتابعة تنفيذ الأحكام."
     ],
     "steps": [
@@ -30,7 +41,9 @@
     ],
     "faq": [
       { "q": "هل تفاصيل استشارتي سرية؟", "a": "نعم، كل ما تشاركه يُعامل بسرية تامة ولا يطلع عليه إلا الفريق المختص." },
-      { "q": "هل يمكن متابعة القضية وأنا خارج البلاد؟", "a": "في كثير من الحالات نعم، من خلال توكيل رسمي، ونوضح لك الإجراءات." }
+      { "q": "هل يمكن متابعة القضية وأنا خارج البلاد؟", "a": "في كثير من الحالات نعم، من خلال توكيل رسمي، ونوضح لك الإجراءات." },
+      { "q": "كيف تبدأ إجراءات الميراث؟", "a": "تبدأ عادةً باستخراج إعلام الوراثة الذي يحدد الورثة، ثم حصر التركة وقسمتها بالتراضي، أو عن طريق المحكمة إذا اختلف الورثة؛ ونرافقك في كل خطوة." },
+      { "q": "هل يمكن الاتفاق على النفقة والحضانة وديًا؟", "a": "نعم في كثير من الحالات؛ نساعدك على صياغة اتفاق واضح يحفظ حقوق الطرفين ومصلحة الأبناء، ونوضح لك كيف يُعتمد." }
     ],
     "cta": {
       "title": "تحتاج إلى رأي قانوني في حالتك؟",
@@ -41,18 +54,29 @@
   "en": {
     "name": "Family Law & Family Court",
     "summary": "Divorce, khul', alimony, custody and visitation — handled in a way that protects the family's privacy and the children's best interests.",
-    "description": "We provide legal support in personal-status cases before the Family Court, from the first consultation until the judgment is enforced, with full confidentiality for family matters and the children's interests in mind at every step.",
+    "scope": [
+      "Divorce",
+      "Marriage",
+      "Inheritance",
+      "Alimony and child support",
+      "Custody"
+    ],
+    "description": "The Family and Personal Status Department handles divorce, marriage, inheritance, alimony and custody cases. We give you legal support in them before the Family Court and the competent authorities, from the first consultation until the judgment is enforced, with full confidentiality for family matters and the children's interests in mind at every step.",
     "audience": [
-      "Spouses who want to understand their rights before any decision.",
-      "Parents in custody, visitation and alimony cases.",
-      "Anyone seeking an amicable settlement that protects both parties.",
+      "Husbands and wives who want to know their rights before any decision.",
+      "Couples about to marry who want to understand their rights and document their agreements.",
+      "Fathers and mothers in custody, visitation and support cases.",
+      "Heirs who want to list and divide an estate, or to settle a dispute between them.",
+      "Anyone seeking an amicable settlement that protects both sides' rights.",
       "People living abroad with an ongoing family case."
     ],
     "offer": [
       "A consultation to assess your position and explain your options.",
-      "Filing divorce, khul', alimony, custody and visitation cases.",
-      "Defending you in cases filed against you.",
-      "Drafting settlement agreements and following up on enforcement."
+      "Registering and proving a marriage, and drafting the agreements that go with it.",
+      "Filing and defending divorce and khula cases.",
+      "Alimony and child support cases of every kind, custody and visitation.",
+      "Inheritance: the certificate of inheritance (heirship), listing and dividing the estate, and settling disputes between heirs.",
+      "Drafting amicable settlement agreements and following up on enforcement of judgments."
     ],
     "steps": [
       { "title": "Consultation", "text": "We listen and understand your case in full confidence." },
@@ -67,7 +91,9 @@
     ],
     "faq": [
       { "q": "Is my consultation confidential?", "a": "Yes. Everything you share is handled in full confidence and seen only by the team on your case." },
-      { "q": "Can my case be followed while I'm abroad?", "a": "In many cases, yes — through an official power of attorney. We'll explain the steps." }
+      { "q": "Can my case be followed while I'm abroad?", "a": "In many cases, yes — through an official power of attorney. We'll explain the steps." },
+      { "q": "How do inheritance procedures start?", "a": "They usually start with obtaining the certificate of inheritance, which names the heirs; the estate is then listed and divided by agreement, or through the court if the heirs disagree. We stay with you at every step." },
+      { "q": "Can alimony and custody be agreed amicably?", "a": "In many cases, yes. We help you draft a clear agreement that protects both sides' rights and the children's interests, and explain how it is made official." }
     ],
     "cta": {
       "title": "Need a legal opinion on your case?",

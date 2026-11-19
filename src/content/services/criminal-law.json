@@ -4,9 +4,13 @@
   "ar": {
     "name": "القانون الجنائي",
     "summary": "الدفاع والتمثيل القانوني في القضايا الجنائية بجميع مراحلها، من التحقيق وحتى صدور الحكم.",
-    "description": "نتولى الدفاع والتمثيل القانوني في القضايا الجنائية بجميع مراحلها، من التحقيق وحتى صدور الحكم. نشرح لك موقفك القانوني بلغة بسيطة، ونقف إلى جانبك في كل إجراء، مع التزام كامل بسرية ما تشاركه معنا.",
+    "scope": [
+      "قضايا الجنح",
+      "قضايا الجنايات"
+    ],
+    "description": "يختص القسم الجنائي بقضايا الجنح والجنايات. نتولى الدفاع والتمثيل القانوني فيها بجميع مراحلها، من التحقيق وحتى صدور الحكم والطعن عليه. نشرح لك موقفك القانوني بلغة بسيطة، ونقف إلى جانبك في كل إجراء، مع التزام كامل بسرية ما تشاركه معنا.",
     "audience": [
-      "من استُدعي للتحقيق أو وُجّه إليه اتهام ويحتاج إلى من يدافع عنه.",
+      "من استُدعي للتحقيق أو وُجّه إليه اتهام في جنحة أو جناية ويحتاج إلى من يدافع عنه.",
       "أسر المتهمين الراغبة في فهم الموقف والإجراءات.",
       "المجني عليهم الراغبون في متابعة بلاغاتهم والمطالبة بحقوقهم.",
       "الأفراد والشركات الراغبون في رأي قانوني قبل إجراء قد تترتب عليه مسؤولية جنائية."
@@ -14,7 +18,9 @@
     "offer": [
       "استشارة لتقييم الموقف وشرح الإجراءات المتوقعة.",
       "الحضور معك في التحقيقات أمام النيابة العامة.",
-      "الدفاع أمام المحاكم الجنائية بمختلف درجاتها.",
+      "الدفاع في قضايا الجنح أمام محاكم الجنح بدرجاتها.",
+      "الدفاع في قضايا الجنايات أمام محاكم الجنايات.",
+      "تمثيل المجني عليهم والمطالبة بحقوقهم المدنية أمام المحكمة الجنائية.",
       "إعداد المذكرات والطعون على الأحكام ومتابعتها."
     ],
     "steps": [
@@ -30,6 +36,7 @@
     ],
     "faq": [
       { "q": "استُدعيت للتحقيق، فماذا أفعل؟", "a": "تواصل معنا قبل الموعد إن أمكن؛ نشرح لك الإجراء وحقوقك، ونحضر معك التحقيق." },
+      { "q": "ما الفرق بين الجنحة والجناية؟", "a": "يفرّق القانون بينهما بحسب جسامة الجريمة والعقوبة المقررة لها، ويختلف بذلك نوع المحكمة المختصة والإجراءات. في جلسة الاستشارة نوضح لك كيف تُصنَّف الواقعة وما يترتب على ذلك." },
       { "q": "هل تفاصيل قضيتي سرية؟", "a": "نعم، كل ما تشاركه يُعامل بسرية تامة ولا يطلع عليه إلا الفريق المختص." },
       { "q": "هل يمكن الطعن على الحكم؟", "a": "يتوقف ذلك على نوع الحكم ومواعيد الطعن التي يحددها القانون؛ نراجع الحكم ونوضح لك الخيارات المتاحة." }
     ],
@@ -42,9 +49,13 @@
   "en": {
     "name": "Criminal Law",
     "summary": "Defense and legal representation in criminal cases at every stage, from the investigation until the judgment is issued.",
-    "description": "We handle defense and legal representation in criminal cases at every stage, from the investigation until the judgment is issued. We explain your legal position in plain language and stand beside you in every procedure, with full confidentiality for everything you share with us.",
+    "scope": [
+      "Misdemeanor cases",
+      "Felony cases"
+    ],
+    "description": "The Criminal Department handles misdemeanor and felony cases. We take on defense and legal representation in them at every stage, from the investigation until the judgment is issued and appealed. We explain your legal position in plain language and stand beside you in every procedure, with full confidentiality for everything you share with us.",
     "audience": [
-      "Anyone summoned for questioning or facing a charge who needs someone to defend them.",
+      "Anyone summoned for questioning or charged with a misdemeanor or a felony who needs someone to defend them.",
       "Families of the accused who want to understand the situation and the procedures.",
       "Victims who want to follow up on their complaints and claim their rights.",
       "Individuals and companies seeking a legal opinion before a step that may carry criminal liability."
@@ -52,7 +63,9 @@
     "offer": [
       "A consultation to assess your position and explain the procedures to expect.",
       "Attending investigations with you before the Public Prosecution.",
-      "Defense before the criminal courts at their different levels.",
+      "Defense in misdemeanor cases before the misdemeanor courts at their different levels.",
+      "Defense in felony cases before the criminal (felony) courts.",
+      "Representing victims and claiming their civil rights before the criminal court.",
       "Preparing defense memoranda and appeals against judgments, and following them up."
     ],
     "steps": [
@@ -68,6 +81,7 @@
     ],
     "faq": [
       { "q": "I have been summoned for questioning. What should I do?", "a": "Contact us before the appointment if you can. We explain the procedure and your rights, and attend the questioning with you." },
+      { "q": "What is the difference between a misdemeanor and a felony?", "a": "The law distinguishes between them by the gravity of the offence and the penalty it carries, and the competent court and the procedures differ accordingly. In the consultation we explain how the facts are classified and what follows from that." },
       { "q": "Are the details of my case confidential?", "a": "Yes. Everything you share is handled in full confidence and seen only by the team on your case." },
       { "q": "Can the judgment be appealed?", "a": "That depends on the type of judgment and the appeal deadlines set by law. We review the judgment and explain the options open to you." }
     ],

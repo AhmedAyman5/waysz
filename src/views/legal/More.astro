@@ -1,0 +1,62 @@
+---
+/**
+ * Legal page — «المزيد من مؤسسة المحاماة»: the four departments of the law firm beside the six services
+ * (administrative law, cybercrime, legal accounting & tax, military law), read from their service files.
+ * Calm section (team decision): no data-shot, so the stage act and the legal-thread camera ignore it — the camera
+ * holds the end of the weights shot while it scrolls, then cuts into the colonnade as before. It scrolls over the
+ * sticky 3D scales, so it has its own solid background: the text never sits on the bare canvas.
+ */
+import { getCollection } from 'astro:content';
+import { LEGAL_ICONS, MORE_DEPARTMENTS } from '../legal-service/icons';
+import { localizePath, useTranslations, type Lang } from '../../i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const files = new Map((await getCollection('services', (e) => e.data.area === 'legal')).map((e) => [e.id, e.data[lang]]));
+const items = MORE_DEPARTMENTS.filter((slug) => files.has(slug)).map((slug) => ({ slug, ...files.get(slug)! }));
+---
+<section class="lmore theme-dark" data-waypoint aria-labelledby="lmore-title">
+  <div class="container">
+    <h2 class="lmore__title" id="lmore-title" data-split="words">{t.legalService.more}</h2>
+    <p class="lmore__lead">{t.legalService.moreLead}</p>
+    <ul class="lmore__grid" role="list" data-reveal="up">
+      {items.map((d) => (
+        <li class="lmore__card">
+          <svg viewBox="0 0 48 48" width="48" height="48" aria-hidden="true"><path d={LEGAL_ICONS[d.slug]} /></svg>
+          <h3 class="lmore__name">{d.name}</h3>
+          <p class="lmore__text">{d.summary}</p>
+          <a class="lmore__link link-arrow" href={localizePath(`/services/${d.slug}/`, lang)} aria-label={`${t.legalService.moreLink}: ${d.name}`}>
+            {t.legalService.moreLink}
+            <svg class="icon-dir" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .lmore {
+    position: relative; padding-block: var(--section-y);
+    background: var(--color-bg);
+    border-block-start: 1px solid color-mix(in srgb, var(--color-area-legal) 30%, transparent);
+  }
+  .lmore__title { font-size: clamp(2.2rem, 1.4rem + 3.6vw, 4.6rem); line-height: 1.18; }
+  :global([dir='rtl']) .lmore__title { line-height: 1.36; }
+  .lmore__lead { margin-block-start: var(--space-5); max-width: 56ch; font-size: var(--text-lg); line-height: 1.8; color: color-mix(in srgb, var(--color-ink) 86%, transparent); }
+  .lmore__grid { display: grid; gap: var(--space-5); margin-block-start: var(--space-8); grid-template-columns: 1fr; }
+  @media (min-width: 640px) { .lmore__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .lmore__grid { grid-template-columns: repeat(4, 1fr); } }
+  .lmore__card {
+    display: flex; flex-direction: column; gap: var(--space-4); padding: var(--space-6);
+    border-radius: var(--radius-md); background: var(--color-bg-alt); border: 1px solid var(--color-border);
+    transition: border-color var(--dur-fast) var(--ease-out);
+  }
+  .lmore__card:hover, .lmore__card:focus-within { border-color: var(--color-area-legal); }
+  .lmore__card > svg { overflow: visible; fill: none; stroke: var(--color-area-legal); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .lmore__name { font-size: var(--text-xl); font-weight: var(--weight-bold); line-height: 1.35; }
+  .lmore__text { line-height: 1.8; color: color-mix(in srgb, var(--color-ink) 82%, transparent); }
+  .lmore__link { margin-block-start: auto; align-self: start; padding-block: var(--space-2); color: var(--color-ink); border-block-end: 1.5px solid var(--color-area-legal); }
+  .lmore__link:hover { color: var(--color-link); }
+</style>

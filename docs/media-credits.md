@@ -39,6 +39,16 @@ requests) — open the link once and replace the note with the contributor's nam
 | public/media/img/sky-scatter.webp · sky-scatter-m.webp       | our own render of the night sky with the scattered stars (the WebGL act `sky`, `scripts/render-sky-still.mjs`, `?sky=scatter`) | WaysZ | — | 2026-11-19 | first paint, css tier (no WebGL) and no JS of the Services page hero — the canvas starts from exactly this sky: 1600×1000 (15 KB), 780×1688 on portrait screens (8 KB) |
 | public/media/img/sky-all.webp · sky-all-m.webp               | our own render of the four constellations drawn (act `sky`, `?sky=all`)             | WaysZ | — | 2026-11-19 | behind the hero (after the title settles) and the finale on the css tier: 1600×1000 (24 KB), 780×1688 (15 KB) |
 | public/media/img/sky-legal · sky-travel · sky-events · sky-software (.webp) | our own render of one constellation (act `sky`, `?sky=<area>`), on transparent | WaysZ | — | 2026-11-19 | each area's window (`.area__sky`) on the css tier and without JS — black turned into alpha; 720×720, 6–7 KB each, loaded lazily |
+| src/assets/media/legal-criminal-law.jpg                            | https://unsplash.com/photos/T69Smz0SJ6w | Sasun Bughdaryan | Unsplash License | 2026-11-19 | Legal detail page header (criminal-law): 2400×1600, slight grade (navy shadows, warm highlights). Downloaded from the Unsplash image CDN at 2400px |
+| src/assets/media/legal-civil-law.jpg                               | https://unsplash.com/photos/rgJ1J8SDEAY | Tierra Mallorca | Unsplash License | 2026-11-19 | Legal detail page header (civil-law): 2400×1802, darkened and graded toward navy, vignette. Downloaded from the Unsplash image CDN at 2400px |
+| src/assets/media/legal-family-law.jpg                              | https://unsplash.com/photos/YLJF3YLHt6s | Joshua Tsu | Unsplash License | 2026-11-19 | Legal detail page header (family-law): 2400×1600, slight grade; silhouettes only, no faces. Downloaded from the Unsplash image CDN at 2400px |
+| src/assets/media/legal-administrative-law.jpg                      | https://unsplash.com/photos/9zQjFO_7z3s | Alan | Unsplash License | 2026-11-19 | Legal detail page header (administrative-law): **cropped to the right 62% (a national flag on the roof removed)**, 2400×1500, slight grade; no readable signs. Downloaded from the Unsplash image CDN at 2400px |
+| src/assets/media/legal-corporate-law.jpg                           | https://unsplash.com/photos/zRmCWjppTV0 | K. K. Yam Amot | Unsplash License | 2026-11-19 | Legal detail page header (corporate-law): 2400×1350, slight grade; no logos on the tower. Downloaded from the Unsplash image CDN at 2400px |
+| src/assets/media/legal-dispute-resolution-arbitration.jpg          | https://unsplash.com/photos/8yCw47vChI0 | Fatih Beki | Unsplash License | 2026-11-19 | Legal detail page header (dispute-resolution-arbitration): 2400×1600, darkened, warm grade, vignette; book spines not readable. Downloaded from the Unsplash image CDN at 2400px |
+| src/assets/media/legal-cybercrime-digital-evidence.jpg             | https://unsplash.com/photos/eqd0f78u9nI | Tyler | Unsplash License | 2026-11-19 | Legal detail page header (cybercrime-digital-evidence): 2400×1351, green light shifted to cool blue (hue +55°), slight grade; no brand labels readable. Downloaded from the Unsplash image CDN at 2400px |
+| src/assets/media/legal-legal-accounting-tax.jpg                    | https://unsplash.com/photos/8wLZi9OhsWU | Jakub Żerdzicki | Unsplash License | 2026-11-19 | Legal detail page header (legal-accounting-tax): 2400×1601, darkened and graded toward navy, vignette; laptop has no visible logo. Downloaded from the Unsplash image CDN at 2400px |
+| src/assets/media/legal-military-law.jpg                            | https://unsplash.com/photos/CvdtapWw0TU | Mario La Pergola | Unsplash License | 2026-11-19 | Legal detail page header (military-law): 2400×1600, slight grade; a medieval fortress (architecture, no uniforms, flags or insignia). Downloaded from the Unsplash image CDN at 2400px |
+| src/assets/media/legal-immigration-nationality-law.jpg             | https://unsplash.com/photos/vpsPRd_rz-A | Jakob Braun | Unsplash License | 2026-11-19 | Legal detail page header (immigration-nationality-law): 2400×1600, darkened, vignette; an old map, no country names in focus. Downloaded from the Unsplash image CDN at 2400px |
 
 Astro generates the responsive WebP files of `src/assets/media/*` at build time (`dist/_astro/`).
 
@@ -72,6 +82,11 @@ Software page hero — Mixkit clips vetted (360p previews) and not used: 42342, 
 building signs that could be read at full size), 40654 (skyscrapers at night, blue/cold, lit signs). All four are Free License.
 The process section reuses `src/assets/media/software-code.jpg` (already credited above). Everything else on the page — the
 flying code, the six editor windows and their results, the service icons — is our own DOM / SVG / WebGL: no file shipped.
+
+Legal detail pages (2026-11-19): candidates vetted from Unsplash searches (court columns, gavel, keys, family
+silhouettes, government buildings, office towers, boardrooms, server rooms, accounting desks, fortresses, stairs, maps).
+Rejected on sight: portraits / identifiable faces, US tax forms with readable text, buildings flying national flags, a
+castle with a flag on its tower. Raw files: `media-inbox/17-legal-detail/` (`SOURCES.txt`).
 
 Candidates downloaded for the take-off and rejected: Pexels 5008861 (true sunset, but 720p handheld),
 855130 (airline livery), 854550 (registration on the wing), 2297218 (no take-off), 4686173 / 856486 / 4512518

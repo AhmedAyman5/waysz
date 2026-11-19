@@ -138,5 +138,14 @@
     },
     "help": "How can we help you?",
     "types": "The kinds of events we organize"
+  },
+  "legalService": {
+    "scope": "What this department handles",
+    "departments": "Our law firm's departments",
+    "departmentsLead": "A full-service law firm with specialized departments: each one handles the matters within its remit, and they work together when your case needs more than one specialty.",
+    "current": "Current department",
+    "more": "More from our law firm",
+    "moreLead": "Beside the six services, our law firm has further specialized departments, each with its own remit.",
+    "moreLink": "About this department"
   }
 }

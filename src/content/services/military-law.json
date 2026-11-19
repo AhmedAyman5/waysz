@@ -1,0 +1,98 @@
+{
+  "area": "legal",
+  "order": 10,
+  "ar": {
+    "name": "القضايا العسكرية",
+    "summary": "قسم فني مستقل للجنايات والجنح العسكرية، كالغياب والتهرب من التجنيد ومخالفة الأوامر العسكرية، وجرائم العسكريين.",
+    "scope": [
+      "الجنايات العسكرية",
+      "الجنح العسكرية",
+      "الغياب",
+      "التهرب من التجنيد",
+      "مخالفة الأوامر العسكرية",
+      "جرائم العسكريين"
+    ],
+    "description": "قسم فني دقيق مستقل بذاته، يختص بالجنايات والجنح العسكرية، كالغياب والتهرب من التجنيد ومخالفة الأوامر العسكرية، وبجرائم العسكريين. ترتبط هذه القضايا بقانون القضاء العسكري وقانون الخدمة العسكرية والوطنية، ولها جهات تحقيق ومحاكم وإجراءات خاصة؛ لذلك نشرح لك موقفك بوضوح، ونرافقك في كل خطوة، مع التزام كامل بالسرية.",
+    "audience": [
+      "العسكريون المتهمون في جناية أو جنحة عسكرية.",
+      "من يواجه اتهامًا بالتهرب من التجنيد أو التخلف عن أداء الخدمة.",
+      "أسر المتهمين الراغبة في فهم الموقف والإجراءات.",
+      "من يريد معرفة موقفه القانوني من الخدمة العسكرية قبل أي إجراء."
+    ],
+    "offer": [
+      "استشارة لتقييم الموقف وشرح الإجراءات أمام القضاء العسكري.",
+      "الحضور مع المتهم في التحقيقات أمام النيابة العسكرية.",
+      "الدفاع في الجنايات والجنح العسكرية أمام المحاكم العسكرية.",
+      "قضايا الغياب والتهرب من التجنيد ومخالفة الأوامر العسكرية.",
+      "إعداد المذكرات والطعون على الأحكام العسكرية ومتابعتها."
+    ],
+    "steps": [
+      { "title": "جلسة استشارة", "text": "نستمع إليك ونفهم الوقائع بسرية تامة." },
+      { "title": "دراسة الأوراق", "text": "نراجع أوراق القضية ونحدد موقفك القانوني." },
+      { "title": "خطة الدفاع", "text": "نتفق على خطة الدفاع والأتعاب قبل البدء." },
+      { "title": "التمثيل والمتابعة", "text": "نحضر التحقيقات والجلسات ونطلعك على كل مستجد." }
+    ],
+    "excludes": [
+      "ضمان حكم بنتيجة معينة؛ فالحكم للمحكمة وحدها.",
+      "الرسوم والغرامات، ما لم يُتفق على غير ذلك.",
+      "أي إجراء يخالف القانون أو يهدف إلى التهرب من الخدمة العسكرية."
+    ],
+    "faq": [
+      { "q": "ما الذي يميز القضايا العسكرية عن القضايا الجنائية العادية؟", "a": "تخضع لقانون القضاء العسكري وقانون الخدمة العسكرية والوطنية، وتنظرها جهات تحقيق ومحاكم عسكرية لها إجراءاتها الخاصة؛ لذلك يتولاها قسم مستقل بذاته." },
+      { "q": "هل تفاصيل قضيتي سرية؟", "a": "نعم، كل ما تشاركه يُعامل بسرية تامة ولا يطلع عليه إلا الفريق المختص." },
+      { "q": "هل يمكن الطعن على الحكم العسكري؟", "a": "يتوقف ذلك على نوع الحكم والمواعيد التي يحددها القانون؛ نراجع الحكم ونوضح لك الخيارات المتاحة." }
+    ],
+    "cta": {
+      "title": "تواجه قضية عسكرية؟",
+      "text": "احجز استشارتك وتحدث مع الفريق المختص بسرية تامة.",
+      "button": "اطلب استشارة قانونية"
+    }
+  },
+  "en": {
+    "name": "Military Law",
+    "summary": "An independent specialist department for military felonies and misdemeanors, such as absence, draft evasion and disobeying military orders, and offences by military personnel.",
+    "scope": [
+      "Military felonies",
+      "Military misdemeanors",
+      "Absence without leave",
+      "Draft evasion",
+      "Disobeying military orders",
+      "Offences by military personnel"
+    ],
+    "description": "A precise, independent specialist department that handles military felonies and misdemeanors, such as absence, draft evasion and disobeying military orders, and offences by military personnel. These cases are governed by the Military Judiciary Law and the Military and National Service Law, and have their own investigating bodies, courts and procedures. That is why we explain your position clearly and stay with you at every step, in full confidence.",
+    "audience": [
+      "Military personnel accused of a military felony or misdemeanor.",
+      "Anyone accused of draft evasion or of failing to report for service.",
+      "Families of the accused who want to understand the situation and the procedures.",
+      "Anyone who wants to know their legal position regarding military service before taking any step."
+    ],
+    "offer": [
+      "A consultation to assess your position and explain the procedures before the military judiciary.",
+      "Attending investigations with the accused before the Military Prosecution.",
+      "Defense in military felonies and misdemeanors before the military courts.",
+      "Cases of absence, draft evasion and disobeying military orders.",
+      "Preparing defense memoranda and appeals against military judgments, and following them up."
+    ],
+    "steps": [
+      { "title": "Consultation", "text": "We listen and understand the facts in full confidence." },
+      { "title": "Case file review", "text": "We review the case papers and define your legal position." },
+      { "title": "Defense plan", "text": "We agree on the defense plan and the fees before we start." },
+      { "title": "Representation", "text": "We attend the investigations and hearings and keep you updated on every development." }
+    ],
+    "excludes": [
+      "A guaranteed outcome — the judgment belongs to the court alone.",
+      "Fees and fines, unless agreed otherwise.",
+      "Any step that breaks the law or aims to evade military service."
+    ],
+    "faq": [
+      { "q": "What makes military cases different from ordinary criminal cases?", "a": "They are governed by the Military Judiciary Law and the Military and National Service Law, and are heard by military investigating bodies and courts with their own procedures. That is why an independent department handles them." },
+      { "q": "Are the details of my case confidential?", "a": "Yes. Everything you share is handled in full confidence and seen only by the team on your case." },
+      { "q": "Can a military judgment be appealed?", "a": "That depends on the type of judgment and the deadlines set by law. We review the judgment and explain the options open to you." }
+    ],
+    "cta": {
+      "title": "Facing a military case?",
+      "text": "Book a consultation and talk to the right team in full confidence.",
+      "button": "Request a legal consultation"
+    }
+  }
+}

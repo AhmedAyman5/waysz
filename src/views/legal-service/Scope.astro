@@ -1,0 +1,30 @@
+---
+/**
+ * Legal detail page — «اختصاص القسم»: the department's own list (the client's words), as tags with a bronze mark.
+ */
+import Bidi from './Bidi.astro';
+import { useTranslations, type Lang } from '../../i18n';
+
+interface Props { lang: Lang; items: string[] }
+const { lang, items } = Astro.props;
+const t = useTranslations(lang);
+---
+<section class="lss lsp-sec" aria-labelledby="lss-title">
+  <h2 class="lsp-h2" id="lss-title" data-split="words">{t.legalService.scope}</h2>
+  <ul class="lss__tags" role="list" data-reveal="up">
+    {items.map((x) => <li><span class="lss__mark" aria-hidden="true"></span><Bidi text={x} lang={lang} /></li>)}
+  </ul>
+</section>
+
+<style is:inline>
+  .lss__tags { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-block-start: var(--space-6); }
+  .lss__tags li {
+    display: inline-flex; align-items: center; gap: var(--space-3);
+    padding: var(--space-3) var(--space-5); border-radius: var(--radius-pill);
+    background: var(--color-surface); border: 1px solid var(--color-border);
+    font-weight: var(--weight-semibold); line-height: 1.5;
+    transition: border-color var(--dur-fast) var(--ease-out);
+  }
+  .lss__tags li:hover { border-color: var(--color-area-legal); }
+  .lss__mark { flex: none; width: 8px; height: 8px; rotate: 45deg; background: var(--color-area-legal); }
+</style>
