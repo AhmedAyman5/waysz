@@ -16,7 +16,10 @@
       "ترشيح جامعات وبرامج وفق مؤهلاتك وميزانيتك.",
       "الإرشاد في ملف القبول وخطاب الغرض من الدراسة.",
       "الترجمة المعتمدة للشهادات وكشوف الدرجات.",
-      "التجهيز لتأشيرة الدراسة ومقابلتها."
+      "التجهيز لتأشيرة الدراسة ومقابلتها.",
+      "جدول زمني واضح بمواعيد التقديم والمستندات التي تطلبها كل جامعة.",
+      "الإرشاد في البحث عن المنح الدراسية المتاحة وشروط التقديم لها.",
+      "المساعدة في حجز تذكرة الطيران بعد صدور التأشيرة."
     ],
     "steps": [
       { "title": "جلسة تعريفية", "text": "نتعرف على مؤهلاتك وأهدافك وميزانيتك." },
@@ -27,11 +30,18 @@
     "excludes": [
       "ضمان القبول الجامعي أو المنح؛ فالقرار للجامعة.",
       "ضمان الموافقة على التأشيرة؛ فالقرار للسفارة.",
-      "الرسوم الدراسية ورسوم التقديم والسفارات."
+      "الرسوم الدراسية ورسوم التقديم والسفارات.",
+      "الالتزام بمدة محددة لصدور القبول أو التأشيرة؛ فالمواعيد تحددها الجامعات والسفارات.",
+      "كتابة خطاب الغرض من الدراسة نيابةً عنك؛ نرشدك ونراجعه معك، ويبقى الخطاب بقلمك."
     ],
     "faq": [
       { "q": "متى أبدأ التحضير للدراسة بالخارج؟", "a": "يُفضَّل قبل موعد الدراسة بوقتٍ كافٍ، لأن مواعيد التقديم تختلف من جامعة ودولة لأخرى." },
-      { "q": "هل تساعدونني في اختيار التخصص؟", "a": "نعم، نناقش معك اهتماماتك وفرص العمل المرتبطة بكل تخصص قبل الاختيار." }
+      { "q": "هل تساعدونني في اختيار التخصص؟", "a": "نعم، نناقش معك اهتماماتك وفرص العمل المرتبطة بكل تخصص قبل الاختيار." },
+      { "q": "هل تضمنون القبول الجامعي أو التأشيرة؟", "a": "لا؛ فقرار القبول للجامعة، وقرار التأشيرة للسفارة. دورنا أن نساعدك على اختيار مناسب لمؤهلاتك، وملف مكتمل ومنظم يعرضها بوضوح." },
+      { "q": "ما المستندات التي أحتاجها؟", "a": "تختلف حسب الدولة والجامعة والبرنامج. بعد الاختيار نعطيك قائمة واضحة بما تطلبه كل جامعة، ونترجم ترجمة معتمدة ما يحتاج منها إلى ترجمة." },
+      { "q": "هل تساعدونني في الحصول على منحة دراسية؟", "a": "نرشدك إلى المنح المتاحة لمستواك وتخصصك ونساعدك في تجهيز طلبها، ويبقى قرار المنحة للجهة التي تقدمها." },
+      { "q": "هل يمكن لولي الأمر حضور الجلسات؟", "a": "بالتأكيد، ونرحب بمشاركة ولي الأمر في الجلسة التعريفية وفي القرارات الأساسية." },
+      { "q": "كيف تتم خطوة التأشيرة؟", "a": "بعد صدور القبول ننتقل إلى تأشيرة الدراسة: نرشدك في مستنداتها ونجهزك لمقابلتها عبر WaysZ Visa، ويبقى قرار التأشيرة للسفارة." }
     ],
     "cta": {
       "title": "جامعتك القادمة بالخارج تبدأ من هنا",
@@ -54,7 +64,10 @@
       "Suggested universities and programs based on your qualifications and budget.",
       "Guidance on the admission file and the statement of purpose.",
       "Certified translation of certificates and transcripts.",
-      "Preparation for the student visa and its interview."
+      "Preparation for the student visa and its interview.",
+      "A clear timeline of application deadlines and the documents each university asks for.",
+      "Guidance in finding available scholarships and their application conditions.",
+      "Help booking your flight once the visa is issued."
     ],
     "steps": [
       { "title": "Introductory session", "text": "We get to know your qualifications, goals and budget." },
@@ -65,11 +78,18 @@
     "excludes": [
       "A guarantee of university admission or scholarships — the decision belongs to the university.",
       "A guarantee of visa approval — the decision belongs to the embassy.",
-      "Tuition fees, application fees and embassy fees."
+      "Tuition fees, application fees and embassy fees.",
+      "Committing to a set time for the admission or visa decision — the timing is set by universities and embassies.",
+      "Writing your statement of purpose for you — we guide you and review it with you, but the statement stays in your own words."
     ],
     "faq": [
       { "q": "When should I start preparing to study abroad?", "a": "Preferably well ahead of the start of your studies, because application deadlines differ from one university and country to another." },
-      { "q": "Do you help me choose a major?", "a": "Yes. We discuss your interests and the career opportunities linked to each major before you choose." }
+      { "q": "Do you help me choose a major?", "a": "Yes. We discuss your interests and the career opportunities linked to each major before you choose." },
+      { "q": "Do you guarantee university admission or the visa?", "a": "No. The admission decision belongs to the university and the visa decision to the embassy. Our role is to help you make a choice that fits your qualifications and build a complete, well-organized file that presents them clearly." },
+      { "q": "What documents will I need?", "a": "It depends on the country, the university and the program. Once you have chosen, we give you a clear list of what each university asks for, and we provide certified translations of the documents that need one." },
+      { "q": "Do you help me get a scholarship?", "a": "We point you to the scholarships open to your level and field and help you prepare the application; the decision stays with the body that offers the scholarship." },
+      { "q": "Can a parent attend the sessions?", "a": "Of course. Parents are welcome in the introductory session and in the key decisions." },
+      { "q": "How does the visa step work?", "a": "Once the admission is issued we move on to the student visa: we guide you through its documents and prepare you for its interview via WaysZ Visa; the visa decision stays with the embassy." }
     ],
     "cta": {
       "title": "Your next university abroad starts here",

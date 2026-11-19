@@ -1,0 +1,41 @@
+---
+/**
+ * Travel detail page — the final call band: the service's own cta (title, text, button), under a warm horizon glow.
+ * WhatsApp only when the number exists in src/lib/site.ts.
+ */
+import Bidi from './Bidi.astro';
+import { site, waHref } from '../../lib/site';
+import { localizePath, useTranslations, type Lang } from '../../i18n';
+
+interface Props { lang: Lang; name: string; cta: { title: string; text: string; button: string } }
+const { lang, name, cta } = Astro.props;
+const t = useTranslations(lang);
+---
+<section class="tsc" id="consult" aria-labelledby="tsc-title">
+  <div class="tsc__in container">
+    <h2 class="tsc__title" id="tsc-title" data-split="words">{cta.title}</h2>
+    <p class="tsc__text"><Bidi text={cta.text} lang={lang} /></p>
+    <div class="tsc__actions">
+      <a class="btn btn--accent" href={localizePath('/contact/', lang)}>{cta.button}</a>
+      {site.whatsapp && (
+        <a class="btn btn--ghost" href={waHref(site.whatsapp, `${t.whatsapp.message}${name}`)} target="_blank" rel="noopener">{t.cta.whatsapp}</a>
+      )}
+    </div>
+  </div>
+</section>
+
+<style is:inline>
+  .tsc {
+    position: relative; overflow: clip; padding-block: calc(var(--section-y) * 1.2); text-align: center;
+    background:
+      radial-gradient(ellipse 70% 70% at 50% 120%, color-mix(in srgb, var(--color-area-travel) 26%, transparent), transparent 70%),
+      var(--color-bg);
+  }
+  .tsc::before { content: ''; position: absolute; inset-block-start: 0; inset-inline: 0; height: 1px; background: linear-gradient(to right, transparent, var(--color-area-travel), transparent); }
+  .tsc__title { margin-inline: auto; max-width: 20ch; font-size: clamp(2rem, 1.2rem + 3.6vw, 4.4rem); line-height: 1.2; }
+  [dir='rtl'] .tsc__title { line-height: 1.38; }
+  .tsc__text { margin: var(--space-5) auto 0; max-width: 46ch; font-size: var(--text-lg); line-height: 1.8; color: color-mix(in srgb, var(--color-ink) 88%, transparent); }
+  .tsc__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-4); margin-block-start: var(--space-7); }
+  .tsc__actions .btn { min-height: 56px; padding-inline: var(--space-8); font-size: var(--text-base); white-space: normal; }
+  @media (max-width: 639px) { .tsc__text { font-size: var(--text-base); } .tsc__actions .btn { flex: 1 1 100%; } }
+</style>

@@ -1,0 +1,110 @@
+---
+/**
+ * Travel detail page — Service Details Template (brief §3) for the services whose `area` is "travel" (today:
+ * study-abroad, template sample ب). Legal keeps LegalServicePage, the other areas keep ServiceDetailPage.
+ * The Immigration page's visual language, calm (team decision): dusk, deep navy, amber light; no WebGL, no pins,
+ * no scrubbed scenes — only data-split headings, one data-reveal per section, the shared accordion for the FAQ
+ * and CSS hover / focus transitions.
+ *   hero (dusk photo) → who it's for + how we help → how we work (the route) → what we don't guarantee
+ *   → FAQ → the area's eight services → the call
+ * Wide screens: a sticky side card with the call beside sections 2–5 (plain CSS).
+ * Styles are `is:inline` (class-prefixed: tsp · tsh · tsl · tst · tsx · tsf · tsa · tsc): services/[slug].astro
+ * imports this view for every service, and a bundled stylesheet would be linked from the other areas' pages too.
+ * Copy: src/content/services/<slug>.json (Arabic first). Nothing is promised: visa and admission decisions
+ * belong to embassies and universities. One file per section in views/travel-service/.
+ */
+import type { CollectionEntry } from 'astro:content';
+import type { ImageMetadata } from 'astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from './travel-service/Hero.astro';
+import Lists from './travel-service/Lists.astro';
+import Steps from './travel-service/Steps.astro';
+import Excludes from './travel-service/Excludes.astro';
+import Faq from './travel-service/Faq.astro';
+import Services from './travel-service/Services.astro';
+import Cta from './travel-service/Cta.astro';
+import { TRAVEL_ICONS, TRAVEL_ICON_OF } from './travel-service/icons';
+import { site, waHref } from '../lib/site';
+import { localizePath, useTranslations, type Lang } from '../i18n';
+
+interface Props { lang: Lang; entry: CollectionEntry<'services'> }
+const { lang, entry } = Astro.props;
+const t = useTranslations(lang);
+const s = entry.data[lang];
+const slug = entry.id;
+
+// one header photo per service (src/assets/media/travel-<slug>.jpg — sources in docs/media-credits.md);
+// a future travel service without its own photo falls back to the terminal at dusk
+const photos = import.meta.glob<{ default: ImageMetadata }>('../assets/media/travel-*.jpg', { eager: true });
+const photo = photos[`../assets/media/travel-${slug}.jpg`]?.default ?? photos['../assets/media/travel-terminal.jpg'].default;
+const alts: Record<string, { ar: string; en: string; focus?: string }> = {
+  'study-abroad': { ar: 'مبنى جامعي حجري بنوافذ مضاءة عند الغسق', en: 'A stone university building with lit windows at dusk', focus: '58% 55%' },
+};
+const alt = alts[slug] ?? { ar: '', en: '' };
+const icon = TRAVEL_ICONS[TRAVEL_ICON_OF[slug] ?? 'immigration'];
+---
+<BaseLayout lang={lang} title={`${s.name} | WaysZ`} description={s.description} headerOverlay>
+  <div class="tsp theme-dark">
+    <Hero lang={lang} name={s.name} description={s.description} photo={photo} alt={alt[lang]} focus={alt.focus} />
+
+    <div class="tsp__body container">
+      <div class="tsp__main">
+        <Lists lang={lang} audience={s.audience} offer={s.offer} />
+        <Steps lang={lang} steps={s.steps} />
+        <Excludes lang={lang} items={s.excludes} />
+        <Faq lang={lang} items={s.faq} />
+      </div>
+
+      <aside class="tsp__aside" aria-label={s.cta.title}>
+        <div class="tsp__card theme-light">
+          <svg viewBox="0 0 48 48" width="48" height="48" aria-hidden="true" set:html={icon} />
+          <p class="tsp__card-name">{s.name}</p>
+          <p class="tsp__card-title">{s.cta.title}</p>
+          <a class="btn btn--accent" href={localizePath('/contact/', lang)}>{s.cta.button}</a>
+          {site.whatsapp && (
+            <a class="btn btn--ghost" href={waHref(site.whatsapp, `${t.whatsapp.message}${s.name}`)} target="_blank" rel="noopener">{t.cta.whatsapp}</a>
+          )}
+        </div>
+      </aside>
+    </div>
+
+    <Services lang={lang} current={slug} />
+    <Cta lang={lang} name={s.name} cta={s.cta} />
+  </div>
+</BaseLayout>
+
+<style is:inline>
+  /* shared by the sections in views/travel-service/ */
+  .tsp { background: var(--color-bg); }
+  .tsp-sec { padding-block: clamp(3rem, 2rem + 4vw, 5.5rem); }
+  .tsp-sec + .tsp-sec { border-block-start: 1px solid var(--color-border); }
+  .tsp-h2 { font-size: clamp(1.8rem, 1.3rem + 2vw, 3rem); line-height: 1.25; }
+  [dir='rtl'] .tsp-h2 { line-height: 1.45; }
+
+  .tsp__body { display: grid; gap: 0 var(--space-8); }
+  .tsp__main { min-width: 0; }
+  .tsp__aside { display: none; }
+  @media (min-width: 1024px) {
+    .tsp__body { grid-template-columns: minmax(0, 1fr) 19rem; }
+    .tsp__aside { display: block; padding-block: clamp(3rem, 2rem + 4vw, 5.5rem); }
+    /* a sheet of the visitor's file, like the Immigration page: paper with a folded corner */
+    .tsp__card {
+      position: sticky; top: calc(76px + var(--space-5));
+      display: grid; gap: var(--space-4); padding: var(--space-6); border-radius: var(--radius-md);
+      background: var(--color-surface);
+      --fold: 28px;
+      clip-path: polygon(0 0, calc(100% - var(--fold)) 0, 100% var(--fold), 100% 100%, 0 100%);
+    }
+    [dir='rtl'] .tsp__card { clip-path: polygon(var(--fold) 0, 100% 0, 100% 100%, 0 100%, 0 var(--fold)); }
+    .tsp__card::before {
+      content: ''; position: absolute; top: 0; inset-inline-end: 0; width: var(--fold); height: var(--fold);
+      background: linear-gradient(to bottom left, transparent 50%, var(--color-bg-alt) 50%);
+      border-end-start-radius: 6px;
+    }
+    [dir='rtl'] .tsp__card::before { background: linear-gradient(to bottom right, transparent 50%, var(--color-bg-alt) 50%); }
+    .tsp__card svg { fill: none; stroke: var(--color-accent-ink); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+    .tsp__card-name { font-size: var(--text-sm); color: var(--color-accent-ink); font-weight: var(--weight-bold); }
+    .tsp__card-title { font-family: var(--font-display); font-weight: var(--weight-bold); font-size: var(--text-xl); line-height: 1.4; }
+    .tsp__card .btn { white-space: normal; text-align: center; }
+  }
+</style>
