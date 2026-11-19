@@ -1,0 +1,59 @@
+---
+/**
+ * Events page — the call: «اطلب عرضًا لفعاليتك» (template sample (ج), read from the conference service file).
+ * Scene: motion/scenes/events-consult.ts. A sticky screen (no pin): the camera returns to the seats facing the
+ * stage, every spotlight of the stage act `gala` converges on the call and the curtain slowly closes again
+ * (bridge `gala.final`, scrubbed — scrolling back opens it). The text is never hidden: it stands in the light
+ * on the closing curtain, like the hero. WhatsApp only if the number exists in src/lib/site.ts.
+ * css tier (no WebGL) / no JS: the still of the closed curtain behind the same text.
+ */
+import { site, waHref } from '../../lib/site';
+import { localizePath, useTranslations, type Lang } from '../../i18n';
+
+interface Props { lang: Lang; cta: { title: string; text: string; button: string } }
+const { lang, cta } = Astro.props;
+const t = useTranslations(lang);
+---
+<section class="gcall" id="consult" data-scene="events-consult" data-shot data-waypoint aria-labelledby="gcall-title">
+  <div class="gcall__view">
+    <div class="gcall__pool g-scrim" aria-hidden="true"></div>
+    <div class="gcall__content container">
+      <h2 class="gcall__title" id="gcall-title">{cta.title}</h2>
+      <p class="gcall__text">{cta.text}</p>
+      <div class="gcall__actions">
+        <a class="btn btn--accent" href={localizePath('/contact/', lang)} data-magnetic data-consult>{cta.button}</a>
+        {site.whatsapp && (
+          <a class="btn btn--ghost" href={waHref(site.whatsapp, t.whatsapp.message)} target="_blank" rel="noopener" data-magnetic>{t.cta.whatsapp}</a>
+        )}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .gcall { position: relative; }
+  .gcall__view { position: relative; overflow: clip; min-height: 100vh; min-height: 100svh; display: grid; place-items: center; }
+  :global(.js) .gcall { height: 230vh; height: 230lvh; }
+  :global(.js) .gcall__view { position: sticky; top: 0; height: 100vh; height: 100lvh; }
+  .gcall__pool {
+    background:
+      radial-gradient(ellipse 48% 40% at 50% 52%, color-mix(in srgb, var(--color-velvet-deep) 55%, transparent) 0%, color-mix(in srgb, var(--color-velvet-deep) 20%, transparent) 64%, transparent 100%),
+      linear-gradient(to bottom, color-mix(in srgb, var(--color-bg) 60%, transparent), transparent 24%, transparent 76%, color-mix(in srgb, var(--color-bg) 80%, transparent));
+  }
+  @media (max-width: 1023px) {
+    .gcall__pool { background:
+      radial-gradient(ellipse 84% 44% at 50% 52%, color-mix(in srgb, var(--color-velvet-deep) 66%, transparent) 0%, color-mix(in srgb, var(--color-velvet-deep) 28%, transparent) 64%, transparent 100%),
+      linear-gradient(to bottom, color-mix(in srgb, var(--color-bg) 60%, transparent), transparent 24%, transparent 72%, color-mix(in srgb, var(--color-bg) 84%, transparent)); }
+  }
+  .gcall__content { position: relative; z-index: 1; text-align: center; display: grid; justify-items: center; padding-block: calc(76px + var(--space-6)) var(--space-8); }
+  .gcall__title { max-width: 16ch; font-size: clamp(2.5rem, 1.2rem + 5.4vw, 6.25rem); line-height: 1.12; letter-spacing: -0.01em; text-shadow: 0 2px 40px color-mix(in srgb, var(--color-velvet-deep) 80%, transparent); }
+  :global([dir='rtl']) .gcall__title { line-height: 1.3; letter-spacing: 0; }
+  .gcall__text { margin-block-start: var(--space-5); max-width: 44ch; font-size: var(--text-lg); color: color-mix(in srgb, var(--color-ink) 94%, transparent); text-shadow: 0 1px 16px var(--color-velvet-deep); }
+  .gcall__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-4); margin-block-start: var(--space-7); }
+  .gcall__actions .btn { min-height: 58px; padding-inline: var(--space-8); font-size: var(--text-base); }
+  @media (max-width: 639px) {
+    .gcall__text { font-size: var(--text-base); }
+    .gcall__actions { width: 100%; }
+    .gcall__actions .btn { flex: 1 1 100%; padding-inline: var(--space-6); }
+  }
+</style>

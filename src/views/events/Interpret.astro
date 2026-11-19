@@ -1,0 +1,106 @@
+---
+/**
+ * Events page — simultaneous interpretation and event technology. Scene: motion/scenes/events-interpret.ts.
+ * A sticky screen (no pin), two beats:
+ *   1 · from the stage we look back at the hall: glowing sound waves stream from the interpreter booths over the
+ *       seats (3D, stage act `gala`); beside the text an interpreter headset (our SVG) pulses with living waves and
+ *       one sentence turns between Arabic and English, word by word (Arabic never split into letters)
+ *   2 · the camera turns and sweeps past the giant LED wall and its light show: live streaming, hybrid events
+ * The headset, the waves and the turning sentence are decorative (aria-hidden); the text carries the content.
+ * No JS: both beats as plain text, the sentence in both languages.
+ */
+import { localizePath, useTranslations, type Lang } from '../../i18n';
+import type { ServiceItem } from './Services.astro';
+
+interface Props { lang: Lang; item: ServiceItem }
+const { lang, item } = Astro.props;
+const t = useTranslations(lang);
+const copy = {
+  ar: {
+    title: 'كل ضيف يسمع بلغته',
+    live: 'البث المباشر والمشاركة عن بُعد',
+    liveText: 'نجهز البث المباشر ومنصات المشاركة عن بُعد إلى جانب الحضور في القاعة، مع أنظمة الصوت والعرض والإضاءة.',
+  },
+  en: {
+    title: 'Every guest hears it in their own language',
+    live: 'Live streaming and remote participation',
+    liveText: 'We set up live streaming and remote-participation platforms alongside the in-hall audience, with the sound, projection and lighting systems.',
+  },
+}[lang];
+// the sentence that turns between the two languages (decorative): the same welcome in both
+const sentence = { ar: ['أهلًا', 'بكم', 'في', 'افتتاح', 'الفعالية'], en: ['Welcome', 'to', 'the', 'opening', 'session'] };
+---
+<section class="gint" id="interpretation" data-scene="events-interpret" data-shot data-waypoint aria-labelledby="gint-title">
+  <div class="gint__view">
+    <div class="gint__scrim g-scrim" aria-hidden="true"></div>
+    <div class="gint__in container">
+      <div class="gint__beat gint__beat--a">
+        <div class="gint__art" aria-hidden="true">
+          <svg class="gint__set" viewBox="0 0 200 160">
+            <path class="gint__band" d="M38 96V78a62 62 0 0 1 124 0v18" />
+            <rect class="gint__cup" x="24" y="88" width="30" height="50" rx="12" />
+            <rect class="gint__cup" x="146" y="88" width="30" height="50" rx="12" />
+            <path class="gint__mic" d="M54 126c10 18 34 22 52 20" />
+            <circle class="gint__tip" cx="108" cy="146" r="5" />
+            {[0, 1, 2].map((k) => <path class="gint__wave gint__wave--l" style={`--k:${k}`} d={`M${16 - k * 10} ${92 - k * 6}c-${8 + k * 5} 10-${8 + k * 5} 30 0 ${40 + k * 12}`} />)}
+            {[0, 1, 2].map((k) => <path class="gint__wave gint__wave--r" style={`--k:${k}`} d={`M${184 + k * 10} ${92 - k * 6}c${8 + k * 5} 10 ${8 + k * 5} 30 0 ${40 + k * 12}`} />)}
+          </svg>
+          <p class="gint__say">
+            <span class="gint__line gint__line--ar" lang="ar" dir="rtl">{sentence.ar.map((w) => <span class="gint__w">{w}</span>)}</span>
+            <span class="gint__line gint__line--en" lang="en" dir="ltr">{sentence.en.map((w) => <span class="gint__w">{w}</span>)}</span>
+          </p>
+        </div>
+        <h2 class="g-title gint__title" id="gint-title">{copy.title}</h2>
+        <h3 class="gint__name">{item.name}</h3>
+        <p class="g-lead">{item.text}</p>
+        <a class="link-arrow g-link gint__link" href={localizePath(`/services/${item.slug}/`, lang)}>
+          {t.cta.details}<span class="visually-hidden">: {item.name}</span>
+          <svg class="icon-dir" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+      <div class="gint__beat gint__beat--b">
+        <span class="gint__live" aria-hidden="true"><i></i><svg viewBox="0 0 48 24" width="40" height="20"><path d="M14 4a12 12 0 0 0 0 16M34 4a12 12 0 0 1 0 16M8 1a18 18 0 0 0 0 22M40 1a18 18 0 0 1 0 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="24" cy="12" r="4" fill="currentColor"/></svg></span>
+        <h3 class="g-title gint__title gint__title--b">{copy.live}</h3>
+        <p class="g-lead">{copy.liveText}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .gint { position: relative; }
+  .gint__view { position: relative; overflow: clip; }
+  :global(.js) .gint { height: 300vh; height: 300lvh; }
+  :global(.js) .gint__view { position: sticky; top: 0; height: 100vh; height: 100lvh; }
+  .gint__scrim { background: linear-gradient(to top, color-mix(in srgb, var(--color-bg) 94%, transparent) 0%, color-mix(in srgb, var(--color-bg) 66%, transparent) 42%, transparent 66%); }
+  @media (min-width: 1024px) {
+    .gint__scrim { background: linear-gradient(to right, color-mix(in srgb, var(--color-bg) 90%, transparent) 0%, color-mix(in srgb, var(--color-bg) 60%, transparent) 36%, transparent 58%); }
+    :global([dir='rtl']) .gint__scrim { background: linear-gradient(to left, color-mix(in srgb, var(--color-bg) 90%, transparent) 0%, color-mix(in srgb, var(--color-bg) 60%, transparent) 36%, transparent 58%); }
+  }
+  .gint__in { position: relative; display: grid; padding-block: calc(76px + var(--space-6)) var(--space-8); gap: var(--space-9); }
+  :global(.js) .gint__in { height: 100%; gap: 0; align-items: end; }
+  :global(.js) .gint__beat { grid-area: 1 / 1; }
+  @media (min-width: 1024px) { :global(.js) .gint__in { align-items: center; } .gint__beat { max-width: 34rem; } }
+  .gint__name { margin-block-start: var(--space-5); font-size: var(--text-xl); }
+  .gint__name + .g-lead { margin-block-start: var(--space-2); }
+  .gint__link { margin-block-start: var(--space-4); }
+
+  .gint__art { display: flex; align-items: center; gap: var(--space-5); margin-block-end: var(--space-6); }
+  .gint__set { width: clamp(110px, 9vw + 40px, 168px); flex: none; overflow: visible; fill: none; stroke: var(--color-accent); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+  .gint__cup { fill: color-mix(in srgb, var(--color-accent) 18%, transparent); }
+  .gint__tip { fill: var(--color-accent); stroke: none; }
+  .gint__wave { stroke-width: 3; opacity: 0; animation: gint-wave 1.8s var(--ease-out) infinite; animation-delay: calc(var(--k) * 0.22s); }
+  .gint__wave--r { animation-delay: calc(var(--k) * 0.22s + 0.9s); }
+  @keyframes gint-wave { 0% { opacity: 0; } 25% { opacity: 1; } 100% { opacity: 0; } }
+  .gint__say { display: grid; min-width: 0; font-family: var(--font-display); font-weight: var(--weight-bold); font-size: var(--text-lg); color: var(--color-ink); }
+  .gint__line { display: block; }
+  /* with JS both lines share one cell (the box is as wide as the longer one) and take turns */
+  :global(.js) .gint__say .gint__line { grid-area: 1 / 1; justify-self: start; }
+  .gint__w { display: inline-block; margin-inline-end: 0.3em; }
+  .gint__line--en { color: var(--color-link); }
+
+  .gint__live { display: inline-flex; align-items: center; gap: var(--space-3); padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid color-mix(in srgb, var(--color-velvet) 70%, var(--color-ink)); color: var(--color-ink-muted); margin-block-end: var(--space-4); }
+  .gint__live i { width: 8px; height: 8px; border-radius: 50%; background: var(--color-error); box-shadow: 0 0 10px var(--color-error); animation: gint-rec 1.2s steps(2) infinite; }
+  @keyframes gint-rec { 50% { opacity: 0.3; } }
+  @media (max-width: 639px) { .gint__art { gap: var(--space-4); } .gint__say { font-size: var(--text-base); } }
+</style>

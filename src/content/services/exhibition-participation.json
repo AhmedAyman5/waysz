@@ -1,0 +1,81 @@
+{
+  "area": "events",
+  "order": 3,
+  "proposed": false,
+  "ar": {
+    "name": "المشاركة في المعارض الدولية",
+    "summary": "تمثيل شركتك في المعارض بالخارج: حجز المساحة، وتجهيز الجناح، وترتيب سفر فريقك وتأشيراته.",
+    "description": "نمثل شركتك في المعارض الدولية بالخارج، من اختيار المعرض المناسب لقطاعك وحجز المساحة، إلى تجهيز الجناح وترتيب سفر فريقك وتأشيراته؛ لتصل إلى المعرض جاهزًا، وتركز على لقاء العملاء والشركاء.",
+    "audience": [
+      "الشركات الراغبة في الوصول إلى أسواق جديدة.",
+      "المصنّعون والمصدّرون الذين يعرضون منتجاتهم بالخارج.",
+      "الجهات التي تمثل قطاعًا أو مجموعة من الشركات.",
+      "الشركات التي تشارك في معرض دولي لأول مرة."
+    ],
+    "offer": [
+      "ترشيح المعارض المناسبة لقطاعك وأهدافك.",
+      "حجز المساحة وإنهاء إجراءات التسجيل مع إدارة المعرض.",
+      "تصميم الجناح وتجهيزه وتركيبه في موقع المعرض.",
+      "ترتيب سفر فريقك وإقامته، وإرشاده في التأشيرات عبر WaysZ Visa.",
+      "المتابعة معك طوال أيام المعرض."
+    ],
+    "steps": [
+      { "title": "اختيار المعرض", "text": "نحدد معك أهدافك ونرشح المعرض المناسب." },
+      { "title": "الحجز والتصميم", "text": "نحجز المساحة ونصمم الجناح ونقدم الميزانية." },
+      { "title": "التجهيز والسفر", "text": "نجهز الجناح ونرتب سفر فريقك وتأشيراته." },
+      { "title": "أيام المعرض", "text": "نتابع معك في الموقع حتى نهاية المعرض." }
+    ],
+    "excludes": [
+      "رسوم المساحة التي تفرضها إدارة المعرض، ما لم تُذكر في العرض.",
+      "ضمان صفقات أو عملاء من المشاركة.",
+      "قرارات منح تأشيرات فريقك؛ فهي للسفارات وحدها."
+    ],
+    "faq": [
+      { "q": "متى نبدأ الإعداد لمعرض بالخارج؟", "a": "كلما كان مبكرًا كان أفضل؛ فاختيار المساحة وتجهيز الجناح والتأشيرات تحتاج وقتًا." },
+      { "q": "هل تتولون تأشيرات فريق العمل؟", "a": "نرشد فريقك في تأشيرات الأعمال والمعارض عبر WaysZ Visa، ونجهز معه الملف خطوة بخطوة." }
+    ],
+    "cta": {
+      "title": "تفكر في المشاركة بمعرض دولي؟",
+      "text": "أخبرنا بقطاعك وأهدافك، وسنرشح لك المعرض المناسب ونرسل لك عرضًا.",
+      "button": "اطلب عرضًا لفعاليتك"
+    }
+  },
+  "en": {
+    "name": "International Exhibition Participation",
+    "summary": "Representing your company at exhibitions abroad: booking the space, building the stand, and arranging your team's travel and visas.",
+    "description": "We represent your company at international exhibitions abroad — from choosing the right exhibition for your sector and booking the space, to building the stand and arranging your team's travel and visas — so you arrive ready and can focus on meeting clients and partners.",
+    "audience": [
+      "Companies that want to reach new markets.",
+      "Manufacturers and exporters showing their products abroad.",
+      "Bodies representing a sector or a group of companies.",
+      "Companies taking part in an international exhibition for the first time."
+    ],
+    "offer": [
+      "Suggesting the exhibitions that suit your sector and goals.",
+      "Booking the space and completing registration with the organizers.",
+      "Designing, building and installing your stand at the venue.",
+      "Arranging your team's travel and accommodation, and guiding them on visas through WaysZ Visa.",
+      "Staying with you throughout the exhibition days."
+    ],
+    "steps": [
+      { "title": "Choosing the exhibition", "text": "Together we define your goals and pick the right exhibition." },
+      { "title": "Booking and design", "text": "We book the space, design the stand and present the budget." },
+      { "title": "Build and travel", "text": "We build the stand and arrange your team's travel and visas." },
+      { "title": "Exhibition days", "text": "We stay with you on site until the exhibition closes." }
+    ],
+    "excludes": [
+      "Space fees charged by the organizers, unless stated in the proposal.",
+      "Any guaranteed deals or clients from taking part.",
+      "Visa decisions for your team — these belong to the embassies alone."
+    ],
+    "faq": [
+      { "q": "When should we start preparing for an exhibition abroad?", "a": "The earlier the better: choosing the space, building the stand and the visas all take time." },
+      { "q": "Do you handle visas for our team?", "a": "We guide your team on business and exhibition visas through WaysZ Visa and prepare the file with them step by step." }
+    ],
+    "cta": {
+      "title": "Thinking of exhibiting abroad?",
+      "text": "Tell us your sector and goals, and we'll suggest the right exhibition and send you a proposal.",
+      "button": "Request a proposal for your event"
+    }
+  }
+}

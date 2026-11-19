@@ -92,3 +92,37 @@ export const justice = {
   icons: [] as string[],                     // one SVG path (48 × 48 box) per service: engraved on its weight
   impact: 0,                                 // counts the weights that have landed (the DOM may react)
 };
+
+/**
+ * Exhibitions & Conferences page — "The show is about to begin". Written by scenes/events-thread.ts (the page)
+ * and the section scenes; read by acts/gala.ts. ONE world: a theatre with its foyer, the red carpet from the street
+ * door to the stage. Sections, in page order: 0 hero · 1 services · 2 expo · 3 arrivals · 4 register ·
+ * 5 interpret · 6 types · 7 roof · 8 how · 9 faq · 10 consult.
+ */
+export const GALA_BOOTHS = 20;               // stands on the expo floor (acts/gala.ts builds them, scenes/events-expo.ts raises them)
+export const gala = {
+  shot: 0,                                   // section index + progress inside it (0…11): moves the camera
+  open: 0,                                   // 0 = curtain closed · 1 = drawn open (hero opens it, the consult closes it)
+  carpet: 0,                                 // 0…1: the red carpet unrolled from the street door to the stage
+  plan: 0,                                   // 0…1: floor-plan lines drawn on the foyer floor
+  booths: 0,                                 // 0…BOOTHS: how many stands have risen (fractions = rising)
+  booth: -1,                                 // stand lit by the DOM (hover / focus on its legend button), -1 = none
+  hover: -1,                                 // stand under the pointer, found by the act (the DOM shows its label)
+  onHover: null as ((i: number) => void) | null,   // act → scene: the stand under the pointer changed
+  badge: 0,                                  // 0…1: the badge on its lanyard drops into view
+  scan: 0,                                   // 0…1: the line of light across the QR code
+  seats: 0,                                  // 0…1: share of the hall's seats lit (attendees registered)
+  grab: { down: false, x: 0, y: 0 },         // pointer on the badge pad (host NDC, -1…1)
+  waves: 0,                                  // 0…1: the sound waves from the interpreter booths
+  led: 0,                                    // 0…1: the LED wall show (brightness)
+  turn: 0,                                   // 0…7: the turntable brings event type n to the front
+  beams: 0,                                  // 0…1: the four beams of "under one roof" converge
+  final: 0,                                  // 0…1: the finale — spotlights converge on the call
+  flashes: 0,                                // 0…1: press camera flashes
+  veil: 0,                                   // 0…1: dip into the dark at a camera cut
+  side: 1 as 1 | -1,                         // 1 = the text sits on the left (LTR) · -1 = on the right (RTL)
+  compact: false,                            // small / portrait screens
+  poster: '' as '' | 'curtain' | 'hall',     // dev only (?gala=curtain|hall): a still for the css tier
+  lang: 'ar' as 'ar' | 'en',                 // the word on the badge
+  icons: [] as string[],                     // one SVG path (48 × 48 box) per event type: engraved on its medallion
+};

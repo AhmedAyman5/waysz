@@ -1,0 +1,143 @@
+---
+/**
+ * Events page — welcoming the guests: a classic split-flap arrivals board. Scene: motion/scenes/events-arrivals.ts.
+ * A sticky screen (no pin): behind it the camera walks the red carpet through the foyer to the hall doors.
+ * The board announces who is arriving and where they go; as you scroll its status column flips through the
+ * stages of a welcome. Latin flips character by character; Arabic flips by WHOLE WORDS only (never split).
+ * No cities, countries, airlines or flight numbers: only «الوفود», «المتحدثون», «الضيوف», «العارضون».
+ * The board is decorative (aria-hidden): the two services beside it carry the content and the links.
+ * No JS: the board shows its final state.
+ */
+import { site } from '../../lib/site';
+import { localizePath, useTranslations, type Lang } from '../../i18n';
+import type { ServiceItem } from './Services.astro';
+
+interface Props { lang: Lang; items: ServiceItem[] }
+const { lang, items } = Astro.props;
+const t = useTranslations(lang);
+const copy = {
+  ar: {
+    title: 'في استقبال ضيوفك', board: 'الوصول', cols: ['القادمون', 'الوجهة', 'الحالة'],
+    rows: [['الوفود', 'القاعة الرئيسية'], ['المتحدثون', 'المنصة'], ['الضيوف', 'التسجيل'], ['العارضون', 'أرض المعرض']],
+    // the status column, one set per stage of the scroll (whole words)
+    states: [['في الطريق', 'في الطريق', 'في الطريق', 'في الطريق'], ['وصلوا', 'في الطريق', 'في الاستقبال', 'وصلوا'], ['في الاستقبال', 'وصلوا', 'وصلوا', 'في الاستقبال'], ['في القاعة', 'على المنصة', 'في القاعة', 'في أجنحتهم']],
+    visa: 'WaysZ Visa',
+  },
+  en: {
+    title: 'Welcoming your guests', board: 'Arrivals', cols: ['Arriving', 'Going to', 'Status'],
+    rows: [['Delegations', 'Main hall'], ['Speakers', 'Stage'], ['Guests', 'Registration'], ['Exhibitors', 'Show floor']],
+    states: [['On the way', 'On the way', 'On the way', 'On the way'], ['Arrived', 'On the way', 'Welcomed', 'Arrived'], ['Welcomed', 'Arrived', 'Arrived', 'Welcomed'], ['In the hall', 'On stage', 'In the hall', 'At the stands']],
+    visa: 'WaysZ Visa',
+  },
+}[lang];
+const final = copy.states.at(-1)!;
+// Latin cells are a fixed number of tiles (padded) so the board keeps its shape while it flips
+const width = [11, 12, 13];
+---
+<section class="garr" id="arrivals" data-scene="events-arrivals" data-shot data-waypoint aria-labelledby="garr-title"
+  data-states={JSON.stringify(copy.states)} data-latin={lang === 'en' ? '' : undefined} data-width={JSON.stringify(width)}>
+  <div class="garr__view">
+    <div class="garr__scrim g-scrim" aria-hidden="true"></div>
+    <div class="garr__in container">
+      <div class="garr__board" aria-hidden="true">
+        <div class="garr__top">
+          <svg viewBox="0 0 48 48" width="22" height="22"><path d="M5 30h38M12 30l7-15h4l-2 11M27 26l9-8h3l-4 12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>{copy.board}</span>
+          <i class="garr__led"></i>
+        </div>
+        <div class="garr__grid">
+          {copy.cols.map((c, k) => <span class="garr__col" data-col={k}>{c}</span>)}
+          {copy.rows.map(([who, where], r) => (
+            <>
+              <span class="garr__cell" data-col="0" data-text={who}>{who}</span>
+              <span class="garr__cell" data-col="1" data-text={where}>{where}</span>
+              <span class="garr__cell garr__cell--status" data-col="2" data-row={r} data-text={final[r]}>{final[r]}</span>
+            </>
+          ))}
+        </div>
+      </div>
+
+      <div class="garr__copy">
+        <h2 class="g-title garr__title" id="garr-title">{copy.title}</h2>
+        <ul class="garr__list" role="list">
+          {items.map((s) => (
+            <li class="garr__item">
+              <h3 class="garr__name">{s.name}</h3>
+              <p class="garr__text">{s.text}</p>
+              <div class="garr__links">
+                <a class="link-arrow g-link" href={localizePath(`/services/${s.slug}/`, lang)}>
+                  {t.cta.details}<span class="visually-hidden">: {s.name}</span>
+                  <svg class="icon-dir" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+                {s.slug === 'delegation-visas' && (
+                  <a class="link-arrow g-link" href={site.visaSite} rel="noopener">
+                    {t.cta.visitVisa}
+                    <svg class="icon-dir" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </a>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .garr { position: relative; }
+  .garr__view { position: relative; overflow: clip; min-height: 100vh; min-height: 100svh; display: grid; align-items: center; }
+  @media (min-width: 1024px) {
+    :global(.js) .garr { height: 240vh; height: 240lvh; }
+    :global(.js) .garr__view { position: sticky; top: 0; height: 100vh; height: 100lvh; }
+  }
+  .garr__scrim { background: linear-gradient(to bottom, color-mix(in srgb, var(--color-bg) 40%, transparent), color-mix(in srgb, var(--color-bg) 78%, transparent) 30%, color-mix(in srgb, var(--color-bg) 86%, transparent)); }
+
+  .garr__in { position: relative; display: grid; gap: var(--space-6); padding-block: calc(76px + var(--space-5)) var(--space-7); align-content: center; }
+
+  /* the board: deep matte housing, amber tiles with a hinge line through the middle */
+  .garr__board {
+    --tile: clamp(15px, 0.6rem + 0.9vw, 26px);
+    padding: var(--space-4); border-radius: var(--radius-md);
+    background: linear-gradient(180deg, color-mix(in srgb, var(--color-bg) 70%, black), color-mix(in srgb, var(--color-bg) 85%, black));
+    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--color-ink) 12%, transparent), 0 40px 80px -30px black, 0 0 0 1px color-mix(in srgb, var(--color-ink) 8%, transparent);
+    direction: inherit;
+  }
+  .garr__top { display: flex; align-items: center; gap: var(--space-3); padding-block-end: var(--space-3); color: var(--color-accent); font-family: var(--font-display); font-weight: var(--weight-bold); font-size: var(--text-lg); }
+  .garr__led { margin-inline-start: auto; width: 8px; height: 8px; border-radius: 50%; background: var(--color-accent); box-shadow: 0 0 12px var(--color-accent); animation: garr-blink 1.6s steps(2) infinite; }
+  @keyframes garr-blink { 50% { opacity: 0.25; } }
+  .garr__grid { display: grid; grid-template-columns: auto auto 1fr; gap: 6px clamp(10px, 1.6vw, 26px); align-items: center; }
+  .garr__col { font-size: var(--text-xs); color: var(--color-ink-muted); padding-block-end: 2px; }
+  .garr__cell { display: flex; flex-wrap: nowrap; gap: 3px; min-height: calc(var(--tile) * 1.55); align-items: center; font-family: var(--font-display); font-weight: var(--weight-bold); color: var(--color-accent); font-size: calc(var(--tile) * 0.86); line-height: 1; }
+  /* the tiles are built by the scene; without JS the text stands as is */
+  .garr__cell :global(.flap) {
+    position: relative; display: inline-grid; min-width: calc(var(--tile) * 0.92); border-radius: 3px;
+    box-shadow: inset 0 -1px 0 black, 0 1px 0 color-mix(in srgb, var(--color-ink) 6%, transparent);
+  }
+  .garr__cell :global(.flap--word) { min-width: 4.4em; }
+  .garr__cell :global(.flap > span) {
+    grid-area: 1 / 1; display: block; height: calc(var(--tile) * 1.5); line-height: calc(var(--tile) * 1.5);
+    padding-inline: 0.22em; text-align: center; white-space: pre; border-radius: 3px; backface-visibility: hidden;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--color-bg-alt) 92%, black) 0 50%, color-mix(in srgb, var(--color-bg-alt) 74%, black) 50% 100%);
+  }
+  .garr__cell :global(.flap--word > span) { padding-inline: 0.5em; }
+  .garr__cell :global(.flap__top), .garr__cell :global(.flap__fall) { clip-path: inset(0 0 50% 0); }
+  .garr__cell :global(.flap__bot), .garr__cell :global(.flap__rise) { clip-path: inset(50% 0 0 0); }
+  .garr__cell :global(.flap__fall), .garr__cell :global(.flap__rise) { transform-origin: 50% 50%; z-index: 1; }
+  .garr__cell :global(.flap::after) { content: ''; position: absolute; z-index: 2; inset-inline: 0; top: 50%; height: 1px; background: black; opacity: 0.85; }
+  :global([dir='rtl']) .garr__cell { font-size: calc(var(--tile) * 0.8); }
+  .garr__cell--status { color: var(--color-ink); }
+
+  .garr__copy { display: grid; gap: var(--space-5); }
+  .garr__list { display: grid; gap: var(--space-5); }
+  @media (min-width: 1024px) { .garr__list { grid-template-columns: 1fr 1fr; gap: var(--space-7); } }
+  .garr__item { border-block-start: 1px solid var(--color-border); padding-block-start: var(--space-4); }
+  .garr__name { font-size: var(--text-xl); }
+  .garr__text { margin-block-start: var(--space-2); color: color-mix(in srgb, var(--color-ink) 86%, transparent); line-height: 1.8; }
+  .garr__links { display: flex; flex-wrap: wrap; gap: var(--space-5); margin-block-start: var(--space-3); }
+  @media (max-width: 639px) {
+    .garr__board { --tile: 12.5px; padding: var(--space-3); }
+    .garr__grid { grid-template-columns: auto 1fr; gap: 5px 8px; }
+    .garr__grid [data-col='1'] { display: none; }      /* decorative: a phone shows who and their status */
+  }
+</style>

@@ -23,6 +23,7 @@ const pages = [
   ['immigration', 'services/immigration-study-visa/'],
   ['software', 'services/software-technology/'],
   ['legal', 'services/legal-services/'],
+  ['events', 'services/exhibitions-conferences/'],
 ];
 const devices = [
   { name: 'desktop', viewport: { width: 1440, height: 900 } },

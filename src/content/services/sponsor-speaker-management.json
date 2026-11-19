@@ -1,0 +1,83 @@
+{
+  "area": "events",
+  "order": 10,
+  "proposed": false,
+  "ar": {
+    "name": "إدارة الرعاة والمتحدثين",
+    "summary": "إعداد باقات الرعاية والتواصل مع الرعاة، ودعوة المتحدثين وتنسيق مشاركاتهم.",
+    "description": "نعد لفعاليتك باقات رعاية واضحة، ونتواصل مع الرعاة المناسبين، وندعو المتحدثين وننسق مشاركاتهم من أول دعوة حتى صعودهم إلى المنصة؛ ليعرف كل راعٍ ما يقدمه وما يحصل عليه، ويجد كل متحدث ما يحتاجه.",
+    "audience": [
+      "منظمو المؤتمرات والمنتديات والمعارض.",
+      "الجهات التي تبحث عن رعاة لفعالياتها.",
+      "الجامعات والجمعيات العلمية في مؤتمراتها.",
+      "الشركات التي تستضيف متحدثين في فعالياتها."
+    ],
+    "offer": [
+      "إعداد باقات الرعاية ومزايا كل باقة.",
+      "التواصل مع الرعاة المناسبين ومتابعة الردود.",
+      "صياغة اتفاقيات الرعاية مع فريقنا القانوني.",
+      "دعوة المتحدثين وتأكيد مشاركاتهم.",
+      "تنسيق الجلسات واحتياجات كل متحدث.",
+      "التنسيق مع فريق استقبال الوفود لسفر المتحدثين وإقامتهم."
+    ],
+    "steps": [
+      { "title": "الأهداف والباقات", "text": "نحدد معك الرعاة والمتحدثين المناسبين لفعاليتك." },
+      { "title": "الدعوات", "text": "نعد باقات الرعاية ونرسل الدعوات." },
+      { "title": "الاتفاق والتنسيق", "text": "نتابع الردود ونجهز الاتفاقيات والجداول." },
+      { "title": "يوم الحدث", "text": "ننسق ظهور الرعاة ومشاركة المتحدثين على المنصة." }
+    ],
+    "excludes": [
+      "ضمان الحصول على رعايات بعينها أو مبالغها.",
+      "أتعاب المتحدثين وتكاليف سفرهم، ما لم تُذكر في العرض.",
+      "قرار قبول الدعوة؛ فهو للرعاة والمتحدثين أنفسهم."
+    ],
+    "faq": [
+      { "q": "هل تضمنون رعاة لفعاليتنا؟", "a": "لا نعد برعايات بعينها، لكننا نعد باقات واضحة، ونتواصل مع الرعاة المناسبين ونتابع معهم." },
+      { "q": "هل تتولون كل ما يخص المتحدثين؟", "a": "نعم، من الدعوة وتأكيد المشاركة إلى مواعيد الجلسات، وننسق سفرهم وإقامتهم مع فريق استقبال الوفود." }
+    ],
+    "cta": {
+      "title": "تبحث عن رعاة ومتحدثين لفعاليتك؟",
+      "text": "حدثنا عن فعاليتك وجمهورها، وسنقترح عليك خطة للرعاة والمتحدثين.",
+      "button": "اطلب عرضًا لفعاليتك"
+    }
+  },
+  "en": {
+    "name": "Sponsor & Speaker Management",
+    "summary": "Preparing sponsorship packages and reaching out to sponsors, inviting speakers and coordinating their participation.",
+    "description": "We prepare clear sponsorship packages for your event, reach out to the right sponsors, and invite speakers and coordinate their participation from the first invitation until they step onto the stage — so every sponsor knows what they give and what they get, and every speaker finds what they need.",
+    "audience": [
+      "Organizers of conferences, forums and exhibitions.",
+      "Bodies looking for sponsors for their events.",
+      "Universities and scientific societies, for their conferences.",
+      "Companies hosting speakers at their events."
+    ],
+    "offer": [
+      "Preparing sponsorship packages and the benefits of each.",
+      "Reaching out to suitable sponsors and following up on replies.",
+      "Drafting sponsorship agreements with our legal team.",
+      "Inviting speakers and confirming their participation.",
+      "Coordinating the sessions and each speaker's needs.",
+      "Coordinating speakers' travel and accommodation with the delegation reception team."
+    ],
+    "steps": [
+      { "title": "Goals and packages", "text": "Together we define the right sponsors and speakers for your event." },
+      { "title": "Invitations", "text": "We prepare the sponsorship packages and send the invitations." },
+      { "title": "Agreement and coordination", "text": "We follow up on replies and prepare the agreements and schedules." },
+      { "title": "Event day", "text": "We coordinate the sponsors' presence and the speakers on stage." }
+    ],
+    "excludes": [
+      "Any guaranteed sponsorships or sponsorship amounts.",
+      "Speaker fees and travel costs, unless stated in the proposal.",
+      "The decision to accept an invitation — that belongs to the sponsors and speakers themselves."
+    ],
+    "faq": [
+      { "q": "Do you guarantee sponsors for our event?", "a": "We don't promise specific sponsorships, but we prepare clear packages, reach out to suitable sponsors and follow up with them." },
+      { "q": "Do you take care of everything for the speakers?", "a": "Yes — from the invitation and confirmation to the session times, and we coordinate their travel and accommodation with the delegation reception team." }
+    ],
+    "cta": {
+      "title": "Looking for sponsors and speakers for your event?",
+      "text": "Tell us about your event and its audience, and we'll suggest a plan for sponsors and speakers.",
+      "button": "Request a proposal for your event"
+    }
+  }
+}

@@ -1,0 +1,108 @@
+---
+/**
+ * Events page — «نوعيات الفعاليات التي ننظمها» (brief §2.3): the eight types we organize, presented one by one on
+ * the stage's turntable. Scene: motion/scenes/events-types.ts. A sticky screen (no pin): scrolling turns the
+ * turntable of the stage act `gala` (bridge `gala.turn`) and brings the next medallion to the front, into the
+ * follow spot; the DOM shows that type's name and line. Each medallion is engraved with the type's icon below
+ * (`path[data-engrave]`, read by the act). These are types we organize — never past events.
+ * Small screens / no JS: a list of the eight types.
+ */
+import type { Lang } from '../../i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const copy = {
+  ar: {
+    title: 'نوعيات الفعاليات التي ننظمها',
+    items: [
+      ['مؤتمرات علمية وطبية', 'جلسات علمية ومتحدثون وأوراق بحثية في برنامج منظم.'],
+      ['مؤتمرات حكومية ودبلوماسية', 'بروتوكول دقيق، ووفود رسمية، واستقبال يليق بالضيوف.'],
+      ['منتديات الأعمال والاستثمار', 'لقاءات تجمع المستثمرين والشركات حول فرص واضحة.'],
+      ['معارض تجارية وصناعية', 'أجنحة ومساحات عرض تقدم المنتجات للمشترين والشركاء.'],
+      ['معارض التعليم الدولي والتوظيف', 'لقاء بين الطلاب والباحثين عن عمل والجامعات وجهات التوظيف.'],
+      ['إطلاق المنتجات', 'لحظة إعلان مدروسة تقدم منتجك لجمهوره ولوسائل الإعلام.'],
+      ['الاجتماعات السنوية للشركات', 'يوم يجمع فريقك وشركاءك حول خطة العام.'],
+      ['ورش العمل والندوات', 'جلسات أصغر للتعلم والنقاش، بتنظيم لا يقل دقة.'],
+    ],
+  },
+  en: {
+    title: 'The kinds of events we organize',
+    items: [
+      ['Scientific & medical conferences', 'Scientific sessions, speakers and papers in a well-organized programme.'],
+      ['Government & diplomatic conferences', 'Careful protocol, official delegations and a fitting welcome for every guest.'],
+      ['Business & investment forums', 'Meetings that bring investors and companies together around clear opportunities.'],
+      ['Trade & industrial exhibitions', 'Stands and show floors that put products in front of buyers and partners.'],
+      ['International education & careers fairs', 'Where students and job seekers meet universities and employers.'],
+      ['Product launches', 'A well-staged moment that presents your product to its audience and the press.'],
+      ['Annual company meetings', 'A day that brings your team and partners together around the year’s plan.'],
+      ['Workshops & seminars', 'Smaller sessions for learning and discussion, organized just as carefully.'],
+    ],
+  },
+}[lang];
+
+// one icon per type (48 × 48): the list badge and the engraving on its 3D medallion
+const icons = [
+  'M19 6h10M21 6v12L10 38a3 3 0 0 0 3 4h22a3 3 0 0 0 3-4L27 18V6M15 30h18',
+  'M6 18 24 8l18 10M8 18h32M12 22v14M20 22v14M28 22v14M36 22v14M6 40h36',
+  'M6 40h36M10 34l9-9 7 6 14-15M32 16h8v8',
+  'M6 40V22l9 6v-6l9 6v-6l9 6V10h6v30H6Z',
+  'M4 19 24 10l20 9-20 9-20-9ZM12 23v9c3 3.4 7 5 12 5s9-1.6 12-5v-9',
+  'M24 6c6 4 9 11 9 20l-4 6H19l-4-6c0-9 3-16 9-20ZM21 20a3 3 0 1 0 6 0 3 3 0 1 0-6 0M19 32l-5 9 7-3M29 32l5 9-7-3',
+  'M8 12h32v28H8ZM8 20h32M16 8v8M32 8v8M15 27h6M27 27h6M15 33h6',
+  'M8 8h32v20H8ZM24 28v6M16 42l8-8 8 8M14 15h12M14 21h18',
+];
+---
+<section class="gtypes" id="types" data-scene="events-types" data-shot data-waypoint aria-labelledby="gtypes-title" style={`--n: ${copy.items.length}`}>
+  <div class="gtypes__view">
+    <div class="gtypes__scrim g-scrim" aria-hidden="true"></div>
+    <div class="gtypes__in container">
+      <h2 class="g-title gtypes__title" id="gtypes-title">{copy.title}</h2>
+      <ul class="gtypes__list" role="list">
+        {copy.items.map(([name, line], i) => (
+          <li class="gtype" data-i={i}>
+            <svg class="gtype__icon" viewBox="0 0 48 48" width="40" height="40" aria-hidden="true"><path d={icons[i]} data-engrave /></svg>
+            <div>
+              <h3 class="gtype__name">{name}</h3>
+              <p class="gtype__line">{line}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <div class="gtypes__ticks" aria-hidden="true">{copy.items.map(() => <span />)}</div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .gtypes { position: relative; }
+  .gtypes__view { position: relative; overflow: clip; }
+  .gtypes__scrim { background: linear-gradient(to top, color-mix(in srgb, var(--color-bg) 92%, transparent) 0%, color-mix(in srgb, var(--color-bg) 60%, transparent) 40%, transparent 62%); }
+  @media (min-width: 1024px) {
+    .gtypes__scrim { background: linear-gradient(to right, color-mix(in srgb, var(--color-bg) 88%, transparent) 0%, color-mix(in srgb, var(--color-bg) 56%, transparent) 34%, transparent 54%); }
+    :global([dir='rtl']) .gtypes__scrim { background: linear-gradient(to left, color-mix(in srgb, var(--color-bg) 88%, transparent) 0%, color-mix(in srgb, var(--color-bg) 56%, transparent) 34%, transparent 54%); }
+  }
+  .gtypes__in { position: relative; padding-block: calc(76px + var(--space-6)) var(--space-8); }
+  .gtypes__list { display: grid; gap: var(--space-4); margin-block-start: var(--space-7); }
+  .gtype { display: grid; grid-template-columns: auto 1fr; gap: var(--space-4); align-items: start; }
+  .gtype__icon { fill: none; stroke: var(--color-accent); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .gtype__name { font-size: var(--text-xl); }
+  .gtype__line { margin-block-start: var(--space-1); color: color-mix(in srgb, var(--color-ink) 86%, transparent); line-height: 1.8; }
+  .gtypes__ticks { display: none; }
+
+  /* with JS: one sticky screen, the types take turns (opacity only: all of them stay in the accessibility tree) */
+  :global(.js) .gtypes { height: calc(var(--n) * 50vh + 100vh); height: calc(var(--n) * 50lvh + 100lvh); }
+  :global(.js) .gtypes__view { position: sticky; top: 0; height: 100vh; height: 100lvh; }
+  :global(.js) .gtypes__in { height: 100%; display: grid; align-content: end; }
+  :global(.js) .gtypes__list { display: grid; margin-block-start: var(--space-6); }
+  :global(.js) .gtype { grid-area: 1 / 1; opacity: 0; }
+  :global(.js) .gtype .gtype__name { font-size: clamp(1.8rem, 1rem + 2.6vw, 3.25rem); line-height: 1.25; }
+  :global(.js) .gtype .gtype__icon { width: 56px; height: 56px; }
+  :global(.js) .gtype .gtype__line { font-size: var(--text-lg); max-width: 40ch; }
+  :global(.js) .gtypes__ticks { display: flex; gap: var(--space-2); margin-block-start: var(--space-6); }
+  .gtypes__ticks span { width: 26px; height: 3px; border-radius: 2px; background: color-mix(in srgb, var(--color-ink) 22%, transparent); transform-origin: center; transition: background-color var(--dur-base) var(--ease-out), scale var(--dur-base) var(--ease-out); }
+  .gtypes__ticks span.is-on { background: var(--color-accent); scale: 1.6 1; margin-inline: 8px; }
+  @media (min-width: 1024px) {
+    :global(.js) .gtypes__in { align-content: center; }
+    .gtypes__in > * { max-width: 36rem; }
+  }
+</style>

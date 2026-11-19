@@ -105,8 +105,8 @@ waysz/
 ├─ .claude/skills/waysz-media/    SKILL.md (sources, licenses, ffmpeg recipes, budgets, credits)
 ├─ docs/brief/                    the approved brief (PDF)
 ├─ docs/home-creative-treatment.md  Home concept + storyboard v2 (§1.1–1.8)
-├─ scripts/                       Playwright QA: qa-shots · qa-policy · qa-immigration · qa-software · qa-legal · qa-weight · qa-fps (+ qa-browser: shared launch)
-│                                 data/media builds: build-borders (globe borders) · render-globe-still · render-scales-still
+├─ scripts/                       Playwright QA: qa-shots · qa-policy · qa-immigration · qa-software · qa-legal · qa-events · qa-weight · qa-fps (+ qa-browser: shared launch)
+│                                 data/media builds: build-borders (globe borders) · render-globe-still · render-scales-still · render-gala-still
 ├─ docs/media-credits.md          one row per media file we ship (source, author, license)
 ├─ media-inbox/                   RAW downloads before optimizing — gitignored, never shipped
 ├─ public/
@@ -129,14 +129,15 @@ waysz/
    ├─ lib/                        forms.ts · site.ts (client data) · borders.ts (decodes the borders, country at a point)
    ├─ motion/                     index.ts · config.ts · smooth-scroll.ts · globals/ · scenes/
    │  ├─ code-glyphs.ts           decorative code blocks: split into characters, measure where each one sits
-   │  └─ stage/                   3D layer: stage.ts (renderer + render scale) · tier.ts (WebGL or css) · bridge.ts · acts/ (flight · wipe · globe · explore · glyphs · justice) · shaders/
+   │  └─ stage/                   3D layer: stage.ts (renderer + render scale) · tier.ts (WebGL or css) · bridge.ts · acts/ (flight · wipe · globe · explore · glyphs · justice · gala) · shaders/
    ├─ pages/                      THIN wrappers only (AR at /, EN under /en/)
    ├─ styles/                     tokens.css · base.css
    └─ views/                      real page content (HomePage, ServicesPage, …, MotionLab)
       ├─ home/                    one file per Home section: Areas · Why · How · Cta · Visa (markup + copy + styles)
       ├─ immigration/             sections of the Immigration group page: Hero · Journey · Services · Explore
       ├─ software/                sections of the Software group page: Hero · Services · Process · Missing (+ Code: a block of decorative code)
-      └─ legal/                   sections of the Legal group page: Hero · Services · Help · Why · How · Faq · Consult
+      ├─ legal/                   sections of the Legal group page: Hero · Services · Help · Why · How · Faq · Consult
+      └─ events/                  sections of the Exhibitions & Conferences group page: Hero · Services · Expo · Arrivals · Register · Interpret · Types · Roof · How · Faq · Consult
 ```
 
 ## Pages & languages
@@ -155,8 +156,9 @@ waysz/
 - `src/pages/services/[slug].astro` and `src/pages/en/services/[slug].astro` generate every service page
   through `src/views/ServiceDetailPage.astro`. NEVER hand-write a page per service.
 - A service GROUP may have its own page (brief §2.x): `/services/legal-services/` (`src/views/LegalPage.astro`),
-  `/services/immigration-study-visa/` (`src/views/ImmigrationPage.astro`) and `/services/software-technology/`
-  (`src/views/SoftwarePage.astro`) are static routes and win over `[slug]`; never name a service file like a group page.
+  `/services/immigration-study-visa/` (`src/views/ImmigrationPage.astro`), `/services/exhibitions-conferences/`
+  (`src/views/EventsPage.astro`) and `/services/software-technology/` (`src/views/SoftwarePage.astro`) are static
+  routes and win over `[slug]`; never name a service file like a group page.
   Its cards link to `/services/<slug>/` only when that service file exists.
 
 ## Media (real footage, photos, Lottie)
@@ -267,3 +269,4 @@ waysz/
 - End a task ONLY when everything is done: all checks run, all changes committed AND pushed, the working tree clean.
 - Start the final message with the line `FINISHED — pushed <commit hash> to <branch>`, then the report.
 - If something cannot be finished, start the final message with `NOT FINISHED —` and say exactly what is left.
+- Time-box polishing: if a performance or visual target is still not met after two honest attempts, stop, keep what works, report it in one line and finish. Never ask the developer questions mid-task; decide sensibly and list decisions in the report.

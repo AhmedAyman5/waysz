@@ -55,6 +55,10 @@
   --hue-events:   #E2674A;
   --hue-software: #1FA39A;
 
+  /* Velvet — the stage curtain and the red carpet (Exhibitions & Conferences page) */
+  --velvet-900: #3A0710;
+  --velvet-600: #8C1424;
+
   /* Feedback */
   --green-700: #167A53;
   --red-700:   #B4232F;
@@ -77,6 +81,9 @@
   --color-accent-ink:var(--horizon-700);    /* accent-colored text on light bg */
   --color-link:      var(--midnight-600);
   --color-focus:     var(--sky-500);
+
+  --color-velvet:      var(--velvet-600);   /* stage curtain, red carpet, seats */
+  --color-velvet-deep: var(--velvet-900);   /* the shadow inside the velvet's folds */
 
   --color-success:   var(--green-700);
   --color-error:     var(--red-700);

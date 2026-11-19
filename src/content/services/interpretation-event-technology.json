@@ -1,0 +1,81 @@
+{
+  "area": "events",
+  "order": 7,
+  "proposed": false,
+  "ar": {
+    "name": "الترجمة الفورية والتجهيزات التقنية",
+    "summary": "مترجمون فوريون، وأنظمة صوت وعرض وإضاءة، وبث مباشر للفعاليات الهجينة والمشاركة عن بُعد.",
+    "description": "نوفر لفعاليتك مترجمين فوريين وأنظمة صوت وعرض وإضاءة، ونجهز البث المباشر للفعاليات الهجينة والمشاركة عن بُعد؛ ليسمع كل ضيف ويتابع بلغته، في القاعة أو عن بُعد.",
+    "audience": [
+      "منظمو المؤتمرات والمنتديات الدولية.",
+      "الجهات التي تستضيف وفودًا بلغات مختلفة.",
+      "الشركات في اجتماعاتها السنوية وإطلاق منتجاتها.",
+      "الجهات التي تنظم فعاليات هجينة أو عن بُعد."
+    ],
+    "offer": [
+      "مترجمون فوريون بين العربية واللغات التي تحتاجها.",
+      "أكشاك الترجمة وأجهزة الاستماع للحضور.",
+      "أنظمة الصوت والعرض والشاشات والإضاءة.",
+      "البث المباشر ومنصات المشاركة عن بُعد.",
+      "فريق تقني في الموقع طوال الفعالية."
+    ],
+    "steps": [
+      { "title": "اللغات والقاعات", "text": "نحدد معك اللغات المطلوبة ومساحة القاعات." },
+      { "title": "الخطة التقنية", "text": "نقدم خطة الترجمة والتجهيزات والبث وميزانيتها." },
+      { "title": "التجهيز والتجربة", "text": "نركب الأنظمة ونختبرها قبل الافتتاح." },
+      { "title": "يوم الحدث", "text": "يتابع فريقنا الترجمة والصوت والبث حتى النهاية." }
+    ],
+    "excludes": [
+      "رسوم المكان أو منصات البث الخارجية، ما لم تُذكر في العرض.",
+      "الترجمة المعتمدة للوثائق؛ فهي خدمة مستقلة.",
+      "جودة اتصال المشاركين عن بُعد من أماكنهم."
+    ],
+    "faq": [
+      { "q": "هل توفرون الترجمة الفورية لأكثر من لغة؟", "a": "نعم، نحدد معك اللغات المطلوبة، ونجهز لكل لغة مترجميها وقناتها." },
+      { "q": "هل يمكن بث الفعالية مباشرة؟", "a": "نعم، نجهز البث المباشر ومنصات المشاركة عن بُعد إلى جانب الحضور في القاعة." }
+    ],
+    "cta": {
+      "title": "تحتاج ترجمة فورية وتجهيزات لفعاليتك؟",
+      "text": "أخبرنا باللغات وحجم القاعة، وسنرسل لك خطة وعرضًا مناسبًا.",
+      "button": "اطلب عرضًا لفعاليتك"
+    }
+  },
+  "en": {
+    "name": "Simultaneous Interpretation & Event Technology",
+    "summary": "Simultaneous interpreters, sound, projection and lighting systems, and live streaming for hybrid events and remote participation.",
+    "description": "We provide simultaneous interpreters and sound, projection and lighting systems for your event, and set up live streaming for hybrid events and remote participation — so every guest hears and follows in their own language, in the hall or from afar.",
+    "audience": [
+      "Organizers of international conferences and forums.",
+      "Bodies hosting delegations that speak different languages.",
+      "Companies, for their annual meetings and product launches.",
+      "Organizers of hybrid or remote events."
+    ],
+    "offer": [
+      "Simultaneous interpreters between Arabic and the languages you need.",
+      "Interpreter booths and listening receivers for the audience.",
+      "Sound, projection, screens and lighting systems.",
+      "Live streaming and remote-participation platforms.",
+      "A technical team on site throughout the event."
+    ],
+    "steps": [
+      { "title": "Languages and halls", "text": "Together we define the languages needed and the size of the halls." },
+      { "title": "Technical plan", "text": "We present the interpretation, equipment and streaming plan with its budget." },
+      { "title": "Set-up and testing", "text": "We install the systems and test them before the opening." },
+      { "title": "Event day", "text": "Our team runs interpretation, sound and streaming to the very end." }
+    ],
+    "excludes": [
+      "Venue fees or third-party streaming platforms, unless stated in the proposal.",
+      "Certified translation of documents — that is a separate service.",
+      "The connection quality of remote participants at their own location."
+    ],
+    "faq": [
+      { "q": "Do you provide interpretation into more than one language?", "a": "Yes. We agree the languages with you and set up interpreters and a channel for each one." },
+      { "q": "Can the event be streamed live?", "a": "Yes. We set up live streaming and remote-participation platforms alongside the in-hall audience." }
+    ],
+    "cta": {
+      "title": "Need interpretation and technical set-up for your event?",
+      "text": "Tell us the languages and the size of the hall, and we'll send you a plan and a proposal.",
+      "button": "Request a proposal for your event"
+    }
+  }
+}

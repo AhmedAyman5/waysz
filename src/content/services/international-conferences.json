@@ -1,0 +1,83 @@
+{
+  "area": "events",
+  "order": 1,
+  "proposed": false,
+  "ar": {
+    "name": "تنظيم المؤتمرات الدولية",
+    "summary": "تخطيط وإدارة المؤتمرات والقمم والمنتديات والندوات الدولية بكل مراحلها: البرنامج، والمتحدثون، والقاعات، والتشغيل يوم الحدث.",
+    "description": "نخطط وننفذ مؤتمرات دولية متكاملة تحقق أهدافها، من وضع الفكرة والبرنامج والميزانية، إلى استقبال الوفود والمتحدثين وإدارة الجلسات والترجمة الفورية، وحتى التقرير الختامي؛ لتتفرغ أنت للمحتوى والضيوف، ونتولى نحن كل التفاصيل.",
+    "audience": [
+      "الجهات الحكومية والهيئات والمنظمات الدولية.",
+      "الشركات والاتحادات والغرف التجارية.",
+      "الجامعات والجمعيات العلمية والطبية.",
+      "السفارات والمنظمات غير الحكومية."
+    ],
+    "offer": [
+      "خطة متكاملة: الأهداف والبرنامج والميزانية والجدول الزمني.",
+      "اختيار المكان والتعاقد مع الموردين والقاعات.",
+      "إدارة المتحدثين والجلسات ومنصة التسجيل وموقع المؤتمر.",
+      "استقبال الوفود وتأشيراتهم وتنقلاتهم.",
+      "الترجمة الفورية والتجهيزات السمعية والبصرية والبث المباشر.",
+      "إدارة التشغيل يوم الحدث وتقرير ختامي بالنتائج."
+    ],
+    "steps": [
+      { "title": "الفكرة والأهداف", "text": "نحدد معك الهدف والجمهور وحجم المؤتمر." },
+      { "title": "الخطة والميزانية", "text": "نقدم خطة تفصيلية وميزانية وجدولًا زمنيًا." },
+      { "title": "التحضير والترويج", "text": "المكان والموردون والمتحدثون والتسجيل والوفود." },
+      { "title": "التنفيذ والتقييم", "text": "نُدير يوم الحدث ونسلمك تقريرًا ختاميًا." }
+    ],
+    "excludes": [
+      "رسوم الأماكن والتصاريح الحكومية، ما لم تُذكر في العرض.",
+      "ضمان أعداد حضور أو رعايات بعينها.",
+      "قرارات منح تأشيرات المشاركين؛ فهي للسفارات وحدها."
+    ],
+    "faq": [
+      { "q": "متى نبدأ التحضير للمؤتمر؟", "a": "كلما كان مبكرًا كان أفضل، خاصة مع الوفود الدولية والتأشيرات، ونحدد المدة حسب حجم الحدث." },
+      { "q": "هل تنظمون مؤتمرات هجينة أو افتراضية؟", "a": "نعم، نوفر البث المباشر ومنصات المشاركة عن بُعد إلى جانب الحضور في القاعة." }
+    ],
+    "cta": {
+      "title": "تخطط لمؤتمر أو معرض دولي؟",
+      "text": "حدثنا عن فعاليتك، وسنرسل لك تصورًا مبدئيًا وعرضًا مناسبًا لأهدافك.",
+      "button": "اطلب عرضًا لفعاليتك"
+    }
+  },
+  "en": {
+    "name": "International Conference Organizing",
+    "summary": "Planning and running international conferences, summits, forums and seminars through every stage: the programme, the speakers, the halls and event-day operations.",
+    "description": "We plan and deliver complete international conferences that meet their goals — from shaping the idea, the programme and the budget, to welcoming delegations and speakers, running the sessions and simultaneous interpretation, all the way to the final report. You focus on the content and your guests; we take care of every detail.",
+    "audience": [
+      "Government bodies, authorities and international organizations.",
+      "Companies, federations and chambers of commerce.",
+      "Universities and scientific and medical societies.",
+      "Embassies and non-governmental organizations."
+    ],
+    "offer": [
+      "A complete plan: goals, programme, budget and timeline.",
+      "Choosing the venue and contracting suppliers and halls.",
+      "Managing speakers, sessions, the registration platform and the conference website.",
+      "Welcoming delegations and handling their visas and transport.",
+      "Simultaneous interpretation, audiovisual equipment and live streaming.",
+      "Running event-day operations, and a final report on the results."
+    ],
+    "steps": [
+      { "title": "Idea and goals", "text": "Together we define the goal, the audience and the size of the conference." },
+      { "title": "Plan and budget", "text": "We present a detailed plan, a budget and a timeline." },
+      { "title": "Preparation and promotion", "text": "Venue, suppliers, speakers, registration and delegations." },
+      { "title": "Delivery and review", "text": "We run the event day and hand you a final report." }
+    ],
+    "excludes": [
+      "Venue fees and government permits, unless stated in the proposal.",
+      "Any guaranteed attendance numbers or sponsorships.",
+      "Visa decisions for participants — these belong to the embassies alone."
+    ],
+    "faq": [
+      { "q": "When should we start preparing the conference?", "a": "The earlier the better, especially with international delegations and visas. We set the lead time according to the size of the event." },
+      { "q": "Do you organize hybrid or virtual conferences?", "a": "Yes. We provide live streaming and remote-participation platforms alongside the in-hall audience." }
+    ],
+    "cta": {
+      "title": "Planning an international conference or exhibition?",
+      "text": "Tell us about your event, and we'll send you an initial concept and a proposal suited to your goals.",
+      "button": "Request a proposal for your event"
+    }
+  }
+}

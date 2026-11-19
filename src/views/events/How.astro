@@ -1,0 +1,99 @@
+---
+/**
+ * Events page — who we serve and how we work, from template sample (ج) (read from the conference service file,
+ * so the page and the detail page can never differ). Scene: motion/scenes/events-how.ts.
+ * No pin: the camera of the stage act `gala` dollies down the side of the hall toward the stage while you read.
+ * The four audiences arrive as seat tickets; the four steps sit on a line that fills with the scroll (horizontal
+ * on wide screens, from the reading side; vertical on small ones) and each step lights up when the line reaches it.
+ */
+import type { Lang } from '../../i18n';
+
+interface Props { lang: Lang; audience: string[]; steps: { title: string; text: string }[] }
+const { lang, audience, steps } = Astro.props;
+const copy = {
+  ar: { who: 'لمن ننظم', how: 'خطوات العمل' },
+  en: { who: 'Who we organize for', how: 'How we work' },
+}[lang];
+const num = (i: number) => new Intl.NumberFormat(lang === 'ar' ? 'ar-EG' : 'en', { minimumIntegerDigits: 2 }).format(i);
+// our own line icons (48 × 48) for the four audiences of sample (ج)
+const icons = [
+  '<path d="M6 18 24 8l18 10M8 18h32M12 22v14M20 22v14M28 22v14M36 22v14M6 40h36"/>',
+  '<path d="M8 40V14h14v26M22 40V22h18v18M6 40h36M12 19h6M12 25h6M12 31h6M27 27h8M27 33h8"/>',
+  '<path d="M4 19 24 10l20 9-20 9-20-9Z"/><path d="M12 23v9c3 3.400 7 5 12 5s9-1.600 12-5v-9"/>',
+  '<circle cx="24" cy="24" r="17"/><path d="M7 24h34M24 7c-7 5-7 29 0 34M24 7c7 5 7 29 0 34"/>',
+];
+---
+<section class="ghow" id="how" data-scene="events-how" data-shot data-waypoint aria-labelledby="ghow-who">
+  <div class="ghow__scrim g-scrim" aria-hidden="true"></div>
+  <div class="ghow__in container">
+    <h2 class="g-title ghow__title" id="ghow-who">{copy.who}</h2>
+    <ul class="ghow__who" role="list">
+      {audience.map((a, i) => (
+        <li class="ticket">
+          <svg class="ticket__icon" viewBox="0 0 48 48" width="40" height="40" aria-hidden="true" set:html={icons[i] ?? ''} />
+          <p class="ticket__text">{a}</p>
+        </li>
+      ))}
+    </ul>
+
+    <h2 class="g-title ghow__title ghow__title--how">{copy.how}</h2>
+    <div class="ghow__route">
+      <div class="ghow__line" aria-hidden="true"><span class="ghow__fill"></span></div>
+      <ol class="ghow__steps" role="list">
+        {steps.map((s, i) => (
+          <li class="gstep">
+            <span class="gstep__node" aria-hidden="true"></span>
+            <span class="gstep__num" aria-hidden="true">{num(i + 1)}</span>
+            <h3 class="gstep__name">{s.title}</h3>
+            <p class="gstep__text">{s.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ghow { position: relative; padding-block: calc(var(--section-y) * 1.4) var(--section-y); }
+  .ghow__scrim { background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--color-bg) 78%, transparent) 16%, color-mix(in srgb, var(--color-bg) 78%, transparent) 84%, transparent); }
+  .ghow__in { position: relative; }
+  .ghow__title--how { margin-block-start: var(--space-10); }
+
+  .ghow__who { display: grid; gap: var(--space-4); margin-block-start: var(--space-7); }
+  @media (min-width: 640px) { .ghow__who { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1024px) { .ghow__who { grid-template-columns: repeat(4, 1fr); } }
+  /* a seat ticket: notches on both sides (a mask), a dashed tear line */
+  .ticket {
+    position: relative; display: grid; gap: var(--space-4); align-content: start;
+    padding: var(--space-5) var(--space-5) var(--space-6);
+    background: linear-gradient(170deg, color-mix(in srgb, var(--color-velvet) 34%, var(--color-bg-alt)), color-mix(in srgb, var(--color-velvet-deep) 60%, var(--color-bg)));
+    border-radius: var(--radius-md);
+    -webkit-mask: radial-gradient(circle 10px at 0 64px, transparent 98%, black) , radial-gradient(circle 10px at 100% 64px, transparent 98%, black);
+    -webkit-mask-composite: source-in; mask: radial-gradient(circle 10px at 0 64px, transparent 98%, black) intersect, radial-gradient(circle 10px at 100% 64px, transparent 98%, black);
+  }
+  .ticket::after { content: ''; position: absolute; inset-inline: 14px; top: 64px; border-block-start: 1.5px dashed color-mix(in srgb, var(--color-ink) 30%, transparent); }
+  .ticket__icon { width: 36px; height: 36px; fill: none; stroke: var(--color-accent); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .ticket__text { padding-block-start: var(--space-3); font-family: var(--font-display); font-weight: var(--weight-bold); line-height: 1.6; }
+
+  .ghow__route { position: relative; margin-block-start: var(--space-7); }
+  .ghow__line { position: absolute; inset-block: 8px 0; inset-inline-start: 7px; width: 2px; background: color-mix(in srgb, var(--color-ink) 16%, transparent); }
+  .ghow__fill { position: absolute; inset: 0; background: linear-gradient(to bottom, var(--color-accent), var(--color-velvet)); transform-origin: top; }
+  .ghow__steps { display: grid; gap: var(--space-6); }
+  .gstep { position: relative; padding-inline-start: var(--space-7); }
+  .gstep__node { position: absolute; inset-inline-start: 0; top: 4px; width: 16px; height: 16px; border-radius: 50%; border: 2px solid color-mix(in srgb, var(--color-ink) 40%, transparent); background: var(--color-bg); transition: border-color var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out), background-color var(--dur-base) var(--ease-out); }
+  .gstep__num { font-size: var(--text-sm); color: var(--color-accent); font-weight: var(--weight-bold); }
+  .gstep__name { margin-block-start: var(--space-1); font-size: var(--text-xl); }
+  .gstep__text { margin-block-start: var(--space-2); color: color-mix(in srgb, var(--color-ink) 86%, transparent); line-height: 1.8; }
+  .gstep { opacity: 1; transition: opacity var(--dur-base) var(--ease-out); }
+  :global(.js) .gstep:not(.is-active) { opacity: 0.66; }
+  .gstep.is-active .gstep__node { border-color: var(--color-accent); background: var(--color-accent); box-shadow: 0 0 0 6px color-mix(in srgb, var(--color-accent) 22%, transparent), 0 0 24px var(--color-accent); }
+
+  @media (min-width: 1024px) {
+    .ghow__line { inset-block: 7px auto; inset-inline: 0; width: auto; height: 2px; }
+    .ghow__fill { background: linear-gradient(90deg, var(--color-accent), var(--color-velvet)); transform-origin: left; }
+    :global([dir='rtl']) .ghow__fill { background: linear-gradient(270deg, var(--color-accent), var(--color-velvet)); transform-origin: right; }
+    .ghow__steps { grid-template-columns: repeat(4, 1fr); gap: var(--space-6); }
+    .gstep { padding-inline-start: 0; padding-block-start: var(--space-7); }
+    .gstep__node { top: 0; }
+  }
+</style>

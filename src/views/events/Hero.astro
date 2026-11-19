@@ -1,0 +1,98 @@
+---
+/**
+ * Events page — hero: "The show is about to begin". Scene: motion/scenes/events-hero.ts · the curtain, the hall and
+ * the camera are the stage act `gala` (views/EventsPage.astro: one stage host for the whole page).
+ * The title and the lead stand in the follow spot ON the closed curtain. They are painted at once and never hidden
+ * (LCP); the headline's lines only settle. A tall section with a sticky screen (no pin): scrolling draws the curtain
+ * open (scenes/events-thread.ts) and lets the text leave; the camera rises over the hall, then glides to the stage.
+ * The curtain is symmetric and the text is centred: the hero is the same in Arabic and English.
+ */
+import { localizePath, useTranslations, type Lang } from '../../i18n';
+
+interface Props { lang: Lang; lead: string }
+const { lang, lead } = Astro.props;
+const t = useTranslations(lang);
+const title = { ar: ['المعارض والمؤتمرات', 'الدولية'], en: ['International Exhibitions', '& Conferences'] }[lang];
+const cta = { ar: 'اطلب عرضًا لفعاليتك', en: 'Request a proposal for your event' }[lang];
+---
+<section class="ghero" data-scene="events-hero" data-shot data-waypoint aria-labelledby="ghero-title">
+  <div class="ghero__sticky">
+    <div class="ghero__pool g-scrim" aria-hidden="true"></div>
+    <div class="ghero__content container">
+      <nav class="ghero__crumb" aria-label={t.nav.services}>
+        <a href={localizePath('/services/', lang)}>{t.nav.services}</a>
+        <svg class="icon-dir" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="m9 6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span aria-current="page">{t.areas.events}</span>
+      </nav>
+      <h1 class="ghero__title" id="ghero-title">
+        {title.map((line) => <span class="ghero__line">{line}{' '}</span>)}
+      </h1>
+      <p class="ghero__lead">{lead}</p>
+      <div class="ghero__actions">
+        <a class="btn btn--accent" href="#consult" data-magnetic>{cta}</a>
+        <a class="btn btn--ghost" href="#services">{t.cta.explore}</a>
+      </div>
+    </div>
+    <div class="ghero__cue" aria-hidden="true"><span></span></div>
+  </div>
+</section>
+
+<style>
+  .ghero { position: relative; }
+  .ghero__sticky {
+    position: relative; overflow: clip;
+    min-height: 100vh; min-height: 100svh;
+    display: grid; place-items: center;
+  }
+  :global(.js) .ghero { height: 270vh; height: 270lvh; }
+  :global(.js) .ghero__sticky { position: sticky; top: 0; height: 100vh; height: 100lvh; }
+
+  /* the DOM half of the follow spot: a soft dark pool under the text so it passes AA on any fold of the velvet,
+     with the darkness of the house around it */
+  .ghero__pool {
+    background:
+      radial-gradient(ellipse 46% 44% at 50% 52%, color-mix(in srgb, var(--color-velvet-deep) 52%, transparent) 0%, color-mix(in srgb, var(--color-velvet-deep) 22%, transparent) 62%, transparent 100%),
+      linear-gradient(to bottom, color-mix(in srgb, var(--color-bg) 70%, transparent) 0%, transparent 22%, transparent 74%, color-mix(in srgb, var(--color-bg) 80%, transparent) 100%);
+  }
+  @media (max-width: 1023px) {
+    .ghero__pool { background:
+      radial-gradient(ellipse 80% 46% at 50% 54%, color-mix(in srgb, var(--color-velvet-deep) 62%, transparent) 0%, color-mix(in srgb, var(--color-velvet-deep) 30%, transparent) 64%, transparent 100%),
+      linear-gradient(to bottom, color-mix(in srgb, var(--color-bg) 70%, transparent) 0%, transparent 22%, transparent 70%, color-mix(in srgb, var(--color-bg) 84%, transparent) 100%); }
+  }
+
+  .ghero__content {
+    position: relative; z-index: 2; text-align: center;
+    display: grid; justify-items: center;
+    padding-block: calc(76px + var(--space-6)) var(--space-8);
+  }
+  .ghero__crumb { display: flex; align-items: center; gap: var(--space-2); font-size: var(--text-sm); color: color-mix(in srgb, var(--color-ink) 82%, transparent); }
+  .ghero__crumb a { text-decoration: none; }
+  .ghero__crumb a:hover { color: var(--color-link); }
+  .ghero__title {
+    margin-block-start: var(--space-4);
+    font-size: clamp(2.6rem, 0.9rem + 6.6vw, 7.75rem); line-height: 1.04; letter-spacing: -0.02em;
+    text-shadow: 0 2px 40px color-mix(in srgb, var(--color-velvet-deep) 70%, transparent);
+  }
+  :global([dir='rtl']) .ghero__title { letter-spacing: 0; line-height: 1.24; }
+  .ghero__line { display: block; will-change: transform; }
+  .ghero__lead {
+    margin-block-start: var(--space-5); max-width: 54ch;
+    font-size: var(--text-lg); line-height: 1.8; color: color-mix(in srgb, var(--color-ink) 94%, transparent);
+    text-shadow: 0 1px 18px var(--color-velvet-deep);
+  }
+  .ghero__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-4); margin-block-start: var(--space-6); }
+  .ghero__actions .btn { min-height: 54px; padding-inline: var(--space-7); font-size: var(--text-base); }
+  .ghero__actions .btn--ghost { background: color-mix(in srgb, var(--color-bg) 40%, transparent); }
+
+  /* scroll cue: a thread of light that runs down, like the edge of the curtain parting */
+  .ghero__cue { position: absolute; inset-block-end: var(--space-5); inset-inline-start: 50%; translate: -50% 0; width: 1px; height: 54px; overflow: hidden; background: color-mix(in srgb, var(--color-ink) 18%, transparent); }
+  .ghero__cue span { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent, var(--color-accent), transparent); animation: ghero-cue 2.2s var(--ease-in-out) infinite; }
+  @keyframes ghero-cue { from { translate: 0 -100%; } to { translate: 0 100%; } }
+  :global(html:not(.js)) .ghero__cue { display: none; }
+
+  @media (max-width: 639px) {
+    .ghero__lead { font-size: var(--text-base); }
+    .ghero__actions { gap: var(--space-3); width: 100%; }
+    .ghero__actions .btn { flex: 1 1 100%; min-height: 50px; }
+  }
+</style>

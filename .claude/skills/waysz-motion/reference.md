@@ -205,6 +205,40 @@ they fade out while `.legal__stage.is-drawing`. Text always sits on a DOM scrim,
   line without the code calls. **legal-faq**: runs beside `accordion`; makes closed answers `inert` (they hold links).
   **legal-consult**: heading by words; the balance is the thread's work.
 
+### events-thread — Events page, the theatre behind every section (`views/EventsPage.astro`)
+
+`.gala.theme-dark > .gala__stage.stage-host[data-scene=events-thread] (.gala__still--curtain, .gala__still--hall) + .gala__body > section[data-shot] × 11`.
+Same pattern as `legal-thread`: the host is sticky for the whole page and ONE act (`gala`) draws behind every section.
+The thread writes `gala.shot` (section + progress → camera node), `open` (the hero's sticky progress draws the curtain),
+`carpet` (unrolls ahead of the walk: services → expo → arrivals → down the aisle), `flashes`, `led` and `veil` (the dip
+that hides the two camera cuts: hero → foyer, foyer → stage). Section order is fixed: hero · services · expo · arrivals ·
+register · interpret · types · roof · how · faq · consult. css tier / no JS: two stills of our own render (closed curtain,
+the hall: `node scripts/render-gala-still.mjs`), swapped by `.is-hall`, faded while `.is-drawing`.
+
+### events-hero · events-program · events-expo · events-arrivals · events-badge · events-interpret · events-types · events-roof · events-how · events-faq · events-consult
+
+- **events-hero** (`views/events/Hero.astro`): 270lvh sticky; title + lead centred in the follow spot ON the closed
+  curtain, painted at once (LCP); the text leaves while the curtain opens; camera: seats → over the hall → to the stage.
+- **events-program** (`Services.astro`): the ten cards in two walking columns; per card once: a light sweep, the gold rule,
+  the icon draws. The cards themselves never move (the even column has a CSS offset).
+- **events-expo** (`Expo.astro`): sticky (the view and the text are two sticky layers on wide screens; the text scrolls over
+  the view on small ones). Progress → `gala.plan` then `gala.booths` (0…`GALA_BOOTHS`). Legend link hover / focus →
+  `gala.booth`; the act raycasts the four labelled stands and calls `gala.onHover`. css tier: an SVG plan fills in.
+- **events-arrivals** (`Arrivals.astro`): split-flap board (decorative). Latin: one tile per character (padded widths);
+  Arabic: one tile per WHOLE word. Each flip = four clipped layers (static top / bottom, falling old top, rising new
+  bottom). Boots once, then the status column flips by scroll stage (`data-states`); a running cell finishes before a new flip.
+- **events-badge** (`Register.astro`): progress → `gala.badge`, `gala.scan`, `gala.seats` (seats stay lit afterwards).
+  `.greg__pad` (touch-action: none, only over the badge) → `gala.grab` (host NDC). css tier: HTML badge, elastic swing.
+- **events-interpret** (`Interpret.astro`): two beats in one sticky screen (opacity, `.is-active`): sound waves
+  (`gala.waves`) + an SVG headset + a sentence that turns AR ↔ EN by whole words (loop only while on screen); then the LED sweep.
+- **events-types** (`Types.astro`): staircase progress (a rest on each type) → `gala.turn` (0…7) turns the turntable; the
+  DOM type at the front by opacity; `path[data-engrave]` is engraved on its medallion.
+- **events-roof** (`Roof.astro`): wide: sticky, four corner labels (links) + `gala.beams` (the four beams meet on the stage);
+  css tier: SVG lines draw instead. Small: a grid of labels, beams while the section passes.
+- **events-how**: tickets (audiences) once + the `build-steps` line. **events-faq**: like `legal-faq`.
+- **events-consult** (`Consult.astro`): sticky progress → `gala.final`: the spots converge, the curtain closes (0.1 → 0.9),
+  applause flashes. The act multiplies the curtain's `open` by the finale, so scrolling back opens it again.
+
 ### destinations (Motion Lab) — sticky cards that stack
 
 Kept for the Motion Lab; Home uses `areas`.
@@ -242,6 +276,7 @@ Unchanged (see Motion Lab).
 | 2.2     | Immigration group page | dusk window-seat video · borders globe (act `explore`)            | `page-hero` · `journey-route` · `dossier` · `boarding-pass` · `explore-globe` · `approach` — BUILT |
 | 2.4     | Software group page | dusk city video inside the stage (act `glyphs`) · code photo         | `code-hero` · `code-forge` · `build-steps` · `ask-box` · `approach` — BUILT |
 | 2.1     | Legal group page | 3D scales, colonnade and dusk light in the stage (act `justice`, dusk HDRI) · still for the css tier | `legal-thread` · `legal-hero` · `legal-weights` · `legal-colonnade` · `legal-why` · `legal-how` · `legal-faq` · `legal-consult` — BUILT |
+| 2.3     | Exhibitions & Conferences group page | a procedural theatre in the stage (act `gala`): velvet curtain, hall, LED wall, turntable, expo, red carpet, badge · two stills of our own render for the css tier | `events-thread` · `events-hero` · `events-program` · `events-expo` · `events-arrivals` · `events-badge` · `events-interpret` · `events-types` · `events-roof` · `events-how` · `events-faq` · `events-consult` — BUILT |
 | 3       | Service template | header photo of the service's area                                      | `data-split` · `route-steps` · `accordion`                            |
 | 4       | About            | wide photo                                                              | `media-reveal` · `text-scrub` · `route-steps` (2 stops)               |
 | 5       | Contact          | calm photo                                                              | `form-flight` · `data-magnetic`                                       |
@@ -261,5 +296,8 @@ are CSS sticky + scrub, not pins. Other pages: max 2.
 | A block of decorative code             | `views/software/Code.astro` + `splitChars` / `measureCode` in `motion/code-glyphs.ts`  |
 | A result that builds itself on scroll  | the `data-pop / grow / from / dim / hide / stroke` parts of `code-forge` (`buildTimeline`) |
 | A solid 3D model in the stage          | the render-target pattern of `acts/justice.ts` (`prepare` + `prerender`), its spring physics and camera nodes |
+| A cloth / curtain in 3D                | `curtainVertex` in `shaders/gala.glsl.ts` (pleats + analytic normal + hem lag) — no CPU physics |
+| Bloom without an extra pass            | the `gala` render target: `generateMipmaps` + `LinearMipmapLinearFilter`, `textureLod` taps in the finish shader |
+| A grabbable 3D object on a rope        | the badge in `acts/gala.ts`: verlet rope in camera space + a hinged card, a DOM pad that sends the pointer through the bridge |
 | A drawn moment that plays with scroll  | `moment()` in `legal-weights.ts` (one paused timeline per `data-fx`)                   |
 | Any dark photo section                 | `data-depth-scene` + `data-depth` on the photo wrapper, scrim gradient, `.link-arrow`  |
