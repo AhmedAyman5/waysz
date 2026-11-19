@@ -15,6 +15,7 @@ import Services, { type ServiceItem } from './immigration/Services.astro';
 import Explore from './immigration/Explore.astro';
 import Visa from './home/Visa.astro';
 import Cta from './home/Cta.astro';
+import { serviceCards } from '../data/services';
 import { useTranslations, type Lang } from '../i18n';
 
 interface Props { lang: Lang }
@@ -36,35 +37,14 @@ const copy = {
   },
 }[lang];
 
-// §2.2 — the eight services, in the brief's order.
-// CLIENT DECISION (2026-11): every service in the brief is offered — nothing here is «مقترح».
-const services: (Omit<ServiceItem, 'name' | 'text'> & { ar: [string, string]; en: [string, string] })[] = [
-  { slug: 'immigration-residency', icon: 'immigration',
-    ar: ['استشارات الهجرة والإقامة', 'تقييم وضعك، ومساعدتك على اختيار الدولة والبرنامج الأنسب للهجرة أو الإقامة أو العمل بالخارج، ثم تجهيز ملفك خطوة بخطوة.'],
-    en: ['Immigration & Residency Consultations', 'Assessing your situation and helping you choose the country and program best suited to immigrating, residing or working abroad, then preparing your file step by step.'] },
-  { slug: 'study-abroad', icon: 'study',
-    ar: ['الدراسة بالخارج', 'إرشادك في اختيار الدولة والجامعة والتخصص، وتجهيز ملف القبول الجامعي، ثم الاستعداد لتأشيرة الدراسة.'],
-    en: ['Study Abroad', 'Guidance in choosing the country, university and major, preparing your university admission file, then getting ready for the student visa.'] },
-  { slug: 'visa-services', icon: 'visa', external: true,
-    ar: ['خدمات التأشيرات', 'استشارات متخصصة لتأشيرات الدراسة والأعمال والمؤتمرات والإقامة والزيارات العائلية، عبر منصتنا WaysZ Visa.'],
-    en: ['Visa Services', 'Specialized consultations for study, business, conference, residency and family-visit visas, through our platform WaysZ Visa.'] },
-  { slug: 'certified-translation', icon: 'translation',
-    ar: ['الترجمة المعتمدة', 'ترجمة الوثائق الرسمية والشخصية والقانونية إلى جميع اللغات، عبر مكاتب ترجمة معتمدة لدى الجهات الرسمية والسفارات.'],
-    en: ['Certified Translation', 'Translation of official, personal and legal documents into all languages, through translation offices accredited by official bodies and embassies.'] },
-  { slug: 'embassy-consultations', icon: 'embassy',
-    ar: ['استشارات السفارات', 'إرشادك إلى متطلبات السفارات وإجراءاتها، ومراجعة ملفك قبل التقديم لتفادي الأخطاء الشائعة.'],
-    en: ['Embassy Consultations', 'Guiding you through embassy requirements and procedures, and reviewing your file before you apply to avoid common mistakes.'] },
-  { slug: 'flight-booking', icon: 'tickets',
-    ar: ['حجز تذاكر الطيران', 'البحث عن أنسب الرحلات من حيث المواعيد والأسعار للطلاب والمهاجرين والمسافرين للعمل، ومساعدتك في إتمام الحجز.'],
-    en: ['Flight Booking', 'Finding the most suitable flights in terms of schedules and prices for students, immigrants and those travelling for work, and helping you complete the booking.'] },
-  { slug: 'document-legalization', icon: 'legalization',
-    ar: ['توثيق المستندات وتصديقها', 'إرشادك في إجراءات تصديق الشهادات والمستندات لدى الجهات المختصة قبل تقديمها للسفارات أو الجامعات.'],
-    en: ['Document Authentication & Legalization', 'Guiding you through the procedures for legalizing certificates and documents with the competent authorities before submitting them to embassies or universities.'] },
-  { slug: 'egyptian-citizenship-by-investment', icon: 'citizenship',
-    ar: ['الجنسية المصرية بالاستثمار', 'إرشاد الأجانب في مسارات اكتساب الجنسية عبر الاستثمار العقاري أو التجاري أو المساهمة المالية، وتجهيز المستندات ومتابعة الإجراءات.'],
-    en: ['Egyptian Citizenship by Investment', 'Guiding foreign nationals through the routes to acquiring citizenship via real-estate or business investment or a financial contribution, preparing the documents and following up on the procedures.'] },
-];
-const items: ServiceItem[] = services.map(({ ar, en, ...rest }) => ({ ...rest, name: (lang === 'ar' ? ar : en)[0], text: (lang === 'ar' ? ar : en)[1] }));
+// §2.2 — the eight services, in the brief's order: card text from the one source (src/data/services.ts)
+const icons: Record<string, string> = {
+  'immigration-residency': 'immigration', 'study-abroad': 'study', 'visa-services': 'visa', 'certified-translation': 'translation',
+  'embassy-consultations': 'embassy', 'flight-booking': 'tickets', 'document-legalization': 'legalization', 'egyptian-citizenship-by-investment': 'citizenship',
+};
+const items: ServiceItem[] = (await serviceCards(lang, 'travel')).map((s) => ({
+  slug: s.slug, icon: icons[s.slug], name: s.name, text: s.text, ...(s.external ? { external: true } : {}),
+}));
 ---
 <BaseLayout lang={lang} title={t.pages.immigration.title} description={t.pages.immigration.description} headerOverlay>
   <Hero lang={lang} lead={copy.lead} />
