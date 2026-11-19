@@ -25,7 +25,6 @@ const services = defineCollection({
   schema: z.object({
     area: z.enum(['legal', 'travel', 'events', 'software']),
     order: z.number(),
-    proposed: z.boolean().default(false),    // «مقترح» in the brief = pending client approval
     ar: localized,
     en: localized,
   }),

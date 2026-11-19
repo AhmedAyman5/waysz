@@ -26,7 +26,8 @@ const copy = {
   en: { lead: 'Practical digital solutions that help your organization present itself professionally, organize its work, and save time and effort.' },
 }[lang];
 
-// §2.4 — the six services, in the brief's order. `proposed` = «مقترح» (pending the client's approval).
+// §2.4 — the six services, in the brief's order.
+// CLIENT DECISION (2026-11): every service in the brief is offered — nothing here is «مقترح».
 const services: (Omit<ServiceItem, 'name' | 'text'> & { ar: [string, string]; en: [string, string] })[] = [
   { slug: 'website-design-development', fx: 'site',
     ar: ['تصميم وتطوير المواقع', 'مواقع احترافية متجاوبة مع جميع الأجهزة، تعكس هوية علامتك وتسهّل على عملائك الوصول إليك.'],
@@ -40,10 +41,10 @@ const services: (Omit<ServiceItem, 'name' | 'text'> & { ar: [string, string]; en
   { slug: 'technology-consulting', fx: 'choose',
     ar: ['الاستشارات التقنية', 'مساعدتك على اختيار التقنيات والحلول المناسبة لاحتياجك وميزانيتك قبل أن تبدأ الاستثمار.'],
     en: ['Technology Consulting', 'Helping you choose the technologies and solutions that fit your need and budget before you start investing.'] },
-  { slug: 'event-platforms', fx: 'event', proposed: true,
+  { slug: 'event-platforms', fx: 'event',
     ar: ['منصات ومواقع الفعاليات', 'مواقع للمؤتمرات والمعارض مع التسجيل الإلكتروني وجدول الجلسات وتطبيقات الحضور.'],
     en: ['Event Platforms & Websites', 'Websites for conferences and exhibitions with online registration, the session schedule and attendee apps.'] },
-  { slug: 'support-maintenance', fx: 'fix', proposed: true,
+  { slug: 'support-maintenance', fx: 'fix',
     ar: ['الدعم الفني والصيانة', 'متابعة مواقعك وأنظمتك بعد الإطلاق، وتحديثها وحل المشكلات الفنية أولًا بأول.'],
     en: ['Technical Support & Maintenance', 'Looking after your websites and systems after launch, updating them and solving technical problems as they arise.'] },
 ];

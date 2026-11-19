@@ -36,7 +36,8 @@ const copy = {
   },
 }[lang];
 
-// §2.2 — the eight services, in the brief's order. `proposed` = «مقترح» (pending the client's approval).
+// §2.2 — the eight services, in the brief's order.
+// CLIENT DECISION (2026-11): every service in the brief is offered — nothing here is «مقترح».
 const services: (Omit<ServiceItem, 'name' | 'text'> & { ar: [string, string]; en: [string, string] })[] = [
   { slug: 'immigration-residency', icon: 'immigration',
     ar: ['استشارات الهجرة والإقامة', 'تقييم وضعك، ومساعدتك على اختيار الدولة والبرنامج الأنسب للهجرة أو الإقامة أو العمل بالخارج، ثم تجهيز ملفك خطوة بخطوة.'],
@@ -56,10 +57,10 @@ const services: (Omit<ServiceItem, 'name' | 'text'> & { ar: [string, string]; en
   { slug: 'flight-booking', icon: 'tickets',
     ar: ['حجز تذاكر الطيران', 'البحث عن أنسب الرحلات من حيث المواعيد والأسعار للطلاب والمهاجرين والمسافرين للعمل، ومساعدتك في إتمام الحجز.'],
     en: ['Flight Booking', 'Finding the most suitable flights in terms of schedules and prices for students, immigrants and those travelling for work, and helping you complete the booking.'] },
-  { slug: 'document-legalization', icon: 'legalization', proposed: true,
+  { slug: 'document-legalization', icon: 'legalization',
     ar: ['توثيق المستندات وتصديقها', 'إرشادك في إجراءات تصديق الشهادات والمستندات لدى الجهات المختصة قبل تقديمها للسفارات أو الجامعات.'],
     en: ['Document Authentication & Legalization', 'Guiding you through the procedures for legalizing certificates and documents with the competent authorities before submitting them to embassies or universities.'] },
-  { slug: 'egyptian-citizenship-by-investment', icon: 'citizenship', proposed: true,
+  { slug: 'egyptian-citizenship-by-investment', icon: 'citizenship',
     ar: ['الجنسية المصرية بالاستثمار', 'إرشاد الأجانب في مسارات اكتساب الجنسية عبر الاستثمار العقاري أو التجاري أو المساهمة المالية، وتجهيز المستندات ومتابعة الإجراءات.'],
     en: ['Egyptian Citizenship by Investment', 'Guiding foreign nationals through the routes to acquiring citizenship via real-estate or business investment or a financial contribution, preparing the documents and following up on the procedures.'] },
 ];

@@ -14,7 +14,6 @@ import { localizePath, useTranslations, type Lang } from '../../i18n';
 export interface ServiceItem {
   slug: string;                 // = file name in src/content/services when the service has a detail page
   icon: string;
-  proposed?: boolean;           // «مقترح» in the brief: pending the client's approval
   external?: boolean;           // the visa sheet → site.visaSite
   name: string;
   text: string;
@@ -59,7 +58,6 @@ const button = (s: ServiceItem) =>
                 <span class="sheet__num" aria-hidden="true">{num(i + 1)}</span>
               </div>
               <h3 class="sheet__name">{s.name}</h3>
-              {s.proposed && <p class="sheet__flag">{t.service.proposed}</p>}
               <p class="sheet__text">{s.text}</p>
               <a class="sheet__link link-arrow" href={b.href} rel={b.rel} aria-label={`${b.label}: ${s.name}`}
                  data-cursor={s.external ? t.cursor.visit : undefined}>
@@ -106,10 +104,6 @@ const button = (s: ServiceItem) =>
   .sheet__icon { overflow: visible; fill: none; stroke: var(--color-accent-ink); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
   .sheet__num { margin-inline-end: var(--space-5); font-family: var(--font-display); font-weight: var(--weight-bold); font-size: var(--text-sm); color: var(--color-ink-muted); }
   .sheet__name { margin-block-start: var(--space-5); font-size: var(--text-xl); font-weight: var(--weight-bold); line-height: 1.35; }
-  .sheet__flag {
-    align-self: start; margin-block-start: var(--space-3); padding: 2px var(--space-3); border-radius: var(--radius-pill);
-    border: 1px dashed var(--color-accent-ink); color: var(--color-accent-ink); font-size: var(--text-xs); line-height: 1.7;
-  }
   .sheet__text { margin-block: var(--space-3) var(--space-5); color: var(--color-ink-muted); line-height: 1.75; }
   .sheet__link {
     margin-block-start: auto; align-self: start; padding-block: var(--space-2);
