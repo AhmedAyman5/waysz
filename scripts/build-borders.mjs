@@ -10,10 +10,12 @@
  *   public/media/geo/world-egy.topo.json   simplified TopoJSON, lazy-loaded by the globe (id = ISO 3166-1 alpha-2)
  *   src/data/countries.json                the selectable countries: [id, labelLon, labelLat]
  * Rules: features are merged by ISO code (e.g. Clipperton → FR); Bir Tawil is merged into Sudan (22nd parallel);
+ * CLIENT DECISION: Israel (IL) is merged into Palestine (PS) — one country «فلسطين» / "Palestine" covering the whole
+ * area, no IL anywhere; the Golan Heights stay with Syria (as in the source);
  * areas without an ISO code (military bases, reefs) are dropped; Egypt (the origin) and Antarctica are drawn but cannot be selected.
  */
 import { execFileSync } from 'node:child_process';
-import { mkdirSync, readFileSync, writeFileSync, rmSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -21,16 +23,22 @@ const bin = process.env.MAPSHAPER ?? 'mapshaper';
 const src = 'media-inbox/14-borders/ne10/ne_10m_admin_0_countries_egy.shp';
 const tmp = join(tmpdir(), `waysz-borders-${process.pid}`);
 mkdirSync(tmp, { recursive: true });
-const run = (...args) => execFileSync(bin, args, { stdio: ['ignore', 'inherit', 'inherit'] });
+// MAPSHAPER may also point at the JS entry (node_modules/mapshaper/bin/mapshaper) — run it with node (works on Windows)
+const run = (...args) => existsSync(bin) && !/\.(cmd|exe|ps1)$/i.test(bin)
+  ? execFileSync(process.execPath, [bin, ...args], { stdio: ['ignore', 'inherit', 'inherit'] })
+  : execFileSync(bin, args, { stdio: ['ignore', 'inherit', 'inherit'] });
 
 // 1 · fields, merge by ISO code, simplify
 run(src,
   // Bir Tawil lies south of the 22nd parallel, Egypt's official border line → drawn with Sudan
   '-each', 'if (ADMIN === "Bir Tawil") ISO_A2_EH = "SD"',
+  // client decision: Israel's territory is drawn and selected as Palestine (Golan Heights stay with Syria)
+  '-each', 'if (ISO_A2_EH === "IL") ISO_A2_EH = "PS"',
   '-filter', 'ISO_A2_EH !== "-99"',
   '-each', 'id = ISO_A2_EH, lx = LABEL_X, ly = LABEL_Y, area = this.area',
   '-sort', 'area', 'descending',
   '-dissolve', 'id', 'copy-fields=lx,ly',
+  '-each', 'if (id === "PS") { lx = 35.0; ly = 31.4 }',      // label / plane target in the middle of the merged area
   '-simplify', 'weighted', process.env.DETAIL ?? '10%', 'keep-shapes',
   '-clean',
   '-o', 'format=geojson', 'precision=0.001', join(tmp, 'a.json'));
@@ -79,11 +87,13 @@ run(join(tmp, 'b.json'), '-rename-layers', 'countries', '-o', 'format=topojson',
   };
   const EXPECT = {
     'Gaza city': [34.45, 31.5, 'PS'], 'Khan Younis': [34.3, 31.34, 'PS'], Ramallah: [35.2, 31.9, 'PS'], 'East Jerusalem': [35.24, 31.78, 'PS'],
-    'Tel Aviv': [34.78, 32.08, 'IL'], Halayeb: [36.2, 22.3, 'EG'], 'Bir Tawil': [33.7, 21.87, 'SD'], Taipei: [121.5, 25.0, 'CN'],
+    'Tel Aviv': [34.78, 32.08, 'PS'], Haifa: [35.0, 32.79, 'PS'], 'Beersheba': [34.79, 31.25, 'PS'], Eilat: [34.95, 29.56, 'PS'],
+    Halayeb: [36.2, 22.3, 'EG'], 'Bir Tawil': [33.7, 21.87, 'SD'], Taipei: [121.5, 25.0, 'CN'],
     'Northern Cyprus': [33.3, 35.3, 'CY'], Hargeisa: [44.06, 9.56, 'SO'], Laayoune: [-13.2, 27.15, 'EH'], Pristina: [21.16, 42.66, 'XK'],
     Simferopol: [34.1, 44.95, 'UA'], Srinagar: [74.8, 34.08, 'IN'], Muzaffarabad: [73.47, 34.36, 'PK'], 'Aksai Chin': [79.5, 35.2, 'CN'],
     'Golan Heights': [35.75, 33.0, 'SY'], Sukhumi: [41.0, 43.0, 'GE'], Stepanakert: [46.75, 39.82, 'AZ'], Tiraspol: [29.6, 46.84, 'MD'],
   };
+  if (fc.features.some((f) => f.properties.id === 'IL')) { console.error('IL must not exist (merged into PS)'); process.exit(1); }
   const wrong = Object.entries(EXPECT).filter(([, [x, y, id]]) => find([x, y]) !== id).map(([k, [x, y, id]]) => `${k}: ${find([x, y])} ≠ ${id}`);
   if (wrong.length) { console.error('CONTESTED AREAS MOVED — raise DETAIL:\n' + wrong.join('\n')); process.exit(1); }
   console.log(`contested-area checks passed: ${Object.keys(EXPECT).length}`);

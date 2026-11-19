@@ -145,6 +145,11 @@ vertical drag scrolls the page; tap / click selects; ctrl + wheel or the buttons
 css tier (no WebGL): `earth-borders-poster.webp` + the same list and message, no flight. `.is-live` on the
 section = the globe is interactive. Selecting a country also fills `[data-destination-chip]` and adds
 `?destination=<ISO>` to `a[data-consult]` anywhere on the page.
+Borders (`scripts/build-borders.mjs`, Natural Earth, Egypt's point of view) — **client decision: Israel does not
+exist on the globe.** Its territory is merged into Palestine: ONE country «فلسطين» / "Palestine" (ISO `PS`) covering
+the whole area (clicking anywhere there → «أهلاً بك في فلسطين» / "Welcome to Palestine"); the Golan Heights stay with
+Syria. No `IL` in the data, the list, the name overrides or the copy; the build fails if `IL` reappears or a
+contested test point (Tel Aviv, Haifa, Beersheba, Eilat, Gaza, Ramallah, East Jerusalem → `PS`) moves.
 
 ### code-hero — Software hero, "Code in flight" (`views/software/Hero.astro`)
 
