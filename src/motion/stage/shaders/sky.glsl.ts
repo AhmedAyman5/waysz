@@ -141,7 +141,8 @@ export const lineVertex = /* glsl */ `
     vHead = d < 1.0 ? 1.0 : 0.0;
     vDash = aSeg.w;
     // a pulse runs toward the lit star (from A to B if B is lit, the other way if A is)
-    float toB = abs(aStars.y - uHot) < 0.5 ? 1.0 : 0.0, toA = abs(aStars.x - uHot) < 0.5 ? 1.0 : 0.0;
+    float hot = step(-0.5, uHot);                                // -1 = no star lit (minor stars are -1 too)
+    float toB = hot * step(abs(aStars.y - uHot), 0.5), toA = hot * step(abs(aStars.x - uHot), 0.5);
     float t = fract(uTime * 0.85);
     vPulse = toB > 0.5 ? t : toA > 0.5 ? 1.0 - t : -9.0;
   }
