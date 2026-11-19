@@ -27,7 +27,7 @@ import Roof from './events/Roof.astro';
 import How from './events/How.astro';
 import Faq from './events/Faq.astro';
 import Consult from './events/Consult.astro';
-import { serviceCards } from '../data/services';
+import { AREA_INTRO, serviceCards } from '../data/services';
 import { useTranslations, type Lang } from '../i18n';
 
 interface Props { lang: Lang }
@@ -35,10 +35,7 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 
 // §2.3 group intro, whole, as the hero lead
-const lead = {
-  ar: 'ننظم معارض ومؤتمرات دولية متكاملة، من الفكرة والتخطيط حتى يوم الافتتاح وما بعده. نتولى كل التفاصيل: المكان، والتجهيزات، والوفود، والتسجيل، والترجمة الفورية؛ لتخرج فعاليتك بصورة تليق باسمك أمام جمهور محلي ودولي.',
-  en: 'We organize complete international exhibitions and conferences, from the idea and the planning to opening day and beyond. We take care of every detail — the venue, the setup, the delegations, registration and simultaneous interpretation — so your event comes out in a way worthy of your name, before a local and international audience.',
-}[lang];
+const lead = AREA_INTRO.events[lang];
 
 // §2.3 — the ten services in the brief's order (src/data/services.ts, the one source of the card text);
 // steps and FAQ come from the service files, so the group page and the detail pages can never differ.

@@ -126,3 +126,28 @@ export const gala = {
   lang: 'ar' as 'ar' | 'en',                 // the word on the badge
   icons: [] as string[],                     // one SVG path (48 × 48 box) per event type: engraved on its medallion
 };
+
+/**
+ * Services page — "The sky of services". Written by scenes/services-sky.ts (the page), services-hero.ts,
+ * services-directory.ts (tabs, cards) and services-unite.ts; read by acts/sky.ts.
+ * Every service is a star, every area a constellation that draws its emblem: 0 legal (scales) · 1 travel (a plane
+ * on its route) · 2 events (a stage in a spotlight) · 3 software (</>). Stars are numbered in the order of
+ * src/data/services.ts (0…29), like the cards' `data-star`.
+ */
+export const SKY_AREAS = ['legal', 'travel', 'events', 'software'] as const;
+/** «جهة واحدة تنسّق كل شيء»: where each arc starts drawing in `sky.unite` (one per item, in the order of the text) */
+export const UNITE = { order: [1, 2, 3, 0], at: [0.16, 0.32, 0.48, 0.64], span: 0.14, final: 0.8 } as const;
+export const sky = {
+  focus: -1,                                 // constellation the camera frames: -1 = the whole sky · 0…3 = an area
+  box: { x: 0, y: 0, w: 1, h: 1 },           // where on screen to frame it (CSS px inside the stage host)
+  push: 0,                                   // 0…1 hero scroll: the camera drifts closer
+  night: 0,                                  // 0 = twilight (top of the page) · 1 = deep night
+  unite: 0,                                  // 0…1: arcs join the four constellations into one sign (see UNITE)
+  hot: -1,                                   // star lit by the DOM (card under the pointer / keyboard focus), -1 = none
+  pointer: { x: 0, y: 0, on: false },        // pointer over open sky (host px) — the act finds the star under it
+  hover: -1,                                 // star under the pointer (found by the act)
+  hoverAt: { x: 0, y: 0 },                   // its position on screen (host px)
+  onHover: null as ((i: number) => void) | null,   // act → scene: the star under the pointer changed
+  compact: false,                            // portrait screens: the four constellations stand in a column
+  poster: '' as '' | 'scatter' | 'all' | (typeof SKY_AREAS)[number],   // dev only (?sky=…): stills for the css tier
+};

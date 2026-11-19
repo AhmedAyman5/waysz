@@ -16,16 +16,13 @@ import Services, { type ServiceItem } from './software/Services.astro';
 import Process from './software/Process.astro';
 import Missing from './software/Missing.astro';
 import Cta from './home/Cta.astro';
-import { serviceCards } from '../data/services';
+import { AREA_INTRO, serviceCards } from '../data/services';
 import { useTranslations, type Lang } from '../i18n';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 // §2.4 group intro, whole, as the hero lead
-const copy = {
-  ar: { lead: 'حلول رقمية عملية تساعد مؤسستك على الظهور باحترافية، وتنظيم عملها، وتوفير الوقت والجهد.' },
-  en: { lead: 'Practical digital solutions that help your organization present itself professionally, organize its work, and save time and effort.' },
-}[lang];
+const copy = { lead: AREA_INTRO.software[lang] };
 
 // §2.4 — the six services, in the brief's order: card text from the one source (src/data/services.ts)
 const fx: Record<string, ServiceItem['fx']> = {

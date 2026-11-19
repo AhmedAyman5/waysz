@@ -20,6 +20,26 @@ export const GROUP_PAGE: Record<Area, string> = {
   software: '/services/software-technology/',
 };
 
+/** the intro paragraph of each area, whole (brief §2.1–§2.4) — the Services page and the group-page heroes */
+export const AREA_INTRO: Record<Area, Record<Lang, string>> = {
+  legal: {
+    ar: 'استشارات قانونية ومتابعة للقضايا والإجراءات، نشرح لك فيها موقفك القانوني بلغة بسيطة، ونساعدك على اتخاذ القرار الصحيح في الوقت المناسب، بما يحمي مصالحك وسمعتك.',
+    en: 'Legal consultations and follow-up on cases and procedures, in which we explain your legal position in plain language and help you make the right decision at the right time, in a way that protects your interests and your reputation.',
+  },
+  travel: {
+    ar: 'سواء كنت تخطط للهجرة، أو للدراسة في جامعة بالخارج، أو تحتاج إلى تأشيرة لأي غرض؛ نرافقك في رحلتك من أول سؤال حتى تجهيز ملفك كاملًا: اختيار المسار، والمستندات، والترجمة المعتمدة، والتعامل مع متطلبات السفارات.',
+    en: 'Whether you are planning to immigrate, to study at a university abroad, or need a visa for any purpose — we stay with you on your journey from the first question until your file is complete: choosing the path, the documents, certified translation and dealing with embassy requirements.',
+  },
+  events: {
+    ar: 'ننظم معارض ومؤتمرات دولية متكاملة، من الفكرة والتخطيط حتى يوم الافتتاح وما بعده. نتولى كل التفاصيل: المكان، والتجهيزات، والوفود، والتسجيل، والترجمة الفورية؛ لتخرج فعاليتك بصورة تليق باسمك أمام جمهور محلي ودولي.',
+    en: 'We organize complete international exhibitions and conferences, from the idea and the planning to opening day and beyond. We take care of every detail — the venue, the setup, the delegations, registration and simultaneous interpretation — so your event comes out in a way worthy of your name, before a local and international audience.',
+  },
+  software: {
+    ar: 'حلول رقمية عملية تساعد مؤسستك على الظهور باحترافية، وتنظيم عملها، وتوفير الوقت والجهد.',
+    en: 'Practical digital solutions that help your organization present itself professionally, organize its work, and save time and effort.',
+  },
+};
+
 type Card = { name: string; summary: string };
 interface Def {
   slug: string;

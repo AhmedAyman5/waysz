@@ -21,7 +21,7 @@ import Why from './legal/Why.astro';
 import How from './legal/How.astro';
 import Faq from './legal/Faq.astro';
 import Consult from './legal/Consult.astro';
-import { serviceCards } from '../data/services';
+import { AREA_INTRO, serviceCards } from '../data/services';
 import { useTranslations, type Lang } from '../i18n';
 
 interface Props { lang: Lang }
@@ -29,10 +29,7 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 
 // §2.1 group intro, whole, as the hero lead
-const lead = {
-  ar: 'استشارات قانونية ومتابعة للقضايا والإجراءات، نشرح لك فيها موقفك القانوني بلغة بسيطة، ونساعدك على اتخاذ القرار الصحيح في الوقت المناسب، بما يحمي مصالحك وسمعتك.',
-  en: 'Legal consultations and follow-up on cases and procedures, in which we explain your legal position in plain language and help you make the right decision at the right time, in a way that protects your interests and your reputation.',
-}[lang];
+const lead = AREA_INTRO.legal[lang];
 
 // §2.1 — the six services in the brief's order (src/data/services.ts, the one source of the card text);
 // steps and FAQ come from the service files, so the group page and the detail pages can never differ.
