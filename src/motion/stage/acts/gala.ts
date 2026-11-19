@@ -461,13 +461,19 @@ export function createGalaAct(host: HTMLElement): Act {
   const faceMat = std(cGold.clone().multiplyScalar(1.1), 0.3, 1, { map: atlas, bumpMap: atlas, bumpScale: 0.8, envMapIntensity: 1.4 });
   const plinthGeo = own(new CylinderGeometry(0.42, 0.5, 1.05, 40));
   const medalGeo = own(new CylinderGeometry(0.5, 0.5, 0.07, 64));
+  // plinths and their gold rings: two instanced draws; the medallions stay meshes (each has its own atlas cell)
+  const plinths = new InstancedMesh(plinthGeo, woodMat, 8);
+  const plinthRings = new InstancedMesh(own(new TorusGeometry(0.46, 0.025, 8, 48)), goldMat, 8);
+  table.add(plinths, plinthRings);
   for (let i = 0; i < 8; i++) {
     const a = (i / 8) * Math.PI * 2;
     const holder = new Group();
     holder.position.set(Math.sin(a) * 2.55, 0.18, Math.cos(a) * 2.55);
     holder.rotation.y = a;
-    const plinth = new Mesh(plinthGeo, woodMat); plinth.position.y = 0.52;
-    const ring = new Mesh(own(new TorusGeometry(0.46, 0.025, 8, 48)), goldMat); ring.rotation.x = Math.PI / 2; ring.position.y = 1.04;
+    dummy.position.set(holder.position.x, 0.18 + 0.52, holder.position.z); dummy.rotation.set(0, a, 0); dummy.scale.setScalar(1); dummy.updateMatrix();
+    plinths.setMatrixAt(i, dummy.matrix);
+    dummy.position.y = 0.18 + 1.04; dummy.rotation.set(Math.PI / 2, 0, 0); dummy.updateMatrix();
+    plinthRings.setMatrixAt(i, dummy.matrix);
     const face = own(medalGeo.clone());
     face.rotateX(Math.PI / 2);
     const uv = face.attributes.uv, pos = face.attributes.position;
@@ -476,7 +482,7 @@ export function createGalaAct(host: HTMLElement): Act {
       uv.setXY(k, (u + (i % 4)) / 4, (v + (1 - Math.floor(i / 4))) / 2);
     }
     const medal = new Mesh(face, faceMat); medal.position.y = 1.62;
-    holder.add(plinth, ring, medal);
+    holder.add(medal);
     table.add(holder);
   }
 
@@ -982,7 +988,15 @@ export function createGalaAct(host: HTMLElement): Act {
       await faces;
       const hidden: Object3D[] = [];
       world.traverse((o) => { if (!o.visible) { hidden.push(o); o.visible = true; } });
+      // compile for the target this world is really drawn into (linear output, not the canvas's sRGB variant)
+      renderer.setRenderTarget(target);
       await renderer.compileAsync(world, camera);
+      [frontMat.map, backMat.map, strapTex, carpetTex, atlas, glowTex, noise].forEach((tex) => { if (tex) renderer.initTexture(tex); });
+      // one warm-up frame with everything visible: every texture and buffer reaches the GPU now, not the first time
+      // its section scrolls into view (the badge's printed face alone stalled a frame for over a second at CPU 4x)
+      renderer.setRenderTarget(target);
+      renderer.render(world, camera);
+      renderer.setRenderTarget(null);
       hidden.forEach((o) => { o.visible = false; });
       ready = true;
     },
@@ -1031,6 +1045,7 @@ export function createGalaAct(host: HTMLElement): Act {
 
       // ---------- the turntable brings event type n to the front (+z, toward the hall) ----------
       table.rotation.y += (-gala.turn * (Math.PI / 4) - table.rotation.y) * k(0.25);
+      table.visible = poster !== '' || gala.shot < 1 || gala.shot >= 4.2;     // from the foyer it is out of sight
 
       // ---------- seats: lit seats glow and warm up ----------
       lampMat.uniforms.uFill.value = poster === 'hall' ? 0.0 : gala.seats;

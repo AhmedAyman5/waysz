@@ -66,13 +66,14 @@ const scene: Scene = (root) => {
       flipTo(t, target, at, tl);
     };
     const running = new Map<HTMLElement, gsap.core.Timeline>();
-    const setCell = (b: Cell, text: string, delay: number, stops: number) => {
+    const setCell = (b: Cell, text: string, delay: number, stops: number, force = false) => {
       // a cell that is still flipping finishes at once: two flips never fight over the same tiles
       running.get(b.cell)?.progress(1).kill();
       const tl = gsap.timeline({ onComplete: () => { running.delete(b.cell); } });
       running.set(b.cell, tl);
       const want = units(text, b.col);
-      b.tiles.forEach((t, i) => roll(t, want[i] ?? '', delay + i * (latin ? 0.035 : 0.12), tl, want[i]?.trim() || t.now.trim() ? stops : 0));
+      // only tiles whose letter / word changes flip; a blank that stays blank does nothing
+    b.tiles.forEach((t, i) => { if ((want[i] ?? '') !== t.now || (force && (want[i] ?? '').trim())) roll(t, want[i] ?? '', delay + i * (latin ? 0.05 : 0.12), tl, stops); });
       return tl;
     };
     let stage = 0, booted = false, built = false, done = false;
@@ -103,7 +104,8 @@ const scene: Scene = (root) => {
         make();
         whenBuilt(() => {
           booted = true;
-          board.forEach((b, k) => setCell(b, b.col === 2 ? states[stage][Math.floor(k / 3)] : (b.cell.dataset.text ?? ''), k * 0.05, latin ? 3 : 2));
+          // each cell's flips are created in their own frame (hundreds of tweens, never in one task)
+        board.forEach((b, k) => gsap.delayedCall(k * 0.09, () => setCell(b, b.col === 2 ? states[stage][Math.floor(k / 3)] : (b.cell.dataset.text ?? ''), 0, latin ? 2 : 1, true)));
         });
       },
     });
@@ -115,7 +117,7 @@ const scene: Scene = (root) => {
         const next = Math.min(states.length - 1, Math.floor(self.progress * states.length * 0.999 + (self.progress > 0.12 ? 0.6 : 0)));
         if (next === stage || !booted) return;
         stage = next;
-        status.forEach((b, r) => setCell(b, states[stage][r], r * 0.08, latin ? 2 : 1));
+        status.forEach((b, r) => gsap.delayedCall(r * 0.14, () => setCell(b, states[stage][r], 0, 1)));
       },
     });
 
