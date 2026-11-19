@@ -58,6 +58,11 @@
   /* Velvet — the stage curtain and the red carpet (Exhibitions & Conferences page) */
   --velvet-900: #3A0710;
   --velvet-600: #8C1424;
+  --velvet-400: #D9566A;
+
+  /* Area flavours of the Services page (one per area, readable as lines and glows on the night sky) */
+  --bronze-400: #CF9A63;
+  --cyan-400:   #4FC8D6;
 
   /* Feedback */
   --green-700: #167A53;
@@ -84,6 +89,12 @@
 
   --color-velvet:      var(--velvet-600);   /* stage curtain, red carpet, seats */
   --color-velvet-deep: var(--velvet-900);   /* the shadow inside the velvet's folds */
+
+  /* the four areas on the Services page: Legal bronze · Immigration dusk amber · Events velvet · Software code cyan */
+  --color-area-legal:    var(--bronze-400);
+  --color-area-travel:   var(--horizon-500);
+  --color-area-events:   var(--velvet-400);
+  --color-area-software: var(--cyan-400);
 
   --color-success:   var(--green-700);
   --color-error:     var(--red-700);

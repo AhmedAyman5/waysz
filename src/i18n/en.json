@@ -120,5 +120,23 @@
     "zoomIn": "Zoom in on the globe",
     "zoomOut": "Zoom out of the globe",
     "destination": "Your destination: {country}"
+  },
+  "servicesPage": {
+    "label": "Filter the services by area",
+    "all": "All",
+    "tabs": {
+      "legal": "Legal",
+      "travel": "Immigration & Study",
+      "events": "Exhibitions & Conferences",
+      "software": "Technology"
+    },
+    "explore": {
+      "legal": "Explore legal services",
+      "travel": "Explore immigration and study services",
+      "events": "Explore event services",
+      "software": "Explore technology solutions"
+    },
+    "help": "How can we help you?",
+    "types": "The kinds of events we organize"
   }
 }

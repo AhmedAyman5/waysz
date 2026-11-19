@@ -244,6 +244,32 @@ the hall: `node scripts/render-gala-still.mjs`), swapped by `.is-hall`, faded wh
 - **events-consult** (`Consult.astro`): sticky progress → `gala.final`: the spots converge, the curtain closes (0.1 → 0.9),
   applause flashes. The act multiplies the curtain's `open` by the finale, so scrolling back opens it again.
 
+### services-sky — Services page, the night sky behind every section (`views/ServicesPage.astro`)
+
+`.sky.theme-dark > .sky__stage.stage-host[data-scene=services-sky] (.sky__still--scatter, .sky__still--all, .sky__tip) + .sky__body (hero · directory · unite · ask) ` then the Home call.
+Same pattern as `legal-thread`: the host is sticky for the whole page and ONE act (`sky`) draws behind every section.
+The thread writes `sky.focus` (the visible area under the middle of the screen, or -1) and `sky.box` (the screen rect of
+that area's `.area__sky` window, of `.unite__sky` in the finale, else the whole screen): the act flies the camera so that
+constellation — or the whole sky — fits that box. So the layout decides where the stars go (RTL needs nothing; the
+constellations never mirror). It also writes `night`, the pointer over `[data-sky-pad]` (the act reports the star under it:
+a label, a click → `sky:pick` → its card), and on desktop adds a short star trail behind the plane cursor.
+Stars are numbered like `src/data/services.ts` (`data-star` on the cards). css tier / no JS: `sky-scatter` (hero, the canvas
+starts from exactly it), `sky-all` (css tier: behind the hero once the title settles and the finale; plain stars elsewhere) and one `sky-<area>` still per area window (alpha):
+`node scripts/render-sky-still.mjs`.
+
+### services-hero · services-directory · services-unite
+
+- **services-hero** (`views/services/Hero.astro`): 165lvh sticky; the huge title and the §2 intro are painted at once (LCP),
+  the title settles while the stars gather (the act's `uAssemble`, 3.6 s); scroll → text leaves, `sky.push`.
+- **services-directory** (`Directory.astro`): the tab links become an ARIA tab list (roving tabindex, arrows follow the
+  reading direction, automatic activation, `?area=` in and out via replaceState). A change is two steps: the leaving areas
+  fade, then the layout changes, the page returns to the directory top and the staying cards fly with Flip while the
+  arriving ones rise. The beam (`.tabs__beam`) is moved between tabs with Flip: the selected tab, or under «الكل» the area
+  being read (scroll spy), whose colour the bar takes (`data-here`). Cards: pointer / focus → `sky.hot`. Legal chips: `--lit`
+  in sequence on every entry. Event types: CSS double marquee (a hidden list carries the text for screen readers).
+- **services-unite** (`Unite.astro`): 300lvh sticky; progress = `sky.unite`; each part of the sentence gets `.is-on` when
+  its arc draws (`UNITE` in bridge.ts), the closing line when the ring closes. Heading by words once.
+
 ### destinations (Motion Lab) — sticky cards that stack
 
 Kept for the Motion Lab; Home uses `areas`.
@@ -277,7 +303,7 @@ Unchanged (see Motion Lab).
 | 1.6     | CTA              | runway at dusk (photo)                                                  | `approach` · CSS approach lights · `data-magnetic` — BUILT            |
 | 1.7     | WaysZ Visa link  | terminal at sunset (photo)                                              | `boarding-pass` (3D tilt + SVG stamp) — BUILT                         |
 | 1.8     | Footer           | logo                                                                    | `footer-landing` (runway + touchdown) — BUILT                         |
-| 2       | Services         | header photo per area tab                                               | `services-filter` (Flip) · cards with photos                          |
+| 2       | Services         | a procedural night sky in the stage (act `sky`): one star per service, four constellations drawing the area emblems · our own stills for the css tier | `services-sky` · `services-hero` · `services-directory` (ARIA tabs + Flip) · `services-unite` · `ask-box` · `approach` — BUILT |
 | 2.2     | Immigration group page | dusk window-seat video · borders globe (act `explore`)            | `page-hero` · `journey-route` · `dossier` · `boarding-pass` · `explore-globe` · `approach` — BUILT |
 | 2.4     | Software group page | dusk city video inside the stage (act `glyphs`) · code photo         | `code-hero` · `code-forge` · `build-steps` · `ask-box` · `approach` — BUILT |
 | 2.1     | Legal group page | 3D scales, colonnade and dusk light in the stage (act `justice`, dusk HDRI) · still for the css tier | `legal-thread` · `legal-hero` · `legal-weights` · `legal-colonnade` · `legal-why` · `legal-how` · `legal-faq` · `legal-consult` — BUILT |

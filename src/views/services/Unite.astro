@@ -1,0 +1,119 @@
+---
+/**
+ * Services page — «جهة واحدة تنسّق كل شيء»: the one place where the four areas work as one (brief §2.3, «ما يميزنا في
+ * الفعاليات الدولية»). Scene: motion/scenes/services-unite.ts. A sticky screen (no pin): as each part of the sentence
+ * arrives, the sky (act `sky`, `sky.unite`) draws an arc from that part's constellation to one centre star; the last
+ * line closes a ring around it — four ways, one WaysZ. The words are the brief's own sentence, cut at its commas.
+ * Waiting parts are dimmed with opacity (never hidden, still AA). No JS: plain flow, everything visible.
+ */
+import { site } from '../../lib/site';
+import { GROUP_PAGE } from '../../data/services';
+import { localizePath, type Lang } from '../../i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const href = (a: keyof typeof GROUP_PAGE) => localizePath(GROUP_PAGE[a], lang);
+// order = the brief's sentence; `area` = the constellation its arc comes from (UNITE.order in motion/stage/bridge.ts)
+const copy = {
+  ar: {
+    label: 'ما يميزنا في الفعاليات الدولية',
+    title: 'جهة واحدة تنسّق كل شيء',
+    lead: 'كل ما تحتاجه فعاليتك تحت سقف واحد:',
+    items: [
+      { area: 'travel', text: 'تأشيرات الوفود', via: 'WaysZ Visa', href: site.visaSite, external: true },
+      { area: 'events', text: 'الترجمة المعتمدة والفورية', via: 'المعارض والمؤتمرات الدولية', href: href('events') },
+      { area: 'software', text: 'منصة التسجيل وموقع الفعالية', via: 'فريق البرمجيات', href: href('software') },
+      { area: 'legal', text: 'صياغة العقود واتفاقيات الرعاية', via: 'الفريق القانوني', href: href('legal') },
+    ],
+    close: 'جهة واحدة تنسق كل شيء، بدل التعامل مع موردين متعددين.',
+  },
+  en: {
+    label: 'What sets us apart in international events',
+    title: 'One party coordinates everything',
+    lead: 'Everything your event needs, under one roof:',
+    items: [
+      { area: 'travel', text: 'Delegation visas', via: 'WaysZ Visa', href: site.visaSite, external: true },
+      { area: 'events', text: 'Certified and simultaneous translation', via: 'Exhibitions & Conferences', href: href('events') },
+      { area: 'software', text: 'The registration platform and the event website', via: 'our software team', href: href('software') },
+      { area: 'legal', text: 'Contracts and sponsorship agreements', via: 'our legal team', href: href('legal') },
+    ],
+    close: 'One party coordinates everything, instead of dealing with many different suppliers.',
+  },
+}[lang];
+---
+<section class="unite" id="one-body" data-scene="services-unite" data-waypoint aria-labelledby="unite-title">
+  <div class="unite__view">
+    <div class="unite__sky" data-sky-pad aria-hidden="true"></div>
+    <div class="unite__text container">
+      <p class="unite__label">{copy.label}</p>
+      <h2 class="unite__title" id="unite-title">{copy.title}</h2>
+      <p class="unite__lead">{copy.lead}</p>
+      <ul class="unite__items" role="list">
+        {copy.items.map((item) => (
+          <li class="unite__item" data-area={item.area}>
+            <a href={item.href} rel={item.external ? 'noopener' : undefined}>
+              <span class="unite__what">{item.text}</span>
+              <span class="unite__via">{item.external ? <bdi>{item.via}</bdi> : item.via}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p class="unite__close">{copy.close}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .unite { position: relative; overflow-x: clip; }
+  .unite__view { position: relative; display: grid; gap: var(--space-6); padding-block: var(--section-y); }
+  .unite__sky { height: 40vh; height: 40svh; min-height: 220px; }
+  :global(.js) .unite { height: 300vh; height: 300lvh; }
+  :global(.js) .unite__view {
+    position: sticky; top: 0; height: 100vh; height: 100lvh; overflow: clip;
+    grid-template-rows: minmax(26%, 1fr) auto; gap: 0; padding-block: 76px var(--space-6);
+  }
+  :global(.js) .unite__sky { height: auto; min-height: 0; }
+  @media (min-width: 1024px) {
+    :global(.js) .unite__view { grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); grid-template-rows: 1fr; align-items: center; padding-inline: max(var(--space-6), (100% - 1240px) / 2); column-gap: var(--space-7); }
+    :global(.js) .unite__text { grid-column: 1; grid-row: 1; width: auto; justify-items: start; text-align: start; }
+    :global(.js) .unite__sky { grid-column: 2; grid-row: 1; align-self: stretch; }
+    :global(.js) .unite__items { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  .unite__text { position: relative; display: grid; justify-items: center; text-align: center; gap: var(--space-3); }
+  .unite__text::before {   /* night under the words: AA whatever the sky draws */
+    content: ''; position: absolute; inset: -12% -6% -18%; z-index: -1; pointer-events: none;
+    background: radial-gradient(ellipse 60% 56% at 50% 54%, color-mix(in srgb, var(--color-bg) 78%, transparent), transparent 100%);
+  }
+  .unite__label { font-size: var(--text-sm); color: color-mix(in srgb, var(--color-ink) 80%, transparent); }
+  .unite__title { font-size: clamp(2rem, 1.1rem + 3.4vw, 4.4rem); line-height: 1.1; letter-spacing: -0.015em; max-width: 16ch; }
+  :global([dir='rtl']) .unite__title { line-height: 1.32; letter-spacing: 0; }
+  .unite__lead { font-size: var(--text-lg); color: color-mix(in srgb, var(--color-ink) 90%, transparent); }
+  .unite__items { display: grid; gap: var(--space-3); width: 100%; max-width: 980px; margin-block-start: var(--space-2); }
+  @media (min-width: 640px) { .unite__items { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 1024px) { .unite__items { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  .unite__item { --area: var(--color-accent); }
+  .unite__item[data-area='legal'] { --area: var(--color-area-legal); }
+  .unite__item[data-area='travel'] { --area: var(--color-area-travel); }
+  .unite__item[data-area='events'] { --area: var(--color-area-events); }
+  .unite__item[data-area='software'] { --area: var(--color-area-software); }
+  .unite__item a {
+    display: grid; gap: var(--space-1); height: 100%; padding: var(--space-3) var(--space-4);
+    border-block-start: 2px solid var(--area); border-radius: var(--radius-sm);
+    background: color-mix(in srgb, var(--color-bg) 80%, transparent); text-decoration: none;
+    transition: background-color var(--dur-fast) var(--ease-out);
+  }
+  .unite__item a:hover { background: color-mix(in srgb, var(--area) 16%, var(--color-bg)); }
+  .unite__what { font-family: var(--font-display); font-weight: var(--weight-semibold); font-size: var(--text-base); line-height: 1.5; }
+  .unite__via { font-size: var(--text-xs); color: color-mix(in srgb, var(--color-ink) 78%, transparent); }
+  .unite__close { margin-block-start: var(--space-2); max-width: 46ch; font-size: var(--text-lg); line-height: 1.7; font-weight: var(--weight-semibold); }
+  /* with JS the parts arrive with the arcs; waiting parts stay readable (opacity only, ≥ AA) */
+  :global(.js) .unite__item, :global(.js) .unite__close { opacity: 0.5; transition: opacity 0.6s var(--ease-out), translate 0.6s var(--ease-out); }
+  :global(.js) .unite__item.is-on, :global(.js) .unite__close.is-on { opacity: 1; }
+  @media (max-width: 639px) {
+    .unite__lead, .unite__close { font-size: var(--text-base); }
+    .unite__items { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2); }
+    .unite__item a { padding: var(--space-2) var(--space-3); }
+    .unite__what { font-size: var(--text-sm); }
+  }
+</style>

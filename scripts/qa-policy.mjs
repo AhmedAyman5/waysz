@@ -24,6 +24,7 @@ const pages = [
   ['software', 'services/software-technology/'],
   ['legal', 'services/legal-services/'],
   ['events', 'services/exhibitions-conferences/'],
+  ['services', 'services/'],
 ];
 const devices = [
   { name: 'desktop', viewport: { width: 1440, height: 900 } },

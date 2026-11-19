@@ -27,6 +27,7 @@ import Roof from './events/Roof.astro';
 import How from './events/How.astro';
 import Faq from './events/Faq.astro';
 import Consult from './events/Consult.astro';
+import { AREA_INTRO, serviceCards } from '../data/services';
 import { useTranslations, type Lang } from '../i18n';
 
 interface Props { lang: Lang }
@@ -34,32 +35,23 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 
 // §2.3 group intro, whole, as the hero lead
-const lead = {
-  ar: 'ننظم معارض ومؤتمرات دولية متكاملة، من الفكرة والتخطيط حتى يوم الافتتاح وما بعده. نتولى كل التفاصيل: المكان، والتجهيزات، والوفود، والتسجيل، والترجمة الفورية؛ لتخرج فعاليتك بصورة تليق باسمك أمام جمهور محلي ودولي.',
-  en: 'We organize complete international exhibitions and conferences, from the idea and the planning to opening day and beyond. We take care of every detail — the venue, the setup, the delegations, registration and simultaneous interpretation — so your event comes out in a way worthy of your name, before a local and international audience.',
-}[lang];
+const lead = AREA_INTRO.events[lang];
 
-// §2.3 — the ten services in the brief's order; name, summary, steps and FAQ come from the service files,
-// so the group page and the detail pages can never differ.
-const order = [
-  'international-conferences', 'trade-exhibitions', 'exhibition-participation', 'stand-design-build', 'delegation-guest-management',
-  'registration-attendance', 'interpretation-event-technology', 'delegation-visas', 'event-marketing', 'sponsor-speaker-management',
-] as const;
-type Slug = (typeof order)[number];
+// §2.3 — the ten services in the brief's order (src/data/services.ts, the one source of the card text);
+// steps and FAQ come from the service files, so the group page and the detail pages can never differ.
 const entries = await getCollection('services', (e) => e.data.area === 'events');
-const services = order.map((slug) => {
-  const entry = entries.find((e) => e.id === slug)!;
-  return { slug, ...entry.data[lang] };
-});
-const svc = (slug: Slug) => services.find((s) => s.slug === slug)!;
+const services = (await serviceCards(lang, 'events')).map((c) => ({
+  ...entries.find((e) => e.id === c.slug)!.data[lang], slug: c.slug, name: c.name, summary: c.text,
+}));
+const svc = (slug: string) => services.find((s) => s.slug === slug)!;
 const conference = svc('international-conferences');
 // a short FAQ built from the detail pages: the question every organizer asks first, then the ones that matter most
-const pick = (slug: Slug, i: number) => ({ ...svc(slug).faq[i], service: svc(slug).name, slug });
+const pick = (slug: string, i: number) => ({ ...svc(slug).faq[i], service: svc(slug).name, slug });
 const faq = [
   pick('international-conferences', 0), pick('international-conferences', 1), pick('delegation-visas', 0), pick('sponsor-speaker-management', 0),
   pick('stand-design-build', 0), pick('registration-attendance', 0), pick('interpretation-event-technology', 0),
 ];
-const brief = (slug: Slug) => ({ slug, name: svc(slug).name, text: svc(slug).summary });
+const brief = (slug: string) => ({ slug, name: svc(slug).name, text: svc(slug).summary });
 ---
 <BaseLayout lang={lang} title={t.pages.events.title} description={t.pages.events.description} headerOverlay>
   <div class="gala theme-dark">

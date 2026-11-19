@@ -36,6 +36,9 @@ requests) — open the link once and replace the note with the contributor's nam
 | public/media/img/scales-poster.webp · scales-poster-m.webp  | our own render of the 3D scales (the WebGL act `justice`, `scripts/render-scales-still.mjs`) | WaysZ          | —                      | 2026-11-17 | still of the balanced scales for the css tier (no WebGL) and no JS (Legal page): 1100×1300 beside the text on wide screens, 780×1688 full screen on phones |
 | public/media/img/curtain-poster.webp · curtain-poster-m.webp | our own render of the closed velvet curtain (the WebGL act `gala`, `scripts/render-gala-still.mjs`) | WaysZ | — | 2026-11-18 | still for the css tier (no WebGL), no JS and the first paint of the Exhibitions & Conferences page: 1600×1000 (30 KB) and 780×1688 full screen on phones (20 KB) |
 | public/media/img/hall-poster.webp · hall-poster-m.webp       | our own render of the hall with the curtain open (act `gala`, `?gala=hall`)          | WaysZ | — | 2026-11-18 | still of the hall behind the middle sections on the css tier: 1600×1000 (38 KB), 780×1688 (42 KB). No text, logo, flag, sponsor mark or person anywhere in the world |
+| public/media/img/sky-scatter.webp · sky-scatter-m.webp       | our own render of the night sky with the scattered stars (the WebGL act `sky`, `scripts/render-sky-still.mjs`, `?sky=scatter`) | WaysZ | — | 2026-11-19 | first paint, css tier (no WebGL) and no JS of the Services page hero — the canvas starts from exactly this sky: 1600×1000 (15 KB), 780×1688 on portrait screens (8 KB) |
+| public/media/img/sky-all.webp · sky-all-m.webp               | our own render of the four constellations drawn (act `sky`, `?sky=all`)             | WaysZ | — | 2026-11-19 | behind the hero (after the title settles) and the finale on the css tier: 1600×1000 (24 KB), 780×1688 (15 KB) |
+| public/media/img/sky-legal · sky-travel · sky-events · sky-software (.webp) | our own render of one constellation (act `sky`, `?sky=<area>`), on transparent | WaysZ | — | 2026-11-19 | each area's window (`.area__sky`) on the css tier and without JS — black turned into alpha; 720×720, 6–7 KB each, loaded lazily |
 
 Astro generates the responsive WebP files of `src/assets/media/*` at build time (`dist/_astro/`).
 
@@ -85,3 +88,8 @@ faint environment for the gold and the brass. The logo on the badge is read from
 pattern on it is seeded noise with three finder squares — it encodes nothing. The event-type icons, service icons, the
 headset and the split-flap board are our own SVG / HTML. Stock photos of exhibition halls were not used: every candidate
 seen for the Home page showed readable booth signs, country names or faces (see the Home audit), and the 3D hall needs none.
+
+The Services page ships no photo, footage or model: the night sky, the Milky Way band, the aurora, the 2 600 field stars,
+the four constellations (scales, a plane on its route, a stage in a spotlight, </>) and the finale's arcs and ring are
+procedural geometry and shaders built in `src/motion/stage/acts/sky.ts` + `shaders/sky.glsl.ts`. The emblems on the tabs
+and cards are our own SVG paths (`src/views/services/emblems.ts`). No real star chart, constellation or logo is copied.

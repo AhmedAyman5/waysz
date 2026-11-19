@@ -2,6 +2,7 @@
 /** Site header (brief §1.1). Hide/show + solid state: motion/globals/header.ts */
 import Logo from './Logo.astro';
 import { site } from '../lib/site';
+import { AREAS, GROUP_PAGE } from '../data/services';
 import { languages, localizePath, otherLang, switchLangPath, useTranslations, type Lang } from '../i18n';
 
 interface Props {
@@ -19,12 +20,8 @@ const links = [
   { href: localizePath('/about/', lang), label: t.nav.about },
   { href: localizePath('/contact/', lang), label: t.nav.contact },
 ];
-// §1.1 «قائمة خدماتنا»: the four areas
-const groupPage: Partial<Record<string, string>> = { legal: '/services/legal-services/', travel: '/services/immigration-study-visa/', events: '/services/exhibitions-conferences/', software: '/services/software-technology/' };   // areas that have their own page (brief §2.1–§2.4)
-const areas = (['legal', 'travel', 'events', 'software'] as const).map((key) => ({
-  label: t.areas[key],
-  href: groupPage[key] ? localizePath(groupPage[key]!, lang) : `${localizePath('/services/', lang)}#${key}`,
-}));
+// §1.1 «قائمة خدماتنا»: the four areas, each links to its group page (brief §2.1–§2.4)
+const areas = AREAS.map((key) => ({ label: t.areas[key], href: localizePath(GROUP_PAGE[key], lang) }));
 const isCurrent = (href: string) =>
   href === localizePath('/', lang) ? here === href : here.startsWith(href);
 ---
@@ -42,7 +39,7 @@ const isCurrent = (href: string) =>
             <a href={l.href} aria-current={isCurrent(l.href) ? 'page' : undefined}>{l.label}</a>
             {l.sub && (
               <ul class="sub" role="list" aria-label={t.nav.services}>
-                {areas.map((a) => <li><a href={a.href}>{a.label}</a></li>)}
+                {areas.map((a) => <li><a href={a.href} aria-current={isCurrent(a.href) ? 'page' : undefined}>{a.label}</a></li>)}
               </ul>
             )}
           </li>

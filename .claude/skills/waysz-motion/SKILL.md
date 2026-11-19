@@ -76,7 +76,11 @@ even there every GSAP scene, Lenis and the cursor run. Smoothness = the stage's 
   `gala` (Exhibitions & Conferences page: one procedural theatre world — vertex-shader velvet curtain, raked hall
   with a seat map, LED wall, turntable, foyer expo with twenty rising stands, an unrolling red carpet, spot beams,
   dust, press flashes, a guest badge on a verlet lanyard in camera space; render target with MIPMAPS so the finish
-  pass blooms from its own mip levels — no extra pass; ONE host for the whole page like `justice`).
+  pass blooms from its own mip levels — no extra pass; ONE host for the whole page like `justice`),
+  `sky` (Services page: a procedural night sky — fbm Milky Way, aurora, 2600 field stars in depth — and four
+  constellations, one star per service, whose lines draw each area's emblem; the camera frames the constellation the
+  page asks for inside a DOM box (`sky.box`), cards light their star, a star under the pointer brings its card; the
+  finale draws arcs to one centre star and a ring. Instanced quads, all additive, no render target; ONE host).
 - **Hand-off between acts**: the canvas moves into the host of the act that is MOST visible. While it paints
   there the host has `.is-drawing` — hide the section's DOM media with CSS on that class
   (`.host.is-drawing ~ .card .media { visibility: hidden }`); when the canvas leaves, the DOM version is back.
@@ -193,6 +197,7 @@ explore-globe (+ boarding-pass, approach). Software page: code-hero · code-forg
 Legal page: legal-thread · legal-hero · legal-weights · legal-colonnade · legal-why · legal-how · legal-faq (+ accordion) · legal-consult.
 Events page: events-thread · events-hero · events-program · events-expo · events-arrivals · events-badge · events-interpret ·
 events-types · events-roof · events-how · events-faq (+ accordion) · events-consult.
+Services page: services-sky · services-hero · services-directory · services-unite (+ ask-box, approach).
 Other pages / Motion Lab: destinations · route-steps ·
 boarding-gate · text-scrub · services-filter · accordion · form-flight · hero-logo · dive.
 Contracts and what to reuse on Services / About / Contact: `reference.md`.

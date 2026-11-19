@@ -1,28 +1,96 @@
 ---
-/** Services (brief §2). Data comes from src/content/services/*.json. TODO: design + services-filter scene. */
-import { getCollection } from 'astro:content';
+/**
+ * "Our services" (brief §2) — the one place that shows ALL of WaysZ: four areas, thirty services, and the fastest way
+ * to the right one. Idea: "The sky of services". Navigators found their way by the stars; WaysZ = ways. After Home's
+ * dusk flight the page is the night sky: every service is a star, every area a constellation that draws its emblem —
+ * scales (Legal), a plane on its route (Immigration), a stage in a spotlight (Events), </> (Software).
+ * A real-time 3D sky (stage act `sky`) stands behind the whole page — ONE stage host that CSS keeps on screen (sticky);
+ * the sections scroll over it and move its camera:
+ *   hero (the stars gather into the four constellations) → the directory: tabs + the four areas, each framing its
+ *   constellation in the sky while you read its cards → «جهة واحدة تنسّق كل شيء» (arcs join the four into one sign)
+ *   → «لم تجد الخدمة التي تبحث عنها؟» (brief §2.4) → the call (Home §1.6).
+ * css tier (no WebGL) / no JS: our own stills of the sky (scripts/render-sky-still.mjs) behind the same content.
+ * Copy: brief §2 + §2.1–§2.4 + §1.3 (link texts); Arabic is the source. The 30 services come from src/data/services.ts.
+ * CLIENT DECISION (2026-11): every service in the brief is offered — no «مقترح», no label.
+ */
 import BaseLayout from '../layouts/BaseLayout.astro';
-import TodoSection from '../components/TodoSection.astro';
-import { localizePath, useTranslations, type Lang } from '../i18n';
+import Hero from './services/Hero.astro';
+import Directory from './services/Directory.astro';
+import Unite from './services/Unite.astro';
+import Missing from './software/Missing.astro';
+import Cta from './home/Cta.astro';
+import { serviceCards } from '../data/services';
+import { useTranslations, type Lang } from '../i18n';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
-const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
-const areas = ['legal', 'travel', 'events', 'software'] as const;
+const cards = await serviceCards(lang);
 ---
-<BaseLayout lang={lang} title={t.pages.services.title} description={t.pages.services.description}>
-  <div style="height: 76px"></div>
-  <TodoSection ref="2" title="Services page — tabs + cards (scene: services-filter)">
-    {areas.map((area) => (
-      <div id={area}>
-        <h2>{t.areas[area]}</h2>
-        <ul>
-          {services.filter((s) => s.data.area === area).map((s) => (
-            <li><a href={localizePath(`/services/${s.id}/`, lang)}>{s.data[lang].name}</a></li>
-          ))}
-        </ul>
+<BaseLayout lang={lang} title={t.pages.services.title} description={t.pages.services.description} headerOverlay>
+  <div class="sky theme-dark">
+    <div class="sky__stage stage-host" data-scene="services-sky" aria-hidden="true">
+      <!-- our own renders of the sky (css tier, no JS, first paint before the stage): the plain sky of scattered stars,
+           and (css tier only) the four constellations behind the hero once the title has settled and behind the finale;
+           each area shows its own constellation in its window. Full screen: the hero text stays the LCP. -->
+      <div class="sky__still sky__still--scatter">
+        <picture>
+          <source media="(orientation: portrait)" srcset="/media/img/sky-scatter-m.webp" width="780" height="1688" />
+          <img src="/media/img/sky-scatter.webp" alt="" width="1600" height="1000" decoding="async" fetchpriority="high" />
+        </picture>
       </div>
-    ))}
-  </TodoSection>
+      <div class="sky__still sky__still--all">
+        <picture>
+          <source media="(orientation: portrait)" data-srcset="/media/img/sky-all-m.webp" width="780" height="1688" />
+          <img data-src="/media/img/sky-all.webp" alt="" width="1600" height="1000" decoding="async" />
+        </picture>
+      </div>
+      <p class="sky__tip"></p>
+    </div>
+    <div class="sky__body">
+      <Hero lang={lang} title={t.nav.services} />
+      <Directory lang={lang} cards={cards} />
+      <Unite lang={lang} />
+      <Missing lang={lang} />
+    </div>
+  </div>
+  <Cta lang={lang} id="consult" />
 </BaseLayout>
+
+<style is:global>
+  /* One stage host for the whole page: it sticks to the screen while the sections scroll over it. */
+  .sky { position: relative; background: var(--color-bg); }
+  .sky__stage { position: sticky; inset: 0 auto auto 0; width: 100%; height: 100vh; height: 100lvh; }
+  .sky__body { position: relative; margin-block-start: -100vh; margin-block-start: -100lvh; }
+  .sky__stage .stage-canvas { position: absolute; inset: 0; }
+  .sky .ask.theme-dark { background-color: transparent; }   /* «لم تجد…» (views/software/Missing.astro) over the sky */
+  .sky .ask__box { background: color-mix(in srgb, var(--color-bg) 86%, transparent); }
+
+  /* the stills: never mirrored; they step aside while the canvas paints */
+  .sky__still { position: absolute; inset: 0; transition: opacity 1.6s var(--ease-out); }
+  .sky__still img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .sky__still--all { opacity: 0; }
+  .sky__stage.is-assembled .sky__still--all { opacity: 1; }
+  .sky__stage.is-drawing .sky__still { opacity: 0; transition-duration: 0.9s; }
+
+  /* the name of the star under the pointer (a copy of its card's title: decorative) */
+  .sky__tip {
+    position: absolute; inset: 0 auto auto 0; z-index: 2; translate: -50% calc(-100% - 22px);
+    padding: var(--space-1) var(--space-3); border-radius: var(--radius-pill); white-space: nowrap;
+    background: color-mix(in srgb, var(--color-bg) 86%, transparent); border: 1px solid var(--color-border);
+    font-family: var(--font-display); font-weight: var(--weight-semibold); font-size: var(--text-xs);
+    opacity: 0; transition: opacity var(--dur-fast) var(--ease-out);
+  }
+  .sky__tip.is-on { opacity: 1; }
+
+  /* the star trail behind the plane cursor (this page only; motion/scenes/services-sky.ts) */
+  .star-trail { position: fixed; inset: 0; z-index: calc(var(--z-overlay) - 1); pointer-events: none; opacity: 0; transition: opacity 0.4s var(--ease-out); }
+  .star-trail.is-on { opacity: 1; }
+  .star-trail i {
+    position: absolute; inset: 0 auto auto 0; width: 6px; height: 6px; margin: -3px 0 0 -3px; rotate: 45deg;
+    background: var(--color-ink); box-shadow: 0 0 8px 1px var(--color-accent);
+  }
+
+  /* dev: re-rendering the stills (scripts/render-sky-still.mjs) */
+  .sky.is-poster .sky__body, .sky.is-poster ~ *, .sky.is-poster .sky__still { visibility: hidden; }
+</style>

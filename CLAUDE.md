@@ -106,8 +106,8 @@ waysz/
 ├─ .claude/skills/waysz-media/    SKILL.md (sources, licenses, ffmpeg recipes, budgets, credits)
 ├─ docs/brief/                    the approved brief (PDF)
 ├─ docs/home-creative-treatment.md  Home concept + storyboard v2 (§1.1–1.8)
-├─ scripts/                       Playwright QA: qa-shots · qa-policy · qa-immigration · qa-software · qa-legal · qa-events · qa-weight · qa-fps (+ qa-browser: shared launch)
-│                                 data/media builds: build-borders (globe borders) · render-globe-still · render-scales-still · render-gala-still
+├─ scripts/                       Playwright QA: qa-shots · qa-policy · qa-immigration · qa-software · qa-legal · qa-events · qa-services · qa-weight · qa-fps (+ qa-browser: shared launch)
+│                                 data/media builds: build-borders (globe borders) · render-globe-still · render-scales-still · render-gala-still · render-sky-still
 ├─ docs/media-credits.md          one row per media file we ship (source, author, license)
 ├─ media-inbox/                   RAW downloads before optimizing — gitignored, never shipped
 ├─ public/
@@ -125,12 +125,13 @@ waysz/
    ├─ content/services/*.json     one file per service (AR + EN)
    ├─ content.config.ts           schema of a service
    ├─ data/countries.json         selectable countries of the globe (built with the borders)
+   ├─ data/services.ts            the 30 services' cards (order, card text of services without a detail file) + area intros — read by Services + group pages
    ├─ i18n/                       ar.json · en.json (same keys) · index.ts helpers
    ├─ layouts/BaseLayout.astro    <html lang dir>, SEO, boot script, header/footer, cursor, motion init
    ├─ lib/                        forms.ts · site.ts (client data) · borders.ts (decodes the borders, country at a point)
    ├─ motion/                     index.ts · config.ts · smooth-scroll.ts · globals/ · scenes/
    │  ├─ code-glyphs.ts           decorative code blocks: split into characters, measure where each one sits
-   │  └─ stage/                   3D layer: stage.ts (renderer + render scale) · tier.ts (WebGL or css) · bridge.ts · acts/ (flight · wipe · globe · explore · glyphs · justice · gala) · shaders/
+   │  └─ stage/                   3D layer: stage.ts (renderer + render scale) · tier.ts (WebGL or css) · bridge.ts · acts/ (flight · wipe · globe · explore · glyphs · justice · gala · sky) · shaders/
    ├─ pages/                      THIN wrappers only (AR at /, EN under /en/)
    ├─ styles/                     tokens.css · base.css
    └─ views/                      real page content (HomePage, ServicesPage, …, MotionLab)
@@ -138,7 +139,8 @@ waysz/
       ├─ immigration/             sections of the Immigration group page: Hero · Journey · Services · Explore
       ├─ software/                sections of the Software group page: Hero · Services · Process · Missing (+ Code: a block of decorative code)
       ├─ legal/                   sections of the Legal group page: Hero · Services · Help · Why · How · Faq · Consult
-      └─ events/                  sections of the Exhibitions & Conferences group page: Hero · Services · Expo · Arrivals · Register · Interpret · Types · Roof · How · Faq · Consult
+      ├─ events/                  sections of the Exhibitions & Conferences group page: Hero · Services · Expo · Arrivals · Register · Interpret · Types · Roof · How · Faq · Consult
+      └─ services/                sections of the Services page: Hero · Directory (tabs + four areas + 30 cards) · Unite (+ emblems.ts)
 ```
 
 ## Pages & languages
@@ -271,3 +273,14 @@ waysz/
 - Start the final message with the line `FINISHED — pushed <commit hash> to <branch>`, then the report.
 - If something cannot be finished, start the final message with `NOT FINISHED —` and say exactly what is left.
 - Time-box polishing: if a performance or visual target is still not met after two honest attempts, stop, keep what works, report it in one line and finish. Never ask the developer questions mid-task; decide sensibly and list decisions in the report.
+
+## Working style (Ahmed's rule — always)
+
+- Work like a senior developer who owns the task: pick the standard, simplest solution that fully meets the goal
+  and get it done. Never stop to ask the developer; decide sensibly and list the decisions in the report.
+- Stay inside the task's scope: no refactors, extra features, new abstractions, new tooling or "while I'm here"
+  changes that the prompt did not ask for.
+- QA in proportion to the change. A small fix: npm run check + npm run build + a quick look at the affected pages
+  only. The full Playwright suites (qa-shots, qa-policy, the page QA scripts) only for new pages, new scenes or
+  changes to shared motion / stage code.
+- Never write measuring scripts or extra tooling to prove a trivial change.
