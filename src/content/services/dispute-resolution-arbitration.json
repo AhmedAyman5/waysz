@@ -4,7 +4,13 @@
   "ar": {
     "name": "تسوية النزاعات والتحكيم",
     "summary": "التفاوض والتسوية الودية والتحكيم، لإنهاء النزاعات بأقل وقت وتكلفة مع الحفاظ على مصالحك.",
-    "description": "ليس كل نزاع يحتاج إلى قاعة محكمة. نساعدك على إنهاء النزاع بالتفاوض والتسوية الودية أو بالتحكيم، بأقل وقت وتكلفة، مع الحفاظ على مصالحك وعلى علاقاتك ما أمكن.",
+    "scope": [
+      "التفاوض",
+      "التسوية الودية",
+      "التحكيم",
+      "التحكيم التجاري"
+    ],
+    "description": "ليس كل نزاع يحتاج إلى قاعة محكمة. نساعدك على إنهاء النزاع بالتفاوض والتسوية الودية أو بالتحكيم، بأقل وقت وتكلفة، مع الحفاظ على مصالحك وعلى علاقاتك ما أمكن. وفي النزاعات التجارية وعقود التوريد والشركات، نعمل مع قسم التجاري والشركات في التحكيم التجاري.",
     "audience": [
       "الأفراد والشركات الراغبون في حل نزاع دون تقاضٍ طويل.",
       "أطراف العقود التي تتضمن شرط تحكيم.",
@@ -15,7 +21,8 @@
       "تقييم النزاع واختيار المسار الأنسب: تفاوض أو تسوية ودية أو تحكيم.",
       "التفاوض مع الطرف الآخر وتمثيلك في جلسات التسوية.",
       "صياغة اتفاقات التسوية وشروط التحكيم.",
-      "تمثيلك في إجراءات التحكيم حتى صدور الحكم."
+      "تمثيلك في إجراءات التحكيم حتى صدور الحكم.",
+      "التحكيم التجاري في نزاعات العقود والتوريد والشركات، بالتعاون مع قسم التجاري والشركات."
     ],
     "steps": [
       { "title": "جلسة استشارة", "text": "نستمع إليك ونفهم النزاع وما تريد الوصول إليه." },
@@ -31,7 +38,8 @@
     "faq": [
       { "q": "ما الفرق بين التسوية الودية والتحكيم؟", "a": "التسوية اتفاق يصل إليه الطرفان بالتفاوض؛ أما التحكيم ففصل في النزاع بحكم ملزم تصدره هيئة تحكيم يتفق عليها الطرفان." },
       { "q": "هل يمكن اللجوء إلى التحكيم دون شرط في العقد؟", "a": "نعم، إذا اتفق الطرفان على ذلك بعد نشوء النزاع؛ ونوضح لك الإجراءات." },
-      { "q": "هل التحكيم أسرع من التقاضي؟", "a": "في الغالب نعم، لكن المدة تختلف حسب طبيعة النزاع وقواعد التحكيم المتفق عليها." }
+      { "q": "هل التحكيم أسرع من التقاضي؟", "a": "في الغالب نعم، لكن المدة تختلف حسب طبيعة النزاع وقواعد التحكيم المتفق عليها." },
+      { "q": "هل تتولون التحكيم في النزاعات التجارية؟", "a": "نعم، نتولى التحكيم التجاري في نزاعات العقود والتوريد والشركات، بالتعاون مع قسم التجاري والشركات الذي يصوغ شروط التحكيم في العقود." }
     ],
     "cta": {
       "title": "لديك نزاع وتبحث عن حل؟",
@@ -42,7 +50,13 @@
   "en": {
     "name": "Dispute Resolution & Arbitration",
     "summary": "Negotiation, amicable settlement and arbitration — ending disputes with the least time and cost while protecting your interests.",
-    "description": "Not every dispute needs a courtroom. We help you end a dispute through negotiation and amicable settlement, or through arbitration, with the least time and cost, while protecting your interests and, wherever possible, your relationships.",
+    "scope": [
+      "Negotiation",
+      "Amicable settlement",
+      "Arbitration",
+      "Commercial arbitration"
+    ],
+    "description": "Not every dispute needs a courtroom. We help you end a dispute through negotiation and amicable settlement or through arbitration, in the least time and at the lowest cost, while protecting your interests and, where possible, your relationships. In commercial, supply and corporate disputes, we work with the Commercial and Corporate Department on commercial arbitration.",
     "audience": [
       "Individuals and companies who want to resolve a dispute without lengthy litigation.",
       "Parties to contracts that include an arbitration clause.",
@@ -53,7 +67,8 @@
       "Assessing the dispute and choosing the most suitable route: negotiation, amicable settlement or arbitration.",
       "Negotiating with the other party and representing you in settlement sessions.",
       "Drafting settlement agreements and arbitration clauses.",
-      "Representing you in arbitration proceedings until the award is issued."
+      "Representing you in arbitration proceedings until the award is issued.",
+      "Commercial arbitration in contract, supply and corporate disputes, together with the Commercial and Corporate Department."
     ],
     "steps": [
       { "title": "Consultation", "text": "We listen and understand the dispute and what you want to reach." },
@@ -69,7 +84,8 @@
     "faq": [
       { "q": "What is the difference between an amicable settlement and arbitration?", "a": "A settlement is an agreement the two parties reach by negotiation. Arbitration decides the dispute with a binding award issued by a tribunal the parties agree on." },
       { "q": "Can we go to arbitration without a clause in the contract?", "a": "Yes, if both parties agree to it after the dispute arises. We explain the procedure." },
-      { "q": "Is arbitration faster than litigation?", "a": "Usually, yes — but the time differs with the nature of the dispute and the arbitration rules agreed on." }
+      { "q": "Is arbitration faster than litigation?", "a": "Usually, yes — but the time differs with the nature of the dispute and the arbitration rules agreed on." },
+      { "q": "Do you handle arbitration in commercial disputes?", "a": "Yes. We handle commercial arbitration in contract, supply and corporate disputes, together with the Commercial and Corporate Department, which drafts the arbitration clauses in contracts." }
     ],
     "cta": {
       "title": "Facing a dispute and looking for a way out?",

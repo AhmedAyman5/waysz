@@ -1,0 +1,12 @@
+---
+/**
+ * Text that may hold Latin words inside Arabic (WaysZ, SLA, GDPR …): every Latin run is wrapped in <bdi>
+ * so it keeps its own direction (CLAUDE.md, RTL rules). English text is printed as it is.
+ */
+import type { Lang } from '../../i18n';
+interface Props { text: string; lang: Lang }
+const { text, lang } = Astro.props;
+const RUN = /([A-Za-z][A-Za-z0-9.\-]*(?:[ ·]+[A-Za-z][A-Za-z0-9.\-]*)*)/;
+const parts = lang === 'ar' ? text.split(RUN) : [text];
+---
+{parts.map((p, i) => (i % 2 ? <bdi>{p}</bdi> : p))}

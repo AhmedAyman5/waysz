@@ -1,0 +1,57 @@
+---
+/**
+ * Legal detail page — «أقسام مؤسسة المحاماة»: every legal department, in the client's order, one line icon each.
+ * The current one is marked (aria-current="page") and is not a link target the visitor needs, but stays in place
+ * so the grid never shifts from one page to the next.
+ */
+import { getCollection } from 'astro:content';
+import { LEGAL_DEPARTMENTS, LEGAL_ICONS } from './icons';
+import { localizePath, useTranslations, type Lang } from '../../i18n';
+
+interface Props { lang: Lang; current: string }
+const { lang, current } = Astro.props;
+const t = useTranslations(lang);
+const files = new Map((await getCollection('services', (e) => e.data.area === 'legal')).map((e) => [e.id, e.data[lang]]));
+const items = LEGAL_DEPARTMENTS.filter((slug) => files.has(slug)).map((slug) => ({ slug, name: files.get(slug)!.name }));
+---
+<section class="lsd" aria-labelledby="lsd-title">
+  <div class="container">
+    <h2 class="lsp-h2" id="lsd-title" data-split="words">{t.legalService.departments}</h2>
+    <p class="lsd__lead">{t.legalService.departmentsLead}</p>
+    <ul class="lsd__grid" role="list" data-reveal="up">
+      {items.map((d) => (
+        <li>
+          <a class="lsd__item" href={localizePath(`/services/${d.slug}/`, lang)} aria-current={d.slug === current ? 'page' : undefined}>
+            <svg viewBox="0 0 48 48" width="40" height="40" aria-hidden="true"><path d={LEGAL_ICONS[d.slug]} /></svg>
+            <span class="lsd__name">{d.name}</span>
+            {d.slug === current && <span class="lsd__here">{t.legalService.current}</span>}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style is:inline>
+  .lsd { padding-block: var(--section-y); background: var(--color-bg-alt); }
+  .lsd__lead { margin-block-start: var(--space-4); max-width: 60ch; line-height: 1.8; color: var(--color-ink-muted); }
+  .lsd__grid { display: grid; gap: var(--space-4); margin-block-start: var(--space-7); grid-template-columns: 1fr; }
+  @media (min-width: 640px) { .lsd__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .lsd__grid { grid-template-columns: repeat(5, 1fr); } }
+  .lsd__grid li { display: grid; }
+  .lsd__item {
+    position: relative; display: flex; flex-direction: column; gap: var(--space-4);
+    padding: var(--space-5); border-radius: var(--radius-md); text-decoration: none;
+    background: var(--color-surface); border: 1px solid var(--color-border);
+    transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-base) var(--ease-out), translate var(--dur-base) var(--ease-out);
+  }
+  @media (max-width: 639px) { .lsd__item { flex-direction: row; align-items: center; } }
+  .lsd__item:hover { border-color: var(--color-area-legal); box-shadow: var(--shadow-md); translate: 0 -3px; }
+  .lsd__item svg { flex: none; overflow: visible; fill: none; stroke: var(--lsp-bronze-ink); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .lsd__name { font-family: var(--font-display); font-weight: var(--weight-bold); line-height: 1.45; }
+  .lsd__item[aria-current='page'] { background: var(--color-brand); border-color: var(--color-brand); color: var(--color-on-brand); }
+  .lsd__item[aria-current='page'] svg { stroke: var(--color-area-legal); }
+  .lsd__item[aria-current='page']:hover { translate: none; box-shadow: none; }
+  .lsd__here { font-size: var(--text-xs); color: var(--color-area-legal); }
+  @media (max-width: 639px) { .lsd__here { margin-inline-start: auto; } }
+</style>

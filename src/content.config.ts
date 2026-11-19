@@ -11,6 +11,7 @@ import { z } from 'astro/zod';
 const localized = z.object({
   name: z.string(),
   summary: z.string(),                       // short text for the service card (Services page)
+  scope: z.array(z.string()).optional(),     // legal departments: what the department handles (the client's own list)
   description: z.string(),
   audience: z.array(z.string()),
   offer: z.array(z.string()),

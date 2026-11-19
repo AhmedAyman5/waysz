@@ -1,0 +1,47 @@
+---
+/**
+ * Legal detail page — FAQ. The shared `accordion` scene opens / closes the answers (on the list, so the heading
+ * stays free for data-split). Without JS every answer is open.
+ */
+import Bidi from './Bidi.astro';
+import { useTranslations, type Lang } from '../../i18n';
+
+interface Props { lang: Lang; items: { q: string; a: string }[] }
+const { lang, items } = Astro.props;
+const t = useTranslations(lang);
+---
+<section class="lsf lsp-sec" aria-labelledby="lsf-title">
+  <h2 class="lsp-h2" id="lsf-title" data-split="words">{t.service.faq}</h2>
+  <div class="lsf__list" data-scene="accordion">
+    {items.map((x, i) => (
+      <div class="faq__item">
+        <h3 class="lsf__q">
+          <button type="button" aria-expanded="false" aria-controls={`lsf-${i}`}>
+            <span><Bidi text={x.q} lang={lang} /></span>
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
+          </button>
+        </h3>
+        <div class="faq__panel" id={`lsf-${i}`}>
+          <p class="lsf__a"><Bidi text={x.a} lang={lang} /></p>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style is:inline>
+  .lsf__list { margin-block-start: var(--space-6); border-block-start: 1px solid var(--color-border); }
+  .lsf .faq__item { border-block-end: 1px solid var(--color-border); }
+  .lsf__q { font: inherit; }
+  .lsf__q button {
+    display: flex; width: 100%; align-items: center; justify-content: space-between; gap: var(--space-5);
+    padding-block: var(--space-5); background: none; border: 0; color: inherit; cursor: pointer; text-align: start;
+    font-family: var(--font-display); font-weight: var(--weight-bold); font-size: var(--text-lg); line-height: 1.5;
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+  .lsf__q button:hover { color: var(--color-link); }
+  .lsf__q svg { flex: none; fill: none; stroke: var(--lsp-bronze-ink); stroke-width: 1.8; stroke-linecap: round; transition: rotate var(--dur-base) var(--ease-out); }
+  .lsf__q button[aria-expanded='true'] svg { rotate: 45deg; }
+  html:not(.js) .lsf__q svg { display: none; }
+  .lsf__a { padding-block-end: var(--space-5); max-width: 66ch; line-height: 1.85; color: var(--color-ink-muted); }
+</style>

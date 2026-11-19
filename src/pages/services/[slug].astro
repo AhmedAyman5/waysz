@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import ServiceDetailPage from '../../views/ServiceDetailPage.astro';
+import LegalServicePage from '../../views/LegalServicePage.astro';
 
 export async function getStaticPaths() {
   const services = await getCollection('services');
@@ -8,4 +9,6 @@ export async function getStaticPaths() {
 }
 const { entry } = Astro.props;
 ---
-<ServiceDetailPage lang="ar" entry={entry} />
+{entry.data.area === 'legal'
+  ? <LegalServicePage lang="ar" entry={entry} />
+  : <ServiceDetailPage lang="ar" entry={entry} />}

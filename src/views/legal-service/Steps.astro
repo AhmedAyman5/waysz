@@ -1,0 +1,50 @@
+---
+/**
+ * Legal detail page — how we work: the steps as a real sequence (numbers belong here), joined by a line.
+ * Vertical on phones, a row on wide screens.
+ */
+import Bidi from './Bidi.astro';
+import { useTranslations, type Lang } from '../../i18n';
+
+interface Props { lang: Lang; steps: { title: string; text: string }[] }
+const { lang, steps } = Astro.props;
+const t = useTranslations(lang);
+const num = (i: number) => new Intl.NumberFormat(lang === 'ar' ? 'ar-EG' : 'en').format(i);
+---
+<section class="lst lsp-sec" aria-labelledby="lst-title">
+  <h2 class="lsp-h2" id="lst-title" data-split="words">{t.service.steps}</h2>
+  <ol class="lst__list" role="list" data-reveal="up" style={`--n: ${steps.length}`}>
+    {steps.map((s, i) => (
+      <li class="lst__step">
+        <span class="lst__num" aria-hidden="true">{num(i + 1)}</span>
+        <h3 class="lst__name">{s.title}</h3>
+        <p class="lst__text"><Bidi text={s.text} lang={lang} /></p>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<style is:inline>
+  .lst__list { position: relative; display: grid; gap: var(--space-6); margin-block-start: var(--space-7); }
+  /* the line that joins the steps: down the start edge on phones, across the top on wide screens */
+  .lst__list::before {
+    content: ''; position: absolute; inset-block: 20px 20px; inset-inline-start: 19px; width: 1.5px;
+    background: linear-gradient(var(--color-area-legal), color-mix(in srgb, var(--color-area-legal) 25%, transparent));
+  }
+  .lst__step { position: relative; display: grid; grid-template-columns: 40px 1fr; column-gap: var(--space-4); }
+  .lst__num {
+    grid-row: span 2; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%;
+    background: var(--color-brand); color: var(--color-on-brand); box-shadow: 0 0 0 5px var(--color-bg);
+    font-family: var(--font-display); font-weight: var(--weight-bold); font-size: var(--text-sm);
+  }
+  .lst__name { align-self: center; font-size: var(--text-lg); font-weight: var(--weight-bold); line-height: 1.4; }
+  .lst__text { grid-column: 2; margin-block-start: var(--space-2); color: var(--color-ink-muted); line-height: 1.75; }
+  @media (min-width: 1024px) {
+    .lst__list { grid-template-columns: repeat(var(--n), 1fr); gap: var(--space-5); }
+    .lst__list::before { inset-block: 19px auto; inset-inline: 20px 20px; width: auto; height: 1.5px; background: linear-gradient(to right, var(--color-area-legal), color-mix(in srgb, var(--color-area-legal) 25%, transparent)); }
+    [dir='rtl'] .lst__list::before { background: linear-gradient(to left, var(--color-area-legal), color-mix(in srgb, var(--color-area-legal) 25%, transparent)); }
+    .lst__step { grid-template-columns: 1fr; row-gap: var(--space-4); }
+    .lst__num { grid-row: auto; }
+    .lst__text { grid-column: 1; margin-block-start: 0; }
+  }
+</style>

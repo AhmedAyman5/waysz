@@ -1,0 +1,114 @@
+{
+  "area": "legal",
+  "order": 8,
+  "ar": {
+    "name": "جرائم تكنولوجيا المعلومات والأدلة الرقمية",
+    "summary": "سرقة السورس كود واختراق الأنظمة والابتزاز الإلكتروني، والملكية الفكرية الرقمية، وعقود البرمجيات، ومنازعات الذكاء الاصطناعي، والتوافق مع قوانين حماية البيانات.",
+    "scope": [
+      "سرقة السورس كود",
+      "اختراق الأنظمة",
+      "الابتزاز الإلكتروني",
+      "قرصنة البرمجيات",
+      "الملكية الفكرية الرقمية",
+      "براءات الاختراع لخوارزميات الذكاء الاصطناعي",
+      "عقود البرمجيات: SLA · EULA · SaaS",
+      "منازعات الذكاء الاصطناعي والـ DeepFake",
+      "انتحال الهوية الرقمية",
+      "التوافق مع قوانين حماية البيانات: PDPL · GDPR"
+    ],
+    "description": "يختص قسم جرائم تكنولوجيا المعلومات والأدلة الرقمية بقضايا سرقة السورس كود، واختراق الأنظمة، والابتزاز الإلكتروني، وقرصنة البرمجيات، وقضايا الملكية الفكرية الرقمية وما يتصل بها من تسجيل براءات الاختراع المتعلقة بخوارزميات الذكاء الاصطناعي. ويتولى كذلك صياغة عقود البرمجيات، ومنازعات الذكاء الاصطناعي والتزييف العميق (DeepFake) وانتحال الهوية الرقمية، والتوافق مع قوانين حماية البيانات. نتعامل مع الدليل الرقمي بعناية منذ اللحظة الأولى، لأن سلامته جزء أساسي من قوة موقفك.",
+    "audience": [
+      "الشركات وأصحاب البرمجيات الذين سُرقت شفرتهم المصدرية أو اختُرقت أنظمتهم.",
+      "ضحايا الابتزاز الإلكتروني وانتحال الهوية الرقمية والتزييف العميق.",
+      "المطورون والمبتكرون الراغبون في حماية ملكيتهم الفكرية الرقمية وتسجيل اختراعاتهم.",
+      "شركات البرمجيات والخدمات السحابية التي تحتاج إلى عقود واضحة مع عملائها.",
+      "الشركات التي تطور نماذج ذكاء اصطناعي أو تطبيقات تعالج بيانات المستخدمين."
+    ],
+    "offer": [
+      "تقديم البلاغات في جرائم سرقة السورس كود واختراق الأنظمة والابتزاز الإلكتروني وقرصنة البرمجيات، ومتابعتها أمام جهات التحقيق والمحاكم.",
+      "الإرشاد إلى حفظ الأدلة الرقمية وتوثيقها بالطريقة الصحيحة، والاستعانة بالخبرة الفنية المتخصصة عند الحاجة.",
+      "حماية الملكية الفكرية الرقمية، والإرشاد في تسجيل براءات الاختراع المتعلقة بخوارزميات الذكاء الاصطناعي.",
+      "صياغة عقود البرمجيات ومراجعتها: اتفاقيات مستوى الخدمة (SLA)، وتراخيص الاستخدام (EULA)، وعقود الحوسبة السحابية (SaaS).",
+      "قضايا منازعات الذكاء الاصطناعي والتزييف العميق (DeepFake) وانتحال الهوية الرقمية.",
+      "مراجعة توافق نماذج الذكاء الاصطناعي وتطبيقات البرمجة مع قوانين حماية البيانات، مثل قانون حماية البيانات الشخصية المصري (PDPL) واللائحة الأوروبية العامة لحماية البيانات (GDPR)، حتى لا تنتهك خصوصية بيانات المستخدمين."
+    ],
+    "steps": [
+      { "title": "جلسة استشارة", "text": "نستمع إليك بسرية تامة، ونحدد ما حدث وما يجب حفظه فورًا." },
+      { "title": "حفظ الأدلة ودراستها", "text": "نرشدك إلى حفظ الأدلة الرقمية سليمة، ونراجعها مع مستنداتك." },
+      { "title": "خطة العمل", "text": "نتفق على الطريق، بلاغًا أو دعوى أو عقدًا أو مراجعة توافق، وعلى الأتعاب قبل البدء." },
+      { "title": "التنفيذ والمتابعة", "text": "نتابع البلاغ أو القضية أو الصياغة، ونطلعك على كل مستجد." }
+    ],
+    "excludes": [
+      "ضمان حكم بنتيجة معينة، أو ضمان استرداد ما سُرق أو حذف ما نُشر؛ فذلك بيد جهات التحقيق والمحاكم والمنصات.",
+      "ضمان قبول طلب براءة الاختراع؛ فالقرار للجهة المختصة بتسجيل البراءات.",
+      "أعمال الأمن السيبراني والفحص الفني للأنظمة نفسها.",
+      "الرسوم القضائية ورسوم التسجيل وأتعاب الخبراء، ما لم يُتفق على غير ذلك."
+    ],
+    "faq": [
+      { "q": "أتعرض لابتزاز إلكتروني، فماذا أفعل الآن؟", "a": "لا تستجب للمبتز ولا تحذف الرسائل؛ احتفظ بكل ما لديك كما هو، وتواصل معنا لنوضح لك خطوات البلاغ وحفظ الأدلة. وكل ما تشاركه معنا يُعامل بسرية تامة." },
+      { "q": "سُرق السورس كود الخاص بشركتنا، كيف نثبت ملكيتنا له؟", "a": "تساعد في الإثبات عناصر مثل سجلات المستودعات، والعقود مع المطورين، وتواريخ الإصدارات؛ نراجع ما لديكم ونحدد الطريق الأنسب لحماية حقوقكم." },
+      { "q": "ما الذي تشمله صياغة عقود البرمجيات؟", "a": "نصوغ ونراجع اتفاقيات مستوى الخدمة (SLA) التي تحدد التزامات الأداء والدعم، وتراخيص الاستخدام (EULA) التي تحدد حقوق المستخدم، وعقود الحوسبة السحابية (SaaS)، بما يحمي حقوقك ويوضح المسؤوليات." },
+      { "q": "هل يجب أن يلتزم تطبيقنا بقوانين حماية البيانات؟", "a": "إذا كان تطبيقك أو نموذج الذكاء الاصطناعي يجمع بيانات شخصية أو يعالجها، فغالبًا نعم؛ نراجع طريقة جمع البيانات ومعالجتها، ونوضح لك ما يلزم للتوافق مع قانون حماية البيانات الشخصية المصري، ومع اللائحة الأوروبية (GDPR) حين تنطبق." }
+    ],
+    "cta": {
+      "title": "تعرضت لجريمة إلكترونية أو تحتاج إلى عقد برمجيات محكم؟",
+      "text": "احجز استشارتك وتحدث مع الفريق المختص بسرية تامة.",
+      "button": "اطلب استشارة قانونية"
+    }
+  },
+  "en": {
+    "name": "Cybercrime & Digital Evidence",
+    "summary": "Source code theft, system hacking and online blackmail, digital intellectual property, software contracts, AI disputes and compliance with data protection laws.",
+    "scope": [
+      "Source code theft",
+      "System hacking",
+      "Online blackmail",
+      "Software piracy",
+      "Digital intellectual property",
+      "Patents for AI algorithms",
+      "Software contracts: SLA · EULA · SaaS",
+      "AI and deepfake disputes",
+      "Digital identity theft",
+      "Data protection compliance: PDPL · GDPR"
+    ],
+    "description": "The Cybercrime and Digital Evidence Department handles source code theft, system hacking, online blackmail, software piracy and digital intellectual property cases, including registering patents related to artificial intelligence algorithms. It also drafts software contracts, handles AI and deepfake disputes and digital identity theft, and ensures compliance with data protection laws. We treat digital evidence with care from the very first moment, because keeping it intact is a key part of the strength of your position.",
+    "audience": [
+      "Companies and software owners whose source code was stolen or whose systems were hacked.",
+      "Victims of online blackmail, digital identity theft and deepfakes.",
+      "Developers and innovators who want to protect their digital intellectual property and register their inventions.",
+      "Software and cloud-service companies that need clear contracts with their clients.",
+      "Companies that develop AI models or applications that process user data."
+    ],
+    "offer": [
+      "Filing complaints for source code theft, system hacking, online blackmail and software piracy, and following them up before the investigating authorities and the courts.",
+      "Guidance on preserving and documenting digital evidence the right way, with specialized technical expertise when needed.",
+      "Protecting digital intellectual property, and guidance on registering patents related to AI algorithms.",
+      "Drafting and reviewing software contracts: service level agreements (SLA), end-user license agreements (EULA) and cloud software contracts (SaaS).",
+      "AI disputes, deepfake cases and digital identity theft.",
+      "Reviewing whether AI models and software applications comply with data protection laws, such as Egypt's Personal Data Protection Law (PDPL) and the EU General Data Protection Regulation (GDPR), so that they do not violate users' data privacy."
+    ],
+    "steps": [
+      { "title": "Consultation", "text": "We listen in full confidence and identify what happened and what must be preserved right away." },
+      { "title": "Evidence and review", "text": "We guide you to keep the digital evidence intact and review it together with your documents." },
+      { "title": "Plan of action", "text": "We agree on the route, a complaint, a lawsuit, a contract or a compliance review, and on the fees before we start." },
+      { "title": "Follow-through", "text": "We follow the complaint, the case or the drafting and keep you updated on every development." }
+    ],
+    "excludes": [
+      "A guaranteed judgment, or a guarantee that what was stolen will be recovered or what was published removed — that rests with the investigating authorities, the courts and the platforms.",
+      "A guarantee that a patent application will be granted — the decision belongs to the patent authority.",
+      "Cybersecurity work and the technical inspection of the systems themselves.",
+      "Court fees, registration fees and experts' fees, unless agreed otherwise."
+    ],
+    "faq": [
+      { "q": "I am being blackmailed online. What should I do now?", "a": "Do not respond to the blackmailer and do not delete the messages. Keep everything exactly as it is and contact us so we can explain the steps for filing a complaint and preserving the evidence. Everything you share with us is handled in full confidence." },
+      { "q": "Our company's source code was stolen. How do we prove it is ours?", "a": "Evidence such as repository histories, contracts with the developers and release dates helps prove ownership. We review what you have and set out the best route to protect your rights." },
+      { "q": "What does drafting software contracts cover?", "a": "We draft and review service level agreements (SLA), which set performance and support obligations; end-user license agreements (EULA), which set the user's rights; and cloud software contracts (SaaS) — in a way that protects your rights and makes responsibilities clear." },
+      { "q": "Does our application have to comply with data protection laws?", "a": "If your application or AI model collects or processes personal data, then most likely yes. We review how data is collected and processed and explain what is needed to comply with Egypt's Personal Data Protection Law, and with the EU GDPR where it applies." }
+    ],
+    "cta": {
+      "title": "Facing a cybercrime, or need a sound software contract?",
+      "text": "Book a consultation and talk to the right team in full confidence.",
+      "button": "Request a legal consultation"
+    }
+  }
+}

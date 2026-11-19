@@ -4,18 +4,32 @@
   "ar": {
     "name": "الهجرة والجنسية (الجانب القانوني)",
     "summary": "الرأي القانوني في قضايا الإقامة والجنسية وازدواجها، وتقييم موقفك القانوني قبل أي إجراء.",
-    "description": "نقدم الرأي القانوني في قضايا الإقامة والجنسية وازدواجها، ونقيّم موقفك القانوني قبل أي إجراء، حتى تتخذ قرارك وأنت تعرف ما لك وما عليك. وحين يحتاج طلبك إلى أكثر من تخصص، نعمل مع فريق الهجرة والتأشيرات في WaysZ.",
+    "scope": [
+      "المعاملات الدولية",
+      "قانون اللجوء",
+      "إجراءات الهجرة",
+      "تأشيرات الإقامة",
+      "المواطنة والجنسية",
+      "الإقامات الاستثمارية",
+      "الجنسية للمصريين بالخارج وللأجانب في مصر",
+      "تأشيرات العمل للمبرمجين والنوابغ"
+    ],
+    "description": "يشمل قسم الاستشارات والهجرة والجنسية المعاملات الدولية، وقانون اللجوء، وإجراءات الهجرة، وتأشيرات الإقامة والمواطنة. وفي القسم من يتولى استخراج الإقامات الاستثمارية، وإنهاء إجراءات الجنسية للمصريين بالخارج وللأجانب في مصر، وتأشيرات العمل للمبرمجين والنوابغ. نقيّم موقفك القانوني قبل أي إجراء، ونعمل مع فريق الهجرة والدراسة والتأشيرات في WaysZ حين يحتاج طلبك إلى أكثر من تخصص.",
     "audience": [
       "من يدرس التقدم بطلب إقامة أو جنسية ويريد معرفة موقفه القانوني أولًا.",
+      "المستثمرون الأجانب الراغبون في إقامة استثمارية في مصر.",
+      "المصريون بالخارج في إجراءات الجنسية لهم ولأبنائهم، والأجانب الراغبون في الجنسية المصرية.",
+      "المبرمجون وأصحاب المواهب المتميزة الراغبون في تأشيرة عمل.",
       "مزدوجو الجنسية ومن يفكرون في اكتساب جنسية أخرى.",
-      "الأجانب المقيمون في مصر ولديهم استفسارات قانونية تخص إقامتهم.",
-      "الأسر التي تختلف جنسيات أفرادها."
+      "طالبو اللجوء ومن يحتاجون إلى رأي قانوني في وضعهم."
     ],
     "offer": [
       "استشارة لتقييم موقفك القانوني قبل أي إجراء.",
-      "إبداء الرأي القانوني في مسائل الإقامة والجنسية وازدواجها.",
-      "مراجعة المستندات من الناحية القانونية قبل تقديمها.",
-      "متابعة الإجراءات والمنازعات القانونية المتعلقة بالإقامة والجنسية."
+      "الرأي القانوني في المعاملات الدولية وقانون اللجوء وإجراءات الهجرة.",
+      "استخراج الإقامات الاستثمارية للأجانب في مصر.",
+      "إنهاء إجراءات الجنسية للمصريين بالخارج وللأجانب في مصر، ومسائل ازدواج الجنسية.",
+      "تأشيرات الإقامة، وتأشيرات العمل للمبرمجين والنوابغ.",
+      "مراجعة المستندات قانونيًا ومتابعة الإجراءات والمنازعات المتعلقة بالإقامة والجنسية."
     ],
     "steps": [
       { "title": "جلسة استشارة", "text": "نستمع إليك ونفهم وضعك وهدفك." },
@@ -26,11 +40,13 @@
     "excludes": [
       "ضمان الحصول على إقامة أو جنسية أو تأشيرة؛ فالقرار للجهات المختصة وحدها.",
       "الرسوم الحكومية ورسوم الترجمة والتوثيق، ما لم يُتفق على غير ذلك.",
-      "خدمات التأشيرات وتجهيز ملفات السفر؛ ويقدمها فريق الهجرة والدراسة والتأشيرات في WaysZ."
+      "اختيار برامج الدراسة والهجرة وتجهيز ملفات السفر وحجز التذاكر؛ ويقدمها فريق الهجرة والدراسة والتأشيرات في WaysZ."
     ],
     "faq": [
       { "q": "هل يؤثر اكتساب جنسية أخرى على جنسيتي الحالية؟", "a": "يختلف ذلك من حالة إلى أخرى ومن دولة إلى أخرى؛ ندرس حالتك ونوضح لك الموقف القانوني قبل أي إجراء." },
-      { "q": "ما الفرق بين هذه الخدمة وخدمات الهجرة والتأشيرات؟", "a": "هنا نقدم الرأي القانوني وتقييم الموقف؛ أما اختيار البرنامج وتجهيز الملف فيتولاهما فريق الهجرة والدراسة والتأشيرات." },
+      { "q": "ما الفرق بين هذا القسم وخدمات الهجرة والتأشيرات؟", "a": "هنا نتولى الجانب القانوني: تقييم الموقف، والإقامات الاستثمارية، وإجراءات الجنسية، وتأشيرات الإقامة والعمل؛ أما اختيار برامج الدراسة والهجرة وتجهيز ملفات السفر فيتولاها فريق الهجرة والدراسة والتأشيرات." },
+      { "q": "أنا مصري مقيم بالخارج، هل يمكنكم إنهاء إجراءات الجنسية لأبنائي؟", "a": "نعم، نوضح لك المستندات والإجراءات المطلوبة ونتابعها، وفي كثير من الحالات يمكن إنجازها بتوكيل رسمي دون حضورك." },
+      { "q": "كيف أحصل على إقامة استثمارية في مصر؟", "a": "تتوقف الشروط على نوع الاستثمار وفق القواعد المعمول بها وقت التقديم؛ نراجع وضعك ونوضح لك الطريق والمستندات المطلوبة، ونتولى الإجراءات." },
       { "q": "هل تفاصيل استشارتي سرية؟", "a": "نعم، كل ما تشاركه يُعامل بسرية تامة ولا يطلع عليه إلا الفريق المختص." }
     ],
     "cta": {
@@ -42,18 +58,32 @@
   "en": {
     "name": "Immigration & Nationality (Legal Side)",
     "summary": "Legal opinions on residency, nationality and dual-nationality matters, and an assessment of your legal position before any step.",
-    "description": "We give legal opinions on residency, nationality and dual-nationality matters, and assess your legal position before any step, so you decide knowing your rights and your obligations. When your request needs more than one specialty, we work with the WaysZ immigration and visa team.",
+    "scope": [
+      "International transactions",
+      "Asylum law",
+      "Immigration procedures",
+      "Residence visas",
+      "Citizenship and nationality",
+      "Investor residence permits",
+      "Nationality for Egyptians abroad and foreigners in Egypt",
+      "Work visas for programmers and exceptional talent"
+    ],
+    "description": "The Consultations, Immigration and Nationality Department covers international transactions, asylum law, immigration procedures, residence visas and citizenship. Within the department, a dedicated team handles investor residence permits, completes nationality procedures for Egyptians abroad and for foreigners in Egypt, and work visas for programmers and exceptional talent. We assess your legal position before any step, and work with the WaysZ immigration and visa team when your request needs more than one specialty.",
     "audience": [
-      "Anyone considering a residency or nationality application who wants to know their legal position first.",
-      "Dual nationals, and those thinking about acquiring another nationality.",
-      "Foreign nationals living in Egypt with legal questions about their residency.",
-      "Families whose members hold different nationalities."
+      "Anyone considering a residence or nationality application who wants to know their legal position first.",
+      "Foreign investors seeking an investor residence permit in Egypt.",
+      "Egyptians abroad in nationality procedures for themselves and their children, and foreigners seeking Egyptian nationality.",
+      "Programmers and exceptionally talented people seeking a work visa.",
+      "Dual nationals and those considering acquiring another nationality.",
+      "Asylum seekers and anyone who needs a legal opinion on their status."
     ],
     "offer": [
       "A consultation to assess your legal position before any step.",
-      "A legal opinion on residency, nationality and dual-nationality questions.",
-      "A legal review of your documents before they are submitted.",
-      "Following up on legal procedures and disputes related to residency and nationality."
+      "Legal opinions on international transactions, asylum law and immigration procedures.",
+      "Obtaining investor residence permits for foreigners in Egypt.",
+      "Completing nationality procedures for Egyptians abroad and for foreigners in Egypt, and dual-nationality matters.",
+      "Residence visas, and work visas for programmers and exceptional talent.",
+      "Legal review of documents, and follow-up of procedures and disputes concerning residence and nationality."
     ],
     "steps": [
       { "title": "Consultation", "text": "We listen and understand your situation and your goal." },
@@ -64,11 +94,13 @@
     "excludes": [
       "A guarantee of residency, nationality or a visa — the decision belongs to the competent authorities alone.",
       "Government, translation and notarization fees, unless agreed otherwise.",
-      "Visa services and preparing travel files — these are provided by the WaysZ immigration, study and visa team."
+      "Choosing study and immigration programs, preparing travel files and booking tickets — the WaysZ Immigration, Study & Visas team provides these."
     ],
     "faq": [
       { "q": "Does acquiring another nationality affect my current one?", "a": "It differs from one case to another and from one country to another. We study your case and explain the legal position before any step." },
-      { "q": "How is this different from the immigration and visa services?", "a": "Here we give the legal opinion and assess your position. Choosing the program and preparing the file are handled by the immigration, study and visa team." },
+      { "q": "How is this department different from the immigration and visa services?", "a": "Here we handle the legal side: assessing your position, investor residence permits, nationality procedures, and residence and work visas. Choosing study and immigration programs and preparing travel files is handled by the Immigration, Study & Visas team." },
+      { "q": "I am an Egyptian living abroad. Can you complete the nationality procedures for my children?", "a": "Yes. We explain the documents and procedures required and follow them up, and in many cases they can be completed through a formal power of attorney without you being present." },
+      { "q": "How do I obtain an investor residence permit in Egypt?", "a": "The requirements depend on the type of investment under the rules in force when you apply. We review your situation, explain the route and the documents required, and handle the procedures." },
       { "q": "Is my consultation confidential?", "a": "Yes. Everything you share is handled in full confidence and seen only by the team on your case." }
     ],
     "cta": {

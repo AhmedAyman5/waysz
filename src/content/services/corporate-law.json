@@ -4,17 +4,28 @@
   "ar": {
     "name": "قانون الشركات",
     "summary": "تأسيس الشركات وتعديل كياناتها، وصياغة العقود التجارية ومراجعتها، والاستشارات الدورية للشركات.",
-    "description": "نساند شركتك قانونيًا منذ التأسيس: نختار معك الشكل القانوني المناسب، ونتولى إجراءات التأسيس وتعديل الكيان، ونصوغ عقودك التجارية ونراجعها، ونقدم استشارات دورية تساعدك على اتخاذ قراراتك بثقة.",
+    "scope": [
+      "النزاعات البنكية",
+      "تأسيس الشركات",
+      "عقود التوريد",
+      "الإفلاس",
+      "التحكيم التجاري"
+    ],
+    "description": "يختص قسم التجاري والشركات بالنزاعات البنكية، وتأسيس الشركات، وعقود التوريد، وقضايا الإفلاس، والتحكيم التجاري. نساند شركتك قانونيًا منذ التأسيس: نختار معك الشكل القانوني المناسب، ونصوغ عقودك ونراجعها، ونمثلك في نزاعاتك التجارية أمام المحاكم وهيئات التحكيم، ونقدم استشارات دورية تساعدك على اتخاذ قراراتك بثقة.",
     "audience": [
       "رواد الأعمال والمؤسسون قبل تأسيس شركاتهم.",
       "الشركات القائمة الراغبة في تعديل كيانها القانوني.",
-      "الشركات التي تحتاج إلى صياغة عقودها التجارية أو مراجعتها.",
+      "الشركات والموردون أطراف عقود التوريد.",
+      "الأفراد والشركات في نزاعاتهم مع البنوك.",
+      "التجار والشركات المتعثرة والدائنون في قضايا الإفلاس.",
       "الشركات التي تحتاج إلى مستشار قانوني يتابع أعمالها بصفة دورية."
     ],
     "offer": [
-      "اختيار الشكل القانوني المناسب وإتمام إجراءات التأسيس.",
-      "تعديل الكيان القانوني للشركة وعقد تأسيسها.",
-      "صياغة العقود التجارية ومراجعتها قبل التوقيع.",
+      "اختيار الشكل القانوني المناسب وإتمام إجراءات التأسيس وتعديل الكيان.",
+      "صياغة عقود التوريد والعقود التجارية ومراجعتها قبل التوقيع.",
+      "تمثيلك في النزاعات البنكية المتعلقة بالقروض والتسهيلات والضمانات.",
+      "قضايا الإفلاس وإجراءاتها، ممثلين للمدين أو للدائنين.",
+      "التحكيم التجاري: صياغة شروط التحكيم وتمثيلك في إجراءاته.",
       "استشارات قانونية دورية لإدارة الشركة."
     ],
     "steps": [
@@ -25,13 +36,16 @@
     ],
     "excludes": [
       "الرسوم الحكومية ورسوم التوثيق والشهر، ما لم يُتفق على غير ذلك.",
-      "الخدمات المحاسبية والضريبية.",
-      "ضمان موافقة الجهات المختصة أو مدة محددة لصدورها."
+      "الخدمات المحاسبية والضريبية؛ ويقدمها قسم المحاسبة القانونية والمراجعة المالية والضرائب.",
+      "ضمان موافقة الجهات المختصة أو مدة محددة لصدورها.",
+      "ضمان حكم أو قرار تحكيم بنتيجة معينة؛ فالفصل للمحكمة أو لهيئة التحكيم وحدها."
     ],
     "faq": [
       { "q": "ما الشكل القانوني الأنسب لشركتي؟", "a": "يتوقف ذلك على طبيعة النشاط وعدد الشركاء ورأس المال؛ نشرح لك الفروق ونرشح الأنسب لحالتك." },
       { "q": "هل تراجعون عقدًا أعدّه الطرف الآخر؟", "a": "نعم، نراجعه ونوضح لك ما يحتاج إلى تعديل قبل التوقيع." },
-      { "q": "هل يمكن الاتفاق على استشارات مستمرة؟", "a": "نعم، نقدم استشارات دورية للشركات، ونتفق معك على نطاقها." }
+      { "q": "هل يمكن الاتفاق على استشارات مستمرة؟", "a": "نعم، نقدم استشارات دورية للشركات، ونتفق معك على نطاقها." },
+      { "q": "لدي نزاع مع بنك حول قرض أو ضمان، فهل يمكنكم مساعدتي؟", "a": "نعم، نراجع عقودك ومراسلاتك مع البنك، ونوضح لك موقفك والخيارات المتاحة: تفاوض أو تسوية أو دعوى." },
+      { "q": "هل تتولون التحكيم التجاري؟", "a": "نعم، نصوغ شروط التحكيم في عقودك، ونمثلك في إجراءات التحكيم حتى صدور الحكم، بالتنسيق مع فريق تسوية النزاعات والتحكيم." }
     ],
     "cta": {
       "title": "تحتاج إلى مستشار قانوني لشركتك؟",
@@ -42,18 +56,29 @@
   "en": {
     "name": "Corporate Law",
     "summary": "Company formation and restructuring, drafting and reviewing commercial contracts, and ongoing legal advice for companies.",
-    "description": "We support your company legally from day one: we choose the right legal form with you, handle formation and changes to the entity, draft and review your commercial contracts, and provide ongoing advice that helps you make decisions with confidence.",
+    "scope": [
+      "Banking disputes",
+      "Company formation",
+      "Supply contracts",
+      "Bankruptcy",
+      "Commercial arbitration"
+    ],
+    "description": "The Commercial and Corporate Department handles banking disputes, company formation, supply contracts, bankruptcy cases and commercial arbitration. We support your company legally from day one: we choose the right legal form with you, draft and review your contracts, represent you in your commercial disputes before the courts and arbitral tribunals, and give regular advice that helps you make decisions with confidence.",
     "audience": [
       "Entrepreneurs and founders before they set up their companies.",
-      "Existing companies that want to change their legal structure.",
-      "Companies that need their commercial contracts drafted or reviewed.",
-      "Companies that need a legal advisor who follows their business on an ongoing basis."
+      "Existing companies that want to change their legal form.",
+      "Companies and suppliers who are parties to supply contracts.",
+      "Individuals and companies in disputes with banks.",
+      "Traders, struggling companies and creditors in bankruptcy cases.",
+      "Companies that need a legal advisor to follow their business on a regular basis."
     ],
     "offer": [
-      "Choosing the right legal form and completing the formation procedures.",
-      "Amending the company's legal structure and its articles of association.",
-      "Drafting commercial contracts and reviewing them before signing.",
-      "Ongoing legal advice for the company's management."
+      "Choosing the right legal form and completing the formation and restructuring procedures.",
+      "Drafting and reviewing supply contracts and commercial contracts before signing.",
+      "Representing you in banking disputes over loans, credit facilities and guarantees.",
+      "Bankruptcy cases and procedures, for the debtor or for the creditors.",
+      "Commercial arbitration: drafting arbitration clauses and representing you in the proceedings.",
+      "Regular legal advice for running the company."
     ],
     "steps": [
       { "title": "Consultation", "text": "We listen and understand your business and what you need." },
@@ -63,13 +88,16 @@
     ],
     "excludes": [
       "Government, notarization and registration fees, unless agreed otherwise.",
-      "Accounting and tax services.",
-      "A guarantee of the authorities' approval, or a fixed time for it to be issued."
+      "Accounting and tax services — the Legal Accounting, Financial Audit and Tax Department provides them.",
+      "A guarantee of the authorities' approval, or a fixed time for it to be issued.",
+      "A guaranteed judgment or arbitral award — the decision belongs to the court or the arbitral tribunal alone."
     ],
     "faq": [
       { "q": "Which legal form suits my company best?", "a": "It depends on the nature of the business, the number of partners and the capital. We explain the differences and recommend the one that fits your case." },
       { "q": "Do you review a contract prepared by the other party?", "a": "Yes. We review it and show you what needs to change before you sign." },
-      { "q": "Can we agree on continuous advice?", "a": "Yes. We provide ongoing advice to companies and agree its scope with you." }
+      { "q": "Can we agree on continuous advice?", "a": "Yes. We provide ongoing advice to companies and agree its scope with you." },
+      { "q": "I have a dispute with a bank over a loan or a guarantee. Can you help?", "a": "Yes. We review your contracts and correspondence with the bank and explain your position and the options open to you: negotiation, a settlement or a lawsuit." },
+      { "q": "Do you handle commercial arbitration?", "a": "Yes. We draft the arbitration clauses in your contracts and represent you in arbitration proceedings until the award is issued, together with the dispute resolution and arbitration team." }
     ],
     "cta": {
       "title": "Need a legal advisor for your company?",

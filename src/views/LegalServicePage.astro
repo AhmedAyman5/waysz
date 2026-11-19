@@ -1,0 +1,111 @@
+---
+/**
+ * Legal detail page — Service Details Template (brief §3) for the services whose `area` is "legal": the ten
+ * departments of the WaysZ law firm. The other areas keep views/ServiceDetailPage.astro.
+ * Calm, editorial content (team decision): no WebGL, no pins, no scrubbed scenes — only data-split headings,
+ * one data-reveal per section, the shared accordion for the FAQ and CSS hover / focus transitions.
+ *   hero (photo of the department) → what the department handles → who it's for + what we offer → how we work
+ *   → what's not included → FAQ → the law firm's departments → the call
+ * Wide screens: a sticky side card with the call beside sections 2–6 (plain CSS).
+ * Styles are `is:inline` (class-prefixed: lsp · lsh · lss · lsl · lst · lsx · lsf · lsd · lsc): services/[slug].astro
+ * imports this view for every service, and a bundled stylesheet would be linked from the other areas' pages too.
+ * Copy: src/content/services/<slug>.json, built on the client's description of each department; Arabic first.
+ * One file per section in views/legal-service/.
+ */
+import type { CollectionEntry } from 'astro:content';
+import type { ImageMetadata } from 'astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from './legal-service/Hero.astro';
+import Scope from './legal-service/Scope.astro';
+import Lists from './legal-service/Lists.astro';
+import Steps from './legal-service/Steps.astro';
+import Excludes from './legal-service/Excludes.astro';
+import Faq from './legal-service/Faq.astro';
+import Departments from './legal-service/Departments.astro';
+import Cta from './legal-service/Cta.astro';
+import { LEGAL_ICONS } from './legal-service/icons';
+import { site, waHref } from '../lib/site';
+import { localizePath, useTranslations, type Lang } from '../i18n';
+
+interface Props { lang: Lang; entry: CollectionEntry<'services'> }
+const { lang, entry } = Astro.props;
+const t = useTranslations(lang);
+const s = entry.data[lang];
+const slug = entry.id;
+
+// one header photo per department (src/assets/media/legal-<slug>.jpg — sources in docs/media-credits.md)
+const photos = import.meta.glob<{ default: ImageMetadata }>('../assets/media/legal-*.jpg', { eager: true });
+const photo = photos[`../assets/media/legal-${slug}.jpg`]?.default ?? photos['../assets/media/legal-justice.jpg'].default;
+const alts: Record<string, { ar: string; en: string; focus?: string }> = {
+  'criminal-law': { ar: 'مطرقة قاضٍ خشبية على سطح داكن', en: "A wooden judge's gavel on a dark surface", focus: '30% 50%' },
+  'civil-law': { ar: 'مجسم منزل صغير ومفاتيح على طاولة خشبية', en: 'A small model house and keys on a wooden table', focus: '70% 50%' },
+  'family-law': { ar: 'ظلال أسرة على تلة عند الغسق', en: 'The silhouettes of a family on a hill at dusk', focus: '40% 50%' },
+  'administrative-law': { ar: 'مبنى حكومي كلاسيكي بأعمدة مضاءة عند الغسق', en: 'A classical government building with lit columns at dusk', focus: '40% 50%' },
+  'corporate-law': { ar: 'برج مكاتب بنوافذ مضاءة ليلًا', en: 'An office tower with lit windows at night', focus: '40% 50%' },
+  'dispute-resolution-arbitration': { ar: 'طاولة اجتماعات طويلة في مكتبة بأرفف عالية', en: 'A long meeting table in a library with tall bookshelves' },
+  'cybercrime-digital-evidence': { ar: 'كابلات وخوادم في غرفة بيانات مظلمة', en: 'Cables and servers in a dark data room', focus: '70% 50%' },
+  'legal-accounting-tax': { ar: 'آلة حاسبة وتقارير مالية على مكتب', en: 'A calculator and financial reports on a desk', focus: '60% 60%' },
+  'military-law': { ar: 'قلعة حجرية مضاءة تحت سماء الليل', en: 'A lit stone fortress under the night sky', focus: '40% 60%' },
+  'immigration-nationality-law': { ar: 'خريطة قديمة للعالم عن قرب', en: 'A close view of an old world map' },
+};
+const alt = alts[slug] ?? { ar: '', en: '' };
+---
+<BaseLayout lang={lang} title={`${s.name} | WaysZ`} description={s.description} headerOverlay>
+  <div class="lsp">
+    <Hero lang={lang} name={s.name} description={s.description} photo={photo} alt={alt[lang]} focus={alt.focus} />
+
+    <div class="lsp__body container">
+      <div class="lsp__main">
+        {s.scope && s.scope.length > 0 && <Scope lang={lang} items={s.scope} />}
+        <Lists lang={lang} audience={s.audience} offer={s.offer} />
+        <Steps lang={lang} steps={s.steps} />
+        <Excludes lang={lang} items={s.excludes} />
+        <Faq lang={lang} items={s.faq} />
+      </div>
+
+      <aside class="lsp__aside" aria-label={s.cta.title}>
+        <div class="lsp__card theme-dark">
+          <svg viewBox="0 0 48 48" width="44" height="44" aria-hidden="true"><path d={LEGAL_ICONS[slug]} /></svg>
+          <p class="lsp__card-name">{s.name}</p>
+          <p class="lsp__card-title">{s.cta.title}</p>
+          <a class="btn btn--accent" href={localizePath('/contact/', lang)}>{s.cta.button}</a>
+          {site.whatsapp && (
+            <a class="btn btn--ghost" href={waHref(site.whatsapp, `${t.whatsapp.message}${s.name}`)} target="_blank" rel="noopener">{t.cta.whatsapp}</a>
+          )}
+        </div>
+      </aside>
+    </div>
+
+    <Departments lang={lang} current={slug} />
+    <Cta lang={lang} name={s.name} cta={s.cta} />
+  </div>
+</BaseLayout>
+
+<style is:inline>
+  /* shared by the sections in views/legal-service/ */
+  .lsp {
+    --lsp-bronze-ink: color-mix(in srgb, var(--color-area-legal) 52%, var(--color-ink));   /* bronze that reads on light (AA) */
+    background: var(--color-bg);
+  }
+  .lsp-sec { padding-block: clamp(3rem, 2rem + 4vw, 5.5rem); }
+  .lsp-sec + .lsp-sec { border-block-start: 1px solid var(--color-border); }
+  .lsp-h2 { font-size: clamp(1.8rem, 1.3rem + 2vw, 3rem); line-height: 1.25; }
+  [dir='rtl'] .lsp-h2 { line-height: 1.45; }
+
+  .lsp__body { display: grid; gap: 0 var(--space-8); }
+  .lsp__main { min-width: 0; }
+  .lsp__aside { display: none; }
+  @media (min-width: 1024px) {
+    .lsp__body { grid-template-columns: minmax(0, 1fr) 19rem; }
+    .lsp__aside { display: block; padding-block: clamp(3rem, 2rem + 4vw, 5.5rem); }
+    .lsp__card {
+      position: sticky; top: calc(76px + var(--space-5));
+      display: grid; gap: var(--space-4); padding: var(--space-6); border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+    }
+    .lsp__card svg { fill: none; stroke: var(--color-area-legal); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+    .lsp__card-name { font-size: var(--text-sm); color: var(--color-area-legal); font-weight: var(--weight-semibold); }
+    .lsp__card-title { font-family: var(--font-display); font-weight: var(--weight-bold); font-size: var(--text-xl); line-height: 1.4; }
+    .lsp__card .btn { white-space: normal; text-align: center; }
+  }
+</style>
