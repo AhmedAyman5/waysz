@@ -147,5 +147,11 @@
     "more": "More from our law firm",
     "moreLead": "Beside the six services, our law firm has further specialized departments, each with its own remit.",
     "moreLink": "About this department"
+  },
+  "travelService": {
+    "excludes": "What we don't guarantee or include",
+    "services": "Immigration, Study & Visa services",
+    "servicesLead": "We stay with you on your journey from the first question until your file is complete. Choose the service you need, or request a consultation and we will work out the right path with you.",
+    "current": "Current service"
   }
 }
