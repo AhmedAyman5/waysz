@@ -31,7 +31,9 @@
     ],
     "faq": [
       { "q": "هل تضمنون حصول المشاركين على التأشيرة؟", "a": "لا؛ قرار منح التأشيرة للسفارة وحدها، ودورنا أن نجهز الملف بوضوح وفي وقت مناسب." },
-      { "q": "متى يبدأ المشاركون إجراءات التأشيرة؟", "a": "كلما كان مبكرًا كان أفضل، لأن مواعيد السفارات ومدد الإجراءات تختلف من دولة لأخرى." }
+      { "q": "متى يبدأ المشاركون إجراءات التأشيرة؟", "a": "كلما كان مبكرًا كان أفضل، لأن مواعيد السفارات ومدد الإجراءات تختلف من دولة لأخرى." },
+      { "q": "هل تصدر خطابات الدعوة باسم جهتنا؟", "a": "نعم، نعد خطابات الدعوة الرسمية باسم الجهة المنظمة، وتراجعها وتعتمدها قبل إرسالها إلى المشاركين." },
+      { "q": "ما دور WaysZ Visa في هذه الخدمة؟", "a": "WaysZ Visa منصتنا المتخصصة في التأشيرات: يتابع المشاركون ملفاتهم من خلالها، بينما ننسق نحن مع فريق فعاليتك وفريق الاستقبال." }
     ],
     "cta": {
       "title": "تستضيف مشاركين من الخارج؟",
@@ -69,7 +71,9 @@
     ],
     "faq": [
       { "q": "Do you guarantee that participants will get their visas?", "a": "No. The visa decision belongs to the embassy alone; our role is to prepare the application clearly and in good time." },
-      { "q": "When should participants start their visa applications?", "a": "The earlier the better, because embassy appointments and processing times differ from one country to another." }
+      { "q": "When should participants start their visa applications?", "a": "The earlier the better, because embassy appointments and processing times differ from one country to another." },
+      { "q": "Are the invitation letters issued in our organization's name?", "a": "Yes. We prepare the official invitation letters in the organizer's name, and you review and approve them before they are sent to participants." },
+      { "q": "What role does WaysZ Visa play in this service?", "a": "WaysZ Visa is our platform specialized in visas: participants follow their files through it, while we coordinate with your event team and the reception team." }
     ],
     "cta": {
       "title": "Hosting participants from abroad?",

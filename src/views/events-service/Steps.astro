@@ -1,0 +1,60 @@
+---
+/**
+ * Events detail page — how we work, set like the running order of a printed programme: one row per step, its
+ * number in a gold ring, the title and the text side by side on wide screens, the rings joined by a gold line
+ * down the start edge; the last ring is lit (the day itself). Numbers belong here: it is a sequence.
+ * The same vertical order on every screen; static CSS, no scroll animation.
+ */
+import Bidi from './Bidi.astro';
+import { useTranslations, type Lang } from '../../i18n';
+
+interface Props { lang: Lang; steps: { title: string; text: string }[] }
+const { lang, steps } = Astro.props;
+const t = useTranslations(lang);
+const num = (i: number) => new Intl.NumberFormat(lang === 'ar' ? 'ar-EG' : 'en', { minimumIntegerDigits: 2 }).format(i);
+---
+{steps.length > 0 && (
+  <section class="est esp-sec" aria-labelledby="est-title">
+    <h2 class="esp-h2" id="est-title" data-split="words">{t.service.steps}</h2>
+    <ol class="est__list" role="list" data-reveal="up">
+      {steps.map((s, i) => (
+        <li class="est__row">
+          <span class="est__num" aria-hidden="true">{num(i + 1)}</span>
+          <h3 class="est__name">{s.title}</h3>
+          <p class="est__text"><Bidi text={s.text} lang={lang} /></p>
+        </li>
+      ))}
+    </ol>
+  </section>
+)}
+
+<style is:inline>
+  .est__list { position: relative; margin-block-start: var(--space-7); border-block-start: 1px solid var(--color-border); }
+  /* the line that joins the rings: one segment per row, from its ring to the next one (none after the last) */
+  .est__row:not(:last-child)::before {
+    content: ''; position: absolute; inset-inline-start: 21px; width: 1.5px;
+    inset-block: calc(var(--space-5) + 22px) calc(-1 * (var(--space-5) + 22px));
+    background: color-mix(in srgb, var(--color-accent) 70%, transparent);
+  }
+  .est__row {
+    position: relative; display: grid; grid-template-columns: 44px 1fr; column-gap: var(--space-5); align-items: start;
+    padding-block: var(--space-5); border-block-end: 1px dashed color-mix(in srgb, var(--color-ink) 16%, transparent);
+  }
+  .est__num {
+    position: relative; z-index: 1; grid-row: span 2; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
+    background: var(--esp-bg); border: 1.5px solid var(--color-accent); color: var(--color-accent);
+    box-shadow: 0 0 0 6px var(--esp-bg);
+    font-family: var(--font-display); font-weight: var(--weight-bold); font-size: var(--text-sm);
+  }
+  .est__row:last-child .est__num {
+    background: var(--color-accent); color: var(--color-on-accent);
+    box-shadow: 0 0 0 6px var(--esp-bg), 0 0 26px 4px color-mix(in srgb, var(--color-accent) 40%, transparent);
+  }
+  .est__name { align-self: center; min-height: 44px; display: flex; align-items: center; font-size: var(--text-lg); font-weight: var(--weight-bold); line-height: 1.4; }
+  .est__text { grid-column: 2; margin-block-start: var(--space-1); color: var(--color-ink-muted); line-height: 1.75; }
+  @media (min-width: 768px) {
+    .est__row { grid-template-columns: 44px minmax(9rem, 15rem) 1fr; column-gap: var(--space-6); }
+    .est__num { grid-row: auto; }
+    .est__text { grid-column: 3; margin-block-start: 0; min-height: 44px; display: flex; align-items: center; }
+  }
+</style>

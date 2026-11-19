@@ -32,7 +32,9 @@
     ],
     "faq": [
       { "q": "هل تساعدوننا في اختيار مكان المعرض؟", "a": "نعم، نرشح لك أماكن تناسب حجم المعرض وطبيعته، ونتولى التنسيق معها." },
-      { "q": "هل يمكن تنظيم معرض لقطاع محدد؟", "a": "نعم، نبني المعرض حول قطاعك وجمهوره، من توزيع المساحات حتى برنامج الأيام." }
+      { "q": "هل يمكن تنظيم معرض لقطاع محدد؟", "a": "نعم، نبني المعرض حول قطاعك وجمهوره، من توزيع المساحات حتى برنامج الأيام." },
+      { "q": "هل تتولون استقطاب العارضين؟", "a": "نعم، نحدد العارضين المناسبين لقطاع المعرض ونتواصل معهم حتى التعاقد، دون أن نعد بعدد بعينه." },
+      { "q": "هل يمكن أن تجهزوا أجنحة العارضين أيضًا؟", "a": "نعم، عبر خدمة تصميم وتجهيز أجنحة العرض: للعارضين الذين يطلبونها، أو بأجنحة موحدة للمعرض كله." }
     ],
     "cta": {
       "title": "تخطط لمعرض تجاري أو متخصص؟",
@@ -71,7 +73,9 @@
     ],
     "faq": [
       { "q": "Can you help us choose the venue?", "a": "Yes. We suggest venues that suit the size and nature of the exhibition and handle the coordination with them." },
-      { "q": "Can you organize an exhibition for one specific sector?", "a": "Yes. We build the exhibition around your sector and its audience, from the space layout to the daily programme." }
+      { "q": "Can you organize an exhibition for one specific sector?", "a": "Yes. We build the exhibition around your sector and its audience, from the space layout to the daily programme." },
+      { "q": "Do you bring in the exhibitors?", "a": "Yes. We identify the exhibitors that suit the exhibition's sector and stay in contact with them until they sign, without promising a particular number." },
+      { "q": "Can you also build the exhibitors' stands?", "a": "Yes, through our stand design and build service: for the exhibitors who ask for it, or as uniform stands across the whole exhibition." }
     ],
     "cta": {
       "title": "Planning a trade or specialized exhibition?",

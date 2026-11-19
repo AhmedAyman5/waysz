@@ -31,7 +31,9 @@
     ],
     "faq": [
       { "q": "هل أرى الجناح قبل تنفيذه؟", "a": "نعم، نقدم لك تصميمًا ثلاثي الأبعاد تراجعه وتعتمده قبل أن نبدأ التنفيذ." },
-      { "q": "هل تجهزون أجنحة في معارض بالخارج؟", "a": "نعم، ضمن خدمة المشاركة في المعارض الدولية، وننسق التنفيذ مع إدارة المعرض." }
+      { "q": "هل تجهزون أجنحة في معارض بالخارج؟", "a": "نعم، ضمن خدمة المشاركة في المعارض الدولية، وننسق التنفيذ مع إدارة المعرض." },
+      { "q": "كم يستغرق تنفيذ الجناح؟", "a": "يختلف حسب حجم الجناح وخاماته، ونضع معك جدولًا زمنيًا ينتهي بتسليمه جاهزًا قبل الافتتاح." },
+      { "q": "هل تلتزمون باشتراطات إدارة المعرض؟", "a": "نعم، نراجع اشتراطات إدارة المعرض في المساحة والارتفاعات والخامات ومواعيد التركيب، وننفذ الجناح وفقها." }
     ],
     "cta": {
       "title": "تحتاج جناحًا يليق بعلامتك؟",
@@ -69,7 +71,9 @@
     ],
     "faq": [
       { "q": "Will I see the stand before it is built?", "a": "Yes. We give you a 3D design to review and approve before we start building." },
-      { "q": "Do you build stands at exhibitions abroad?", "a": "Yes, as part of our international exhibition participation service, coordinating the build with the organizers." }
+      { "q": "Do you build stands at exhibitions abroad?", "a": "Yes, as part of our international exhibition participation service, coordinating the build with the organizers." },
+      { "q": "How long does it take to build the stand?", "a": "It depends on the stand's size and materials; we set a timeline with you that ends with the stand handed over ready before the opening." },
+      { "q": "Do you follow the exhibition organizer's rules?", "a": "Yes. We review the organizer's rules on space, heights, materials and build-up times, and build the stand accordingly." }
     ],
     "cta": {
       "title": "Need a stand worthy of your brand?",

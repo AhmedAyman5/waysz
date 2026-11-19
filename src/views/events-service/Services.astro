@@ -1,0 +1,74 @@
+---
+/**
+ * Events detail page — «خدمات المعارض والمؤتمرات»: the ten services of brief §2.3 in the brief's order, card text
+ * from the one source (serviceCards). All ten have a detail page: each card is one link to it, the current one
+ * marked (aria-current="page") and kept in place so the grid never shifts from one page to the next.
+ */
+import { serviceCards } from '../../data/services';
+import { EVENTS_ICONS } from './icons';
+import { localizePath, useTranslations, type Lang } from '../../i18n';
+
+interface Props { lang: Lang; current: string }
+const { lang, current } = Astro.props;
+const t = useTranslations(lang);
+const items = await serviceCards(lang, 'events');
+---
+<section class="esa" aria-labelledby="esa-title">
+  <div class="container">
+    <h2 class="esp-h2" id="esa-title" data-split="words">{t.eventsService.services}</h2>
+    <p class="esa__lead">{t.eventsService.servicesLead}</p>
+    <ul class="esa__grid" role="list" data-reveal="up">
+      {items.map((s) => (
+        <li>
+          <a class="esa__card" href={localizePath(`/services/${s.slug}/`, lang)} aria-current={s.slug === current ? 'page' : undefined}>
+            <span class="esa__rule" aria-hidden="true"></span>
+            <svg class="esa__icon" viewBox="0 0 48 48" width="40" height="40" aria-hidden="true" set:html={EVENTS_ICONS[s.slug] ?? ''} />
+            <span class="esa__name">{s.name}</span>
+            <span class="esa__text">{s.text}</span>
+            {s.slug === current && <span class="esa__here">{t.eventsService.current}</span>}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style is:inline>
+  .esa {
+    padding-block: var(--section-y);
+    background: linear-gradient(to bottom, var(--color-velvet-deep), color-mix(in srgb, var(--color-velvet-deep) 60%, var(--esp-bg)));
+  }
+  .esa__lead { margin-block-start: var(--space-4); max-width: 60ch; line-height: 1.8; color: color-mix(in srgb, var(--color-ink) 82%, transparent); }
+  .esa__grid { display: grid; gap: var(--space-4); margin-block-start: var(--space-7); grid-template-columns: 1fr; }
+  @media (min-width: 640px) { .esa__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1280px) { .esa__grid { grid-template-columns: repeat(5, 1fr); } }
+  .esa__grid li { display: grid; }
+  .esa__card {
+    position: relative; overflow: hidden; display: flex; flex-direction: column; gap: var(--space-3);
+    padding: var(--space-6) var(--space-5) var(--space-5); border-radius: var(--radius-md); text-decoration: none;
+    background: color-mix(in srgb, var(--esp-bg) 70%, transparent); border: 1px solid var(--color-border);
+    transition: border-color var(--dur-fast) var(--ease-out), translate var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+  }
+  /* a gold rule along the top, drawn in on hover / focus like the cards of the Events page */
+  .esa__rule {
+    position: absolute; inset-block-start: 0; inset-inline: var(--space-5); height: 2px;
+    background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+    scale: 0 1; transition: scale var(--dur-base) var(--ease-out);
+  }
+  .esa__card:hover, .esa__card:focus-visible { border-color: color-mix(in srgb, var(--color-accent) 45%, transparent); translate: 0 -3px; box-shadow: 0 24px 48px -24px rgb(0 0 0 / 0.6); }
+  .esa__card:hover .esa__rule, .esa__card:focus-visible .esa__rule { scale: 1 1; }
+  .esa__icon { flex: none; overflow: visible; fill: none; stroke: var(--color-accent); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .esa__name { margin-block-start: var(--space-2); font-family: var(--font-display); font-weight: var(--weight-bold); line-height: 1.45; }
+  .esa__text { font-size: var(--text-sm); line-height: 1.7; color: color-mix(in srgb, var(--color-ink) 74%, transparent); }
+  .esa__card[aria-current='page'] {
+    border-color: var(--color-accent);
+    background: color-mix(in srgb, var(--color-accent) 12%, color-mix(in srgb, var(--esp-bg) 80%, transparent));
+  }
+  .esa__card[aria-current='page'] .esa__rule { scale: 1 1; }
+  .esa__card[aria-current='page']:hover { translate: none; box-shadow: none; }
+  .esa__here {
+    margin-block-start: auto; padding-block-start: var(--space-2); display: inline-flex; align-items: center; gap: var(--space-2);
+    font-size: var(--text-xs); font-weight: var(--weight-bold); color: var(--color-accent);
+  }
+  .esa__here::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+</style>

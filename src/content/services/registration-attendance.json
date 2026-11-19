@@ -32,7 +32,9 @@
     ],
     "faq": [
       { "q": "هل منصة التسجيل خاصة بفعاليتنا؟", "a": "نعم، يجهزها فريق البرمجيات لدينا لفعاليتك، ويمكن ربطها بموقع الفعالية." },
-      { "q": "هل تديرون الدعوات الرسمية أيضًا؟", "a": "نعم، نرسل الدعوات ونتابع الردود، ونحدّث قوائم الحضور حتى يوم الحدث." }
+      { "q": "هل تديرون الدعوات الرسمية أيضًا؟", "a": "نعم، نرسل الدعوات ونتابع الردود، ونحدّث قوائم الحضور حتى يوم الحدث." },
+      { "q": "كيف تُستخدم بيانات الحضور؟", "a": "لأغراض الفعالية فقط، ونتفق معك مسبقًا على طريقة حفظها وتسليمها بعد انتهاء الفعالية." },
+      { "q": "هل تستقبلون الحضور في موقع الفعالية؟", "a": "نعم، نجهز مكاتب تسجيل واستقبال في الموقع، ونسلم الحضور بطاقات دخولهم." }
     ],
     "cta": {
       "title": "تريد تسجيلًا منظمًا لفعاليتك؟",
@@ -71,7 +73,9 @@
     ],
     "faq": [
       { "q": "Is the registration platform built for our event?", "a": "Yes. Our software team sets it up for your event, and it can be connected to the event website." },
-      { "q": "Do you manage official invitations too?", "a": "Yes. We send the invitations, follow up on the replies and keep the attendee lists updated until the event day." }
+      { "q": "Do you manage official invitations too?", "a": "Yes. We send the invitations, follow up on the replies and keep the attendee lists updated until the event day." },
+      { "q": "How is attendee data used?", "a": "Only for the event's purposes; we agree with you in advance on how it is kept and handed over once the event ends." },
+      { "q": "Do you welcome attendees on site?", "a": "Yes. We set up registration and welcome desks on site and hand attendees their entry badges." }
     ],
     "cta": {
       "title": "Want well-organized registration for your event?",

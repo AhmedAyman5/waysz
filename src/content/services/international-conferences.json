@@ -28,11 +28,14 @@
     "excludes": [
       "رسوم الأماكن والتصاريح الحكومية، ما لم تُذكر في العرض.",
       "ضمان أعداد حضور أو رعايات بعينها.",
-      "قرارات منح تأشيرات المشاركين؛ فهي للسفارات وحدها."
+      "قرارات منح تأشيرات المشاركين؛ فهي للسفارات وحدها.",
+      "تكاليف سفر المشاركين وإقامتهم، ما لم تُذكر في العرض."
     ],
     "faq": [
       { "q": "متى نبدأ التحضير للمؤتمر؟", "a": "كلما كان مبكرًا كان أفضل، خاصة مع الوفود الدولية والتأشيرات، ونحدد المدة حسب حجم الحدث." },
-      { "q": "هل تنظمون مؤتمرات هجينة أو افتراضية؟", "a": "نعم، نوفر البث المباشر ومنصات المشاركة عن بُعد إلى جانب الحضور في القاعة." }
+      { "q": "هل تنظمون مؤتمرات هجينة أو افتراضية؟", "a": "نعم، نوفر البث المباشر ومنصات المشاركة عن بُعد إلى جانب الحضور في القاعة." },
+      { "q": "هل يمكن أن نتولى نحن جزءًا من التنظيم؟", "a": "نعم، نتولى المؤتمر كاملًا أو الأجزاء التي تحتاجها فقط، مثل استقبال الوفود أو الترجمة الفورية أو التسجيل، وننسق مع فريقك في الباقي." },
+      { "q": "ماذا يتضمن التقرير الختامي؟", "a": "ملخصًا لما نُفذ، وبيانات التسجيل والحضور، وملاحظات تفيدك في فعالياتك القادمة." }
     ],
     "cta": {
       "title": "تخطط لمؤتمر أو معرض دولي؟",
@@ -67,11 +70,14 @@
     "excludes": [
       "Venue fees and government permits, unless stated in the proposal.",
       "Any guaranteed attendance numbers or sponsorships.",
-      "Visa decisions for participants — these belong to the embassies alone."
+      "Visa decisions for participants — these belong to the embassies alone.",
+      "Participants' travel and accommodation costs, unless stated in the offer."
     ],
     "faq": [
       { "q": "When should we start preparing the conference?", "a": "The earlier the better, especially with international delegations and visas. We set the lead time according to the size of the event." },
-      { "q": "Do you organize hybrid or virtual conferences?", "a": "Yes. We provide live streaming and remote-participation platforms alongside the in-hall audience." }
+      { "q": "Do you organize hybrid or virtual conferences?", "a": "Yes. We provide live streaming and remote-participation platforms alongside the in-hall audience." },
+      { "q": "Can we handle part of the organizing ourselves?", "a": "Yes. We take on the whole conference or only the parts you need, such as welcoming delegations, simultaneous interpretation or registration, and coordinate with your team on the rest." },
+      { "q": "What does the final report include?", "a": "A summary of what was delivered, the registration and attendance data, and observations that help with your future events." }
     ],
     "cta": {
       "title": "Planning an international conference or exhibition?",
