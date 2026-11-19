@@ -1,0 +1,14 @@
+---
+/**
+ * Text that may hold Latin words inside Arabic (WaysZ Visa …): every Latin run is wrapped in <bdi> so it keeps
+ * its own direction (CLAUDE.md, RTL rules). English text is printed as it is. (Copied from views/legal-service/.)
+ */
+import type { Lang } from '../../i18n';
+interface Props { text: string; lang: Lang }
+const { text, lang } = Astro.props;
+// a dot belongs to the run only inside it (v1.2, e.g.): a sentence's final full stop stays Arabic punctuation
+const W = String.raw`[A-Za-z](?:[A-Za-z0-9\-]|\.(?=[A-Za-z0-9]))*`;
+const RUN = new RegExp(`(${W}(?:[ ·]+${W})*)`);
+const parts = lang === 'ar' ? text.split(RUN) : [text];
+---
+{parts.map((p, i) => (i % 2 ? <bdi>{p}</bdi> : p))}

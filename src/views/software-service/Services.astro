@@ -1,0 +1,89 @@
+---
+/**
+ * Software detail page — «خدمات البرمجيات والتقنية»: the six services of brief §2.4 in the brief's order, card text
+ * from the one source (serviceCards). Each card behaves exactly as on the Software page:
+ *   a service with a detail page → its page (the current one: aria-current="page")
+ *   every other service → «اطلب استشارة», the consultation call at the end of the Software page
+ * Behind the cards, a faint grid (plain CSS gradients), like an editor's canvas.
+ */
+import { serviceCards, GROUP_PAGE } from '../../data/services';
+import { SOFTWARE_ICONS, SOFTWARE_ICON_OF } from './icons';
+import { localizePath, useTranslations, type Lang } from '../../i18n';
+
+interface Props { lang: Lang; current: string }
+const { lang, current } = Astro.props;
+const t = useTranslations(lang);
+const items = (await serviceCards(lang, 'software')).map((s) => {
+  const here = s.slug === current;
+  const link =
+    here ? { href: localizePath(`/services/${s.slug}/`, lang), label: t.softwareService.current, kind: 'here' }
+    : s.page ? { href: localizePath(`/services/${s.slug}/`, lang), label: t.cta.details, kind: 'page' }
+    : { href: `${localizePath(GROUP_PAGE.software, lang)}#consult`, label: t.cta.consult, kind: 'consult' };
+  return { ...s, here, link };
+});
+const arrow = '<path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>';
+---
+<section class="ssa" aria-labelledby="ssa-title">
+  <div class="container">
+    <h2 class="ssp-h2" id="ssa-title" data-split="words">{t.softwareService.services}</h2>
+    <p class="ssa__lead">{t.softwareService.servicesLead}</p>
+    <ul class="ssa__grid" role="list" data-reveal="up">
+      {items.map((s) => (
+        <li class:list={['ssa__card', { 'is-here': s.here }]}>
+          <svg class="ssa__icon" viewBox="0 0 48 48" width="44" height="44" aria-hidden="true" set:html={SOFTWARE_ICONS[SOFTWARE_ICON_OF[s.slug]] ?? ''} />
+          <h3 class="ssa__name">{s.name}</h3>
+          <p class="ssa__text">{s.text}</p>
+          <a class={`ssa__link ssa__link--${s.link.kind}`} href={s.link.href}
+             aria-current={s.here ? 'page' : undefined} aria-label={`${s.link.label}: ${s.name}`}>
+            <span>{s.link.label}</span>
+            {s.link.kind === 'page' && <svg class="icon-dir" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" set:html={arrow} />}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style is:inline>
+  .ssa {
+    padding-block: var(--section-y);
+    background:
+      linear-gradient(color-mix(in srgb, var(--color-area-software) 6%, transparent) 1px, transparent 1px) 0 0 / 48px 48px,
+      linear-gradient(90deg, color-mix(in srgb, var(--color-area-software) 6%, transparent) 1px, transparent 1px) 0 0 / 48px 48px,
+      var(--color-bg-alt);
+  }
+  .ssa__lead { margin-block-start: var(--space-4); max-width: 62ch; line-height: 1.8; color: var(--color-ink-muted); }
+  .ssa__grid { display: grid; gap: var(--space-4); margin-block-start: var(--space-7); grid-template-columns: 1fr; }
+  @media (min-width: 640px) { .ssa__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .ssa__grid { grid-template-columns: repeat(3, 1fr); } }
+  .ssa__card {
+    position: relative; display: flex; flex-direction: column;
+    padding: var(--space-6); border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--color-surface) 70%, var(--color-bg)); border: 1px solid var(--color-border);
+    transition: border-color var(--dur-fast) var(--ease-out), translate var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+  }
+  .ssa__card:hover { border-color: color-mix(in srgb, var(--color-area-software) 55%, transparent); translate: 0 -3px; box-shadow: 0 18px 40px rgb(0 0 0 / 0.3); }
+  .ssa__icon { overflow: visible; fill: none; stroke: var(--color-area-software); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .ssa__name { margin-block-start: var(--space-5); font-size: var(--text-lg); font-weight: var(--weight-bold); line-height: 1.4; }
+  .ssa__text { margin-block: var(--space-3) var(--space-5); font-size: var(--text-sm); line-height: 1.75; color: var(--color-ink-muted); }
+  .ssa__link {
+    margin-block-start: auto; align-self: start; display: inline-flex; align-items: center; gap: var(--space-2);
+    min-height: 44px; font-family: var(--font-display); font-weight: var(--weight-bold); font-size: var(--text-sm);
+    text-decoration: none; color: var(--color-ink);
+  }
+  .ssa__link span { border-block-end: 1.5px solid var(--color-area-software); padding-block: 2px; }
+  .ssa__link:hover { color: var(--color-area-software); }
+  .ssa__link svg { flex: none; transition: translate var(--dur-base) var(--ease-out); }
+  .ssa__link--page:hover svg { translate: 4px 0; }
+  [dir='rtl'] .ssa__link--page:hover svg { translate: -4px 0; }
+  /* «اطلب استشارة»: an outlined pill, so the call reads differently from a link to a page */
+  .ssa__link--consult { padding-inline: var(--space-5); border: 1.5px solid color-mix(in srgb, var(--color-ink) 40%, transparent); border-radius: var(--radius-pill); }
+  .ssa__link--consult span { border: 0; }
+  .ssa__link--consult:hover { border-color: var(--color-area-software); }
+  /* the current service: lit with code cyan, its link is a quiet label */
+  .ssa__card.is-here { border-color: var(--color-area-software); background: color-mix(in srgb, var(--color-area-software) 9%, var(--color-surface)); }
+  .ssa__card.is-here:hover { translate: none; box-shadow: none; }
+  .ssa__link--here { color: var(--color-area-software); }
+  .ssa__link--here span { border: 0; }
+  .ssa__link--here::before { content: ''; width: 8px; height: 8px; border-radius: 2px; background: currentColor; }
+</style>
