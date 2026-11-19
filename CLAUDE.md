@@ -271,3 +271,14 @@ waysz/
 - Start the final message with the line `FINISHED — pushed <commit hash> to <branch>`, then the report.
 - If something cannot be finished, start the final message with `NOT FINISHED —` and say exactly what is left.
 - Time-box polishing: if a performance or visual target is still not met after two honest attempts, stop, keep what works, report it in one line and finish. Never ask the developer questions mid-task; decide sensibly and list decisions in the report.
+
+## Working style (Ahmed's rule — always)
+
+- Work like a senior developer who owns the task: pick the standard, simplest solution that fully meets the goal
+  and get it done. Never stop to ask the developer; decide sensibly and list the decisions in the report.
+- Stay inside the task's scope: no refactors, extra features, new abstractions, new tooling or "while I'm here"
+  changes that the prompt did not ask for.
+- QA in proportion to the change. A small fix: npm run check + npm run build + a quick look at the affected pages
+  only. The full Playwright suites (qa-shots, qa-policy, the page QA scripts) only for new pages, new scenes or
+  changes to shared motion / stage code.
+- Never write measuring scripts or extra tooling to prove a trivial change.
